@@ -164,6 +164,22 @@ inventories, landmark record checks (Embudo streamflow from 1889, Elephant Butte
 missing coordinates, sites without a HUC, unknown variables, and negative values in quantities
 that cannot be negative. Requires `catalog build` first.
 
+### Querying by river
+
+`nmwater fetch nhdplus` (after `nmwater fetch wbd`) pulls the NHDPlus v2 stream network for every
+HUC8 in scope and snaps stream, canal, diversion and return-flow sites onto their nearest reach,
+producing `site_reaches`.
+
+```sql
+SELECT s.site_uid, s.name, r.totdasqkm
+FROM site_reaches r JOIN sites s USING (site_uid)
+WHERE r.gnis_name = 'Rio Chama' ORDER BY r.totdasqkm DESC;
+```
+
+`totdasqkm` orders sites downstream to upstream by cumulative drainage area, which is a more
+reliable ordering than trying to parse it out of station names. `comid` is the reach's identifier
+in the national network and the join key a National Water Model integration would need.
+
 ### Querying by municipality or tract
 
 `nmwater fetch tiger` downloads Census boundaries and `catalog build` joins every located site

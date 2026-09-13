@@ -1,0 +1,24 @@
+sources:
+  nhdplus:
+    agency: USGS / EPA
+    description: >-
+      NHDPlus v2 medium-resolution flowlines for the HUC8s in scope: the stream network itself,
+      with a COMID per reach, the named-stream identifier (GNIS), Strahler stream order,
+      cumulative drainage area, and upstream/downstream topology. Stream, canal, diversion and
+      return-flow sites are snapped to their nearest reach (site_reaches table) so gauges can be
+      related by position along a channel rather than only by name or by HUC.
+    url: https://api.water.usgs.gov/geoserver/wmadata/ows (via the pynhd/HyRiver client)
+    license: Public domain (U.S. Government work). No key, no rate limit observed.
+    citation: >-
+      U.S. Geological Survey / U.S. EPA, National Hydrography Dataset Plus Version 2 (NHDPlus V2),
+      medium resolution, accessed 2026.
+    refresh: the network is essentially static; re-fetch with --refresh only if USGS republishes it
+    caveats: >-
+      Depends on `wbd` having run first (flowlines are fetched by intersecting each in-scope HUC8
+      polygon, since the WFS layer does not accept huc8 as a filter property). COMID is the join
+      key the National Water Model v2 retrospective uses for feature_id; NWM v3.0 shifted to a
+      revised hydrofabric and its feature_ids are not the same COMIDs, so confirm the NWM version
+      before joining. The site-to-reach snap is a nearest-neighbour match within 500 m
+      (snap_max_distance_m in config/sources.yaml) and is not infallible near confluences or where
+      a gauge sits on a short tributary parallel to a larger channel; treat snap_distance_m as a
+      confidence signal and spot-check anything used for a load calculation.
