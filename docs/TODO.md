@@ -67,13 +67,11 @@ queries work.
 
 ## B. Incomplete data pulls
 
-### B1. Water Quality Portal results — IN PROGRESS
-Full backfill (525 county-by-decade chunks) started 2026-09-13. This is the largest remaining gap
-in the station backbone and the main source of ambient surface and groundwater chemistry,
-including NMED's own monitoring. The Portal rate-limits aggressively (HTTP 429 on most chunks);
-the fetcher retries with backoff and the run is expected to take several hours.
-**Do:** confirm it finished with `nmwater status wqp` and re-run for any chunk left in an error
-state.
+### B1. Water Quality Portal results — DONE, 85 chunks to retry
+Full backfill finished 2026-09-13: 3,875,820 result rows across 440 successful requests; 85 of
+525 county-by-decade chunks ended in an error state after the Portal's rate limiting exhausted
+the retry budget. Those are recorded as errors in the ledger.
+**Do:** re-run `nmwater fetch wqp`; only the 85 failed chunks are requested again.
 
 ### B2. Colorado DWR needs two or three more daily runs — HIGH
 CDSS enforces a daily data quota even with a registered key. 1,465 requests succeeded, 2,578
@@ -211,6 +209,16 @@ which appear to come from the source, and Colorado DWR telemetry storage and ele
 never exercised on a reservoir.
 **Do:** confirm each against provider documentation and record the answer in the crosswalk
 caveats.
+
+### D6b. Parse Reclamation sedimentation surveys into capacity vintages — MEDIUM
+NID capacity is owner-reported and does not track sediment; Elephant Butte's observed full pool
+fell ~185,000 acre-feet between the 1940s and 1980s. The authoritative resurveyed capacities are
+in 78 Reclamation sedimentation-survey documents and area-capacity (ACAP) tables already indexed
+in the `usbr_rise` catalog items (Heron 2010, El Vado 2007, Ute 1992, Nambe Falls 2013, Avalon
+2023, Lake Sumner 2013, Elephant Butte, and more), as PDFs and tables, not parsed numbers.
+**Do:** download the ACAP tables, parse elevation-capacity curves per survey year into a
+`capacity_surveys` table (reservoir comid, survey_year, capacity_af at normal pool, table
+source), and let fill-percentage queries pick the vintage matching the observation date.
 
 ### D7. Plausible-range metadata for variables — LOW
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch

@@ -50,4 +50,8 @@ sources:
       multiple structures on one reservoir (Elephant Butte Dam and Elephant Butte Dike both
       correctly match the same polygon; a cluster of small farm ponds might not). Depends on
       nhdplus having pulled waterbodies first; runs without it but then carries no comid and
-      cannot be joined to storage observations. See docs/interpretation.md.
+      cannot be joined to storage observations. Capacity figures are owner-reported and not
+      systematically corrected for sedimentation; NID Storage is usually the original design value
+      and the archive's own storage maxima show Elephant Butte holding ~185,000 acre-feet less at
+      full pool in the 1980s than in the 1940s. Resurveyed capacities live in the Reclamation
+      sedimentation-survey documents indexed by usbr_rise. See docs/interpretation.md.
