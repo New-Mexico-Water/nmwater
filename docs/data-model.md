@@ -1,6 +1,6 @@
 # Data model
 
-Everything the archive knows is in five kinds of table: observations, sites, site links,
+The archive these tools build holds five kinds of table: observations, sites, site links,
 non-timeseries tables, and the catalog itself. The schema is deliberately boring so that it
 loads into TimescaleDB later without a migration.
 

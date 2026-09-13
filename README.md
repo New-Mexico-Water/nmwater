@@ -1,13 +1,20 @@
-# nmwater — New Mexico hydrologic data archive
+# nmwater — tools for building a New Mexico hydrologic data archive
 
-A local, queryable archive of New Mexico's water record and of the basins that feed and drain
-it: streamflow, reservoir operations, snowpack, precipitation and weather, groundwater levels,
-evapotranspiration, water use, water quality, and drought indices, pulled from 39 federal,
-state, tribal, and research sources and normalized into one schema.
+Software that downloads, normalizes, and catalogs New Mexico's water record from 39 federal,
+state, tribal, and research sources, and assembles it into a local archive you can query.
 
-The point is a systems view. Sources, sinks, storage, and fluxes end up in a single table with
-consistent units and explicit semantics, so you can ask what the whole state's water did in a
-given year and get an answer that spans agencies.
+This repository contains no data. It contains the pipeline that fetches it: a source module per
+provider, a canonical variable catalog, a crosswalk that reconciles how forty agencies name the
+same measurements, and a command-line tool that drives the whole thing. Running it produces the
+archive on your own disk, which is hundreds of gigabytes and is deliberately not committed here.
+
+What it collects: streamflow, reservoir operations, snowpack, precipitation and weather,
+groundwater levels, evapotranspiration, water use, water quality, and drought indices, for New
+Mexico and for the upstream and downstream gauges that define what enters and leaves the state.
+
+The goal is a systems view. Sources, sinks, storage, and fluxes land in one table with consistent
+units and explicit semantics, so a question about what the whole state's water did in a given
+year can be answered across agency boundaries rather than one agency at a time.
 
 - **Quickstart** below gets you from clone to a first query.
 - **[docs/usage.md](docs/usage.md)** is the full command and workflow reference.
