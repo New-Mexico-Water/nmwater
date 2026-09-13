@@ -1,0 +1,37 @@
+nmwater — New Mexico hydrologic data archive
+Copyright (C) 2026 Vance Dubberly
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program. If not, see <https://www.gnu.org/licenses/>.
+
+
+DATA IS NOT COVERED BY THIS LICENSE
+-----------------------------------
+
+The GPL above covers the source code in this repository. It does not cover, and
+cannot grant rights to, the data these tools download. Those data carry the
+terms of the agencies that produced them, which vary:
+
+  - Most federal sources (USGS, Reclamation, USACE, NRCS, NOAA) are United
+    States Government works in the public domain.
+  - PRISM is copyright Oregon State University. Redistribution is permitted with
+    attribution to the PRISM Climate Group.
+  - Synoptic Data restricts redistribution of some member networks.
+  - Research datasets from the Environmental Data Initiative carry per-package
+    terms, usually CC0 or CC-BY, and request citation of the package DOI.
+  - State, tribal, and local sources carry their own conditions and citation
+    requests.
+
+Every source's licence, citation, refresh cadence, and caveats are recorded in
+catalog/sources.yaml and catalog/sources.d/, and are exported to
+docs/data_dictionary.md when the catalog is built. Read them before
+redistributing any data obtained with this software.
