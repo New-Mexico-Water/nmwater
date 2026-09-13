@@ -1,13 +1,19 @@
 # Sources
 
-Thirty-nine sources, grouped by the role they play in a water balance. Counts are a snapshot
-taken 2026-09-13 while several backfills were still running, so they are a floor, not a total.
+The thirty-nine providers `nmwater` knows how to pull from, grouped by the role each plays in a
+water balance.
+
+The "reference run" column records what a full pull produced on the developer's machine on
+2026-09-13, with several backfills still in flight. It is there so you can tell whether your own
+run got what it should have, and it is a floor rather than a total. No data ship with this
+repository; these are the results of running the tools.
+
 Per-source licence, citation, refresh cadence, and caveats live in `catalog/sources.yaml` and
 `catalog/sources.d/`, and are exported to `data_dictionary.md` at catalog build.
 
 ## Federal station networks
 
-| Source | What it carries | Period | Loaded |
+| Source | What it carries | Period | Reference run |
 |---|---|---|---|
 | `usgs` | Streamflow, stage, reservoir storage, groundwater levels, water quality, peaks, field measurements; 42,000 New Mexico sites | 1889– | 15.0M rows, 36,380 sites |
 | `usbr_hydrodata` | Reclamation reservoir operations and gauge flows: storage, elevation, release, inflow, evaporation | 1899– | 5.3M rows, 130 sites |
@@ -25,7 +31,7 @@ Per-source licence, citation, refresh cadence, and caveats live in `catalog/sour
 
 ## New Mexico state, local, and tribal
 
-| Source | What it carries | Period | Loaded |
+| Source | What it carries | Period | Reference run |
 |---|---|---|---|
 | `nmwdi_st2` | New Mexico Water Data Initiative: groundwater levels federated from nine agencies | 1946– | 1.36M rows, 905 wells |
 | `nmed_st2` | Environment Department drinking-water chemistry, 862 analytes across 54,616 sampling points | 2002– | 3.19M results |
@@ -42,7 +48,7 @@ Per-source licence, citation, refresh cadence, and caveats live in `catalog/sour
 
 Basin inflows and outflows are not inside the state line.
 
-| Source | What it carries | Period | Loaded |
+| Source | What it carries | Period | Reference run |
 |---|---|---|---|
 | `codwr` | Colorado Division of Water Resources, Divisions 3 and 7: the Rio Grande and San Juan headwaters, with diversion records | 1889– | 4.6M rows, 1,358 sites |
 | `ibwc` | International Boundary and Water Commission: Rio Grande at El Paso and Fort Quitman, plus annual water bulletins 1931–2006 | 1931– | daily feed and PDF archive |

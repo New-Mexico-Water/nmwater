@@ -1,7 +1,7 @@
 [project]
 name = "nmwater"
 version = "0.1.0"
-description = "New Mexico hydrologic data archive: discovery, download, normalization, and catalog"
+description = "Tools to download, normalize, and catalog New Mexico hydrologic data from 39 agency sources"
 readme = "README.md"
 requires-python = ">=3.13"
 license = "GPL-3.0-or-later"
