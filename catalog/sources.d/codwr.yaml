@@ -6,4 +6,12 @@ sources:
     license: Public (State of Colorado open data)
     citation: Colorado Division of Water Resources, Colorado's Decision Support Systems HydroBase REST services, accessed 2026.
     refresh: daily (use --since; date filters are MM/DD/YYYY)
-    caveats: Telemetry values are provisional (flagA O); surfacewatertsday flagA A = approved. Diversion records are keyed by WDID and linked to the telemetry station abbrev when one exists, else site uid codwr:wdid-<wdid>. CDSS enforces a daily data quota even for registered keys: once exhausted it answers HTTP 403 "Exceeded Daily Data Limit" and the run stops adding rows. Verified 2026-09-12: an anonymous run reached the limit after 27 series; a keyed run reached it after 1,465 successful requests (~4.1 million rows). Failed requests stay status=error in the ledger, so re-running `nmwater fetch codwr` on later days resumes exactly where it stopped. Expect roughly three runs on separate days to finish Divisions 3 and 7.
+    caveats: >-
+      Telemetry values are provisional (flagA O); surfacewatertsday flagA A = approved. Diversion records
+      are keyed by WDID and linked to the telemetry station abbrev when one exists, else site uid
+      codwr:wdid-<wdid>. CDSS enforces a daily data quota even for registered keys: once exhausted it
+      answers HTTP 403 "Exceeded Daily Data Limit" and the run stops adding rows. Verified 2026-09-12: an
+      anonymous run reached the limit after 27 series; a keyed run reached it after 1,465 successful
+      requests (~4.1 million rows). Failed requests stay status=error in the ledger, so re-running
+      `nmwater fetch codwr` on later days resumes exactly where it stopped. Expect roughly three runs on
+      separate days to finish Divisions 3 and 7.

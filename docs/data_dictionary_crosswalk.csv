@@ -94,22 +94,22 @@ nrcs,WTEQX,Snow water equivalent maximum,in,swe,1.0,0.0,max,,identical,
 nrcs,SNRR,Snow rain ratio,pct,,1.0,0.0,,,related_not_comparable,not mapped
 noaa_ghcnd,PRCP,Precipitation,tenths of mm,precip,0.003937007874,0.0,total,daily,identical,
 noaa_ghcnd,SNOW,Snowfall,mm,snowfall,0.03937007874,0.0,total,daily,identical,
-noaa_ghcnd,SNWD,Snow depth,mm,snow_depth,0.03937007874,0.0,,daily,identical,
+noaa_ghcnd,SNWD,Snow depth,mm,snow_depth,0.03937007874,0.0,instantaneous,daily,identical,
 noaa_ghcnd,TMAX,Maximum temperature,tenths of degC,air_temp,0.1,0.0,max,daily,identical,
 noaa_ghcnd,TMIN,Minimum temperature,tenths of degC,air_temp,0.1,0.0,min,daily,identical,
 noaa_ghcnd,TAVG,Average temperature,tenths of degC,air_temp,0.1,0.0,mean,daily,identical,
 noaa_ghcnd,TOBS,Temperature at observation time,tenths of degC,air_temp,0.1,0.0,instantaneous,daily,identical,
-noaa_ghcnd,WESD,Water equivalent of snow on ground,tenths of mm,swe,0.003937007874,0.0,,daily,equivalent_method,manual measurement
+noaa_ghcnd,WESD,Water equivalent of snow on ground,tenths of mm,swe,0.003937007874,0.0,instantaneous,daily,equivalent_method,manual measurement
 noaa_ghcnd,WESF,Water equivalent of snowfall,tenths of mm,,1.0,0.0,,,related_not_comparable,not mapped
 noaa_ghcnd,EVAP,Pan evaporation,tenths of mm,,1.0,0.0,,,related_not_comparable,not mapped
 noaa_ghcnd,AWND,Average wind speed,tenths of m/s,wind_speed,0.2236936,0.0,mean,daily,identical,
-nmwdi_st2,Depth to Water Below Ground Surface,Depth to water,ft bgs,gw_depth_to_water,1.0,0.0,,,identical,
-nmwdi_st2,Raw Depth to Water,Raw depth to water,ft bgs,gw_depth_to_water,1.0,0.0,,,equivalent_method,transducer raw
-nmwdi_st2,Groundwater Elevation,Groundwater elevation,ft asl,gw_level_elevation,1.0,0.0,,,identical,datum per site
+nmwdi_st2,Depth to Water Below Ground Surface,Depth to water,ft bgs,gw_depth_to_water,1.0,0.0,,,identical,"ST2 datastream ""Groundwater Levels"" / ""Manual Groundwater Levels"""
+nmwdi_st2,Raw Depth to Water,Raw depth to water,ft bgs,gw_depth_to_water,1.0,0.0,,,equivalent_method,transducer raw (uncorrected)
+nmwdi_st2,Groundwater Elevation,Groundwater elevation,ft asl,gw_level_elevation,1.0,0.0,,,identical,datum per agency (mostly NAVD88/NGVD29 unspecified)
 nmwdi_st2,Groundwater Head,Groundwater head,ft asl,gw_level_elevation,1.0,0.0,,,equivalent_method,
 nmwdi_st2,Adjusted Groundwater Head,Adjusted groundwater head,ft asl,gw_level_elevation,1.0,0.0,,,equivalent_method,barometrically adjusted
 nmwdi_st2,OSERealTimeDischarge,OSE real-time discharge,gpm,discharge,0.002228009,0.0,,,identical,no observations loaded as of 2026-09
-nmwdi_st2,OSERealTimeGageHeight,OSE real-time gage height,ft,stage,1.0,0.0,,,identical,
+nmwdi_st2,OSERealTimeGageHeight,OSE real-time gage height,ft,stage,1.0,0.0,,,identical,no observations loaded as of 2026-09
 nmbgmr,depth_to_water_ft_bgs,Depth to water,ft bgs,gw_depth_to_water,1.0,0.0,,,identical,
 codwr,DISCHRG,Discharge (telemetry),cfs,discharge,1.0,0.0,mean,daily,identical,telemetry daily mean; flagA O=observed provisional
 codwr,GAGE_HT,Gage height,ft,stage,1.0,0.0,,daily,identical,
@@ -139,6 +139,27 @@ nclimdiv,sp06,SPI 6-month,index,spi,1.0,0.0,,monthly,identical,
 nclimdiv,sp09,SPI 9-month,index,spi,1.0,0.0,,monthly,identical,
 nclimdiv,sp12,SPI 12-month,index,spi,1.0,0.0,,monthly,identical,
 nclimdiv,sp24,SPI 24-month,index,spi,1.0,0.0,,monthly,identical,
+nclimdiv,zndx,Palmer Z index,index,palmer_z,1.0,0.0,,monthly,identical,
+nclimdiv,pmdi,Modified Palmer drought index,index,pmdi,1.0,0.0,,monthly,identical,
+bemp,gw_cm,Depth to groundwater (individual well),cm,gw_depth_to_water,0.0328084,0.0,instantaneous,monthly,identical,shallow riparian well; monthly manual reading; cm converted to ft
+bemp,gw_mean_cm,Mean depth to groundwater (5 wells),cm,gw_depth_to_water,0.0328084,0.0,mean,monthly,equivalent_method,site mean of up to 5 wells
+bemp,ditch_cm,Ditch/drain water depth below measuring point,cm,stage,-0.0328084,0.0,instantaneous,monthly,related_not_comparable,depth below a fixed measuring point on the nearby ditch; sign flipped so higher = more water; datum = measuring point
+bemp,precip_canopy_mm,Precipitation canopy gauge,mm,precip,0.03937007874,0.0,total,monthly,equivalent_method,gauge under cottonwood canopy; interval between monthly site visits
+bemp,precip_open_mm,Precipitation open gauge,mm,precip,0.03937007874,0.0,total,monthly,identical,open-sky gauge; interval between monthly site visits
+bemp,wq_spc,Specific conductance,uS/cm,specific_conductance,1.0,0.0,sample,irregular,identical,groundwater/ditch/river grab sample
+bemp,wq_ph,pH,pH,ph,1.0,0.0,sample,irregular,identical,
+bemp,wq_do,Dissolved oxygen,mg/L,dissolved_oxygen,1.0,0.0,sample,irregular,identical,
+bemp,wq_temp,Water temperature,degC,water_temp,1.0,0.0,sample,irregular,identical,
+bemp,wq_turb,Turbidity,NTU,turbidity,1.0,0.0,sample,irregular,equivalent_method,NTU reported as FNU
+bemp,wq_cl,Chloride,mg/L,chloride,1.0,0.0,sample,irregular,identical,
+bemp,wq_no3,Nitrate as N,mg/L,nitrate,1.0,0.0,sample,irregular,identical,
+bemp,wq_so4,Sulfate,mg/L,sulfate,1.0,0.0,sample,irregular,identical,
+bemp,wq_f,Fluoride,mg/L,fluoride,1.0,0.0,sample,irregular,identical,
+cocorahs,TotalPrecipAmt,Total precipitation (24 h to obs time ~7 AM),in,precip,1.0,0.0,total,daily,equivalent_method,volunteer 4-inch gauge; observation day ends at local obs time (usually 7 AM) not midnight; T = trace stored as 0 with qualifier T
+cocorahs,NewSnowDepth,New snowfall,in,snowfall,1.0,0.0,total,daily,equivalent_method,manual snowboard
+cocorahs,TotalSnowDepth,Total snow depth on ground,in,snow_depth,1.0,0.0,instantaneous,daily,equivalent_method,manual
+cocorahs,TotalSnowSWE,SWE of total snowpack (core),in,swe,1.0,0.0,instantaneous,daily,equivalent_method,manual core sample; sparse
+cocorahs,NewSnowSWE,Water content of new snowfall,in,,1.0,0.0,,,related_not_comparable,liquid equivalent of new snow (a precip component)
 codwr,Streamflow,Streamflow (surfacewatertsday measType),cfs,discharge,1.0,0.0,mean,daily,identical,flagA A=approved
 codwr,DISCHRG2,Discharge secondary sensor,cfs,discharge,1.0,0.0,mean,daily,equivalent_method,second sensor at same station
 codwr,DIVREC:CFS,Diversion record daily (cfs),cfs,diversion,1.0,0.0,mean,daily,identical,structures/divrec/divrecday; approvalStatus in qualifier
@@ -146,9 +167,59 @@ codwr,DIVREC:AF,Diversion record daily (acre-feet),af,diversion_volume,1.0,0.0,t
 codwr,DIVREC:,Diversion record (no unit),,,1.0,0.0,,,related_not_comparable,unit missing; not mapped
 codwr,depthWaterBelowLandSurface,Depth to water below land surface,ft,gw_depth_to_water,1.0,0.0,instantaneous,irregular,identical,
 codwr,elevationOfWater,Water level elevation,ft,gw_level_elevation,1.0,0.0,instantaneous,irregular,identical,datum per well (NAVD88/NGVD29 not stated)
+codwr,Streamflow:Diversion,Streamflow measured at a diversion structure,cfs,diversion,1.0,0.0,mean,daily,identical,surfacewatertsday at a Diversion Structure station
+edi,air_temp_c,Air temperature,degC,air_temp,1.0,0.0,instantaneous,hourly,identical,LTER station sensors
+edi,air_temp_max_c,Air temperature maximum,degC,air_temp,1.0,0.0,max,daily,identical,
+edi,air_temp_min_c,Air temperature minimum,degC,air_temp,1.0,0.0,min,daily,identical,
+edi,air_temp_mean_c,Air temperature mean,degC,air_temp,1.0,0.0,mean,daily,identical,
+edi,precip_mm,Precipitation,mm,precip,0.03937007874,0.0,total,hourly,identical,tipping bucket; winter undercatch likely
+edi,rh_pct,Relative humidity,percent,relative_humidity,1.0,0.0,instantaneous,hourly,identical,
+edi,wind_speed_ms,Wind speed,m/s,wind_speed,2.2369362921,0.0,mean,hourly,identical,sensor height varies by station
+edi,wind_dir_deg,Wind direction,degree,wind_direction,1.0,0.0,mean,hourly,identical,
+edi,solar_wm2,Solar radiation,W/m2,solar_radiation,1.0,0.0,mean,hourly,identical,some stations report PAR not shortwave; check entity metadata
+edi,soil_moisture_pct,Soil moisture volumetric,percent,soil_moisture,1.0,0.0,instantaneous,hourly,equivalent_method,depth varies by station
+edi,soil_temp_c,Soil temperature,degC,soil_temp,1.0,0.0,instantaneous,hourly,identical,depth varies by station
+edi,depth_to_water_ft,Depth to water below land surface,ft,gw_depth_to_water,1.0,0.0,instantaneous,irregular,identical,Navajo Nation wells database
 ibwc,STAGE_M,Stage (daily report),m,stage,3.28084,0.0,observed,daily,identical,provisional daily report value; IBWC gauge datum
 ibwc,DISCHARGE_CMS,Discharge (daily report),cms,discharge,35.3146667,0.0,observed,daily,equivalent_method,provisional value as reported ~09:35 MT; not a computed daily mean
 ibwc,RAINFALL_MM,Rainfall (daily report),mm,precip,0.0393700787,0.0,total,daily,identical,provisional
+iem_dcp,HG,SHEF HG river stage,ft,stage,1.0,0.0,,,identical,local gauge datum; qualifier holds full SHEF code (duration/type/extremum)
+iem_dcp,QR,SHEF QR discharge,kcfs,discharge,1000.0,0.0,,,identical,SHEF standard unit kcfs
+iem_dcp,QT,SHEF QT discharge total,kcfs,discharge,1000.0,0.0,,,equivalent_method,
+iem_dcp,PP,SHEF PP precipitation increment,in,precip,1.0,0.0,,,identical,duration in qualifier (H hourly
+iem_dcp,PC,SHEF PC precipitation accumulator,in,precip_accumulated_wy,1.0,0.0,accumulated,,equivalent_method,accumulator resets at arbitrary times not Oct 1; difference consecutive values
+iem_dcp,TA,SHEF TA air temperature,degF,air_temp,0.5555555556,-17.7777777778,,,identical,
+iem_dcp,HP,SHEF HP pool elevation,ft,reservoir_elevation,1.0,0.0,,,identical,datum per project
+iem_dcp,HL,SHEF HL lake elevation,ft,reservoir_elevation,1.0,0.0,,,identical,
+iem_dcp,LS,SHEF LS reservoir storage,kaf,reservoir_storage,1000.0,0.0,,,equivalent_method,
+iem_dcp,SD,SHEF SD snow depth,in,snow_depth,1.0,0.0,,,identical,
+iem_dcp,SW,SHEF SW snow water equivalent,in,swe,1.0,0.0,,,identical,
+iem_dcp,SF,SHEF SF snowfall,in,snowfall,1.0,0.0,,,identical,
+iem_dcp,TW,SHEF TW water temperature,degF,water_temp,0.5555555556,-17.7777777778,,,identical,
+iem_dcp,US,SHEF US wind speed,mph,wind_speed,1.0,0.0,,,identical,
+iem_dcp,UD,SHEF UD wind direction,degrees,wind_direction,1.0,0.0,,,identical,
+iem_dcp,XR,SHEF XR relative humidity,percent,relative_humidity,1.0,0.0,,,identical,
+iem_dcp,EP,SHEF EP pan evaporation,in,,1.0,0.0,,,related_not_comparable,not mapped
+iem_dcp,UC,SHEF UC wind speed (non-standard),unknown,,1.0,0.0,,,related_not_comparable,not mapped
+iem_dcp,UL,SHEF UL wind (non-standard),unknown,,1.0,0.0,,,related_not_comparable,not mapped
+iem_dcp,VB,SHEF VB battery voltage,V,,1.0,0.0,,,related_not_comparable,not mapped
+isc_sevenrivers,depthToWaterFeet,Depth to water,ft bgs,gw_depth_to_water,1.0,0.0,instantaneous,irregular,identical,ISC Seven Rivers monitoring points; rows flagged invalid are dropped; dry flag kept in qualifier
+nmbgmr,DepthToWaterBGS,Depth to water below ground surface,ft,gw_depth_to_water,1.0,0.0,instantaneous,,identical,manual (tape/e-probe) or transducer per qualifier; API warns data are provisional
+nmed_st2,NITRATE|mg/l,Nitrate (as N),mg/L,nitrate,1.0,0.0,sample,irregular,identical,SDWIS compliance sample; non-detects excluded from observations (kept in waterquality table)
+nmed_st2,NITRATE-NITRITE|mg/l,Nitrate-nitrite (as N),mg/L,nitrate,1.0,0.0,sample,irregular,equivalent_method,nitrate+nitrite as N
+nmed_st2,ARSENIC|mg/l,Arsenic,mg/L,arsenic,1000.0,0.0,sample,irregular,identical,total arsenic; mg/L -> ug/L
+nmed_st2,ARSENIC|ug/l,Arsenic,ug/L,arsenic,1.0,0.0,sample,irregular,identical,total arsenic
+nmed_st2,FLUORIDE|mg/l,Fluoride,mg/L,fluoride,1.0,0.0,sample,irregular,identical,
+nmed_st2,COMBINED URANIUM|ug/l,Combined uranium,ug/L,uranium,1.0,0.0,sample,irregular,identical,
+nmed_st2,COMBINED URANIUM|mg/l,Combined uranium,mg/L,uranium,1000.0,0.0,sample,irregular,identical,mg/L -> ug/L
+nmed_st2,CHLORIDE|mg/l,Chloride,mg/L,chloride,1.0,0.0,sample,irregular,identical,
+nmed_st2,SULFATE|mg/l,Sulfate,mg/L,sulfate,1.0,0.0,sample,irregular,identical,
+nmed_st2,"RESIDUE, TOTAL, FILTERABLE|mg/l",Total dissolved solids,mg/L,tds,1.0,0.0,sample,irregular,identical,"SDWIS ""residue total filterable"" = TDS"
+nmed_st2,CONDUCTIVITY @ 25 C UMHOS/CM|umhos/cm,Specific conductance,umhos/cm,specific_conductance,1.0,0.0,sample,irregular,identical,umhos/cm = uS/cm
+nmed_st2,CONDUCTIVITY @ 25 C UMHOS/CM|us/cm,Specific conductance,uS/cm,specific_conductance,1.0,0.0,sample,irregular,identical,
+nmed_st2,PH|su,pH,SU,ph,1.0,0.0,sample,irregular,identical,
+nmed_st2,PH|ph,pH,pH,ph,1.0,0.0,sample,irregular,identical,
+nmed_st2,TURBIDITY|ntu,Turbidity,NTU,turbidity,1.0,0.0,sample,irregular,equivalent_method,NTU reported as FNU-equivalent
 noaa_isd,temp,Air temperature,tenths degC,air_temp,0.1,0.0,instantaneous,hourly,identical,ISD-Lite hourly synoptic observation
 noaa_isd,wdir,Wind direction,degrees,wind_direction,1.0,0.0,instantaneous,hourly,identical,
 noaa_isd,wspd,Wind speed,tenths m/s,wind_speed,0.2236936,0.0,instantaneous,hourly,identical,
@@ -156,3 +227,192 @@ noaa_isd,precip1h,One-hour liquid precipitation,tenths mm,precip,0.003937007874,
 noaa_isd,dewpt,Dew point,tenths degC,,1.0,0.0,,,related_not_comparable,not mapped
 noaa_isd,slp,Sea level pressure,tenths hPa,,1.0,0.0,,,related_not_comparable,not mapped
 noaa_isd,precip6h,Six-hour liquid precipitation,tenths mm,,1.0,0.0,,,related_not_comparable,6-hour interval not in canonical intervals; not mapped
+nrcs,SMS:-2,Soil moisture 2 in,pct,soil_moisture,1.0,0.0,,,identical,depth 2 in
+nrcs,SMS:-4,Soil moisture 4 in,pct,soil_moisture,1.0,0.0,,,identical,depth 4 in
+nrcs,SMS:-8,Soil moisture 8 in,pct,soil_moisture,1.0,0.0,,,identical,depth 8 in
+nrcs,SMS:-20,Soil moisture 20 in,pct,soil_moisture,1.0,0.0,,,identical,depth 20 in
+nrcs,SMS:-40,Soil moisture 40 in,pct,soil_moisture,1.0,0.0,,,identical,depth 40 in
+nrcs,STO:-2,Soil temperature 2 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 2 in
+nrcs,STO:-4,Soil temperature 4 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 4 in
+nrcs,STO:-8,Soil temperature 8 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 8 in
+nrcs,STO:-20,Soil temperature 20 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 20 in
+nrcs,STO:-40,Soil temperature 40 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 40 in
+nwps,stage:ft,NWPS observed stage,ft,stage,1.0,0.0,instantaneous,15min,identical,30-day rolling window only; qualifier holds SHEF pedts
+nwps,flow:kcfs,NWPS observed flow,kcfs,discharge,1000.0,0.0,instantaneous,15min,identical,derived from stage via NWS rating; kcfs to cfs
+nwps,flow:cfs,NWPS observed flow,cfs,discharge,1.0,0.0,instantaneous,15min,identical,
+ose_arcgis,depth_wate,Depth to water at drilling (WATERS POD record),ft bgs,gw_depth_to_water,1.0,0.0,instantaneous,irregular,equivalent_method,one-off driller-reported static level at well completion; date = well log file date
+ose_meas,DischargeAvg|cfs,Daily average discharge (surface station),cfs,discharge,1.0,0.0,mean,daily,identical,OSE telemetered stream/ditch/acequia station; provisional
+ose_meas,DischargeTotal|surface,Daily/monthly total volume (surface station),acre-feet,discharge_volume,1.0,0.0,total,,identical,interval daily or monthly per report
+ose_meas,Discharge|cfs,Instantaneous discharge (surface station),cfs,discharge,1.0,0.0,instantaneous,instant,identical,raw telemetry (~10-15 min)
+ose_meas,GageHeight|ft,Gage height (surface station),ft,stage,1.0,0.0,instantaneous,instant,identical,local datum
+ose_meas,DischargeAvg|gpm,Daily average pumping rate (metered well),gpm,diversion,0.002228009,0.0,mean,daily,related_not_comparable,metered groundwater pumping rate; mapped to diversion (cfs) pending a gw_withdrawal_rate variable
+ose_meas,DischargeTotal|well,Daily/monthly pumped volume (metered well),acre-feet,diversion_volume,1.0,0.0,total,,related_not_comparable,metered groundwater pumping volume
+ose_meas,Discharge|gpm,Instantaneous pumping rate (metered well),gpm,diversion,0.002228009,0.0,instantaneous,instant,related_not_comparable,metered groundwater pumping rate
+ose_meas,GageHeight|ft bgs,Depth to water (metered well),ft bgs,gw_depth_to_water,1.0,0.0,instantaneous,instant,identical,"reported under the label ""Gage Height (ft bgs)"""
+resopsus,storage,Storage,MCM,reservoir_storage,810.713194,0.0,,daily,equivalent_method,operator capacity table at time of record; MCM to acre-feet
+resopsus,inflow,Inflow,cms,reservoir_inflow,35.3146667,0.0,mean,daily,identical,cms to cfs
+resopsus,outflow,Outflow,cms,reservoir_release,35.3146667,0.0,mean,daily,identical,cms to cfs
+resopsus,elevation,Elevation,m,reservoir_elevation,3.2808399,0.0,,daily,identical,m to ft; datum per operator
+resopsus,evaporation_mcm,Evaporation,MCM,reservoir_evaporation,810.713194,0.0,total,daily,equivalent_method,MCM per day to acre-feet per day
+resopsus,evaporation_cms,Evaporation,cms,reservoir_evaporation,70.0456,0.0,total,daily,equivalent_method,cms averaged over a day to acre-feet per day
+synoptic,air_temp,Air temperature,degF,air_temp,0.5555555556,-17.7777777778,instantaneous,irregular,identical,units=english requested
+synoptic,relative_humidity,Relative humidity,percent,relative_humidity,1.0,0.0,instantaneous,irregular,identical,
+synoptic,wind_speed,Wind speed,mph,wind_speed,1.0,0.0,mean,irregular,identical,anemometer height varies; RAWS are 6 m not 10 m
+synoptic,wind_direction,Wind direction,degree,wind_direction,1.0,0.0,mean,irregular,identical,
+synoptic,wind_gust,Wind gust,mph,wind_speed,1.0,0.0,max,irregular,equivalent_method,peak gust not mean wind
+synoptic,solar_radiation,Solar radiation,W/m2,solar_radiation,1.0,0.0,mean,irregular,identical,
+synoptic,precip_accum,Precipitation increment from accumulator,in,precip,1.0,0.0,total,irregular,equivalent_method,differenced from the station accumulator; resets dropped
+synoptic,precip_since_midnight,Precipitation increment since local midnight,in,precip,1.0,0.0,total,irregular,equivalent_method,differenced within the local day
+synoptic,snow_depth,Snow depth,in,snow_depth,1.0,0.0,instantaneous,irregular,identical,
+synoptic,snow_water_equiv,Snow water equivalent,in,swe,1.0,0.0,instantaneous,irregular,identical,
+synoptic,soil_moisture,Soil moisture volumetric,percent,soil_moisture,1.0,0.0,instantaneous,irregular,equivalent_method,sensor depth in station metadata
+synoptic,soil_temp,Soil temperature,degF,soil_temp,0.5555555556,-17.7777777778,instantaneous,irregular,identical,sensor depth in station metadata
+synoptic,dew_point,Dew point temperature,degF,,1.0,0.0,,,related_not_comparable,no canonical dewpoint variable yet
+twdb,DepthFromLSD,Depth to water from land surface datum,ft,gw_depth_to_water,1.0,0.0,instantaneous,irregular,identical,Status Publishable/Unpublishable in qualifier
+twdb,WaterElevation,Water level elevation,ft,gw_level_elevation,1.0,0.0,instantaneous,irregular,identical,land elevation often interpolated from topo map; datum unspecified
+usbr_albuq,Elevation,Pool elevation,ft,reservoir_elevation,1.0,0.0,instantaneous,15min,identical,project datum; SUMNERDAM file is NAVD88
+usbr_albuq,Storage,Storage,acre-ft,reservoir_storage,1.0,0.0,instantaneous,15min,equivalent_method,provisional real-time
+usbr_albuq,Outflow,Outflow,cfs,reservoir_release,1.0,0.0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Inflow,Inflow,cfs,reservoir_inflow,1.0,0.0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Flow,Flow,cfs,discharge,1.0,0.0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,GH,Gage height,ft,stage,1.0,0.0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Narrows,Rio Grande at Narrows,cfs,discharge,1.0,0.0,instantaneous,15min,identical,Elephant Butte inflow gauge
+usbr_albuq,Otowi,Rio Grande at Otowi,cfs,discharge,1.0,0.0,instantaneous,15min,identical,USBR relay of USGS 08313000
+usbr_albuq,AzoteaOut,Azotea tunnel outlet,cfs,discharge,1.0,0.0,instantaneous,15min,identical,San Juan-Chama import to Willow Creek
+usbr_albuq,LaPuente,Rio Chama near La Puente,cfs,discharge,1.0,0.0,instantaneous,15min,identical,USBR relay of USGS 08284100
+usbr_albuq,PDLFlow,Pecos River near Puerto de Luna,cfs,discharge,1.0,0.0,instantaneous,15min,identical,
+usbr_albuq,Kaiser,Pecos River at Kaiser,cfs,discharge,1.0,0.0,instantaneous,15min,identical,Brantley inflow
+usbr_albuq,CIDCanal,CID main canal,cfs,diversion,1.0,0.0,instantaneous,15min,identical,Carlsbad Irrigation District diversion below Avalon
+usbr_albuq,Cochtiti,MRGCD Cochiti diversion,cfs,diversion,1.0,0.0,instantaneous,15min,identical,file header spells Cochtiti
+usbr_albuq,Cochiti,MRGCD Cochiti diversion,cfs,diversion,1.0,0.0,instantaneous,15min,identical,
+usbr_albuq,Angostura,MRGCD Angostura diversion,cfs,diversion,1.0,0.0,instantaneous,15min,identical,
+usbr_albuq,Isleta,MRGCD Isleta diversion,cfs,diversion,1.0,0.0,instantaneous,15min,identical,
+usbr_albuq,SanAcacia,MRGCD San Acacia diversion,cfs,diversion,1.0,0.0,instantaneous,15min,identical,
+usbr_albuq,EastGate,Caballo east gate opening,ft,,1.0,0.0,,,related_not_comparable,gate opening not mapped
+usbr_albuq,WestGate,Caballo west gate opening,ft,,1.0,0.0,,,related_not_comparable,gate opening not mapped
+usbr_rise,Streamflow [cfs],Streamflow,cfs,discharge,1.0,0.0,mean,,identical,
+usbr_rise,Streamflow [m3/sec],Streamflow (1-minute),m3/sec,discharge,35.3146667,0.0,instantaneous,,identical,Arroyo de los Pinos sediment research station
+usbr_rise,Stage [cm],Stage (1-minute),cm,stage,0.0328084,0.0,instantaneous,,identical,Arroyo de los Pinos sediment research station
+usbr_rise,Stage - Average [cm],Stage average (1-minute),cm,stage,0.0328084,0.0,mean,,identical,
+usbr_rise,Stream Gage Height [ft],Gage height,ft,stage,1.0,0.0,,,identical,
+usbr_rise,Lake/Reservoir Storage [af],Storage,af,reservoir_storage,1.0,0.0,,,equivalent_method,
+usbr_rise,Lake/Reservoir Elevation [ft],Pool elevation,ft,reservoir_elevation,1.0,0.0,,,identical,
+usbr_rise,Lake/Reservoir Release - Total [cfs],Total release,cfs,reservoir_release,1.0,0.0,,,identical,
+usbr_rise,Lake/Reservoir Inflow [cfs],Inflow,cfs,reservoir_inflow,1.0,0.0,,,identical,
+usbr_rise,Lake/Reservoir Evaporation [af],Evaporation,af,reservoir_evaporation,1.0,0.0,total,,identical,
+usbr_rise,Reservoir Average Evaporation [mm],Evaporation depth,mm,,1.0,0.0,,,related_not_comparable,depth not volume; not mapped
+usbr_rise,Air Temperature [DegC],Air temperature,DegC,air_temp,1.0,0.0,,,identical,BGNDRF weather station
+usbr_rise,Precipitation [mm],Precipitation,mm,precip,0.03937007874,0.0,total,,identical,
+usbr_rise,Relative Humidity [%],Relative humidity,%,relative_humidity,1.0,0.0,,,identical,
+usbr_rise,Wind Speed [m/s],Wind speed,m/s,wind_speed,2.23693629,0.0,,,identical,
+usbr_rise,Wind Direction [degrees],Wind direction,degrees,wind_direction,1.0,0.0,,,identical,
+usbr_rise,Solar Radiation [W/m2],Solar radiation,W/m2,solar_radiation,1.0,0.0,,,identical,
+usbr_rise,Vapor Pressure Deficit [kPA],Vapor pressure deficit,kPA,vapor_pressure_deficit,1.0,0.0,,,identical,
+usbr_rise,Water Temperature [DegC],Water temperature,DegC,water_temp,1.0,0.0,,,identical,
+usbr_rise,Specific Conductance [umhos/cm],Specific conductance,umhos/cm,specific_conductance,1.0,0.0,sample,,identical,BGNDRF brackish wells; biannual samples
+usbr_rise,"Solids, Filterable Total Dissolved Solids [mg/L]",TDS,mg/L,tds,1.0,0.0,sample,,identical,
+usbr_rise,pH [units],pH,units,ph,1.0,0.0,sample,,identical,
+usbr_rise,Chloride [mg/L],Chloride,mg/L,chloride,1.0,0.0,sample,,identical,
+usbr_rise,Sulfate [mg/L],Sulfate,mg/L,sulfate,1.0,0.0,sample,,identical,
+usbr_rise,Fluoride [mg/L],Fluoride,mg/L,fluoride,1.0,0.0,sample,,identical,
+usbr_rise,Arsenic [mg/L],Arsenic,mg/L,arsenic,1000.0,0.0,sample,,identical,total; converted mg/L to ug/L
+usbr_rise,Uranium [mg/L],Uranium,mg/L,uranium,1000.0,0.0,sample,,identical,converted mg/L to ug/L
+usbr_rise,"Nitrogen, Nitrate (as N) [mg/L]",Nitrate as N,mg/L,nitrate,1.0,0.0,sample,,identical,
+usbr_rise,Dissolved oxygen (DO) [mg/L],Dissolved oxygen,mg/L,dissolved_oxygen,1.0,0.0,sample,,identical,
+usbr_rise,Turbidity [NTU],Turbidity,NTU,turbidity,1.0,0.0,sample,,equivalent_method,NTU reported as FNU
+usbr_rise,Pan Evaporation [mm],Pan evaporation,mm,,1.0,0.0,,,related_not_comparable,not mapped
+usbr_rise,Barometric Pressure [mm Hg],Barometric pressure,mm Hg,,1.0,0.0,,,related_not_comparable,not mapped
+uscrn,T_HR_AVG,Hourly average air temperature,degC,air_temp,1.0,0.0,mean,hourly,identical,
+uscrn,T_MAX,Hourly maximum air temperature,degC,air_temp,1.0,0.0,max,hourly,identical,
+uscrn,T_MIN,Hourly minimum air temperature,degC,air_temp,1.0,0.0,min,hourly,identical,
+uscrn,P_CALC,Hourly precipitation,mm,precip,0.03937007874,0.0,total,hourly,identical,Geonor weighing gauge (heated); best winter precip in NM
+uscrn,SOLARAD,Average global solar radiation,W/m2,solar_radiation,1.0,0.0,mean,hourly,identical,
+uscrn,RH_HR_AVG,Hourly average relative humidity,percent,relative_humidity,1.0,0.0,mean,hourly,identical,
+uscrn,SOIL_MOISTURE_5,Soil moisture 5 cm,m3/m3,soil_moisture,100.0,0.0,mean,hourly,identical,depth 5 cm
+uscrn,SOIL_MOISTURE_10,Soil moisture 10 cm,m3/m3,soil_moisture,100.0,0.0,mean,hourly,identical,depth 10 cm
+uscrn,SOIL_MOISTURE_20,Soil moisture 20 cm,m3/m3,soil_moisture,100.0,0.0,mean,hourly,identical,depth 20 cm
+uscrn,SOIL_MOISTURE_50,Soil moisture 50 cm,m3/m3,soil_moisture,100.0,0.0,mean,hourly,identical,depth 50 cm
+uscrn,SOIL_MOISTURE_100,Soil moisture 100 cm,m3/m3,soil_moisture,100.0,0.0,mean,hourly,identical,depth 100 cm
+uscrn,SOIL_TEMP_5,Soil temperature 5 cm,degC,soil_temp,1.0,0.0,mean,hourly,identical,depth 5 cm
+uscrn,SOIL_TEMP_10,Soil temperature 10 cm,degC,soil_temp,1.0,0.0,mean,hourly,identical,depth 10 cm
+uscrn,SOIL_TEMP_20,Soil temperature 20 cm,degC,soil_temp,1.0,0.0,mean,hourly,identical,depth 20 cm
+uscrn,SOIL_TEMP_50,Soil temperature 50 cm,degC,soil_temp,1.0,0.0,mean,hourly,identical,depth 50 cm
+uscrn,SOIL_TEMP_100,Soil temperature 100 cm,degC,soil_temp,1.0,0.0,mean,hourly,identical,depth 100 cm
+uscrn,T_DAILY_MAX,Daily maximum air temperature,degC,air_temp,1.0,0.0,max,daily,identical,
+uscrn,T_DAILY_MIN,Daily minimum air temperature,degC,air_temp,1.0,0.0,min,daily,identical,
+uscrn,T_DAILY_MEAN,Daily mean (max+min)/2,degC,air_temp,1.0,0.0,median,daily,equivalent_method,(Tmax+Tmin)/2 convention; statistic median used to distinguish from true average
+uscrn,T_DAILY_AVG,Daily average air temperature,degC,air_temp,1.0,0.0,mean,daily,identical,
+uscrn,P_DAILY_CALC,Daily precipitation,mm,precip,0.03937007874,0.0,total,daily,identical,
+uscrn,SOLARAD_DAILY,Daily total solar energy,MJ/m2,solar_radiation,11.574074,0.0,mean,daily,equivalent_method,converted from MJ/m2/day to mean W/m2
+uscrn,RH_DAILY_MAX,Daily max RH,percent,relative_humidity,1.0,0.0,max,daily,identical,
+uscrn,RH_DAILY_MIN,Daily min RH,percent,relative_humidity,1.0,0.0,min,daily,identical,
+uscrn,RH_DAILY_AVG,Daily avg RH,percent,relative_humidity,1.0,0.0,mean,daily,identical,
+uscrn,SOIL_MOISTURE_5_DAILY,Daily soil moisture 5 cm,m3/m3,soil_moisture,100.0,0.0,mean,daily,identical,depth 5 cm
+uscrn,SOIL_MOISTURE_10_DAILY,Daily soil moisture 10 cm,m3/m3,soil_moisture,100.0,0.0,mean,daily,identical,depth 10 cm
+uscrn,SOIL_MOISTURE_20_DAILY,Daily soil moisture 20 cm,m3/m3,soil_moisture,100.0,0.0,mean,daily,identical,depth 20 cm
+uscrn,SOIL_MOISTURE_50_DAILY,Daily soil moisture 50 cm,m3/m3,soil_moisture,100.0,0.0,mean,daily,identical,depth 50 cm
+uscrn,SOIL_MOISTURE_100_DAILY,Daily soil moisture 100 cm,m3/m3,soil_moisture,100.0,0.0,mean,daily,identical,depth 100 cm
+uscrn,SOIL_TEMP_5_DAILY,Daily soil temperature 5 cm,degC,soil_temp,1.0,0.0,mean,daily,identical,depth 5 cm
+uscrn,SOIL_TEMP_10_DAILY,Daily soil temperature 10 cm,degC,soil_temp,1.0,0.0,mean,daily,identical,depth 10 cm
+uscrn,SOIL_TEMP_20_DAILY,Daily soil temperature 20 cm,degC,soil_temp,1.0,0.0,mean,daily,identical,depth 20 cm
+uscrn,SOIL_TEMP_50_DAILY,Daily soil temperature 50 cm,degC,soil_temp,1.0,0.0,mean,daily,identical,depth 50 cm
+uscrn,SOIL_TEMP_100_DAILY,Daily soil temperature 100 cm,degC,soil_temp,1.0,0.0,mean,daily,identical,depth 100 cm
+uscrn,SUR_TEMP_DAILY_MAX,Infrared surface temp max,degC,,1.0,0.0,,,related_not_comparable,not mapped
+uscrn,SUR_TEMP_DAILY_MIN,Infrared surface temp min,degC,,1.0,0.0,,,related_not_comparable,not mapped
+uscrn,SUR_TEMP_DAILY_AVG,Infrared surface temp avg,degC,,1.0,0.0,,,related_not_comparable,not mapped
+wqp,"Temperature, water",Water temperature (WQP CharacteristicName),deg C,water_temp,1.0,0.0,sample,irregular,identical,deg F converted in code
+wqp,Specific conductance,Specific conductance,uS/cm,specific_conductance,1.0,0.0,sample,irregular,identical,umho/cm treated as uS/cm
+wqp,pH,pH,std units,ph,1.0,0.0,sample,irregular,identical,
+wqp,Dissolved oxygen (DO),Dissolved oxygen,mg/L,dissolved_oxygen,1.0,0.0,sample,irregular,identical,
+wqp,Turbidity,Turbidity,NTU/FNU,turbidity,1.0,0.0,sample,irregular,equivalent_method,NTU and FNU pooled; instrument geometry differs
+wqp,Nitrate,Nitrate,mg/L,nitrate,1.0,0.0,sample,irregular,equivalent_method,mg/L asNO3 converted to as N (x0.2259); check MethodSpeciationName
+wqp,Nitrate as N,Nitrate as N,mg/L,nitrate,1.0,0.0,sample,irregular,identical,
+wqp,Chloride,Chloride,mg/L,chloride,1.0,0.0,sample,irregular,identical,ug/L converted
+wqp,Sulfate,Sulfate,mg/L,sulfate,1.0,0.0,sample,irregular,identical,ug/L converted
+wqp,Arsenic,Arsenic,ug/L,arsenic,1.0,0.0,sample,irregular,equivalent_method,dissolved vs total fraction kept in qualifier
+wqp,Fluoride,Fluoride,mg/L,fluoride,1.0,0.0,sample,irregular,identical,
+wqp,Uranium,Uranium,ug/L,uranium,1.0,0.0,sample,irregular,equivalent_method,fraction in qualifier
+wqp,Uranium-238,Uranium-238,ug/L,uranium,1.0,0.0,sample,irregular,related_not_comparable,isotope-specific; pooled with total uranium
+wqp,Total dissolved solids,Total dissolved solids,mg/L,tds,1.0,0.0,sample,irregular,identical,
+ziamet,feed_airtemp,Air Temperature,F,air_temp,0.5555555556,-17.7777777778,instantaneous,5min,identical,2 m sensor
+ziamet,feed_dewpoint,Dewpoint,F,,1.0,0.0,,,related_not_comparable,no canonical dewpoint variable yet
+ziamet,feed_rh,RH,%,relative_humidity,1.0,0.0,instantaneous,5min,identical,
+ziamet,feed_wsmax,3m Max Wind Speed,MPH,wind_speed,1.0,0.0,max,5min,identical,3 m anemometer
+ziamet,feed_wsmean,3m Mean Wind Speed,MPH,wind_speed,1.0,0.0,mean,5min,identical,3 m anemometer
+ziamet,feed_wdir,3m Wind Direction,deg,wind_direction,1.0,0.0,mean,5min,identical,
+ziamet,feed_rain,Rain,in,precip,1.0,0.0,total,5min,identical,tipping bucket; interval total
+ziamet,feed_solar,Solar Radiation,MJ/m^2,solar_radiation,3333.3333,0.0,mean,5min,identical,MJ/m2 per 5-min interval converted to mean W/m2
+ziamet,dly_tmax,Daily max air temperature,F,air_temp,0.5555555556,-17.7777777778,max,daily,identical,
+ziamet,dly_tmin,Daily min air temperature,F,air_temp,0.5555555556,-17.7777777778,min,daily,identical,
+ziamet,dly_tavg,Daily mean air temperature,F,air_temp,0.5555555556,-17.7777777778,mean,daily,identical,
+ziamet,dly_tmax_c,Daily max air temperature,C,air_temp,1.0,0.0,max,daily,identical,
+ziamet,dly_tmin_c,Daily min air temperature,C,air_temp,1.0,0.0,min,daily,identical,
+ziamet,dly_tavg_c,Daily mean air temperature,C,air_temp,1.0,0.0,mean,daily,identical,
+ziamet,dly_rain,Daily precipitation,in,precip,1.0,0.0,total,daily,identical,
+ziamet,dly_rain_mm,Daily precipitation,mm,precip,0.03937007874,0.0,total,daily,identical,
+ziamet,dly_rh,Daily mean relative humidity,%,relative_humidity,1.0,0.0,mean,daily,identical,
+ziamet,dly_rhmax,Daily max relative humidity,%,relative_humidity,1.0,0.0,max,daily,identical,
+ziamet,dly_rhmin,Daily min relative humidity,%,relative_humidity,1.0,0.0,min,daily,identical,
+ziamet,dly_wsmean,Daily mean wind speed,MPH,wind_speed,1.0,0.0,mean,daily,identical,3 m
+ziamet,dly_wsmax,Daily max wind speed,MPH,wind_speed,1.0,0.0,max,daily,identical,3 m
+ziamet,dly_wdir,Daily wind direction,deg,wind_direction,1.0,0.0,mean,daily,identical,
+ziamet,dly_solar,Daily solar radiation,MJ/m^2,solar_radiation,11.574074,0.0,mean,daily,identical,MJ/m2/day converted to mean W/m2
+ziamet,dly_eto,Reference ET grass (ASCE ETo),in,et_reference,25.4,0.0,total,daily,identical,grass reference ETo
+ziamet,dly_eto_mm,Reference ET grass (ASCE ETo),mm,et_reference,1.0,0.0,total,daily,identical,grass reference ETo
+ziamet,dly_etr,Reference ET alfalfa (ASCE ETr),in,et_reference,25.4,0.0,total,daily,equivalent_method,alfalfa reference ETr (~1.2x ETo)
+ziamet,dly_etr_mm,Reference ET alfalfa (ASCE ETr),mm,et_reference,1.0,0.0,total,daily,equivalent_method,alfalfa reference ETr (~1.2x ETo)
+ziamet,dly_soilt_2in,Soil temperature 2 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 2 in
+ziamet,dly_soilt_4in,Soil temperature 4 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 4 in
+ziamet,dly_soilt_8in,Soil temperature 8 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 8 in
+ziamet,dly_soilt_20in,Soil temperature 20 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 20 in
+ziamet,dly_soilt_40in,Soil temperature 40 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 40 in
+ziamet,dly_soilt_5cm,Soil temperature 5 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 5 cm
+ziamet,dly_soilt_10cm,Soil temperature 10 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 10 cm
+ziamet,dly_soilt_20cm,Soil temperature 20 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 20 cm
+ziamet,dly_soilt_50cm,Soil temperature 50 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 50 cm
+ziamet,dly_soilt_100cm,Soil temperature 100 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 100 cm
+ziamet,dly_soilt_2in_c,Soil temperature 2 in,C,soil_temp,1.0,0.0,mean,daily,identical,depth 2 in
+ziamet,dly_soilt_4in_c,Soil temperature 4 in,C,soil_temp,1.0,0.0,mean,daily,identical,depth 4 in
+ziamet,dly_soilt_8in_c,Soil temperature 8 in,C,soil_temp,1.0,0.0,mean,daily,identical,depth 8 in
+ziamet,dly_soilt_20in_c,Soil temperature 20 in,C,soil_temp,1.0,0.0,mean,daily,identical,depth 20 in
+ziamet,dly_soilt_40in_c,Soil temperature 40 in,C,soil_temp,1.0,0.0,mean,daily,identical,depth 40 in

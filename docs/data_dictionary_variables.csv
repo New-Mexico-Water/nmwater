@@ -51,6 +51,8 @@ consumptive_use,Consumptive use / depletion,af/yr,volume_rate,flux,use,,"Portion
 return_flow_volume,Return flow volume,af/yr,volume_rate,flux,use,,"Withdrawal minus consumptive use, returned to surface or ground water.",
 pdsi,Palmer Drought Severity Index,index,index,index,atmosphere,,Palmer index for a climate division or grid cell.,
 phdi,Palmer Hydrological Drought Index,index,index,index,atmosphere,,Palmer hydrological index.,
+palmer_z,Palmer Z index,index,index,index,atmosphere,,Palmer moisture anomaly (Z) index; monthly departure without the PDSI memory term.,
+pmdi,Modified Palmer Drought Index,index,index,index,atmosphere,,Palmer Modified Drought Index (operational PDSI variant used by NOAA CPC).,
 spi,Standardized Precipitation Index,index,index,index,atmosphere,,SPI; timescale in months is given in the source_param (e.g. sp03 = 3-month).,
 spei,Standardized Precipitation-Evapotranspiration Index,index,index,index,atmosphere,,SPEI; timescale in source_param.,
 drought_area_pct,Percent area in drought category,percent,ratio,index,atmosphere,,US Drought Monitor percent of area at or above the category named in source_param (D0..D4).,

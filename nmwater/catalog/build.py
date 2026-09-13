@@ -11,7 +11,7 @@ import pandas as pd
 import yaml
 
 from ..core.config import CATALOG_DIR, DOCS_DIR, Settings
-from ..core.geo import assign_hucs
+from ..core.geo import assign_hucs, assign_regions
 from ..core.store import Store
 from .crosswalk import Crosswalk
 from .links import build_links
@@ -38,6 +38,14 @@ def build(settings: Settings) -> Path:
         sites_path = settings.parquet_dir / "sites_all.parquet"
         sites.to_parquet(sites_path, index=False)
         con.execute(f"CREATE TABLE sites AS SELECT * FROM read_parquet('{sites_path.as_posix()}')")
+        regions = assign_regions(sites, settings.grids_dir)
+        if len(regions):
+            rpath = settings.parquet_dir / "site_regions.parquet"
+            regions.to_parquet(rpath, index=False)
+            con.execute(f"CREATE TABLE site_regions AS SELECT * FROM read_parquet('{rpath.as_posix()}')")
+        else:
+            con.execute("CREATE TABLE site_regions (site_uid VARCHAR, region_type VARCHAR, "
+                        "region_id VARCHAR, region_name VARCHAR)")
         links = build_links(sites, manual=CATALOG_DIR / "sites_manual.csv")
         links_path = settings.parquet_dir / "site_links.parquet"
         links.to_parquet(links_path, index=False)

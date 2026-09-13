@@ -80,6 +80,23 @@ record the USGS site number when they mirror one), proximity matching within 250
 of the same kind from different sources, and hand-curated rows in `catalog/sites_manual.csv`,
 which always win.
 
+## site_regions
+
+Which administrative areas each site falls inside, from Census TIGER/Line: place, county, county
+subdivision, tract, block group, tribal area, urban area. Long format, because a site sits in
+several nested regions at once and in none of the small ones most of the time.
+
+| Column | Meaning |
+|---|---|
+| `site_uid` | the site |
+| `region_type` | `place`, `county`, `tract`, `block_group`, `tribal_area`, `urban_area`, `county_subdivision` |
+| `region_id` | Census GEOID, joins to American Community Survey tables |
+| `region_name` | the name as Census publishes it |
+
+This is the demand-side partition of space. `sites.huc8` and `sites.huc12` are the supply-side
+partition. They do not line up, and conflating them is the most common way to get a confident
+wrong answer from this archive. See [interpretation.md](interpretation.md).
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.
