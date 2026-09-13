@@ -1,0 +1,9 @@
+sources:
+  bemp:
+    agency: Bosque Ecosystem Monitoring Program (BEMP; Bosque School / UNM)
+    description: Monthly depth to groundwater in 5 shallow wells at ~32 riparian sites along the Middle Rio Grande, canopy/open precipitation, ditch water depth, and groundwater/ditch/river water quality, 1997-2017 (public Excel releases; later data by request).
+    url: https://bemp.org/data-sets/
+    license: Free for use with citation to BEMP (see data-sets page)
+    citation: Bosque Ecosystem Monitoring Program (BEMP), Bosque School and University of New Mexico, data sets accessed 2026 from https://bemp.org/data-sets/.
+    refresh: rarely (static releases); ask akooser@unm.edu for post-2017 data
+    caveats: No coordinates published for sites (pueblo/city described only). Depth to water in cm converted to ft. Ditch readings are depth below a measuring point, not a stage datum. Monthly precipitation totals span the interval between site visits.

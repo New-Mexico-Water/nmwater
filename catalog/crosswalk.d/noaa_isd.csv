@@ -1,0 +1,8 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+noaa_isd,temp,Air temperature,tenths degC,air_temp,0.1,0,instantaneous,hourly,identical,ISD-Lite hourly synoptic observation
+noaa_isd,wdir,Wind direction,degrees,wind_direction,1,0,instantaneous,hourly,identical,
+noaa_isd,wspd,Wind speed,tenths m/s,wind_speed,0.2236936,0,instantaneous,hourly,identical,
+noaa_isd,precip1h,One-hour liquid precipitation,tenths mm,precip,0.003937007874,0,total,hourly,identical,often missing at ASOS; -1 (trace) already excluded as missing
+noaa_isd,dewpt,Dew point,tenths degC,,1,0,,,related_not_comparable,not mapped
+noaa_isd,slp,Sea level pressure,tenths hPa,,1,0,,,related_not_comparable,not mapped
+noaa_isd,precip6h,Six-hour liquid precipitation,tenths mm,,1,0,,,related_not_comparable,6-hour interval not in canonical intervals; not mapped

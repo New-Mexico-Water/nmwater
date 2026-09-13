@@ -1,0 +1,9 @@
+sources:
+  ose_reports:
+    agency: New Mexico Office of the State Engineer / Interstate Stream Commission
+    description: Document mirror of the statewide water-use accounting (Water Use by Categories technical reports 1975-2020 plus the 2015/2020 spreadsheets), TR-7 (streamflow and reservoir contents 1888-1954), the Pecos River Master Manual, and the Rio Grande Compact Commission annual reports. Aggregate, report-level data.
+    url: https://www.ose.nm.gov/Library/tech_reports.php ; https://www.ose.nm.gov/Compacts/RioGrande/isc_rio_grande_tech_compact_reports.php
+    license: State of New Mexico public records
+    citation: New Mexico Office of the State Engineer, Technical Reports and Rio Grande Compact Commission reports, accessed 2026.
+    refresh: annual
+    caveats: PDFs only for editions before 2015 (table extraction pending); ose.nm.gov TLS chain is incomplete so verification is disabled for this host; CKAN spreadsheet downloads must be done by hand (see docs/manual_downloads.md) and dropped in data/manual/ose_reports/.

@@ -1,0 +1,9 @@
+sources:
+  ckan:
+    agency: New Mexico Water Data Initiative (NMBGMR / Water Data Act)
+    description: Metadata harvest of the NM Water Data Catalog (376 datasets, 71 organizations) into reference tables ckan_datasets and ckan_resources, plus groundwater-level resource files (ABCWUA ASR and data-gap wells, City of Santa Fe Buckman/Northwest wellfields, ISC Pecos region manual levels, Seven Rivers monthly XLSX, NMBGMR manual levels, MRGESCP river-drying extents) ingested from data/manual/ckan/ after manual download.
+    url: https://catalog.newmexicowaterdata.org/
+    license: Varies by dataset (see ckan_datasets.license)
+    citation: New Mexico Water Data Initiative, NM Water Data Catalog, accessed 2026.
+    refresh: monthly harvest; resource files are refreshed by hand
+    caveats: Resource downloads are protected by a Cloudflare JavaScript challenge; the heuristic groundwater-level parser assumes feet and looks for date/depth/elevation columns, so verify each ingested file against its data dictionary.

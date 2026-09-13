@@ -1,0 +1,83 @@
+# Geographic scope. New Mexico plus a buffer that captures the basin gauges just over the
+# state line; explicit allow-lists add the key out-of-state gauges further away.
+bbox: [-109.05, 31.33, -103.00, 37.00]   # west, south, east, north (NM state extent)
+buffer_deg: 0.45                          # ~45 km; pulls in El Paso, Alamosa-area, Four Corners, Clifton
+state_fips: "35"
+state_abbr: "NM"
+neighbor_states: ["CO", "TX", "AZ", "OK", "UT"]
+
+# HUC2 regions that touch New Mexico
+huc2: ["11", "12", "13", "14", "15"]
+# HUC4 basins that touch New Mexico or carry its inflows/outflows
+huc4:
+  - "1301"   # Rio Grande Headwaters (CO)
+  - "1302"   # Rio Grande-Elephant Butte
+  - "1303"   # Rio Grande-Mimbres
+  - "1304"   # Rio Grande-Amistad (includes Fort Quitman reach, TX)
+  - "1305"   # Rio Grande Closed Basins (Estancia, Tularosa, Salt, Jornada)
+  - "1306"   # Upper Pecos
+  - "1307"   # Lower Pecos
+  - "1408"   # San Juan
+  - "1502"   # Little Colorado (Zuni)
+  - "1504"   # Upper Gila / San Francisco
+  - "1508"   # Sonora (Animas / Playas closed basins, bootheel)
+  - "1104"   # Upper Cimarron (NE corner)
+  - "1108"   # Upper Canadian
+  - "1109"   # Lower Canadian
+  - "1112"   # North Fork Red (Tucumcari-Portales plains)
+  - "1205"   # Brazos Headwaters (eastern plains)
+  - "1208"   # Colorado Headwaters TX (Lea County)
+huc8: []     # filled at catalog build from WBD
+
+# Out-of-state sites that must always be included regardless of bbox (native ids per source).
+allow_sites:
+  usgs:
+    # Rio Grande headwaters, Colorado (Compact index gauges)
+    - "08220000"  # Rio Grande near Del Norte, CO
+    - "08227000"  # Rio Grande near Monte Vista, CO
+    - "08236000"  # Alamosa River above Terrace Reservoir, CO
+    - "08246500"  # Conejos River near Mogote, CO
+    - "08247500"  # San Antonio River at Ortiz, CO
+    - "08248000"  # Los Pinos River near Ortiz, CO
+    - "08249000"  # Conejos River near Lasauses, CO
+    - "08251500"  # Rio Grande near Lobatos, CO (Compact delivery point)
+    - "08238000"  # La Jara Creek at Gallegos Ranch near Capulin, CO
+    - "08240000"  # Trinchera Creek above Turners Ranch near Fort Garland, CO
+    - "08242500"  # Culebra Creek at San Luis, CO
+    - "08245000"  # Costilla Creek above Costilla Reservoir near Jaroso, CO
+    # San Juan headwaters, Colorado
+    - "09342500"  # San Juan River at Pagosa Springs, CO
+    - "09346400"  # San Juan River near Carracas, CO
+    - "09344000"  # Navajo River at Edith, CO
+    - "09349800"  # Piedra River near Arboles, CO
+    - "09352900"  # Vallecito Creek near Bayfield, CO
+    - "09361500"  # Animas River at Durango, CO
+    - "09363500"  # Animas River near Cedar Hill, NM
+    - "09365000"  # San Juan River at Farmington, NM
+    - "09368000"  # San Juan River at Shiprock, NM
+    - "09371010"  # San Juan River at Four Corners, CO
+    - "09367500"  # La Plata River near Farmington, NM
+    - "09366500"  # La Plata River at Colorado-New Mexico state line
+    # Rio Grande below New Mexico, Texas
+    - "08364000"  # Rio Grande at El Paso, TX
+    - "08370500"  # Rio Grande at Fort Quitman, TX
+    - "08407500"  # Pecos River near Red Bluff, NM
+    - "08408500"  # Delaware River near Red Bluff, NM
+    - "08412500"  # Pecos River near Orla, TX
+    # Gila / San Francisco into Arizona
+    - "09430500"  # Gila River near Gila, NM
+    - "09431500"  # Gila River near Redrock, NM
+    - "09432000"  # Gila River below Blue Creek near Virden, NM
+    - "09444500"  # San Francisco River at Clifton, AZ
+    - "09442000"  # Gila River near Clifton, AZ
+    # Canadian River into Texas/Oklahoma
+    - "07227500"  # Canadian River near Amarillo, TX
+    - "07227000"  # Canadian River near Logan, NM (below Ute Reservoir)
+    - "07226500"  # Canadian River at Logan, NM
+    - "07221500"  # Canadian River near Sanchez, NM
+    # Dry Cimarron / Cimarron into OK
+    - "07156900"  # Cimarron River near Kenton, OK
+  nrcs:
+    # CO SNOTEL in Rio Grande and San Juan headwaters (added by HUC in source config)
+    []
+  codwr: []

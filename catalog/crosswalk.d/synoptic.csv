@@ -1,0 +1,14 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+synoptic,air_temp,Air temperature,degF,air_temp,0.5555555556,-17.7777777778,instantaneous,irregular,identical,units=english requested
+synoptic,relative_humidity,Relative humidity,percent,relative_humidity,1,0,instantaneous,irregular,identical,
+synoptic,wind_speed,Wind speed,mph,wind_speed,1,0,mean,irregular,identical,anemometer height varies; RAWS are 6 m not 10 m
+synoptic,wind_direction,Wind direction,degree,wind_direction,1,0,mean,irregular,identical,
+synoptic,wind_gust,Wind gust,mph,wind_speed,1,0,max,irregular,equivalent_method,peak gust not mean wind
+synoptic,solar_radiation,Solar radiation,W/m2,solar_radiation,1,0,mean,irregular,identical,
+synoptic,precip_accum,Precipitation increment from accumulator,in,precip,1,0,total,irregular,equivalent_method,differenced from the station accumulator; resets dropped
+synoptic,precip_since_midnight,Precipitation increment since local midnight,in,precip,1,0,total,irregular,equivalent_method,differenced within the local day
+synoptic,snow_depth,Snow depth,in,snow_depth,1,0,instantaneous,irregular,identical,
+synoptic,snow_water_equiv,Snow water equivalent,in,swe,1,0,instantaneous,irregular,identical,
+synoptic,soil_moisture,Soil moisture volumetric,percent,soil_moisture,1,0,instantaneous,irregular,equivalent_method,sensor depth in station metadata
+synoptic,soil_temp,Soil temperature,degF,soil_temp,0.5555555556,-17.7777777778,instantaneous,irregular,identical,sensor depth in station metadata
+synoptic,dew_point,Dew point temperature,degF,,1,0,,,related_not_comparable,no canonical dewpoint variable yet

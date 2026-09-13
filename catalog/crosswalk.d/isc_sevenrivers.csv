@@ -1,0 +1,2 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+isc_sevenrivers,depthToWaterFeet,Depth to water,ft bgs,gw_depth_to_water,1,0,instantaneous,irregular,identical,ISC Seven Rivers monitoring points; rows flagged invalid are dropped; dry flag kept in qualifier

@@ -1,0 +1,33 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+usbr_rise,Streamflow [cfs],Streamflow,cfs,discharge,1,0,mean,,identical,
+usbr_rise,Streamflow [m3/sec],Streamflow (1-minute),m3/sec,discharge,35.3146667,0,instantaneous,,identical,Arroyo de los Pinos sediment research station
+usbr_rise,Stage [cm],Stage (1-minute),cm,stage,0.0328084,0,instantaneous,,identical,Arroyo de los Pinos sediment research station
+usbr_rise,Stage - Average [cm],Stage average (1-minute),cm,stage,0.0328084,0,mean,,identical,
+usbr_rise,Stream Gage Height [ft],Gage height,ft,stage,1,0,,,identical,
+usbr_rise,Lake/Reservoir Storage [af],Storage,af,reservoir_storage,1,0,,,equivalent_method,
+usbr_rise,Lake/Reservoir Elevation [ft],Pool elevation,ft,reservoir_elevation,1,0,,,identical,
+usbr_rise,Lake/Reservoir Release - Total [cfs],Total release,cfs,reservoir_release,1,0,,,identical,
+usbr_rise,Lake/Reservoir Inflow [cfs],Inflow,cfs,reservoir_inflow,1,0,,,identical,
+usbr_rise,Lake/Reservoir Evaporation [af],Evaporation,af,reservoir_evaporation,1,0,total,,identical,
+usbr_rise,Reservoir Average Evaporation [mm],Evaporation depth,mm,,1,0,,,related_not_comparable,depth not volume; not mapped
+usbr_rise,Air Temperature [DegC],Air temperature,DegC,air_temp,1,0,,,identical,BGNDRF weather station
+usbr_rise,Precipitation [mm],Precipitation,mm,precip,0.03937007874,0,total,,identical,
+usbr_rise,Relative Humidity [%],Relative humidity,%,relative_humidity,1,0,,,identical,
+usbr_rise,Wind Speed [m/s],Wind speed,m/s,wind_speed,2.23693629,0,,,identical,
+usbr_rise,Wind Direction [degrees],Wind direction,degrees,wind_direction,1,0,,,identical,
+usbr_rise,Solar Radiation [W/m2],Solar radiation,W/m2,solar_radiation,1,0,,,identical,
+usbr_rise,Vapor Pressure Deficit [kPA],Vapor pressure deficit,kPA,vapor_pressure_deficit,1,0,,,identical,
+usbr_rise,Water Temperature [DegC],Water temperature,DegC,water_temp,1,0,,,identical,
+usbr_rise,Specific Conductance [umhos/cm],Specific conductance,umhos/cm,specific_conductance,1,0,sample,,identical,BGNDRF brackish wells; biannual samples
+usbr_rise,"Solids, Filterable Total Dissolved Solids [mg/L]",TDS,mg/L,tds,1,0,sample,,identical,
+usbr_rise,pH [units],pH,units,ph,1,0,sample,,identical,
+usbr_rise,Chloride [mg/L],Chloride,mg/L,chloride,1,0,sample,,identical,
+usbr_rise,Sulfate [mg/L],Sulfate,mg/L,sulfate,1,0,sample,,identical,
+usbr_rise,Fluoride [mg/L],Fluoride,mg/L,fluoride,1,0,sample,,identical,
+usbr_rise,Arsenic [mg/L],Arsenic,mg/L,arsenic,1000,0,sample,,identical,total; converted mg/L to ug/L
+usbr_rise,Uranium [mg/L],Uranium,mg/L,uranium,1000,0,sample,,identical,converted mg/L to ug/L
+usbr_rise,"Nitrogen, Nitrate (as N) [mg/L]",Nitrate as N,mg/L,nitrate,1,0,sample,,identical,
+usbr_rise,Dissolved oxygen (DO) [mg/L],Dissolved oxygen,mg/L,dissolved_oxygen,1,0,sample,,identical,
+usbr_rise,Turbidity [NTU],Turbidity,NTU,turbidity,1,0,sample,,equivalent_method,NTU reported as FNU
+usbr_rise,Pan Evaporation [mm],Pan evaporation,mm,,1,0,,,related_not_comparable,not mapped
+usbr_rise,Barometric Pressure [mm Hg],Barometric pressure,mm Hg,,1,0,,,related_not_comparable,not mapped

@@ -1,0 +1,21 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+iem_dcp,HG,SHEF HG river stage,ft,stage,1,0,,,identical,local gauge datum; qualifier holds full SHEF code (duration/type/extremum)
+iem_dcp,QR,SHEF QR discharge,kcfs,discharge,1000,0,,,identical,SHEF standard unit kcfs
+iem_dcp,QT,SHEF QT discharge total,kcfs,discharge,1000,0,,,equivalent_method,
+iem_dcp,PP,SHEF PP precipitation increment,in,precip,1,0,,,identical,duration in qualifier (H hourly, D daily)
+iem_dcp,PC,SHEF PC precipitation accumulator,in,precip_accumulated_wy,1,0,accumulated,,equivalent_method,accumulator resets at arbitrary times not Oct 1; difference consecutive values
+iem_dcp,TA,SHEF TA air temperature,degF,air_temp,0.5555555556,-17.7777777778,,,identical,
+iem_dcp,HP,SHEF HP pool elevation,ft,reservoir_elevation,1,0,,,identical,datum per project
+iem_dcp,HL,SHEF HL lake elevation,ft,reservoir_elevation,1,0,,,identical,
+iem_dcp,LS,SHEF LS reservoir storage,kaf,reservoir_storage,1000,0,,,equivalent_method,
+iem_dcp,SD,SHEF SD snow depth,in,snow_depth,1,0,,,identical,
+iem_dcp,SW,SHEF SW snow water equivalent,in,swe,1,0,,,identical,
+iem_dcp,SF,SHEF SF snowfall,in,snowfall,1,0,,,identical,
+iem_dcp,TW,SHEF TW water temperature,degF,water_temp,0.5555555556,-17.7777777778,,,identical,
+iem_dcp,US,SHEF US wind speed,mph,wind_speed,1,0,,,identical,
+iem_dcp,UD,SHEF UD wind direction,degrees,wind_direction,1,0,,,identical,
+iem_dcp,XR,SHEF XR relative humidity,percent,relative_humidity,1,0,,,identical,
+iem_dcp,EP,SHEF EP pan evaporation,in,,1,0,,,related_not_comparable,not mapped
+iem_dcp,UC,SHEF UC wind speed (non-standard),unknown,,1,0,,,related_not_comparable,not mapped
+iem_dcp,UL,SHEF UL wind (non-standard),unknown,,1,0,,,related_not_comparable,not mapped
+iem_dcp,VB,SHEF VB battery voltage,V,,1,0,,,related_not_comparable,not mapped

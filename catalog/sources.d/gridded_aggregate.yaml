@@ -1,0 +1,89 @@
+sources:
+  usdm:
+    agency: National Drought Mitigation Center (with USDA and NOAA)
+    description: US Drought Monitor weekly percent-area in D0-D4 and DSCI for New Mexico state, counties, climate divisions, HUC4 and HUC8, 2000-01-04 to present.
+    url: https://usdmdataservices.unl.edu/api/
+    license: Public; cite the U.S. Drought Monitor (NDMC, USDA, NOAA)
+    citation: U.S. Drought Monitor, National Drought Mitigation Center, University of Nebraska-Lincoln, accessed 2026.
+    refresh: weekly (Thursday)
+    caveats: Expert-blended indicator, not a measurement; statisticsType=1 gives cumulative categories (D1 includes D2..D4).
+  nclimdiv:
+    agency: NOAA National Centers for Environmental Information
+    description: nClimDiv monthly precipitation, temperature, PDSI, PHDI, Z-index, PMDI and SPI (1-24 mo) for climate divisions (NM plus CO/AZ/TX/OK) and NM counties, 1895-present.
+    url: https://www.ncei.noaa.gov/monitoring-content/data/us/climdiv/monthly/current/
+    license: Public domain
+    citation: Vose, R.S., et al. (2014). NOAA Monthly U.S. Climate Divisional Database (NClimDiv). NOAA NCEI.
+    refresh: monthly (file names carry the release date)
+    caveats: climdiv state code 29 = New Mexico (not FIPS 35); 2014 transition from TCDD to nClimDiv changed pre-2014 values.
+  gridmet:
+    agency: Climatology Lab, University of Idaho
+    description: gridMET 4 km daily surface meteorology (precip, tmin/tmax, humidity, radiation, wind, VPD), reference ET (ETr, ETo) and pentad drought indices, 1979-present, subset to the NM bbox.
+    url: https://www.climatologylab.org/gridmet.html ; https://thredds.northwestknowledge.net/thredds/
+    license: Free use with attribution
+    citation: Abatzoglou, J.T. (2013). Int. J. Climatol. 33, 121-131.
+    refresh: daily; current year re-pulled each run
+    caveats: Precipitation derives from PRISM anomalies (not independent of PRISM); ETr/ETo are reference (demand), not actual ET.
+  prism:
+    agency: PRISM Climate Group, Oregon State University
+    description: PRISM AN 4 km monthly (1895-) precipitation, temperature, dew point, VPD and daily (1981-) precipitation and temperature, clipped to the NM bbox.
+    url: https://prism.oregonstate.edu ; https://data.prism.oregonstate.edu/time_series/us/an/4km/
+    license: Copyright OSU; free reproduction/redistribution with attribution
+    citation: PRISM Climate Group, Oregon State University, https://prism.oregonstate.edu, accessed 2026.
+    refresh: monthly; values revised for ~6 months after release (re-pull with --since)
+    caveats: Not recommended by producers for long-term trend calculation because station networks change over time; max 2 downloads of the same file per 24 h.
+  snodas:
+    agency: NOAA NOHRSC, archived by NSIDC (G02158)
+    description: SNODAS masked 1 km daily SWE, snow depth, snowpack temperature, melt runoff, sublimation, and liquid/solid precipitation, 2003-09-30 to present, clipped to NM.
+    url: https://nsidc.org/data/g02158 ; https://noaadata.apps.nsidc.org/NOAA/G02158/masked/
+    license: Public domain
+    citation: NOHRSC (2004). SNODAS Data Products at NSIDC, Version 1. https://doi.org/10.7265/N5TB14TC
+    refresh: daily
+    caveats: Model with assimilation, not observation; sparse station support in the Gila and Sacramento Mountains; NSIDC 'Basic' service level.
+  nclimgrid:
+    agency: NOAA NCEI
+    description: nClimGrid-Daily 1/24 degree daily tmax, tmin, tavg, prcp for CONUS 1951-present, clipped to NM.
+    url: https://www.ncei.noaa.gov/products/land-based-station/nclimgrid-daily
+    license: Public domain
+    citation: Durre, I., et al. (2022). NOAA's nClimGrid-Daily Version 1. https://doi.org/10.25921/c4gt-r169
+    refresh: monthly; latest two months are preliminary and re-pulled
+    caveats: Daily values rescaled to match nClimGrid monthly totals; sparse mountain stations before 1980.
+  ua_swe:
+    agency: University of Arizona (Broxton, Zeng, Dawson) via NSIDC-0719
+    description: 4 km daily SWE and snow depth for CONUS, water years 1982-2023, clipped to NM.
+    url: https://nsidc.org/data/nsidc-0719/versions/1
+    license: NASA/NSIDC open data (Earthdata login required)
+    citation: Broxton, P., X. Zeng, N. Dawson (2019). NSIDC-0719. https://doi.org/10.5067/0GGPB220EX6A
+    refresh: annual (record currently ends WY2023)
+    caveats: Assimilates SNOTEL and COOP with PRISM; not independent of those sources.
+  usgs_wateruse:
+    agency: U.S. Geological Survey
+    description: County-level water-use compilations (2010, 2015) from ScienceBase and NWDC modeled monthly water use 2000-2020 (crop irrigation withdrawals/consumptive use, public supply withdrawals/consumptive use, thermoelectric) by HUC12 within NM counties.
+    url: https://www.sciencebase.gov/catalog/item/5af3311be4b0da30c1b245d8 ; https://api.water.usgs.gov/nwaa-data/
+    license: Public domain
+    citation: Dieter et al. (2018) Estimated use of water in the United States county-level data for 2015; USGS National Water Availability Assessment Data Companion v2.1.
+    refresh: static (5-year compilations); NWDC static 2000-2020
+    caveats: NWDC values are model estimates in million gallons per day; category definitions differ across compilations; do not concatenate series.
+  nass:
+    agency: USDA National Agricultural Statistics Service
+    description: Quick Stats Census of Agriculture irrigation economics and irrigated land area for New Mexico by state and county (census years).
+    url: https://quickstats.nass.usda.gov/api
+    license: Public domain
+    citation: USDA NASS Quick Stats, accessed 2026.
+    refresh: every 5 years
+    caveats: Disclosure suppression (D) at county level; self-reported.
+  resopsus:
+    agency: University of Arizona / PNNL (Steyaert, Condon, Turner, Voisin)
+    description: ResOpsUS daily reservoir storage, inflow, outflow, elevation and evaporation compiled from operators, 1930s-2020, for dams in the NM basins (Elephant Butte, Caballo, Navajo, Heron, El Vado, Abiquiu, Cochiti, Jemez Canyon, Conchas, Ute, Santa Rosa, Sumner, Brantley, Platoro, Costilla).
+    url: https://zenodo.org/records/6612040
+    license: CC BY 4.0
+    citation: Steyaert et al. (2022) Sci Data 9, 34. https://doi.org/10.5281/zenodo.6612040
+    refresh: static (ends 2020)
+    caveats: Units converted from MCM/cms/m; evaporation units vary by agency; splice with Reclamation/USACE data after 2020.
+  wbd:
+    agency: U.S. Geological Survey (National Hydrography)
+    description: Watershed Boundary Dataset HU2 GeoPackages for regions 11-15; HUC4/HUC8 in scope tables.
+    url: https://www.usgs.gov/national-hydrography/watershed-boundary-dataset
+    license: Public domain
+    citation: U.S. Geological Survey, Watershed Boundary Dataset, accessed 2026.
+    refresh: static (WBD frozen 2024; 3DHP succeeds it)
+    caveats: Non-contributing areas matter for NM closed basins.

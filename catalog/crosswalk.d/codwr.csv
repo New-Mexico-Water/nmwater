@@ -1,0 +1,13 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+codwr,Streamflow,Streamflow (surfacewatertsday measType),cfs,discharge,1,0,mean,daily,identical,flagA A=approved
+codwr,DISCHRG,Discharge (telemetry),cfs,discharge,1,0,mean,daily,identical,telemetry daily mean; flagA O=observed provisional
+codwr,DISCHRG2,Discharge secondary sensor,cfs,discharge,1,0,mean,daily,equivalent_method,second sensor at same station
+codwr,STORAGE,Reservoir storage (telemetry),af,reservoir_storage,1,0,,daily,equivalent_method,
+codwr,ELEV,Reservoir elevation (telemetry),ft,reservoir_elevation,1,0,,daily,identical,
+codwr,GAGE_HT,Gage height,ft,stage,1,0,,daily,identical,
+codwr,DIVREC:CFS,Diversion record daily (cfs),cfs,diversion,1,0,mean,daily,identical,structures/divrec/divrecday; approvalStatus in qualifier
+codwr,DIVREC:AF,Diversion record daily (acre-feet),af,diversion_volume,1,0,total,daily,identical,
+codwr,DIVREC:,Diversion record (no unit),,,1,0,,,related_not_comparable,unit missing; not mapped
+codwr,depthWaterBelowLandSurface,Depth to water below land surface,ft,gw_depth_to_water,1,0,instantaneous,irregular,identical,
+codwr,elevationOfWater,Water level elevation,ft,gw_level_elevation,1,0,instantaneous,irregular,identical,datum per well (NAVD88/NGVD29 not stated)
+codwr,Streamflow:Diversion,Streamflow measured at a diversion structure,cfs,diversion,1,0,mean,daily,identical,surfacewatertsday at a Diversion Structure station

@@ -1,0 +1,6 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+cocorahs,TotalPrecipAmt,Total precipitation (24 h to obs time ~7 AM),in,precip,1,0,total,daily,equivalent_method,volunteer 4-inch gauge; observation day ends at local obs time (usually 7 AM) not midnight; T = trace stored as 0 with qualifier T
+cocorahs,NewSnowDepth,New snowfall,in,snowfall,1,0,total,daily,equivalent_method,manual snowboard
+cocorahs,TotalSnowDepth,Total snow depth on ground,in,snow_depth,1,0,instantaneous,daily,equivalent_method,manual
+cocorahs,TotalSnowSWE,SWE of total snowpack (core),in,swe,1,0,instantaneous,daily,equivalent_method,manual core sample; sparse
+cocorahs,NewSnowSWE,Water content of new snowfall,in,,1,0,,,related_not_comparable,liquid equivalent of new snow (a precip component), not snowpack SWE; not mapped

@@ -1,0 +1,9 @@
+sources:
+  wqp:
+    agency: Water Quality Portal (EPA, USGS, NWQMC; providers NWIS, STORET/WQX, STEWARDS)
+    description: All monitoring locations in New Mexico and the border strips (48.5k), and physical/chemical results chunked by county and decade. Full result rows live in the waterquality table; 13 core characteristics are also crosswalked into observations with units normalized.
+    url: https://www.waterqualitydata.us/ (docs https://www.waterqualitydata.us/webservices_documentation/)
+    license: Public domain (US federal) with provider-specific data-use notes
+    citation: Water Quality Portal, accessed 2026, https://www.waterqualitydata.us
+    refresh: weekly with --since (startDateLo)
+    caveats: Results include non-detects (ResultDetectionConditionText) with blank values; NMED SWQB data appear under organizations 21NMEX and 21NMEX_WQX; USGS NWIS samples appear with provider NWIS.

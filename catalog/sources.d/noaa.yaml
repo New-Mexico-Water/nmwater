@@ -1,0 +1,49 @@
+sources:
+  noaa_ghcnd:
+    agency: NOAA National Centers for Environmental Information
+    description: GHCN-Daily station observations (precipitation, snowfall, snow depth, Tmax/Tmin/Tobs, SWE on ground) for all NM stations and stations in the border buffer; earliest 1849.
+    url: https://www.ncei.noaa.gov/data/global-historical-climatology-network-daily/access/
+    license: Public domain (U.S. Government work)
+    citation: Menne, M.J., et al. Global Historical Climatology Network-Daily (GHCN-Daily), Version 3. NOAA NCEI. doi:10.7289/V5D21VHZ
+    refresh: daily; station CSVs are regenerated, so incremental runs re-download active stations
+    caveats: Values in CSV are in tenths (mm, degC) exactly like .dly; attributes column (MFLAG,QFLAG,SFLAG,OBS-TIME) kept verbatim as qualifier. Observation day for COOP stations ends at the observer's time (often 7 AM), not midnight.
+  noaa_isd:
+    agency: NOAA National Centers for Environmental Information
+    description: ISD-Lite hourly surface observations (temperature, wind, hourly precipitation) at airport/military stations in NM and the border buffer, 1941-present.
+    url: https://www.ncei.noaa.gov/pub/data/noaa/isd-lite/
+    license: Public domain
+    citation: NOAA NCEI Integrated Surface Database (ISD), ISD-Lite format.
+    refresh: yearly files; current and previous year re-downloaded on each run
+    caveats: Times are UTC; utc_offset_min is set to the nominal NM standard offset (-420). Hourly precipitation is sparsely reported at many ASOS sites. GHCNh station list stored as reference only.
+  uscrn:
+    agency: NOAA NCEI / U.S. Climate Reference Network
+    description: Research-grade hourly and daily observations (air temperature, weighing-gauge precipitation, solar radiation, RH, 5-depth soil moisture and temperature) at 3 operational NM USCRN sites (Sevilleta 2004-, Valles Caldera 2005-, Jornada 2007-) plus 22 closed USRCRN sites.
+    url: https://www.ncei.noaa.gov/pub/data/uscrn/products/
+    license: Public domain
+    citation: Diamond, H.J., et al. (2013) U.S. Climate Reference Network after one decade of operations. BAMS 94:485-498.
+    refresh: yearly files; current and previous year refreshed on each run
+    caveats: Hourly timestamps are end-of-hour UTC; utc_offset_min derived from the LST columns. Soil moisture converted m3/m3 -> percent. Closed USRCRN sites have no hourly02/daily01 files (404 silently skipped).
+  cocorahs:
+    agency: Community Collaborative Rain, Hail and Snow Network (Colorado State University)
+    description: Volunteer daily precipitation, new snowfall, snow depth, and snow-core SWE for New Mexico stations, ~2005-present.
+    url: https://data.cocorahs.org/cocorahs/export/exportreports.aspx
+    license: Free for non-commercial use with attribution to CoCoRaHS
+    citation: CoCoRaHS Community Collaborative Rain, Hail and Snow Network, https://www.cocorahs.org
+    refresh: monthly windows; last two months re-downloaded each run to catch late reports
+    caveats: Observation day ends at observer time (usually 7 AM local). Trace stored as 0 with qualifier T. Station coordinates are self-reported. Sites table is built from the reports themselves.
+  iem_dcp:
+    agency: Iowa Environmental Mesonet (Iowa State University), archiving the NWS HADS/SHEF DCP feed
+    description: Multi-year archive of raw SHEF observations (stage, discharge, precipitation accumulator/increment, air/water temperature, pool elevation, storage, snow) from ~402 NM DCP platforms, from ~2002.
+    url: https://mesonet.agron.iastate.edu/request/dcp/fe.phtml
+    license: Free with attribution to IEM; underlying data are NWS public domain
+    citation: Iowa Environmental Mesonet, NM_DCP network, https://mesonet.agron.iastate.edu
+    refresh: 2-year windows per station; last window refreshed when it touches the past week
+    caveats: Values are unvalidated raw telemetry in SHEF standard units. Many platforms are USGS gauges also archived (with QC) in the usgs source; prefer usgs for those. Full SHEF code kept in qualifier.
+  nwps:
+    agency: NOAA National Weather Service, Office of Water Prediction
+    description: NWPS gauge inventory for NM (NWS LID with USGS id, RFC, WFO, flood categories), 30-day observed stage/flow, and official river forecasts.
+    url: https://api.water.noaa.gov/nwps/v1/
+    license: Public domain
+    citation: NOAA National Water Prediction Service API.
+    refresh: every run snapshots the 30-day window and the current forecast (archived by day)
+    caveats: Observations are a rolling 30-day window, not a historical archive; forecasts go to the forecasts table. Experimental API, not 24x7 supported.

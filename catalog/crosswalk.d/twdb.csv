@@ -1,0 +1,3 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+twdb,DepthFromLSD,Depth to water from land surface datum,ft,gw_depth_to_water,1,0,instantaneous,irregular,identical,Status Publishable/Unpublishable in qualifier
+twdb,WaterElevation,Water level elevation,ft,gw_level_elevation,1,0,instantaneous,irregular,identical,land elevation often interpolated from topo map; datum unspecified

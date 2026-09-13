@@ -1,0 +1,9 @@
+sources:
+  usbr_rise:
+    agency: Bureau of Reclamation, Reclamation Information Sharing Environment (RISE)
+    description: New Mexico RISE catalog (57 locations, 183 records, 1,262 items) as a reference table, plus time series that HydroData does not carry - BGNDRF desalination facility wells (biannual water chemistry 2011-2022) and weather station (hourly), and the Arroyo de los Pinos sediment research station (1-minute stage and streamflow 2018-2025). Items with sourceCode uchdb2/UCHDB2 (Upper Colorado HDB) are skipped because usbr_hydrodata serves them in bulk; modeled items (Pecos operations modeling) are skipped.
+    url: https://data.usbr.gov/rise/api/
+    license: Public domain (U.S. Government work)
+    citation: Bureau of Reclamation, Reclamation Information Sharing Environment (RISE) API, accessed 2026.
+    refresh: weekly
+    caveats: Requires Accept application/vnd.api+json; 10,000 results per page. Daily values are stamped 07:00Z (midnight MST) and are stored as local dates. Sedimentation survey records (Elephant Butte, Heron, El Vado, Nambe, Sumner, Brantley, Avalon, Ute) are report/attachment items without time series and are listed only in the reference.catalog_items table. Source parameter keys are "<parameterName> [<unit>]" because RISE reuses names across units.

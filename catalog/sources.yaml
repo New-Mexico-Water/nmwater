@@ -1,0 +1,18 @@
+# Provenance for every source module. Keep in sync with nmwater/sources/*.py.
+sources:
+  usgs:
+    agency: U.S. Geological Survey, Water Resources Mission Area
+    description: NWIS station data for New Mexico and basin gauges in CO/TX/AZ/OK - daily values (1889-), groundwater levels (1900-), 15-minute continuous (2007-), peaks, field measurements, site metadata.
+    url: https://api.waterdata.usgs.gov/ogcapi/v1/ ; https://nwis.waterservices.usgs.gov/nwis/
+    license: Public domain (U.S. Government work)
+    citation: U.S. Geological Survey, National Water Information System, accessed 2026 via Water Data APIs and WaterServices.
+    refresh: daily (incremental via OGC daily/continuous); legacy WaterServices retire Feb 2027
+    caveats: Provisional data subject to revision; qualifier column carries USGS approval/qualifier codes. Continuous data start 2007-10-01 in public APIs.
+  usbr_hydrodata:
+    agency: Bureau of Reclamation, Upper Colorado Basin Region (HDB)
+    description: Daily reservoir operations (storage, elevation, release, inflow, evaporation) and gauge flows for Reclamation projects in the Rio Grande, Pecos, and San Juan basins, 1899/1915-present.
+    url: https://www.usbr.gov/uc/water/hydrodata/
+    license: Public domain
+    citation: Bureau of Reclamation, Upper Colorado Basin Region Water Operations HydroData, accessed 2026.
+    refresh: daily
+    caveats: Storage values follow HDB capacity tables that change after sedimentation resurveys; state code is blank in metadata so sites are selected by name/USGS id/bbox.

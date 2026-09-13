@@ -1,0 +1,7 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+resopsus,storage,Storage,MCM,reservoir_storage,810.713194,0,,daily,equivalent_method,operator capacity table at time of record; MCM to acre-feet
+resopsus,inflow,Inflow,cms,reservoir_inflow,35.3146667,0,mean,daily,identical,cms to cfs
+resopsus,outflow,Outflow,cms,reservoir_release,35.3146667,0,mean,daily,identical,cms to cfs
+resopsus,elevation,Elevation,m,reservoir_elevation,3.28083990,0,,daily,identical,m to ft; datum per operator
+resopsus,evaporation_mcm,Evaporation,MCM,reservoir_evaporation,810.713194,0,total,daily,equivalent_method,MCM per day to acre-feet per day
+resopsus,evaporation_cms,Evaporation,cms,reservoir_evaporation,70.0456,0,total,daily,equivalent_method,cms averaged over a day to acre-feet per day

@@ -1,0 +1,15 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+wqp,"Temperature, water",Water temperature (WQP CharacteristicName),deg C,water_temp,1,0,sample,irregular,identical,deg F converted in code
+wqp,Specific conductance,Specific conductance,uS/cm,specific_conductance,1,0,sample,irregular,identical,umho/cm treated as uS/cm
+wqp,pH,pH,std units,ph,1,0,sample,irregular,identical,
+wqp,Dissolved oxygen (DO),Dissolved oxygen,mg/L,dissolved_oxygen,1,0,sample,irregular,identical,
+wqp,Turbidity,Turbidity,NTU/FNU,turbidity,1,0,sample,irregular,equivalent_method,NTU and FNU pooled; instrument geometry differs
+wqp,Nitrate,Nitrate,mg/L,nitrate,1,0,sample,irregular,equivalent_method,mg/L asNO3 converted to as N (x0.2259); check MethodSpeciationName
+wqp,Nitrate as N,Nitrate as N,mg/L,nitrate,1,0,sample,irregular,identical,
+wqp,Chloride,Chloride,mg/L,chloride,1,0,sample,irregular,identical,ug/L converted
+wqp,Sulfate,Sulfate,mg/L,sulfate,1,0,sample,irregular,identical,ug/L converted
+wqp,Arsenic,Arsenic,ug/L,arsenic,1,0,sample,irregular,equivalent_method,dissolved vs total fraction kept in qualifier
+wqp,Fluoride,Fluoride,mg/L,fluoride,1,0,sample,irregular,identical,
+wqp,Uranium,Uranium,ug/L,uranium,1,0,sample,irregular,equivalent_method,fraction in qualifier
+wqp,Uranium-238,Uranium-238,ug/L,uranium,1,0,sample,irregular,related_not_comparable,isotope-specific; pooled with total uranium
+wqp,Total dissolved solids,Total dissolved solids,mg/L,tds,1,0,sample,irregular,identical,

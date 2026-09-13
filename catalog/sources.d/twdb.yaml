@@ -1,0 +1,9 @@
+sources:
+  twdb:
+    agency: Texas Water Development Board, Groundwater Database (GWDB)
+    description: Wells, water-level measurements, and water-quality analyses for the Texas counties bordering New Mexico (Mesilla/Hueco bolsons, Pecos valley, Southern High Plains) from the nightly GWDB bulk download.
+    url: https://www.twdb.texas.gov/groundwater/data/gwdbrpt.asp
+    license: Public (State of Texas)
+    citation: Texas Water Development Board, Groundwater Database, downloaded 2026.
+    refresh: nightly bulk file (83 MB); re-run fetch --refresh to pick up new measurements
+    caveats: Well locations are mostly unverified by state staff. Water-quality rows are kept in the waterquality table with TWDB parameter codes, not crosswalked.

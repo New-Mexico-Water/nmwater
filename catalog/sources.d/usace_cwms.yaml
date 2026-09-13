@@ -1,0 +1,9 @@
+sources:
+  usace_cwms:
+    agency: U.S. Army Corps of Engineers, Albuquerque District (SPA), via CWMS Data API
+    description: Reservoir elevation/storage/inflow/release, stream and MRGCD diversion gauge flow and stage, precipitation and air temperature for the Rio Grande, Pecos, Canadian, Arkansas, San Juan and Gila basins; 15-minute DCP (2004-), hourly and daily MRS records (1982/1993-).
+    url: https://cwms-data.usace.army.mil/cwms-data/ (office=SPA)
+    license: Public domain (U.S. Government work)
+    citation: U.S. Army Corps of Engineers, Corps Water Management System Data API, Albuquerque District, accessed 2026.
+    refresh: daily (incremental by window)
+    caveats: Values requested in English units (unit=EN); native storage is SI. Quality code and series version (DCP-rev, MRS, Spillway) are kept in the qualifier column as "<quality>|<version>". Elevations are on the location's native datum (usually NGVD29; NAVD88 offset is in vertical-datum-info). Long requests fail with "taking too long" and are split automatically. Pre-1993 daily reservoir records exist only in PDF annual reports.

@@ -1,0 +1,4 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+nwps,stage:ft,NWPS observed stage,ft,stage,1,0,instantaneous,15min,identical,30-day rolling window only; qualifier holds SHEF pedts
+nwps,flow:kcfs,NWPS observed flow,kcfs,discharge,1000,0,instantaneous,15min,identical,derived from stage via NWS rating; kcfs to cfs
+nwps,flow:cfs,NWPS observed flow,cfs,discharge,1,0,instantaneous,15min,identical,

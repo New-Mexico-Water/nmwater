@@ -1,0 +1,8 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+nmwdi_st2,Depth to Water Below Ground Surface,Depth to water,ft bgs,gw_depth_to_water,1,0,,,identical,ST2 datastream "Groundwater Levels" / "Manual Groundwater Levels"
+nmwdi_st2,Raw Depth to Water,Raw depth to water,ft bgs,gw_depth_to_water,1,0,,,equivalent_method,transducer raw (uncorrected)
+nmwdi_st2,Groundwater Elevation,Groundwater elevation,ft asl,gw_level_elevation,1,0,,,identical,datum per agency (mostly NAVD88/NGVD29 unspecified)
+nmwdi_st2,Groundwater Head,Groundwater head,ft asl,gw_level_elevation,1,0,,,equivalent_method,
+nmwdi_st2,Adjusted Groundwater Head,Adjusted groundwater head,ft asl,gw_level_elevation,1,0,,,equivalent_method,barometrically adjusted
+nmwdi_st2,OSERealTimeDischarge,OSE real-time discharge,gpm,discharge,0.002228009,0,,,identical,no observations loaded as of 2026-09
+nmwdi_st2,OSERealTimeGageHeight,OSE real-time gage height,ft,stage,1,0,,,identical,no observations loaded as of 2026-09
