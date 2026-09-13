@@ -102,7 +102,7 @@ class NOAAGHCND(Source):
                 try:
                     inv = json.loads(meta).get("inventory", {})
                     return max((v[1] for v in inv.values()), default=0)
-                except Exception:  # noqa: BLE001
+                except Exception:
                     return 9999
             sites = sites[[_last(m) >= since.year for m in sites["raw_metadata"]]]
         if limit:

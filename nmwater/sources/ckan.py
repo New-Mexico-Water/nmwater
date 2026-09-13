@@ -110,7 +110,7 @@ class CKAN(Source):
                 if raw.lstrip()[:15].lower().startswith(b"<!doctype html") or b"Just a moment" in raw[:2000]:
                     raise RuntimeError("Cloudflare challenge")
                 local.write_bytes(raw)
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 blocked += 1
                 note_manual(self.name, url, fname, f"dataset {dsname}: {str(e)[:50]}")
         if blocked:
@@ -120,7 +120,7 @@ class CKAN(Source):
         for f in sorted(mdir.iterdir()):
             try:
                 n += self._ingest_file(f, since)
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 summ.notes.append(f"{f.name}: not ingested ({str(e)[:80]})")
         summ.n_rows = n
         return summ
@@ -186,7 +186,7 @@ class CKAN(Source):
         for f in sorted(mdir.iterdir()):
             try:
                 frames = self._read_any(f)
-            except Exception:  # noqa: BLE001
+            except Exception:
                 continue
             for name, df in frames.items():
                 cols = {c.lower().strip(): c for c in df.columns}

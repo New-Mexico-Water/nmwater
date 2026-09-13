@@ -152,7 +152,7 @@ class BEMP(Source):
                 continue
             try:
                 x, art = self._xlsx(key, links[key], do_refresh)
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 summ.n_errors += 1
                 summ.notes.append(f"{key}: {e}")
                 continue

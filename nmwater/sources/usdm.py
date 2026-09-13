@@ -45,7 +45,7 @@ class USDM(Source):
         if p.exists():
             try:
                 return sorted(pd.read_parquet(p)["huc8"].astype(str).unique())
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 log.warning("could not read huc8_in_scope: %s", e)
         return [h for h in self.scope.huc8]
 

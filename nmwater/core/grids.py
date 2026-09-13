@@ -48,7 +48,7 @@ def clip_to_bbox(ds, bbox: tuple[float, float, float, float]):
     crs = None
     try:
         crs = ds.rio.crs
-    except Exception:  # noqa: BLE001
+    except Exception:
         crs = None
     lat, lon = _coord_names(ds)
     if crs is not None and not crs.is_geographic:

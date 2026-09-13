@@ -1,79 +1,96 @@
 # nmwater — New Mexico hydrologic data archive
 
-Tools to discover, download, normalize, and catalog the hydrologic record of New Mexico and the
-basins that flow through it: streamflow, reservoirs, snowpack, precipitation and weather,
-groundwater levels, evapotranspiration, water use, water quality, drought indices, and gridded
-climate. The goal is a complete local archive that supports a systems view of the state's
-water (sources, sinks, storage, and fluxes over time) and later publication as a website and
-open datasets.
+A local, queryable archive of New Mexico's water record and of the basins that feed and drain
+it: streamflow, reservoir operations, snowpack, precipitation and weather, groundwater levels,
+evapotranspiration, water use, water quality, and drought indices, pulled from 39 federal,
+state, tribal, and research sources and normalized into one schema.
 
-## Layout
+The point is a systems view. Sources, sinks, storage, and fluxes end up in a single table with
+consistent units and explicit semantics, so you can ask what the whole state's water did in a
+given year and get an answer that spans agencies.
 
-```
-config/        scope.yaml (geography, out-of-state gauges), sources.yaml (per-source settings)
-catalog/       variables.yaml (canonical variables), crosswalk.csv + crosswalk.d/ (source field -> variable),
-               sources.yaml + sources.d/ (provenance), sites_manual.csv (hand-curated site links)
-nmwater/       package: core (http/ledger/store/geo/config), sources (one module per data provider),
-               catalog (registry, crosswalk, DuckDB build), cli
-data/          raw/ (every response as received, gzipped, immutable), parquet/ (normalized tables),
-               grids/ (NetCDF clipped to NM), duckdb/nmwater.duckdb, ledger.sqlite   [gitignored]
-docs/          data dictionary export, QA logs, notes on manual downloads
-```
+- **Quickstart** below gets you from clone to a first query.
+- **[docs/usage.md](docs/usage.md)** is the full command and workflow reference.
+- **[docs/data-model.md](docs/data-model.md)** explains the schema, units, and the crosswalk.
+- **[docs/sources.md](docs/sources.md)** lists every source with period of record and caveats.
+- **[docs/adding-a-source.md](docs/adding-a-source.md)** is the guide to writing a new one.
 
-## Setup
+## Quickstart
 
 ```bash
+git clone https://github.com/deserat/water_newmexico.git
+cd water_newmexico
 uv sync --all-extras
-cp .env.example .env     # add tokens: USGS_API_KEY, NOAA_NCEI_TOKEN, EARTHDATA_*, OPENET_API_KEY, SYNOPTIC_TOKEN, NASS_API_KEY
 ```
 
-## Commands
+Copy the environment template and fill in what you have. Everything runs without any key; the
+sources that need one are skipped with a message naming it.
 
 ```bash
-uv run nmwater list                       # registered sources, token status
-uv run nmwater discover usgs              # write the sites table for a source (or 'all')
-uv run nmwater fetch usgs                 # backfill: archive raw, normalize, write parquet
-uv run nmwater fetch usgs --since 2026-09-01     # incremental
-uv run nmwater fetch usgs --kind continuous      # opt-in 15-minute data
-uv run nmwater fetch usbr_hydrodata --site 1119  # restrict to native site ids
-uv run nmwater reprocess usgs             # re-normalize from the raw archive, offline
-uv run nmwater compact                    # merge part files, drop duplicate observations
-uv run nmwater catalog check              # validate variables.yaml + crosswalk
-uv run nmwater catalog build              # build data/duckdb/nmwater.duckdb + docs/data_dictionary.md
-uv run nmwater status                     # ledger summary per source
-uv run nmwater query "SELECT ... FROM observations"
+cp .env.example .env
+$EDITOR .env          # USGS_API_KEY and NMWATER_CONTACT are the two worth setting first
 ```
 
-## Data model
+See what is registered, then pull one small source end to end:
 
-`observations` (long format, one row per reading): `site_uid`, `variable`, `datetime_utc`,
-`utc_offset_min`, `value`, `unit`, `interval`, `statistic`, `qualifier`, `source_param`,
-`source_unit`, `ingest_run_id`. Partitioned as
-`parquet/timeseries/source=<s>/variable=<v>/year=<yyyy>/`.
+```bash
+uv run nmwater list                       # sources, agencies, token status
+uv run nmwater discover usbr_hydrodata    # find its sites
+uv run nmwater fetch usbr_hydrodata       # download, normalize, store (~5 min, ~300 MB)
+uv run nmwater catalog build              # build the DuckDB catalog
+```
 
-`sites`: one row per station/well/reservoir/area with location, type, agency, HUC, basin, and the
-provider's full metadata as JSON. `site_variables`: period of record and counts per site and variable.
+Ask it something. Elephant Butte Reservoir storage has been recorded since March 1915:
 
-Convention: for `interval` daily or coarser, `datetime_utc` holds the local calendar date at
-00:00Z and `utc_offset_min` is null. Sub-daily rows carry the true UTC instant.
+```bash
+uv run nmwater query "
+  SELECT date_trunc('year', datetime_utc) AS year,
+         round(avg(value)) AS mean_storage_af
+  FROM observations
+  WHERE site_uid = 'usbr_hydrodata:1119' AND variable = 'reservoir_storage'
+  GROUP BY 1 ORDER BY 1 LIMIT 10"
+```
 
-Canonical units are the ones New Mexico producers use (cfs, acre-feet, feet, inches) with
-Celsius for temperature and millimetres for gridded ET; `catalog/variables.yaml` lists SI
-factors. Every source field is mapped in `catalog/crosswalk.csv` (and `crosswalk.d/*.csv`)
-with a unit factor, statistic, interval, an `equivalence` flag (`identical`,
-`equivalent_method`, `related_not_comparable`), and a caveat. That table is the authoritative
-answer to "are these two differently named fields the same measurement?".
+Then widen the net. A full pull of everything is hundreds of gigabytes and several days of
+wall time, so start with the phases:
 
-## Adding a source
+```bash
+just phase1     # federal station backbone (USGS, Reclamation, USACE, NRCS, NOAA)
+just phase2     # New Mexico state, regional, and neighbor-state sources
+just phase3     # gridded climate, drought, water use, reference layers
+uv run nmwater status  # what has been fetched, how much, how many rows
+uv run nmwater report  # coverage, landmark record checks, data hygiene
+```
 
-Create `nmwater/sources/<name>.py` with a `@register`ed subclass of `Source` implementing
-`discover()`, `fetch()`, and `normalize()`; add `catalog/crosswalk.d/<name>.csv` and
-`catalog/sources.d/<name>.yaml`; add a block to `config/sources.yaml` if the defaults are not
-right. Use `self.get()` for every request so the response is archived and ledgered.
+## How it works
 
-## Provenance and licenses
+Every HTTP response is written to `data/raw/` gzipped and recorded in a SQLite ledger before
+anything parses it. That makes runs resumable, makes re-parsing possible offline
+(`nmwater reprocess`), and means the provenance of every value is a file you can open.
 
-See `catalog/sources.yaml`, `catalog/sources.d/`, and the generated `docs/data_dictionary.md`.
-PRISM data require attribution to the PRISM Climate Group, Oregon State University. Most
-federal data are public domain; state and research-network data carry their own citation
-requests recorded per source.
+Parsed values land in `data/parquet/timeseries/` in long format, partitioned by source,
+variable, and year, under a schema designed to load into TimescaleDB unchanged. `catalog build`
+assembles a DuckDB database over it with sites, coverage, cross-source site links, and the
+variable and crosswalk tables.
+
+Units and meaning are not left to chance. `catalog/variables.yaml` defines 59 canonical
+variables; `catalog/crosswalk.csv` maps 417 source-native fields onto them with a conversion
+factor and an equivalence flag that records whether two differently named fields are the same
+measurement, the same quantity by a different method, or merely related. That is what keeps a
+NRCS water-year accumulated precipitation total from being averaged together with a daily
+rainfall increment.
+
+## Requirements
+
+Python 3.13 or newer, [uv](https://docs.astral.sh/uv/), and disk proportional to ambition:
+about 6 GB for the station backbone, roughly 150-300 GB with the gridded products, and more if
+you enable the deferred high-volume datasets. A `just` install is optional; the recipes are
+short enough to copy.
+
+## License and attribution
+
+The code is MIT. The data are not uniformly free: most federal sources are public domain, PRISM
+requires attribution to the PRISM Climate Group at Oregon State University, and several state
+and research datasets carry their own citation requests. Every source's terms, citation, and
+caveats are recorded in `catalog/sources.yaml` and `catalog/sources.d/` and exported into
+`docs/data_dictionary.md`. Check them before republishing.

@@ -22,7 +22,6 @@ restored; no code change is needed.
 from __future__ import annotations
 
 import io
-import json
 import logging
 import re
 from datetime import date
@@ -30,7 +29,7 @@ from datetime import date
 import pandas as pd
 
 from ._manual import note_manual
-from .base import FetchSummary, Source, SourceUnavailable, register
+from .base import FetchSummary, Source, register
 
 log = logging.getLogger("nmwater.edi")
 
@@ -91,7 +90,7 @@ class EDI(Source):
         try:
             art = self.get(f"{PASTA}/name/eml/{scope}/{ident}/{rev}/{ent}", kind="metadata")
             return art.read_text().strip()[:120]
-        except Exception:  # noqa: BLE001
+        except Exception:
             return ent
 
     # ---------------------------------------------------------------- interface
@@ -107,7 +106,7 @@ class EDI(Source):
                 for e in ents:
                     rows.append({"package": pid, "revision": rev, "entity_id": e, "label": label,
                                  "holds": holds, "name": self._entity_name(scope, ident, rev, e)})
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 blocked += 1
                 log.warning("edi %s: %s", pid, str(ex)[:140])
                 note_manual(self.name, PORTAL + pid, f"{pid}.zip",
@@ -132,7 +131,7 @@ class EDI(Source):
                 if not rev:
                     continue
                 ents = self._entities(scope, ident, rev)
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 summ.n_errors += 1
                 summ.notes.append(f"{pid}: {str(ex)[:90]}")
                 continue
@@ -149,7 +148,7 @@ class EDI(Source):
                     n = self.write_obs(df, tag=f"{scope}-{ident}-{ent[:8]}") if df is not None else 0
                     self.ledger.set_rows(art.request_key, n)
                     summ.n_rows += n
-                except Exception as ex:  # noqa: BLE001
+                except Exception as ex:
                     summ.n_errors += 1
                     log.warning("edi %s/%s: %s", pid, ent[:10], str(ex)[:120])
         return summ
@@ -158,7 +157,7 @@ class EDI(Source):
         """Melt a wide station-by-column CSV into observations. Unknown columns are ignored."""
         try:
             df = pd.read_csv(io.BytesIO(raw), low_memory=False)
-        except Exception:  # noqa: BLE001
+        except Exception:
             return None
         if df.empty:
             return None

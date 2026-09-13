@@ -7,7 +7,6 @@ reference table `huc8_in_scope` (HUC8 polygons intersecting the buffered NM bbox
 
 from __future__ import annotations
 
-import json
 import logging
 import zipfile
 from datetime import date

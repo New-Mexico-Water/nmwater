@@ -14,8 +14,9 @@ $expand=Datastream($select=id), which returns @iot.id plus the datastream id per
 from __future__ import annotations
 
 import logging
+from collections.abc import Iterator
 from datetime import date
-from typing import Any, Iterator
+from typing import Any
 
 import pandas as pd
 

@@ -17,6 +17,6 @@ def load_all() -> dict[str, type[Source]]:
             continue
         try:
             importlib.import_module(f"{__name__}.{m.name}")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             log.warning("could not import source module %s: %s", m.name, e)
     return SOURCES

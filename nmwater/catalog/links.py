@@ -41,7 +41,7 @@ def _usgs_ids_from_metadata(meta: str | None) -> set[str]:
         return out
     try:
         d = json.loads(meta)
-    except Exception:  # noqa: BLE001
+    except Exception:
         return out
 
     def walk(o, key=""):
@@ -143,7 +143,7 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                 man["confidence"] = 1.0
                 man["distance_m"] = None
                 links = pd.concat([links, man[links.columns]], ignore_index=True)
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             log.warning("could not read %s: %s", manual, e)
     links = links.drop_duplicates(subset=["site_uid_a", "site_uid_b", "link_type"])
     log.info("site_links: %d exact, %d colocated", (links["link_type"] != "colocated").sum(), (links["link_type"] == "colocated").sum())

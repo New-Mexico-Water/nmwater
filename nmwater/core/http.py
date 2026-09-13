@@ -250,7 +250,7 @@ class Http:
         fetched_at = now_iso()
         try:
             resp = _do()
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             self.ledger.record(FetchRecord(
                 request_key=key, run_id=run_id, source=source, kind=kind, url=url, params=params,
                 site_uid=site_uid, variable=variable,

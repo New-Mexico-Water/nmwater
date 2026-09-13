@@ -51,7 +51,7 @@ class CODWR(Source):
             art = self.get(f"{self.base}/{path}", params=p, kind=kind, refresh=refresh, **kw)
             try:
                 d = art.read_json()
-            except Exception:  # noqa: BLE001
+            except Exception:
                 break
             out.extend(d.get("ResultList") or [])
             if page >= int(d.get("PageCount") or 1):
@@ -196,7 +196,7 @@ class CODWR(Source):
                     total += n
                 try:
                     pc = int(art.read_json().get("PageCount") or 1)
-                except Exception:  # noqa: BLE001
+                except Exception:
                     pc = 1
                 if page >= pc or page >= 50:
                     break
@@ -212,7 +212,7 @@ class CODWR(Source):
     def normalize(self, artifact) -> pd.DataFrame | None:
         try:
             d = artifact.read_json()
-        except Exception:  # noqa: BLE001
+        except Exception:
             return None
         rl = d.get("ResultList") or []
         if not rl:
@@ -286,7 +286,7 @@ class CODWR(Source):
         for r in self.sites().itertuples(index=False):
             try:
                 m = json.loads(r.raw_metadata)
-            except Exception:  # noqa: BLE001
+            except Exception:
                 continue
             if m.get("wdid"):
                 self._wdid_map.setdefault(str(m["wdid"]), r.native_id)

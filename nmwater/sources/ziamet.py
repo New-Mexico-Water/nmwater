@@ -19,7 +19,7 @@ import io
 import json
 import logging
 import re
-from datetime import UTC, date, datetime, timedelta
+from datetime import UTC, date, datetime
 
 import httpx
 import pandas as pd

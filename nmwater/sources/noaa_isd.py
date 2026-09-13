@@ -57,7 +57,7 @@ class NOAAISD(Source):
             gin = [self.scope.in_bbox(a, b) for a, b in zip(gh["LATITUDE"], gh["LONGITUDE"])]
             gh = gh[(gh["STATE"] == self.scope.state_abbr) | pd.Series(gin, index=gh.index)]
             self.store.write_table(gh, "reference", self.name, "ghcnh_stations")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             log.warning("GHCNh station list failed: %s", e)
         return pd.DataFrame(
             {

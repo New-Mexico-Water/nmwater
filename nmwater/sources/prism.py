@@ -22,7 +22,15 @@ from pathlib import Path
 
 import pandas as pd
 
-from ..core.grids import clip_to_bbox, grid_done, grid_path, record_grid, register_grid, stream_download, write_netcdf
+from ..core.grids import (
+    clip_to_bbox,
+    grid_done,
+    grid_path,
+    record_grid,
+    register_grid,
+    stream_download,
+    write_netcdf,
+)
 from ..core.http import request_key
 from .base import FetchSummary, Source, register
 
@@ -87,7 +95,7 @@ class PRISM(Source):
         return summ
 
     def _fetch_var_year(self, var, freq, year, since, refresh, revise_after, summ, limit) -> int:
-        import rioxarray  # noqa: F401
+        import rioxarray
         import xarray as xr
 
         files = self._list(var, freq, year)

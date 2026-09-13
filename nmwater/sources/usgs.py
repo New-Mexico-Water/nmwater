@@ -124,13 +124,13 @@ class USGS(Source):
         for w, s, e, n in self._border_strips():
             try:
                 frames.append(self._site_rdb({"bBox": f"{w:.4f},{s:.4f},{e:.4f},{n:.4f}", "siteOutput": "expanded"}))
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("border strip %s failed: %s", (w, s, e, n), ex)
         allow = self.scope.allow_sites.get("usgs", [])
         for i in range(0, len(allow), 100):
             try:
                 frames.append(self._site_rdb({"sites": ",".join(allow[i:i + 100]), "siteOutput": "expanded"}))
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("allow-list batch failed: %s", ex)
         df = pd.concat([f for f in frames if len(f)], ignore_index=True).drop_duplicates("site_no")
         # Series catalogs (period of record) -> reference tables + inventory json on the site
@@ -142,7 +142,7 @@ class USGS(Source):
                 if len(cat):
                     cats[dtype] = cat
                     self.store.write_table(cat, "reference", self.name, f"series_catalog_{dtype}")
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("series catalog %s failed: %s", dtype, ex)
         # allow-listed out-of-state sites: catalogs by site
         if allow:
@@ -153,7 +153,7 @@ class USGS(Source):
                     if len(cat):
                         self.store.write_table(cat, "reference", self.name, f"series_catalog_{dtype}_allowlist")
                         cats[dtype] = pd.concat([cats.get(dtype, pd.DataFrame()), cat], ignore_index=True)
-                except Exception as ex:  # noqa: BLE001
+                except Exception as ex:
                     log.warning("allow-list catalog %s failed: %s", dtype, ex)
         inv = {}
         for dtype, cat in cats.items():
@@ -354,7 +354,7 @@ class USGS(Source):
             return []
         try:
             df = pd.read_csv(io.StringIO(text), dtype=str)
-        except Exception:  # noqa: BLE001
+        except Exception:
             return []
         if len(df) < self.OGC_PAGE or depth >= 3 or b == e:
             return [df]
@@ -461,7 +461,7 @@ class USGS(Source):
                 continue
             try:
                 inv = json.loads(r.raw_metadata).get("inventory", {})
-            except Exception:  # noqa: BLE001
+            except Exception:
                 inv = {}
             for ent in inv.get("uv", []) + inv.get("iv", []):
                 p = ent.get("parm")
@@ -561,7 +561,7 @@ class USGS(Source):
         if artifact.kind in ("field-measurements", "peaks"):
             try:
                 df = pd.read_csv(io.StringIO(artifact.read_text()), dtype=str)
-            except Exception:  # noqa: BLE001
+            except Exception:
                 return None
             return self._normalize_ogc_table(artifact.kind, df)
         return None

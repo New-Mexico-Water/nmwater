@@ -9,10 +9,11 @@ the raw archive without network access.
 from __future__ import annotations
 
 import logging
+from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import date
-from typing import Any, Callable, Iterable
+from typing import Any
 
 import pandas as pd
 
@@ -44,7 +45,7 @@ class FetchSummary:
     n_errors: int = 0
     notes: list[str] = field(default_factory=list)
 
-    def add(self, other: "FetchSummary") -> None:
+    def add(self, other: FetchSummary) -> None:
         self.n_requests += other.n_requests
         self.n_cached += other.n_cached
         self.n_rows += other.n_rows
@@ -117,7 +118,7 @@ class Source:
                 done += 1
                 try:
                     results.append(fut.result())
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     errors += 1
                     log.warning("%s %s failed for %r: %s", self.name, desc, futs[fut], str(e)[:300])
                 if done % 50 == 0 or done == len(items):
@@ -157,7 +158,7 @@ class Source:
             )
             try:
                 df = self.normalize(art)
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 log.warning("%s reprocess failed for %s: %s", self.name, rec.url, e)
                 continue
             if df is not None and len(df):

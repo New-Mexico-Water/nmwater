@@ -17,7 +17,7 @@ from .core.config import Settings
 from .core.http import Http
 from .core.ledger import Ledger
 from .core.store import Store
-from .sources import SOURCES, Context, FetchSummary, SourceUnavailable, load_all
+from .sources import SOURCES, Context, FetchSummary, Source, SourceUnavailable, load_all
 
 app = typer.Typer(help="New Mexico hydrologic data archive", no_args_is_help=True)
 catalog_app = typer.Typer(help="Catalog and DuckDB build")
@@ -100,7 +100,7 @@ def discover(
         except SourceUnavailable as e:
             ctx.ledger.finish_run(run_id, "skipped", notes=str(e))
             console.print(f"[yellow]{e}[/yellow]")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             ctx.ledger.finish_run(run_id, "error", notes=str(e)[:500])
             console.print(f"[red]{name}: {e}[/red]")
             if verbose:
@@ -148,7 +148,7 @@ def fetch(
         except SourceUnavailable as e:
             ctx.ledger.finish_run(run_id, "skipped", notes=str(e))
             console.print(f"[yellow]{e}[/yellow]")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             ctx.ledger.finish_run(run_id, "error", notes=str(e)[:500])
             console.print(f"[red]{name}: {e}[/red]")
             if verbose:
@@ -170,6 +170,13 @@ def reprocess(
     names = _resolve(sources)
     ctx = _ctx(data_dir)
     for name in names:
+        src_cls = SOURCES[name]
+        if src_cls.normalize is Source.normalize:
+            console.print(
+                f"[yellow]{name}: does not implement normalize(); reprocess cannot rebuild its rows. "
+                f"Re-run `nmwater fetch {name}` instead, which re-reads the raw archive.[/yellow]"
+            )
+            continue
         if replace:
             import shutil
 
