@@ -50,7 +50,7 @@ class NMBGMR(Source):
             try:
                 art = self.get(f"{primary}/collaborative_network/stats", kind="probe", refresh=True)
                 art.read_json()
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 log.warning("nmbgmr: %s unreachable (%s); using %s", primary, str(e)[:80], FALLBACK)
                 self._base = FALLBACK
         return self._base
@@ -115,7 +115,7 @@ class NMBGMR(Source):
             self.store.write_table(pd.DataFrame([{**(x.get("properties") or {}), "lon": (x.get("geometry") or {}).get("coordinates", [None, None])[0],
                                                   "lat": (x.get("geometry") or {}).get("coordinates", [None, None])[1]} for x in cn]).drop(columns=["thing"], errors="ignore"),
                                    "reference", self.name, "collabnet_locations")
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             log.warning("collabnet locations failed: %s", e)
         return pd.DataFrame(rows)
 

@@ -90,7 +90,7 @@ class IBWC(Source):
                 prev = self.get(PREV, kind="index", refresh=True)
                 names = HREF_RE.findall(prev.read_text("latin-1"))
                 urls += [f"{BLOB}/DailyReports/{n}" for n in sorted(set(names))]
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 summ.notes.append(f"previous-reports index failed: {e}")
             if since:
                 keep = []

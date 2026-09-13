@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
-from datetime import date, datetime, timedelta, timezone
+from datetime import UTC, date, datetime, timedelta
 
 import pandas as pd
 
@@ -77,7 +77,7 @@ class Synoptic(Source):
                 art = self.get(f"{BASE}/stations/metadata", params={**params, "token": self.token},
                                kind="sites", refresh=True)
                 frames.extend(art.read_json().get("STATION", []) or [])
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("synoptic metadata %s: %s", params.get("status") or "bbox", str(ex)[:120])
         if not frames:
             return pd.DataFrame()
@@ -141,7 +141,7 @@ class Synoptic(Source):
         # window length so that stations x hours stays under the API cap
         win_hours = max(24, MAX_STATION_HOURS // max(1, batch_n))
         win = timedelta(hours=win_hours)
-        today = datetime.now(timezone.utc)
+        today = datetime.now(UTC)
         jobs = []
         for i in range(0, len(ids), batch_n):
             batch = ids[i:i + batch_n]
@@ -179,7 +179,7 @@ class Synoptic(Source):
 
     def _batch_start(self, sites: pd.DataFrame, batch: list[str], since: date | None) -> datetime:
         if since is not None:
-            return datetime(since.year, since.month, since.day, tzinfo=timezone.utc)
+            return datetime(since.year, since.month, since.day, tzinfo=UTC)
         starts = []
         for meta in sites.loc[sites["native_id"].isin(batch), "raw_metadata"]:
             try:
@@ -187,9 +187,9 @@ class Synoptic(Source):
                 s = por.get("start")
                 if s:
                     starts.append(pd.to_datetime(s, utc=True).to_pydatetime())
-            except Exception:  # noqa: BLE001
+            except Exception:
                 continue
-        return min(starts) if starts else datetime(1997, 1, 1, tzinfo=timezone.utc)
+        return min(starts) if starts else datetime(1997, 1, 1, tzinfo=UTC)
 
     def normalize(self, artifact) -> pd.DataFrame | None:
         d = artifact.read_json()

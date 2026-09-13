@@ -12,7 +12,6 @@ Tables are written under parquet/wateruse/source=usgs_wateruse/ with raw column 
 from __future__ import annotations
 
 import io
-import json
 import logging
 from datetime import date
 

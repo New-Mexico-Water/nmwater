@@ -77,7 +77,7 @@ class OSEReports(Source):
                     if art.from_cache:
                         summ.n_cached += 1
                     return 1
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     summ.notes.append(f"{title}: {str(e)[:80]}")
                     note_manual(self.name, url, url.rsplit("/", 1)[-1], f"{title}: {str(e)[:60]}")
                     return 0
@@ -98,7 +98,7 @@ class OSEReports(Source):
                         summ.n_cached += 1
                     found.append(y)
                     return 1
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     if "404" not in str(e):
                         summ.notes.append(f"RGCC {y}: {str(e)[:80]}")
                     return 0
@@ -118,7 +118,7 @@ class OSEReports(Source):
                         if raw[:2] != b"PK" and not fname.endswith(".mdb"):
                             raise RuntimeError("not an xlsx (Cloudflare challenge page)")
                         local.write_bytes(raw)
-                    except Exception as e:  # noqa: BLE001
+                    except Exception as e:
                         note_manual(self.name, url, fname, "NM Water Data catalog blocks scripted downloads (Cloudflare)")
                         summ.notes.append(f"{fname}: needs manual download ({str(e)[:60]})")
                         continue

@@ -31,7 +31,6 @@ BASIN_BY_HUC_PREFIX = {
     "1112": "North Fork Red",
     "1203": "Brazos Headwaters",
     "1205": "Colorado Headwaters (TX)",
-    "1301": "Rio Grande Headwaters",
 }
 
 
@@ -70,7 +69,7 @@ def _wbd(huc_level: int, grids_dir: str):
         layer = f"WBDHU{huc_level}"
         try:
             frames.append(gpd.read_file(gpkg, layer=layer, columns=[f"huc{huc_level}", "name"]))
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             log.debug("WBD read failed %s: %s", gpkg, e)
     if not frames:
         return None

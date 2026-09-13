@@ -104,7 +104,7 @@ class USBRAlbuquerque(Source):
         for fname in FILES:
             try:
                 art = self.get(f"{self.base}/{fname}.dat", kind="data", refresh=True, key_extra=date.today().isoformat())
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 log.warning("%s: %s failed: %s", self.name, fname, e)
                 continue
             names, units, _ = parse_dat(art.read_text())

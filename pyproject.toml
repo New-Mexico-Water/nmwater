@@ -57,8 +57,27 @@ build-backend = "hatchling.build"
 packages = ["nmwater"]
 
 [tool.ruff]
-line-length = 110
+line-length = 120
 target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "RUF"]
+ignore = [
+    # Typer declares CLI options as function-call defaults; that is its documented API.
+    "B008",
+    # Fetchers deliberately catch broadly: one provider's malformed response must not end a run.
+    "BLE001",
+    # Hydrologic daily values are local calendar dates by definition, not instants.
+    "DTZ011",
+    # Optional[X] reads better than X | None in the Typer signatures it appears in.
+    "UP045",
+    "RUF059",
+    # Line length is advisory here: several source modules carry long literal URLs and
+    # provider parameter lists that read worse when wrapped.
+    "E501",
+    # zip() without strict= is fine where both sides are built from the same frame.
+    "B905",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

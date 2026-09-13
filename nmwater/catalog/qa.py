@@ -6,7 +6,6 @@ import logging
 from pathlib import Path
 
 import duckdb
-import pandas as pd
 
 from ..core.config import DOCS_DIR, Settings
 
@@ -50,7 +49,7 @@ def run(settings: Settings, out: Path | None = None) -> Path:
         ).fetchdf()
         for r in cov.itertuples(index=False):
             lines.append(f"| {r.source} | {r.sites:,} | {r.variables} | {int(r.n_obs):,} | {str(r.t0)[:10]} | {str(r.t1)[:10]} |")
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         lines.append(f"| (coverage query failed: {e}) | | | | | |")
 
     # Site count expectations
@@ -69,7 +68,7 @@ def run(settings: Settings, out: Path | None = None) -> Path:
                 "SELECT MIN(first_datetime) AS t0, SUM(n_obs) AS n FROM site_variables WHERE site_uid=? AND variable=?",
                 [uid, var],
             ).fetchone()
-        except Exception:  # noqa: BLE001
+        except Exception:
             r = (None, None)
         t0, n = (r[0], r[1]) if r else (None, None)
         if t0 is None:
@@ -103,14 +102,14 @@ def run(settings: Settings, out: Path | None = None) -> Path:
             "SELECT variable, COUNT(*) FROM observations WHERE value < 0 AND variable IN ('discharge','reservoir_storage','precip','swe','snow_depth') GROUP BY 1"
         ).fetchall()
         lines.append("- negative values in non-negative variables: " + (", ".join(f"{v}={n:,}" for v, n in neg) if neg else "none"))
-    except Exception as e:  # noqa: BLE001
+    except Exception as e:
         lines.append(f"- hygiene checks failed: {e}")
 
     # Crosswalk equivalence summary
     try:
         eq = con.execute("SELECT equivalence, COUNT(*) FROM crosswalk GROUP BY 1").fetchall()
         lines += ["", "## Crosswalk", "", "- " + ", ".join(f"{k}: {n}" for k, n in eq)]
-    except Exception:  # noqa: BLE001
+    except Exception:
         pass
 
     con.close()

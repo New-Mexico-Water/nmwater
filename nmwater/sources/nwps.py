@@ -36,7 +36,7 @@ class NWPS(Source):
                 g = d.get("gauges", d if isinstance(d, list) else [])
                 if g:
                     return g
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("nwps gauges request failed (%s): %s", params, ex)
         return []
 

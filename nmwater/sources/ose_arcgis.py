@@ -62,7 +62,7 @@ def _wkt(geom: dict | None) -> str | None:
         from shapely.geometry import shape
 
         return shape(geom).wkt
-    except Exception:  # noqa: BLE001
+    except Exception:
         return json.dumps(geom)
 
 
@@ -130,7 +130,7 @@ class OSEArcGIS(Source):
                 continue
             try:
                 feats = self._layer_features(layer, refresh=layer not in BIG_LAYERS or bool(self.opt("refresh_big", False)))
-            except Exception as e:  # noqa: BLE001
+            except Exception as e:
                 log.warning("ose_arcgis: layer %s failed: %s", layer, e)
                 continue
             df = self._layer_frame(layer, feats)
@@ -164,7 +164,7 @@ class OSEArcGIS(Source):
                 try:
                     pt = _swkt.loads(g)
                     lon, lat = pt.x, pt.y
-                except Exception:  # noqa: BLE001
+                except Exception:
                     pass
             use = str(r.get("use_of_wel") or r.get("use_") or "").upper()
             src = str(r.get("grnd_wtr_s") or "")
@@ -226,7 +226,7 @@ class OSEArcGIS(Source):
             try:
                 pt = _swkt.loads(r.get("geometry_wkt"))
                 lon, lat = pt.x, pt.y
-            except Exception:  # noqa: BLE001
+            except Exception:
                 pass
             nid = info.get("NATIONAL_ID") or info.get("OSE_DAM_FILE_NO") or info.get("ID") or r.get("OID")
             rows.append({

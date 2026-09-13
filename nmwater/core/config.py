@@ -56,7 +56,7 @@ class Scope:
         return s <= lat <= n and w <= lon <= e
 
     @classmethod
-    def load(cls, path: Path | None = None) -> "Scope":
+    def load(cls, path: Path | None = None) -> Scope:
         d = _load_yaml(path or CONFIG_DIR / "scope.yaml")
         return cls(
             bbox=tuple(d["bbox"]),
@@ -95,7 +95,7 @@ class Settings:
     defaults: SourceConfig
 
     @classmethod
-    def load(cls, data_dir: Path | None = None) -> "Settings":
+    def load(cls, data_dir: Path | None = None) -> Settings:
         load_dotenv(PROJECT_ROOT / ".env")
         dd = data_dir or Path(os.environ.get("NMWATER_DATA_DIR") or (PROJECT_ROOT / "data"))
         dd = dd.expanduser().resolve()

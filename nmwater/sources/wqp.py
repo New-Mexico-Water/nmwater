@@ -90,7 +90,7 @@ class WQP(Source):
                 art = self.get(f"{BASE}/Station/search", params={"bBox": f"{w:.4f},{s:.4f},{e:.4f},{n:.4f}", "mimeType": "csv",
                                                                  "zip": "yes"}, kind="sites", refresh=True)
                 frames.append(pd.read_csv(io.StringIO(_unzip_csv(art.read_bytes())), dtype=str, low_memory=False))
-            except Exception as ex:  # noqa: BLE001
+            except Exception as ex:
                 log.warning("wqp border strip failed: %s", ex)
         df = pd.concat(frames, ignore_index=True).drop_duplicates("MonitoringLocationIdentifier")
         num = lambda s: pd.to_numeric(s, errors="coerce")

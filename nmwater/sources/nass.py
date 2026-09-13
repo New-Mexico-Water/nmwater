@@ -7,7 +7,6 @@ Management Survey for New Mexico (state and county level). Requires NASS_API_KEY
 
 from __future__ import annotations
 
-import json
 import logging
 from datetime import date
 
@@ -58,7 +57,7 @@ class NASS(Source):
                 try:
                     art = self.get(f"{BASE}/api_GET/", params=params, kind="wateruse", variable=qname,
                                    window=(f"{y}-01-01", f"{y}-12-31"), refresh=refresh)
-                except Exception as e:  # noqa: BLE001
+                except Exception as e:
                     summ.n_errors += 1
                     summ.notes.append(f"{qname} {y}: {str(e)[:120]}")
                     continue
