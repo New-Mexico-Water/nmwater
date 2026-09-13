@@ -26,3 +26,28 @@ sources:
       (snap_max_distance_m in config/sources.yaml) and is not infallible near confluences or where
       a gauge sits on a short tributary parallel to a larger channel; treat snap_distance_m as a
       confidence signal and spot-check anything used for a load calculation.
+  nid:
+    agency: US Army Corps of Engineers, National Inventory of Dams
+    description: >-
+      Dam capacity registry: design (NID) storage, maximum recorded storage, and normal
+      (conservation-pool) storage in acre-feet per dam, plus hazard classification, purpose,
+      height, and completion year. This is what reservoir_storage observations need a denominator
+      from to become a fill percentage; the operational sources (Reclamation, USACE, USGS)
+      publish storage, not capacity. Each dam is matched to the nearest NHDPlus waterbody polygon
+      within 3 km, which lets capacity join to storage observations via site_waterbodies.comid
+      without any name matching.
+    url: https://nid.sec.usace.army.mil/api/nation/csv
+    license: Public domain (U.S. Government work). No key, single national CSV, no rate limit.
+    citation: U.S. Army Corps of Engineers, National Inventory of Dams, accessed 2026.
+    refresh: NID is updated periodically; re-fetch with --refresh for a newer snapshot
+    caveats: >-
+      "Capacity" is not one number. NID Storage is the maximum design/flood-control capacity;
+      Normal Storage is what the dam is operated to hold day to day; the two differ enormously for
+      flood-control dams built to sit near-empty - Abiquiu is rated at 1,369,000 acre-feet design
+      capacity but normally holds around 170,000. Use Normal Storage for an ordinary fill
+      percentage and NID Storage only when the question is about flood capacity specifically. The
+      waterbody match is nearest-neighbour within 3 km and can be wrong near dam complexes with
+      multiple structures on one reservoir (Elephant Butte Dam and Elephant Butte Dike both
+      correctly match the same polygon; a cluster of small farm ponds might not). Depends on
+      nhdplus having pulled waterbodies first; runs without it but then carries no comid and
+      cannot be joined to storage observations. See docs/interpretation.md.

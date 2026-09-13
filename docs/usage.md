@@ -189,6 +189,29 @@ SELECT site_uid, match_type, distance_m FROM site_waterbodies
 WHERE gnis_name = 'Elephant Butte Reservoir' ORDER BY match_type, distance_m;
 ```
 
+### Reservoir fill percentage over time
+
+`nmwater fetch nid` pulls the National Inventory of Dams and matches each dam to a reservoir
+polygon, so `reservoir_capacity.normal_storage_af` joins to `reservoir_storage` observations
+through `site_waterbodies` with no name matching:
+
+```sql
+WITH cap AS (
+  SELECT DISTINCT comid, normal_storage_af FROM reservoir_capacity WHERE dam_name = 'Elephant Butte Dam'
+)
+SELECT date_trunc('year', o.datetime_utc) AS year,
+       round(100.0 * avg(o.value) / cap.normal_storage_af, 1) AS pct_of_normal_capacity
+FROM observations o
+JOIN site_waterbodies sw ON sw.site_uid = o.site_uid
+JOIN cap ON cap.comid = sw.comid
+WHERE o.variable = 'reservoir_storage'
+GROUP BY 1, cap.normal_storage_af ORDER BY 1;
+```
+
+Use `normal_storage_af`, not `nid_storage_af`, for an ordinary fill percentage - see
+[data-model.md](data-model.md#reservoir_capacity) for why they differ by a factor of eight at
+Abiquiu.
+
 ### Querying by municipality or tract
 
 `nmwater fetch tiger` downloads Census boundaries and `catalog build` joins every located site

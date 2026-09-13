@@ -171,6 +171,25 @@ publishing storage for the same reservoir may be using tables of different vinta
 the crosswalk marks reservoir storage `equivalent_method` rather than `identical`, and why the
 Reclamation sedimentation surveys are archived alongside.
 
+## "Capacity" is at least two different numbers
+
+`reservoir_capacity`, from the National Inventory of Dams, gives every reservoir three storage
+figures, and they answer different questions. `nid_storage_af` is the design or maximum flood
+capacity: what the dam could hold at its highest safe pool. `normal_storage_af` is the
+conservation pool: what the reservoir is actually operated to hold day to day. `max_storage_af`
+is the highest level ever recorded.
+
+For flood-control dams these diverge enormously, because the dam was built empty on purpose.
+Abiquiu is rated at 1,369,000 acre-feet design capacity and normally holds around 170,000; Cochiti
+is 722,000 against 50,130. A storage series showing Abiquiu at 15% of `nid_storage_af` would look
+alarmingly low and be operating exactly as intended, because 15% of the design ceiling is close to
+a full conservation pool. Dividing by the wrong denominator does not just shift a number, it
+answers a different question: "how close to a flood emergency" versus "how full is the water
+supply."
+
+The safe default for an ordinary fill percentage is `normal_storage_af`. Use `nid_storage_af`
+only when the question is genuinely about flood capacity, and say so.
+
 ## Vertical datums differ
 
 Groundwater and reservoir elevations are reported against a datum, and New Mexico has records in
