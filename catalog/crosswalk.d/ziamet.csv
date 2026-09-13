@@ -1,0 +1,43 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+ziamet,feed_airtemp,Air Temperature,F,air_temp,0.5555555556,-17.7777777778,instantaneous,5min,identical,2 m sensor
+ziamet,feed_dewpoint,Dewpoint,F,,1,0,,,related_not_comparable,no canonical dewpoint variable yet
+ziamet,feed_rh,RH,%,relative_humidity,1,0,instantaneous,5min,identical,
+ziamet,feed_wsmax,3m Max Wind Speed,MPH,wind_speed,1,0,max,5min,identical,3 m anemometer
+ziamet,feed_wsmean,3m Mean Wind Speed,MPH,wind_speed,1,0,mean,5min,identical,3 m anemometer
+ziamet,feed_wdir,3m Wind Direction,deg,wind_direction,1,0,mean,5min,identical,
+ziamet,feed_rain,Rain,in,precip,1,0,total,5min,identical,tipping bucket; interval total
+ziamet,feed_solar,Solar Radiation,MJ/m^2,solar_radiation,3333.3333,0,mean,5min,identical,MJ/m2 per 5-min interval converted to mean W/m2
+ziamet,dly_tmax,Daily max air temperature,F,air_temp,0.5555555556,-17.7777777778,max,daily,identical,
+ziamet,dly_tmin,Daily min air temperature,F,air_temp,0.5555555556,-17.7777777778,min,daily,identical,
+ziamet,dly_tavg,Daily mean air temperature,F,air_temp,0.5555555556,-17.7777777778,mean,daily,identical,
+ziamet,dly_tmax_c,Daily max air temperature,C,air_temp,1,0,max,daily,identical,
+ziamet,dly_tmin_c,Daily min air temperature,C,air_temp,1,0,min,daily,identical,
+ziamet,dly_tavg_c,Daily mean air temperature,C,air_temp,1,0,mean,daily,identical,
+ziamet,dly_rain,Daily precipitation,in,precip,1,0,total,daily,identical,
+ziamet,dly_rain_mm,Daily precipitation,mm,precip,0.03937007874,0,total,daily,identical,
+ziamet,dly_rh,Daily mean relative humidity,%,relative_humidity,1,0,mean,daily,identical,
+ziamet,dly_rhmax,Daily max relative humidity,%,relative_humidity,1,0,max,daily,identical,
+ziamet,dly_rhmin,Daily min relative humidity,%,relative_humidity,1,0,min,daily,identical,
+ziamet,dly_wsmean,Daily mean wind speed,MPH,wind_speed,1,0,mean,daily,identical,3 m
+ziamet,dly_wsmax,Daily max wind speed,MPH,wind_speed,1,0,max,daily,identical,3 m
+ziamet,dly_wdir,Daily wind direction,deg,wind_direction,1,0,mean,daily,identical,
+ziamet,dly_solar,Daily solar radiation,MJ/m^2,solar_radiation,11.574074,0,mean,daily,identical,MJ/m2/day converted to mean W/m2
+ziamet,dly_eto,Reference ET grass (ASCE ETo),in,et_reference,25.4,0,total,daily,identical,grass reference ETo
+ziamet,dly_eto_mm,Reference ET grass (ASCE ETo),mm,et_reference,1,0,total,daily,identical,grass reference ETo
+ziamet,dly_etr,Reference ET alfalfa (ASCE ETr),in,et_reference,25.4,0,total,daily,equivalent_method,alfalfa reference ETr (~1.2x ETo)
+ziamet,dly_etr_mm,Reference ET alfalfa (ASCE ETr),mm,et_reference,1,0,total,daily,equivalent_method,alfalfa reference ETr (~1.2x ETo)
+ziamet,dly_soilt_2in,Soil temperature 2 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 2 in
+ziamet,dly_soilt_4in,Soil temperature 4 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 4 in
+ziamet,dly_soilt_8in,Soil temperature 8 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 8 in
+ziamet,dly_soilt_20in,Soil temperature 20 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 20 in
+ziamet,dly_soilt_40in,Soil temperature 40 in,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 40 in
+ziamet,dly_soilt_5cm,Soil temperature 5 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 5 cm
+ziamet,dly_soilt_10cm,Soil temperature 10 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 10 cm
+ziamet,dly_soilt_20cm,Soil temperature 20 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 20 cm
+ziamet,dly_soilt_50cm,Soil temperature 50 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 50 cm
+ziamet,dly_soilt_100cm,Soil temperature 100 cm,F,soil_temp,0.5555555556,-17.7777777778,mean,daily,identical,depth 100 cm
+ziamet,dly_soilt_2in_c,Soil temperature 2 in,C,soil_temp,1,0,mean,daily,identical,depth 2 in
+ziamet,dly_soilt_4in_c,Soil temperature 4 in,C,soil_temp,1,0,mean,daily,identical,depth 4 in
+ziamet,dly_soilt_8in_c,Soil temperature 8 in,C,soil_temp,1,0,mean,daily,identical,depth 8 in
+ziamet,dly_soilt_20in_c,Soil temperature 20 in,C,soil_temp,1,0,mean,daily,identical,depth 20 in
+ziamet,dly_soilt_40in_c,Soil temperature 40 in,C,soil_temp,1,0,mean,daily,identical,depth 40 in

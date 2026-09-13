@@ -1,0 +1,9 @@
+sources:
+  usbr_albuq:
+    agency: Bureau of Reclamation, Albuquerque Area Office (Rio Grande Project / Carlsbad Project real-time data)
+    description: Rolling ~7-day window of 15-minute provisional dam elevation, storage, outflow and inflow gauge readings for Platoro, Heron, El Vado, Abiquiu, Nambe Falls, Cochiti, Elephant Butte, Caballo, Santa Rosa, Sumner, Brantley and Avalon dams, the Rio Grande below Elephant Butte and Caballo, and the four MRGCD river diversions (Cochiti, Angostura, Isleta, San Acacia). Each run archives the current window so the record accumulates from 2026-09.
+    url: https://www.usbr.gov/uc/elpaso/water/RioGrandeProject/RealTimeData/
+    license: Public domain (U.S. Government work)
+    citation: Bureau of Reclamation, Albuquerque Area Office, Rio Grande Project real-time data files, accessed 2026.
+    refresh: daily (must run at least weekly to avoid gaps; files only hold ~7 days)
+    caveats: Data are provisional and subject to revision. Timestamps are MST year-round (stored as UTC, utc_offset_min=-420). Only public route to MRGCD diversion flows; MRGCD's own OneRain telemetry is login-gated. Elevation in SUMNERDAM file is NAVD88; others are project datums. Caballo gate openings are archived raw but not mapped.

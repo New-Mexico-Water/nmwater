@@ -1,0 +1,15 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+bemp,gw_cm,Depth to groundwater (individual well),cm,gw_depth_to_water,0.0328084,0,instantaneous,monthly,identical,shallow riparian well; monthly manual reading; cm converted to ft
+bemp,gw_mean_cm,Mean depth to groundwater (5 wells),cm,gw_depth_to_water,0.0328084,0,mean,monthly,equivalent_method,site mean of up to 5 wells
+bemp,ditch_cm,Ditch/drain water depth below measuring point,cm,stage,-0.0328084,0,instantaneous,monthly,related_not_comparable,depth below a fixed measuring point on the nearby ditch; sign flipped so higher = more water; datum = measuring point
+bemp,precip_canopy_mm,Precipitation canopy gauge,mm,precip,0.03937007874,0,total,monthly,equivalent_method,gauge under cottonwood canopy; interval between monthly site visits
+bemp,precip_open_mm,Precipitation open gauge,mm,precip,0.03937007874,0,total,monthly,identical,open-sky gauge; interval between monthly site visits
+bemp,wq_spc,Specific conductance,uS/cm,specific_conductance,1,0,sample,irregular,identical,groundwater/ditch/river grab sample
+bemp,wq_ph,pH,pH,ph,1,0,sample,irregular,identical,
+bemp,wq_do,Dissolved oxygen,mg/L,dissolved_oxygen,1,0,sample,irregular,identical,
+bemp,wq_temp,Water temperature,degC,water_temp,1,0,sample,irregular,identical,
+bemp,wq_turb,Turbidity,NTU,turbidity,1,0,sample,irregular,equivalent_method,NTU reported as FNU
+bemp,wq_cl,Chloride,mg/L,chloride,1,0,sample,irregular,identical,
+bemp,wq_no3,Nitrate as N,mg/L,nitrate,1,0,sample,irregular,identical,
+bemp,wq_so4,Sulfate,mg/L,sulfate,1,0,sample,irregular,identical,
+bemp,wq_f,Fluoride,mg/L,fluoride,1,0,sample,irregular,identical,

@@ -1,0 +1,178 @@
+# Per-source runtime settings. Keys not listed under defaults become source options.
+defaults:
+  concurrency: 2
+  min_interval_s: 0.5
+  timeout_s: 180
+  max_retries: 5
+
+sources:
+  usgs:
+    # Measured 2026-09-13 with a registered key: x-ratelimit-limit = 1000 requests/hour.
+    # 2 workers x 4 s spacing sustains ~900/hour and never trips the limit. The retry layer
+    # still backs off on 429. Legacy WaterServices (bulk RDB) is not metered this way.
+    concurrency: 2
+    min_interval_s: 4.0
+    timeout_s: 900
+    token_env: [USGS_API_KEY]
+    ogc_base: https://api.waterdata.usgs.gov/ogcapi/v1
+    legacy_base: https://nwis.waterservices.usgs.gov/nwis
+    # daily-value parameter codes to pull statewide (others are pulled per allow-listed site)
+    daily_params: ["00060", "00065", "00054", "00062", "00045", "00010", "00011", "72019", "62610", "62611",
+                   "62614", "00095", "80154", "80155", "63680", "00300", "00400", "72020", "30208", "00020",
+                   "00021", "00036", "00052", "00035", "00025", "72036", "72037", "72038", "72039", "72040",
+                   "72041", "00046", "00090", "00480", "72137", "72138", "72139", "00050", "00061"]
+    include_continuous: false      # 15-minute data: opt in with `nmwater fetch usgs --kind continuous`
+    continuous_params: ["00060", "00065", "00054", "00062", "00045", "00010", "72019", "62610", "62611", "00095"]
+    continuous_window_days: 1000
+
+  usbr_hydrodata:
+    concurrency: 3
+    min_interval_s: 0.3
+    base_url: https://www.usbr.gov/uc/water/hydrodata
+
+  usbr_rise:
+    concurrency: 2
+    min_interval_s: 0.5
+    base_url: https://data.usbr.gov/rise/api
+
+  usace_cwms:
+    concurrency: 3
+    min_interval_s: 0.3
+    base_url: https://cwms-data.usace.army.mil/cwms-data
+    office: SPA
+
+  nrcs:
+    concurrency: 3
+    min_interval_s: 0.3
+    base_url: https://wcc.sc.egov.usda.gov/awdbRestApi/services/v1
+    networks: ["SNTL", "SCAN", "SNOW", "COOP", "MPRC", "SNTLT", "MSNT"]
+    exclude_networks: ["USGS", "BOR"]      # duplicates of other sources
+    extra_hucs: ["1301", "1408"]           # CO headwater stations
+    hourly_elements: ["WTEQ", "SNWD", "PREC", "TOBS", "SMS", "STO", "PRCP"]
+
+  noaa_ghcnd:
+    concurrency: 4
+    min_interval_s: 0.2
+
+  noaa_isd:
+    concurrency: 3
+    min_interval_s: 0.3
+
+  uscrn:
+    concurrency: 2
+
+  cocorahs:
+    concurrency: 1
+    min_interval_s: 1.5
+    start_date: "2005-01-01"
+
+  iem_dcp:
+    concurrency: 2
+    min_interval_s: 0.5
+    window_years: 2
+
+  nwps:
+    concurrency: 2
+
+  wqp:
+    concurrency: 2
+    min_interval_s: 1.0
+    timeout_s: 900
+
+  nmwdi_st2:
+    concurrency: 3
+    min_interval_s: 0.2
+    base_url: https://st2.newmexicowaterdata.org/FROST-Server/v1.1
+
+  nmed_st2:
+    concurrency: 3
+    min_interval_s: 0.2
+    base_url: https://nmenv.newmexicowaterdata.org/FROST-Server/v1.1
+
+  nmbgmr:
+    concurrency: 2
+    min_interval_s: 0.5
+    base_url: https://waterdata.nmt.edu/latest
+
+  ose_arcgis:
+    concurrency: 2
+    min_interval_s: 0.5
+    base_url: https://services2.arcgis.com/qXZbWTdPDbTjl7Dy/arcgis/rest/services
+
+  ose_meas:
+    concurrency: 1
+    min_interval_s: 1.0
+    base_url: https://meas.ose.state.nm.us
+
+  isc_sevenrivers:
+    concurrency: 2
+    base_url: https://nmisc-wf.gladata.com/api
+
+  ose_reports:
+    concurrency: 1
+    min_interval_s: 1.0
+    timeout_s: 600
+    verify_ssl: false          # www.ose.nm.gov serves an incomplete TLS chain
+
+  usbr_albuq:
+    concurrency: 2
+    base_url: https://www.usbr.gov/uc/elpaso/water/RioGrandeProject/RealTimeData
+
+  codwr:
+    concurrency: 3
+    min_interval_s: 0.3
+    base_url: https://dwr.state.co.us/Rest/GET/api/v2
+    divisions: [3, 7]
+
+  ibwc:
+    concurrency: 1
+    min_interval_s: 1.0
+    timeout_s: 600
+    bulletin_start: 1931
+    bulletin_end: 2006
+
+  twdb:
+    concurrency: 1
+    timeout_s: 900
+
+  ziamet:
+    concurrency: 2
+    min_interval_s: 0.5
+    base_url: https://duststorm.nmsu.edu
+
+  edi:
+    concurrency: 2
+
+  bemp:
+    concurrency: 1
+
+  ckan:
+    concurrency: 1
+    min_interval_s: 1.0
+    base_url: https://catalog.newmexicowaterdata.org
+
+  synoptic:
+    concurrency: 1
+    min_interval_s: 1.0
+    token_env: [SYNOPTIC_TOKEN]
+
+  usdm:
+    concurrency: 2
+
+  nclimdiv:
+    concurrency: 2
+
+  gridmet:
+    concurrency: 2
+    min_interval_s: 1.0
+    timeout_s: 1800
+
+  prism:
+    concurrency: 1
+    min_interval_s: 2.0
+    timeout_s: 1800
+
+  snodas:
+    concurrency: 2
+    min_interval_s: 1.0
+    timeout_s: 1800

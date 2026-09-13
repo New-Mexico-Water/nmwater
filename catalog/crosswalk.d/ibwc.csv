@@ -1,0 +1,4 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+ibwc,STAGE_M,Stage (daily report),m,stage,3.28084,0,observed,daily,identical,provisional daily report value; IBWC gauge datum
+ibwc,DISCHARGE_CMS,Discharge (daily report),cms,discharge,35.3146667,0,observed,daily,equivalent_method,provisional value as reported ~09:35 MT; not a computed daily mean
+ibwc,RAINFALL_MM,Rainfall (daily report),mm,precip,0.0393700787,0,total,daily,identical,provisional

@@ -1,0 +1,13 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+edi,air_temp_c,Air temperature,degC,air_temp,1,0,instantaneous,hourly,identical,LTER station sensors
+edi,air_temp_max_c,Air temperature maximum,degC,air_temp,1,0,max,daily,identical,
+edi,air_temp_min_c,Air temperature minimum,degC,air_temp,1,0,min,daily,identical,
+edi,air_temp_mean_c,Air temperature mean,degC,air_temp,1,0,mean,daily,identical,
+edi,precip_mm,Precipitation,mm,precip,0.03937007874,0,total,hourly,identical,tipping bucket; winter undercatch likely
+edi,rh_pct,Relative humidity,percent,relative_humidity,1,0,instantaneous,hourly,identical,
+edi,wind_speed_ms,Wind speed,m/s,wind_speed,2.2369362921,0,mean,hourly,identical,sensor height varies by station
+edi,wind_dir_deg,Wind direction,degree,wind_direction,1,0,mean,hourly,identical,
+edi,solar_wm2,Solar radiation,W/m2,solar_radiation,1,0,mean,hourly,identical,some stations report PAR not shortwave; check entity metadata
+edi,soil_moisture_pct,Soil moisture volumetric,percent,soil_moisture,1,0,instantaneous,hourly,equivalent_method,depth varies by station
+edi,soil_temp_c,Soil temperature,degC,soil_temp,1,0,instantaneous,hourly,identical,depth varies by station
+edi,depth_to_water_ft,Depth to water below land surface,ft,gw_depth_to_water,1,0,instantaneous,irregular,identical,Navajo Nation wells database

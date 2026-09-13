@@ -1,0 +1,39 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+uscrn,T_HR_AVG,Hourly average air temperature,degC,air_temp,1,0,mean,hourly,identical,
+uscrn,T_MAX,Hourly maximum air temperature,degC,air_temp,1,0,max,hourly,identical,
+uscrn,T_MIN,Hourly minimum air temperature,degC,air_temp,1,0,min,hourly,identical,
+uscrn,P_CALC,Hourly precipitation,mm,precip,0.03937007874,0,total,hourly,identical,Geonor weighing gauge (heated); best winter precip in NM
+uscrn,SOLARAD,Average global solar radiation,W/m2,solar_radiation,1,0,mean,hourly,identical,
+uscrn,RH_HR_AVG,Hourly average relative humidity,percent,relative_humidity,1,0,mean,hourly,identical,
+uscrn,SOIL_MOISTURE_5,Soil moisture 5 cm,m3/m3,soil_moisture,100,0,mean,hourly,identical,depth 5 cm
+uscrn,SOIL_MOISTURE_10,Soil moisture 10 cm,m3/m3,soil_moisture,100,0,mean,hourly,identical,depth 10 cm
+uscrn,SOIL_MOISTURE_20,Soil moisture 20 cm,m3/m3,soil_moisture,100,0,mean,hourly,identical,depth 20 cm
+uscrn,SOIL_MOISTURE_50,Soil moisture 50 cm,m3/m3,soil_moisture,100,0,mean,hourly,identical,depth 50 cm
+uscrn,SOIL_MOISTURE_100,Soil moisture 100 cm,m3/m3,soil_moisture,100,0,mean,hourly,identical,depth 100 cm
+uscrn,SOIL_TEMP_5,Soil temperature 5 cm,degC,soil_temp,1,0,mean,hourly,identical,depth 5 cm
+uscrn,SOIL_TEMP_10,Soil temperature 10 cm,degC,soil_temp,1,0,mean,hourly,identical,depth 10 cm
+uscrn,SOIL_TEMP_20,Soil temperature 20 cm,degC,soil_temp,1,0,mean,hourly,identical,depth 20 cm
+uscrn,SOIL_TEMP_50,Soil temperature 50 cm,degC,soil_temp,1,0,mean,hourly,identical,depth 50 cm
+uscrn,SOIL_TEMP_100,Soil temperature 100 cm,degC,soil_temp,1,0,mean,hourly,identical,depth 100 cm
+uscrn,T_DAILY_MAX,Daily maximum air temperature,degC,air_temp,1,0,max,daily,identical,
+uscrn,T_DAILY_MIN,Daily minimum air temperature,degC,air_temp,1,0,min,daily,identical,
+uscrn,T_DAILY_MEAN,Daily mean (max+min)/2,degC,air_temp,1,0,median,daily,equivalent_method,(Tmax+Tmin)/2 convention; statistic median used to distinguish from true average
+uscrn,T_DAILY_AVG,Daily average air temperature,degC,air_temp,1,0,mean,daily,identical,
+uscrn,P_DAILY_CALC,Daily precipitation,mm,precip,0.03937007874,0,total,daily,identical,
+uscrn,SOLARAD_DAILY,Daily total solar energy,MJ/m2,solar_radiation,11.574074,0,mean,daily,equivalent_method,converted from MJ/m2/day to mean W/m2
+uscrn,RH_DAILY_MAX,Daily max RH,percent,relative_humidity,1,0,max,daily,identical,
+uscrn,RH_DAILY_MIN,Daily min RH,percent,relative_humidity,1,0,min,daily,identical,
+uscrn,RH_DAILY_AVG,Daily avg RH,percent,relative_humidity,1,0,mean,daily,identical,
+uscrn,SOIL_MOISTURE_5_DAILY,Daily soil moisture 5 cm,m3/m3,soil_moisture,100,0,mean,daily,identical,depth 5 cm
+uscrn,SOIL_MOISTURE_10_DAILY,Daily soil moisture 10 cm,m3/m3,soil_moisture,100,0,mean,daily,identical,depth 10 cm
+uscrn,SOIL_MOISTURE_20_DAILY,Daily soil moisture 20 cm,m3/m3,soil_moisture,100,0,mean,daily,identical,depth 20 cm
+uscrn,SOIL_MOISTURE_50_DAILY,Daily soil moisture 50 cm,m3/m3,soil_moisture,100,0,mean,daily,identical,depth 50 cm
+uscrn,SOIL_MOISTURE_100_DAILY,Daily soil moisture 100 cm,m3/m3,soil_moisture,100,0,mean,daily,identical,depth 100 cm
+uscrn,SOIL_TEMP_5_DAILY,Daily soil temperature 5 cm,degC,soil_temp,1,0,mean,daily,identical,depth 5 cm
+uscrn,SOIL_TEMP_10_DAILY,Daily soil temperature 10 cm,degC,soil_temp,1,0,mean,daily,identical,depth 10 cm
+uscrn,SOIL_TEMP_20_DAILY,Daily soil temperature 20 cm,degC,soil_temp,1,0,mean,daily,identical,depth 20 cm
+uscrn,SOIL_TEMP_50_DAILY,Daily soil temperature 50 cm,degC,soil_temp,1,0,mean,daily,identical,depth 50 cm
+uscrn,SOIL_TEMP_100_DAILY,Daily soil temperature 100 cm,degC,soil_temp,1,0,mean,daily,identical,depth 100 cm
+uscrn,SUR_TEMP_DAILY_MAX,Infrared surface temp max,degC,,1,0,,,related_not_comparable,not mapped
+uscrn,SUR_TEMP_DAILY_MIN,Infrared surface temp min,degC,,1,0,,,related_not_comparable,not mapped
+uscrn,SUR_TEMP_DAILY_AVG,Infrared surface temp avg,degC,,1,0,,,related_not_comparable,not mapped

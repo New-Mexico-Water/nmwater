@@ -1,0 +1,2 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+ose_arcgis,depth_wate,Depth to water at drilling (WATERS POD record),ft bgs,gw_depth_to_water,1,0,instantaneous,irregular,equivalent_method,one-off driller-reported static level at well completion; date = well log file date

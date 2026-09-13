@@ -1,0 +1,16 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+nmed_st2,NITRATE|mg/l,Nitrate (as N),mg/L,nitrate,1,0,sample,irregular,identical,SDWIS compliance sample; non-detects excluded from observations (kept in waterquality table)
+nmed_st2,NITRATE-NITRITE|mg/l,Nitrate-nitrite (as N),mg/L,nitrate,1,0,sample,irregular,equivalent_method,nitrate+nitrite as N
+nmed_st2,ARSENIC|mg/l,Arsenic,mg/L,arsenic,1000,0,sample,irregular,identical,total arsenic; mg/L -> ug/L
+nmed_st2,ARSENIC|ug/l,Arsenic,ug/L,arsenic,1,0,sample,irregular,identical,total arsenic
+nmed_st2,FLUORIDE|mg/l,Fluoride,mg/L,fluoride,1,0,sample,irregular,identical,
+nmed_st2,COMBINED URANIUM|ug/l,Combined uranium,ug/L,uranium,1,0,sample,irregular,identical,
+nmed_st2,COMBINED URANIUM|mg/l,Combined uranium,mg/L,uranium,1000,0,sample,irregular,identical,mg/L -> ug/L
+nmed_st2,CHLORIDE|mg/l,Chloride,mg/L,chloride,1,0,sample,irregular,identical,
+nmed_st2,SULFATE|mg/l,Sulfate,mg/L,sulfate,1,0,sample,irregular,identical,
+nmed_st2,"RESIDUE, TOTAL, FILTERABLE|mg/l",Total dissolved solids,mg/L,tds,1,0,sample,irregular,identical,SDWIS "residue total filterable" = TDS
+nmed_st2,CONDUCTIVITY @ 25 C UMHOS/CM|umhos/cm,Specific conductance,umhos/cm,specific_conductance,1,0,sample,irregular,identical,umhos/cm = uS/cm
+nmed_st2,CONDUCTIVITY @ 25 C UMHOS/CM|us/cm,Specific conductance,uS/cm,specific_conductance,1,0,sample,irregular,identical,
+nmed_st2,PH|su,pH,SU,ph,1,0,sample,irregular,identical,
+nmed_st2,PH|ph,pH,pH,ph,1,0,sample,irregular,identical,
+nmed_st2,TURBIDITY|ntu,Turbidity,NTU,turbidity,1,0,sample,irregular,equivalent_method,NTU reported as FNU-equivalent

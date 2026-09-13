@@ -1,0 +1,9 @@
+sources:
+  ziamet:
+    agency: New Mexico Climate Center, New Mexico State University (ZiaMet mesonet)
+    description: 214-station state mesonet; 5-minute raw surface weather feed (rolling window) and daily surface weather, reference ET, and soil temperature products per station.
+    url: https://duststorm.nmsu.edu/ziamet/ (mirrors nmcc.nmsu.edu, weather2.nmsu.edu, weather.nmsu.edu, ziamet.org)
+    license: Not stated; NMSU disclaimer at /about/#disclaimer. Contact dwdubois@nmsu.edu (State Climatologist) for bulk use.
+    citation: New Mexico Climate Center, New Mexico State University, ZiaMet weather station network, accessed 2026.
+    refresh: 5-minute feed is a short rolling window - run at least daily to keep a continuous sub-hourly archive; daily products yearly windows, current year re-fetched
+    caveats: NMSU web server is intermittently unreachable (connection timeouts); host rotation built in. Daily product POST form field names inferred from the page (sid, sdate, edate, dtype, output, units) and the per-station period of record is not published - probe by year. Feed times are local Mountain time converted to UTC.

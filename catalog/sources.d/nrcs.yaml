@@ -1,0 +1,9 @@
+sources:
+  nrcs:
+    agency: USDA Natural Resources Conservation Service, National Water and Climate Center (AWDB)
+    description: SNOTEL (30 NM stations, 1971-), SCAN soil-climate stations, manual snow courses (semimonthly/monthly, 1930s-), COOP/MPRC precipitation, plus Colorado headwater stations in HUC 1301/1408; daily, hourly, semimonthly, monthly, water-year and calendar-year values; NRCS water supply forecasts.
+    url: https://wcc.sc.egov.usda.gov/awdbRestApi/services/v1/
+    license: Public domain (U.S. Government work)
+    citation: USDA NRCS National Water and Climate Center, Air and Water Database (AWDB) REST API, accessed 2026.
+    refresh: daily
+    caveats: PREC is water-year accumulated precipitation (variable precip_accumulated_wy); PRCP is the daily increment. Hourly values are station local standard time (MST) and are stored as UTC with utc_offset_min=-420. Aggregated durations are stamped at period start (monthly=1st, semimonthly=collection date, water year=Oct 1 of the previous calendar year, calendar year=Jan 1). Soil moisture/temperature carry the sensor depth in source_param (e.g. SMS:-8 = 8 in). qcFlag|qaFlag are in qualifier (V=valid, E=edited, S/K suspect; R/P approval). Raw sensor spikes are not removed. USGS and BOR network mirrors are excluded (duplicates of usgs/usbr sources).

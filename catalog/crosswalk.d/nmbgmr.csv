@@ -1,0 +1,2 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+nmbgmr,DepthToWaterBGS,Depth to water below ground surface,ft,gw_depth_to_water,1,0,instantaneous,,identical,manual (tape/e-probe) or transducer per qualifier; API warns data are provisional

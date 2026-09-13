@@ -1,0 +1,72 @@
+sources:
+  nmwdi_st2:
+    agency: New Mexico Water Data Initiative (NMBGMR, NM Tech), implementing the 2019 Water Data Act
+    description: Federated groundwater levels from nine New Mexico agencies (PVACD from 1946, Bernalillo County from 1978, City of Albuquerque from 1987, Estancia Basin, OSE Roswell, EBID, San Acacia reach) served as OGC SensorThings.
+    url: https://st2.newmexicowaterdata.org/FROST-Server/v1.1
+    license: Public data published under the New Mexico Water Data Act; cite NMWDI and the originating agency.
+    citation: New Mexico Water Data Initiative, SensorThings API, accessed 2026.
+    refresh: continuous; pull incrementally with --since
+    caveats: The 330 "OSERealTime" discharge and gage-height datastreams are registered stubs with no observations. Some OSE-Roswell records carry impossible future timestamps and are filtered on ingest. Depth-to-water is feet below ground surface; elevations use per-site datums.
+
+  nmed_st2:
+    agency: New Mexico Environment Department, Drinking Water Bureau (SDWIS/State)
+    description: Public drinking-water sampling results for 54,616 sampling points, 791,378 datastreams, ~3.19 million results across 862 analytes, roughly 2002 to present.
+    url: https://nmenv.newmexicowaterdata.org/FROST-Server/v1.1
+    license: Public record
+    citation: New Mexico Environment Department Drinking Water Bureau via the NM Water Data Initiative SensorThings service, accessed 2026.
+    refresh: as NMED loads SDWIS batches
+    caveats: Compliance sampling, not ambient monitoring; sampling points are treatment-plant and distribution locations, not always the raw water source. Results land in the waterquality table; only analytes with canonical variables also become observations.
+
+  nmbgmr:
+    agency: NM Bureau of Geology and Mineral Resources, Aquifer Mapping and Monitoring Program
+    description: Manual and continuous groundwater levels, well construction, lithology, and water chemistry statewide, including the Healy Collaborative Groundwater Monitoring Network (620 wells, ~36,000 measurements since 2016).
+    url: https://waterdata.nmt.edu/latest
+    license: Free for non-commercial use with attribution; the API warns the data are not for legally binding decisions.
+    citation: New Mexico Bureau of Geology and Mineral Resources, Aquifer Mapping Program, accessed 2026.
+    refresh: continuous
+    caveats: "BLOCKED as of 2026-09-13: waterdata.nmt.edu does not respond from this network (connection times out) and the App Engine mirror returns 403 because the default location set is private. The USGS NGWMN mirror serves NMBGMR site metadata via WFS at https://www.usgs.gov/apps/ngwmn/geoserver/ows but its water-level route is behind the same WAF. Much of this record is also reachable through nmwdi_st2 and through USGS NWIS groundwater levels. Retry from a different network or request API credentials from nmbg-waterlevels@nmt.edu."
+
+  ose_arcgis:
+    agency: New Mexico Office of the State Engineer / Interstate Stream Commission
+    description: Water-rights and infrastructure geography - 279,991 points of diversion with well construction and permitted use, 555 real-time meters, 25,699 conveyances, springs, dams, aquifer-test wells, acequias, irrigation districts, basins, and public water systems.
+    url: https://services2.arcgis.com/qXZbWTdPDbTjl7Dy/arcgis/rest/services
+    license: Public record
+    citation: New Mexico Office of the State Engineer, WATERS points of diversion and related GIS layers, accessed 2026.
+    refresh: points of diversion refresh monthly
+    caveats: Administrative registry rather than time series. The static water level recorded at drilling time is stored as a single observation per well with qualifier at_drilling; it is a one-time driller measurement, not a monitored level. Coordinates are NAD83 UTM zone 13N in the source.
+
+  ose_meas:
+    agency: New Mexico Office of the State Engineer / Interstate Stream Commission
+    description: The state's own real-time measurement network - 296 stream, ditch, acequia, and well stations with daily average flow, daily and monthly volumes, and groundwater levels.
+    url: https://meas.ose.state.nm.us
+    license: Public record
+    citation: NM OSE/ISC Real-Time Water Measurement Information System, accessed 2026.
+    refresh: telemetered; reports regenerate daily
+    caveats: The site states data are available only from 2012-01-01 forward. Export requires a session cookie obtained from the station page before posting to the report endpoint. This is the only source of acequia and community-ditch diversion flows.
+
+  isc_sevenrivers:
+    agency: New Mexico Interstate Stream Commission, Pecos Basin program
+    description: Seven Rivers monitoring network - 73 monitoring points (artesian and shallow groundwater) with 37 water-quality analytes and water levels in the Roswell Artesian Basin.
+    url: https://nmisc-wf.gladata.com/api
+    license: Public record
+    citation: New Mexico Interstate Stream Commission Seven Rivers monitoring network, accessed 2026.
+    refresh: monthly spreadsheets; API continuous
+    caveats: The getWaterLevels endpoint validates its id parameter but returned no rows for the monitoring-point ids tested; chemistry via getReadings is confirmed working. Monthly wellfield and extended network spreadsheets on the NM Water Data catalog are Cloudflare-blocked.
+
+  edi:
+    agency: Environmental Data Initiative (LTER network repository)
+    description: Research-network records - Sevilleta LTER hourly meteorology (1988-2024), Jornada Basin LTER met stations (2013-), and the Navajo Nation wells database with water quality spanning 1905-2020.
+    url: https://pasta.lternet.edu/package
+    license: Most EDI packages are CC0 or CC-BY; check each package's intellectual rights and cite the package DOI.
+    citation: Per-package; see the packages reference table for identifiers and revisions.
+    refresh: on package revision
+    caveats: "BLOCKED as of 2026-09-13: pasta.lternet.edu returns 403 'Public Access is not authorized' for search, revision listing, and entity listing from this network. Packages are listed in docs/manual_downloads.md for manual download from the portal. No code change is needed when access is restored."
+
+  synoptic:
+    agency: Synoptic Data PBC (MesoWest)
+    description: Aggregated mesonet observations - RAWS fire-weather stations, DOT road weather, and other networks reporting in and around New Mexico, hourly or sub-hourly from the late 1990s.
+    url: https://api.synopticdata.com/v2
+    license: Free research and non-commercial tier; redistribution of some member networks is restricted. Review Synoptic's terms before republishing.
+    citation: Synoptic Data PBC, Mesonet API, accessed 2026.
+    refresh: continuous
+    caveats: Requires SYNOPTIC_TOKEN. Hard limit of 100,000 station-hours per request. RAWS precipitation gauges are usually unheated and undercatch snow badly. The ZiaMet network is excluded by default because the ziamet source pulls it at native resolution.

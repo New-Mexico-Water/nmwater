@@ -1,0 +1,9 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+ose_meas,DischargeAvg|cfs,Daily average discharge (surface station),cfs,discharge,1,0,mean,daily,identical,OSE telemetered stream/ditch/acequia station; provisional
+ose_meas,DischargeTotal|surface,Daily/monthly total volume (surface station),acre-feet,discharge_volume,1,0,total,,identical,interval daily or monthly per report
+ose_meas,Discharge|cfs,Instantaneous discharge (surface station),cfs,discharge,1,0,instantaneous,instant,identical,raw telemetry (~10-15 min)
+ose_meas,GageHeight|ft,Gage height (surface station),ft,stage,1,0,instantaneous,instant,identical,local datum
+ose_meas,DischargeAvg|gpm,Daily average pumping rate (metered well),gpm,diversion,0.002228009,0,mean,daily,related_not_comparable,metered groundwater pumping rate; mapped to diversion (cfs) pending a gw_withdrawal_rate variable
+ose_meas,DischargeTotal|well,Daily/monthly pumped volume (metered well),acre-feet,diversion_volume,1,0,total,,related_not_comparable,metered groundwater pumping volume
+ose_meas,Discharge|gpm,Instantaneous pumping rate (metered well),gpm,diversion,0.002228009,0,instantaneous,instant,related_not_comparable,metered groundwater pumping rate
+ose_meas,GageHeight|ft bgs,Depth to water (metered well),ft bgs,gw_depth_to_water,1,0,instantaneous,instant,identical,reported under the label "Gage Height (ft bgs)"

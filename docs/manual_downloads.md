@@ -1,0 +1,20 @@
+# Manual downloads
+
+These resources could not be fetched automatically (bot protection or login). Download them in a browser and drop the files into `data/manual/<source>/` keeping the file name; the next `nmwater fetch <source>` ingests them.
+
+| source | file | url | note |
+|---|---|---|---|
+| ose_reports | `wateruse2020.xlsx` | https://catalog.newmexicowaterdata.org/dataset/95483621-599e-49e4-b9a5-c426b677b41a/resource/db554f92-f41b-4b76-9377-da6b98a0b125/download/wateruse2020.xlsx | NM Water Data catalog blocks scripted downloads (Cloudflare) |
+| ose_reports | `wateruse2015.xlsx` | https://catalog.newmexicowaterdata.org/dataset/572676c6-9763-4ebf-8336-fe73ed92a666/resource/a1b77aca-94d1-4c4d-9360-494fa894444e/download/wateruse2015.xlsx | NM Water Data catalog blocks scripted downloads (Cloudflare) |
+| ose_reports | `2015-wur-_water-data-act.mdb` | https://catalog.newmexicowaterdata.org/dataset/572676c6-9763-4ebf-8336-fe73ed92a666/resource/8fd030db-7858-4673-9af8-f359bd9e9aba/download/2015-wur-_water-data-act.mdb | NM Water Data catalog blocks scripted downloads (Cloudflare) |
+| ose_reports | `nmwateruse2015_usgs.xlsx` | https://catalog.newmexicowaterdata.org/dataset/dfc69325-b397-4cdd-a008-5e795d823704/resource/ead5464c-56e0-4c2c-b57f-d4112e4aff26/download/nmwateruse2015.xlsx | NM Water Data catalog blocks scripted downloads (Cloudflare) |
+| ose_reports | `ML103080984.pdf` | https://www.nrc.gov/docs/ML1030/ML103080984.pdf | TR-52 water use 2005 (404 on OSE; NRC mirror): ose_reports: HTTP 403 for https://www.nrc.gov/docs/ML1030/ML |
+| ose_reports | `2015%20WUR%20final_05142019.pdf` | https://www.ose.state.nm.us/WUC/wucTechReports/2015/pdf/2015%20WUR%20final_05142019.pdf | 2015 water use report: HTTP 503 |
+| ckan | `swp_bff_mw01.csv` | https://catalog.newmexicowaterdata.org/dataset/9269ac36-a7b6-4ceb-a41b-0af463963350/resource/06488439-4c06-4abc-999e-9e6af19b708f/download/swp_bff_mw01.csv | dataset wua-data-gap-well-groundwater-levels: ckan: HTTP 403 for https://catalog.newmexicowaterd |
+| ckan | `waterauthority_datagapwell.geojson` | https://catalog.newmexicowaterdata.org/dataset/9269ac36-a7b6-4ceb-a41b-0af463963350/resource/d30986af-b8af-4617-bbd9-967749e7d7d7/download/waterauthority_datagapwell.geojson | dataset wua-data-gap-well-groundwater-levels: ckan: HTTP 403 for https://catalog.newmexicowaterd |
+| ckan | `large_scale_transducer.csv` | https://catalog.newmexicowaterdata.org/dataset/5adccfb7-c0a1-442c-9f69-efe1145a6cd9/resource/5bc7cc13-934c-4bda-8664-2a13ada21d44/download/large_scale_transducer.csv | dataset water-authority-asr-monitoring-wells: ckan: HTTP 403 for https://catalog.newmexicowaterd |
+| ckan | `large_scale_manual.csv` | https://catalog.newmexicowaterdata.org/dataset/5adccfb7-c0a1-442c-9f69-efe1145a6cd9/resource/bace582d-b5c1-420a-9f3c-408882bb954d/download/large_scale_manual.csv | dataset water-authority-asr-monitoring-wells: ckan: HTTP 403 for https://catalog.newmexicowaterd |
+| ckan | `waterauthority_asr_monitoringwells.geojson` | https://catalog.newmexicowaterdata.org/dataset/5adccfb7-c0a1-442c-9f69-efe1145a6cd9/resource/039f329d-b491-4dc5-9302-61b93ad4e00c/download/waterauthority_asr_monitoringwells.geojson | dataset water-authority-asr-monitoring-wells: ckan: HTTP 403 for https://catalog.newmexicowaterd |
+| edi | `knb-lter-sev.1.zip` | https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-sev.1 | Sevilleta LTER meteorology: PASTA API refused public access (edi: HTTP 403 for https://pasta.lternet.edu/package/eml/knb-) |
+| edi | `knb-lter-jrn.210548001.zip` | https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-jrn.210548001 | Jornada Basin LTER met stations: PASTA API refused public access (edi: HTTP 403 for https://pasta.lternet.edu/package/eml/knb-) |
+| edi | `knb-lter-jrn.210437001.zip` | https://portal.edirepository.org/nis/mapbrowse?packageid=knb-lter-jrn.210437001 | Jornada Basin LTER precipitation: PASTA API refused public access (edi: HTTP 403 for https://pasta.lternet.edu/package/eml/knb-) |

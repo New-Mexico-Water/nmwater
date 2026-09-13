@@ -1,0 +1,11 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+nrcs,SMS:-2,Soil moisture 2 in,pct,soil_moisture,1,0,,,identical,depth 2 in
+nrcs,SMS:-4,Soil moisture 4 in,pct,soil_moisture,1,0,,,identical,depth 4 in
+nrcs,SMS:-8,Soil moisture 8 in,pct,soil_moisture,1,0,,,identical,depth 8 in
+nrcs,SMS:-20,Soil moisture 20 in,pct,soil_moisture,1,0,,,identical,depth 20 in
+nrcs,SMS:-40,Soil moisture 40 in,pct,soil_moisture,1,0,,,identical,depth 40 in
+nrcs,STO:-2,Soil temperature 2 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 2 in
+nrcs,STO:-4,Soil temperature 4 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 4 in
+nrcs,STO:-8,Soil temperature 8 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 8 in
+nrcs,STO:-20,Soil temperature 20 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 20 in
+nrcs,STO:-40,Soil temperature 40 in,degF,soil_temp,0.5555555556,-17.7777777778,,,identical,depth 40 in

@@ -1,0 +1,9 @@
+sources:
+  ibwc:
+    agency: International Boundary and Water Commission, U.S. Section
+    description: Daily provisional Rio Grande stage/discharge/rainfall at the international reach gauges (El Paso 08364000, American Dam, American Canal, Fort Quitman 08370500, and downstream), plus the annual Water Bulletins "Flow of the Rio Grande and Tributaries" 1931-2006 mirrored as PDFs.
+    url: https://www.ibwc.gov/water-data/ ; https://ibwcsftpstg.blob.core.windows.net/wad/DailyReports/flowdata.htm
+    license: U.S. Government work, public domain
+    citation: International Boundary and Water Commission, Rio Grande Flow and Reservoir Conditions daily reports and Water Bulletins, accessed 2026.
+    refresh: weekdays; the previous-reports index keeps ~5 months of daily pages
+    caveats: Provisional values; site ids are USGS site numbers so ibwc:0836400 pairs with usgs:08364000 for the approved record. Bulletins are PDF only (table extraction pending).

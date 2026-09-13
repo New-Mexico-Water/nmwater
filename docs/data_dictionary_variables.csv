@@ -1,0 +1,58 @@
+variable,label,unit,quantity,kind,medium,sign,definition,comparability
+discharge,Streamflow / discharge,cfs,volumetric_flow_rate,flux,surface_water,,"Volumetric flow rate of water past a stream, canal, ditch, or spring gauge.","USGS 00060 daily mean, USBR HydroData flow, USACE Flow, CO DWR DISCHRG, and OSE daily average flow are the same quantity. Provisional vs approved values can differ; check qualifier."
+discharge_volume,Flow volume over the interval,af,volume,flux,surface_water,,Total volume of water passing a gauge during the interval (usually one day).,
+stage,Gage height / stage,ft,length,state,surface_water,,Water surface height above the gauge datum. Datums differ by site and can be reset; not comparable across sites.,
+water_temp,Water temperature,degC,temperature,state,surface_water,,Temperature of surface or ground water at the sensor.,
+diversion,Diversion flow,cfs,volumetric_flow_rate,flux,surface_water,positive = removed from the river,"Flow rate diverted from a river into a canal, ditch, or acequia at the point of diversion.",Same quantity as discharge measured on a conveyance; kept separate so river vs canal terms are explicit in a water balance.
+diversion_volume,Diversion volume,af,volume,flux,surface_water,,Volume diverted during the interval.,
+return_flow,Return / drain flow,cfs,volumetric_flow_rate,flux,surface_water,,"Flow returning to a river from drains, wasteways, or wastewater outfalls.",
+suspended_sediment_conc,Suspended sediment concentration,mg/L,concentration,concentration,surface_water,,Mass of suspended sediment per volume of water.,
+suspended_sediment_discharge,Suspended sediment discharge,tons/day,mass_flow_rate,flux,surface_water,,Mass of suspended sediment passing the gauge per day.,
+reservoir_storage,Reservoir storage,af,volume,stock,reservoir,,"Volume of water stored in a reservoir at the observation time, per the operator's current elevation-capacity table.","USGS 00054, USBR datatype 17, USACE Stor, and NRCS RESC all report storage but may use different capacity tables (sedimentation resurveys change them). Treat as equivalent_method and compare with care across revisions."
+reservoir_elevation,Reservoir pool elevation,ft,length,state,reservoir,,Water surface elevation of a reservoir. Vertical datum (NGVD29 vs NAVD88) is noted in the crosswalk caveat.,
+reservoir_release,Reservoir release / outflow,cfs,volumetric_flow_rate,flux,reservoir,,"Total flow released from a dam (outlet works, spillway, power).",
+reservoir_release_volume,Reservoir release volume,af,volume,flux,reservoir,,Volume released during the interval.,
+reservoir_inflow,Reservoir inflow,cfs,volumetric_flow_rate,flux,reservoir,,Computed or gauged inflow to a reservoir.,Often computed as release + change in storage + evaporation; not an independent measurement.
+reservoir_inflow_volume,Reservoir inflow volume,af,volume,flux,reservoir,,Inflow volume during the interval.,
+reservoir_evaporation,Reservoir evaporation,af,volume,flux,reservoir,,Estimated evaporative loss from the reservoir surface during the interval.,
+reservoir_area,Reservoir surface area,acre,area,state,reservoir,,Water surface area at the observed elevation.,
+reservoir_delta_storage,Change in storage,af,volume,flux,reservoir,,Storage at end of interval minus storage at start.,
+precip,Precipitation,in,length,flux,atmosphere,,Depth of liquid-equivalent precipitation falling during the interval (incremental).,NOT the same as precip_accumulated_wy. GHCN PRCP and USGS 00045 are daily totals; NRCS PRCP is the daily increment of the accumulation gauge.
+precip_accumulated_wy,Water-year accumulated precipitation,in,length,stock,atmosphere,,"Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.",related_not_comparable to precip; convert by differencing consecutive days within a water year.
+snowfall,Snowfall,in,length,flux,snow,,Depth of new snow during the interval.,
+swe,Snow water equivalent,in,length,stock,snow,,Depth of water contained in the snowpack at the observation time.,"NRCS WTEQ (pillow), snow-course measurements, GHCN WESD (manual), and gridded SNODAS/UA SWE all estimate the same quantity by different methods."
+snow_depth,Snow depth,in,length,stock,snow,,Total depth of snow on the ground.,
+snow_density,Snow density,percent,ratio,state,snow,,"SWE divided by snow depth, as percent.",
+air_temp,Air temperature,degC,temperature,state,atmosphere,,Air temperature at the station's standard height. Use the statistic column (mean/max/min/instantaneous).,
+relative_humidity,Relative humidity,percent,ratio,state,atmosphere,,Relative humidity of the air.,
+wind_speed,Wind speed,mph,speed,state,atmosphere,,Wind speed at the station's anemometer height.,
+wind_direction,Wind direction,degree,angle,state,atmosphere,,"Direction the wind blows from, degrees clockwise from north.",
+solar_radiation,Solar radiation,W/m2,irradiance,flux,atmosphere,,"Incoming shortwave radiation, mean over the interval.",
+vapor_pressure_deficit,Vapor pressure deficit,kPa,pressure,state,atmosphere,,Saturation minus actual vapor pressure.,
+et_reference,Reference evapotranspiration,mm,length,flux,atmosphere,,"Evapotranspiration from a reference crop surface (grass ETo or alfalfa ETr; see caveat) computed from weather data. A demand ceiling, not actual ET.",
+et_actual,Actual evapotranspiration,mm,length,flux,soil,,Estimated actual evapotranspiration from the land surface over the interval (remote sensing or model based).,
+soil_moisture,Soil moisture (volumetric),percent,ratio,state,soil,,Volumetric water content at the sensor depth; depth is in the site/sensor metadata.,
+soil_temp,Soil temperature,degC,temperature,state,soil,,Soil temperature at the sensor depth.,
+gw_depth_to_water,Depth to water below land surface,ft,length,state,groundwater,positive = below land surface,Distance from land surface down to the water level in a well. Positive downward; negative means flowing/artesian above land surface.,"USGS 72019, NMBGMR/NMWDI depth-to-water, OSE well levels, and CO DWR water levels are the same quantity. Manual tape vs transducer readings are equivalent_method."
+gw_level_elevation,Groundwater level elevation,ft,length,state,groundwater,,Elevation of the water level in a well above the vertical datum named in the caveat (NGVD29 or NAVD88).,Derived from depth to water and a surveyed measuring-point elevation; datum differences of ~1 m between NGVD29 and NAVD88 must be reconciled before comparison.
+specific_conductance,Specific conductance,uS/cm,conductance,concentration,quality,,Electrical conductance of water normalized to 25 C.,
+tds,Total dissolved solids,mg/L,concentration,concentration,quality,,Mass of dissolved solids per litre.,
+ph,pH,pH,ph,concentration,quality,,Hydrogen ion activity.,
+dissolved_oxygen,Dissolved oxygen,mg/L,concentration,concentration,quality,,Concentration of dissolved oxygen.,
+turbidity,Turbidity,FNU,turbidity,concentration,quality,,Optical turbidity.,
+nitrate,Nitrate as N,mg/L,concentration,concentration,quality,,Nitrate concentration expressed as nitrogen.,
+chloride,Chloride,mg/L,concentration,concentration,quality,,Chloride concentration.,
+sulfate,Sulfate,mg/L,concentration,concentration,quality,,Sulfate concentration.,
+arsenic,Arsenic,ug/L,concentration,concentration,quality,,Total or dissolved arsenic concentration (see caveat).,
+fluoride,Fluoride,mg/L,concentration,concentration,quality,,Fluoride concentration.,
+uranium,Uranium,ug/L,concentration,concentration,quality,,Uranium concentration.,
+withdrawal,Water withdrawal,af/yr,volume_rate,flux,use,,"Water withdrawn from surface or ground water for a use category, per area and period.",
+consumptive_use,Consumptive use / depletion,af/yr,volume_rate,flux,use,,"Portion of withdrawal not returned to the hydrologic system (evaporated, transpired, incorporated, or exported).",
+return_flow_volume,Return flow volume,af/yr,volume_rate,flux,use,,"Withdrawal minus consumptive use, returned to surface or ground water.",
+pdsi,Palmer Drought Severity Index,index,index,index,atmosphere,,Palmer index for a climate division or grid cell.,
+phdi,Palmer Hydrological Drought Index,index,index,index,atmosphere,,Palmer hydrological index.,
+spi,Standardized Precipitation Index,index,index,index,atmosphere,,SPI; timescale in months is given in the source_param (e.g. sp03 = 3-month).,
+spei,Standardized Precipitation-Evapotranspiration Index,index,index,index,atmosphere,,SPEI; timescale in source_param.,
+drought_area_pct,Percent area in drought category,percent,ratio,index,atmosphere,,US Drought Monitor percent of area at or above the category named in source_param (D0..D4).,
+dsci,Drought Severity and Coverage Index,index,index,index,atmosphere,,USDM DSCI (0-500).,
+streamflow_forecast_volume,Seasonal streamflow volume forecast,kaf,volume,flux,surface_water,,NRCS/RFC forecast of runoff volume for a forecast period at an exceedance probability given in source_param.,

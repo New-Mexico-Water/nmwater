@@ -1,0 +1,39 @@
+# Downloaded data and derived stores (rebuildable; hundreds of GB)
+data/
+
+# Credentials and local environment
+.env
+.env.local
+*.pem
+*.key
+.netrc
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+build/
+dist/
+
+# Run artifacts
+docs/qa/
+*.log
+*.duckdb
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+
+# Editor and OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Local Claude Code settings (machine-specific; sets a permissive default mode)
+.claude/

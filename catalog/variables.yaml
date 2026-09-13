@@ -1,0 +1,489 @@
+# Canonical variable registry for the New Mexico hydrologic archive.
+#
+# Canonical units follow the convention of the dominant New Mexico data producers
+# (US customary for water quantities: cfs, acre-feet, feet, inches) with Celsius for
+# temperature and millimetres for gridded ET. SI conversions are trivial in SQL; mixing
+# conventions inside one column is not. Every source field is converted to the canonical
+# unit by catalog/crosswalk.csv.
+#
+# kind:   flux (rate through a boundary), stock (stored amount), state (a condition),
+#         index (dimensionless indicator), concentration (water quality)
+# medium: surface_water, reservoir, groundwater, snow, atmosphere, soil, use, quality
+#
+# Convention for datetime_utc: for interval=daily and coarser, datetime_utc holds the
+# local calendar date at 00:00Z and utc_offset_min is null. For sub-daily intervals it is
+# the true UTC instant and utc_offset_min records the original local offset.
+
+units:
+  cfs:      {label: "cubic feet per second", si: "m3/s", to_si: 0.028316846592}
+  af:       {label: "acre-feet", si: "m3", to_si: 1233.48183754752}
+  af/day:   {label: "acre-feet per day", si: "m3/s", to_si: 0.0142764100}
+  acre:     {label: "acres", si: "m2", to_si: 4046.8564224}
+  ft:       {label: "feet", si: "m", to_si: 0.3048}
+  in:       {label: "inches", si: "mm", to_si: 25.4}
+  mm:       {label: "millimetres", si: "mm", to_si: 1.0}
+  degC:     {label: "degrees Celsius", si: "degC", to_si: 1.0}
+  percent:  {label: "percent", si: "percent", to_si: 1.0}
+  mph:      {label: "miles per hour", si: "m/s", to_si: 0.44704}
+  W/m2:     {label: "watts per square metre", si: "W/m2", to_si: 1.0}
+  kPa:      {label: "kilopascals", si: "kPa", to_si: 1.0}
+  uS/cm:    {label: "microsiemens per centimetre at 25 C", si: "uS/cm", to_si: 1.0}
+  mg/L:     {label: "milligrams per litre", si: "mg/L", to_si: 1.0}
+  ug/L:     {label: "micrograms per litre", si: "ug/L", to_si: 1.0}
+  pH:       {label: "pH units", si: "pH", to_si: 1.0}
+  FNU:      {label: "formazin nephelometric units", si: "FNU", to_si: 1.0}
+  tons/day: {label: "short tons per day", si: "t/day", to_si: 0.90718474}
+  index:    {label: "dimensionless index", si: "index", to_si: 1.0}
+  count:    {label: "count", si: "count", to_si: 1.0}
+  kaf:      {label: "thousand acre-feet", si: "m3", to_si: 1233481.83754752}
+  af/yr:    {label: "acre-feet per year", si: "m3/yr", to_si: 1233.48183754752}
+  degree:   {label: "degrees (direction)", si: "degree", to_si: 1.0}
+  gpm:      {label: "gallons per minute", si: "m3/s", to_si: 0.0000630901964}
+
+variables:
+  # ---- Surface water --------------------------------------------------------------
+  discharge:
+    label: Streamflow / discharge
+    definition: Volumetric flow rate of water past a stream, canal, ditch, or spring gauge.
+    unit: cfs
+    quantity: volumetric_flow_rate
+    kind: flux
+    medium: surface_water
+    intervals: [instant, 15min, hourly, daily, monthly]
+    comparability: USGS 00060 daily mean, USBR HydroData flow, USACE Flow, CO DWR DISCHRG, and OSE daily average flow are the same quantity. Provisional vs approved values can differ; check qualifier.
+  discharge_volume:
+    label: Flow volume over the interval
+    definition: Total volume of water passing a gauge during the interval (usually one day).
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: surface_water
+    intervals: [daily, monthly, water_year]
+  stage:
+    label: Gage height / stage
+    definition: Water surface height above the gauge datum. Datums differ by site and can be reset; not comparable across sites.
+    unit: ft
+    quantity: length
+    kind: state
+    medium: surface_water
+  water_temp:
+    label: Water temperature
+    definition: Temperature of surface or ground water at the sensor.
+    unit: degC
+    quantity: temperature
+    kind: state
+    medium: surface_water
+  diversion:
+    label: Diversion flow
+    definition: Flow rate diverted from a river into a canal, ditch, or acequia at the point of diversion.
+    unit: cfs
+    quantity: volumetric_flow_rate
+    kind: flux
+    medium: surface_water
+    sign: positive = removed from the river
+    comparability: Same quantity as discharge measured on a conveyance; kept separate so river vs canal terms are explicit in a water balance.
+  diversion_volume:
+    label: Diversion volume
+    definition: Volume diverted during the interval.
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: surface_water
+  return_flow:
+    label: Return / drain flow
+    definition: Flow returning to a river from drains, wasteways, or wastewater outfalls.
+    unit: cfs
+    quantity: volumetric_flow_rate
+    kind: flux
+    medium: surface_water
+  suspended_sediment_conc:
+    label: Suspended sediment concentration
+    definition: Mass of suspended sediment per volume of water.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: surface_water
+  suspended_sediment_discharge:
+    label: Suspended sediment discharge
+    definition: Mass of suspended sediment passing the gauge per day.
+    unit: tons/day
+    quantity: mass_flow_rate
+    kind: flux
+    medium: surface_water
+
+  # ---- Reservoirs -----------------------------------------------------------------
+  reservoir_storage:
+    label: Reservoir storage
+    definition: Volume of water stored in a reservoir at the observation time, per the operator's current elevation-capacity table.
+    unit: af
+    quantity: volume
+    kind: stock
+    medium: reservoir
+    comparability: USGS 00054, USBR datatype 17, USACE Stor, and NRCS RESC all report storage but may use different capacity tables (sedimentation resurveys change them). Treat as equivalent_method and compare with care across revisions.
+  reservoir_elevation:
+    label: Reservoir pool elevation
+    definition: Water surface elevation of a reservoir. Vertical datum (NGVD29 vs NAVD88) is noted in the crosswalk caveat.
+    unit: ft
+    quantity: length
+    kind: state
+    medium: reservoir
+  reservoir_release:
+    label: Reservoir release / outflow
+    definition: Total flow released from a dam (outlet works, spillway, power).
+    unit: cfs
+    quantity: volumetric_flow_rate
+    kind: flux
+    medium: reservoir
+  reservoir_release_volume:
+    label: Reservoir release volume
+    definition: Volume released during the interval.
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: reservoir
+  reservoir_inflow:
+    label: Reservoir inflow
+    definition: Computed or gauged inflow to a reservoir.
+    unit: cfs
+    quantity: volumetric_flow_rate
+    kind: flux
+    medium: reservoir
+    comparability: Often computed as release + change in storage + evaporation; not an independent measurement.
+  reservoir_inflow_volume:
+    label: Reservoir inflow volume
+    definition: Inflow volume during the interval.
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: reservoir
+  reservoir_evaporation:
+    label: Reservoir evaporation
+    definition: Estimated evaporative loss from the reservoir surface during the interval.
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: reservoir
+  reservoir_area:
+    label: Reservoir surface area
+    definition: Water surface area at the observed elevation.
+    unit: acre
+    quantity: area
+    kind: state
+    medium: reservoir
+  reservoir_delta_storage:
+    label: Change in storage
+    definition: Storage at end of interval minus storage at start.
+    unit: af
+    quantity: volume
+    kind: flux
+    medium: reservoir
+
+  # ---- Precipitation and snow -----------------------------------------------------
+  precip:
+    label: Precipitation
+    definition: Depth of liquid-equivalent precipitation falling during the interval (incremental).
+    unit: in
+    quantity: length
+    kind: flux
+    medium: atmosphere
+    intervals: [15min, hourly, daily, monthly]
+    comparability: NOT the same as precip_accumulated_wy. GHCN PRCP and USGS 00045 are daily totals; NRCS PRCP is the daily increment of the accumulation gauge.
+  precip_accumulated_wy:
+    label: Water-year accumulated precipitation
+    definition: Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.
+    unit: in
+    quantity: length
+    kind: stock
+    medium: atmosphere
+    comparability: related_not_comparable to precip; convert by differencing consecutive days within a water year.
+  snowfall:
+    label: Snowfall
+    definition: Depth of new snow during the interval.
+    unit: in
+    quantity: length
+    kind: flux
+    medium: snow
+  swe:
+    label: Snow water equivalent
+    definition: Depth of water contained in the snowpack at the observation time.
+    unit: in
+    quantity: length
+    kind: stock
+    medium: snow
+    comparability: NRCS WTEQ (pillow), snow-course measurements, GHCN WESD (manual), and gridded SNODAS/UA SWE all estimate the same quantity by different methods.
+  snow_depth:
+    label: Snow depth
+    definition: Total depth of snow on the ground.
+    unit: in
+    quantity: length
+    kind: stock
+    medium: snow
+  snow_density:
+    label: Snow density
+    definition: SWE divided by snow depth, as percent.
+    unit: percent
+    quantity: ratio
+    kind: state
+    medium: snow
+
+  # ---- Meteorology ----------------------------------------------------------------
+  air_temp:
+    label: Air temperature
+    definition: Air temperature at the station's standard height. Use the statistic column (mean/max/min/instantaneous).
+    unit: degC
+    quantity: temperature
+    kind: state
+    medium: atmosphere
+  relative_humidity:
+    label: Relative humidity
+    definition: Relative humidity of the air.
+    unit: percent
+    quantity: ratio
+    kind: state
+    medium: atmosphere
+  wind_speed:
+    label: Wind speed
+    definition: Wind speed at the station's anemometer height.
+    unit: mph
+    quantity: speed
+    kind: state
+    medium: atmosphere
+  wind_direction:
+    label: Wind direction
+    definition: Direction the wind blows from, degrees clockwise from north.
+    unit: degree
+    quantity: angle
+    kind: state
+    medium: atmosphere
+  solar_radiation:
+    label: Solar radiation
+    definition: Incoming shortwave radiation, mean over the interval.
+    unit: W/m2
+    quantity: irradiance
+    kind: flux
+    medium: atmosphere
+  vapor_pressure_deficit:
+    label: Vapor pressure deficit
+    definition: Saturation minus actual vapor pressure.
+    unit: kPa
+    quantity: pressure
+    kind: state
+    medium: atmosphere
+  et_reference:
+    label: Reference evapotranspiration
+    definition: Evapotranspiration from a reference crop surface (grass ETo or alfalfa ETr; see caveat) computed from weather data. A demand ceiling, not actual ET.
+    unit: mm
+    quantity: length
+    kind: flux
+    medium: atmosphere
+  et_actual:
+    label: Actual evapotranspiration
+    definition: Estimated actual evapotranspiration from the land surface over the interval (remote sensing or model based).
+    unit: mm
+    quantity: length
+    kind: flux
+    medium: soil
+
+  # ---- Soil -----------------------------------------------------------------------
+  soil_moisture:
+    label: Soil moisture (volumetric)
+    definition: Volumetric water content at the sensor depth; depth is in the site/sensor metadata.
+    unit: percent
+    quantity: ratio
+    kind: state
+    medium: soil
+  soil_temp:
+    label: Soil temperature
+    definition: Soil temperature at the sensor depth.
+    unit: degC
+    quantity: temperature
+    kind: state
+    medium: soil
+
+  # ---- Groundwater ----------------------------------------------------------------
+  gw_depth_to_water:
+    label: Depth to water below land surface
+    definition: Distance from land surface down to the water level in a well. Positive downward; negative means flowing/artesian above land surface.
+    unit: ft
+    quantity: length
+    kind: state
+    medium: groundwater
+    sign: positive = below land surface
+    comparability: USGS 72019, NMBGMR/NMWDI depth-to-water, OSE well levels, and CO DWR water levels are the same quantity. Manual tape vs transducer readings are equivalent_method.
+  gw_level_elevation:
+    label: Groundwater level elevation
+    definition: Elevation of the water level in a well above the vertical datum named in the caveat (NGVD29 or NAVD88).
+    unit: ft
+    quantity: length
+    kind: state
+    medium: groundwater
+    comparability: Derived from depth to water and a surveyed measuring-point elevation; datum differences of ~1 m between NGVD29 and NAVD88 must be reconciled before comparison.
+
+  # ---- Water quality (core parameters; full WQP results live in the waterquality table) ----
+  specific_conductance:
+    label: Specific conductance
+    definition: Electrical conductance of water normalized to 25 C.
+    unit: uS/cm
+    quantity: conductance
+    kind: concentration
+    medium: quality
+  tds:
+    label: Total dissolved solids
+    definition: Mass of dissolved solids per litre.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  ph:
+    label: pH
+    definition: Hydrogen ion activity.
+    unit: pH
+    quantity: ph
+    kind: concentration
+    medium: quality
+  dissolved_oxygen:
+    label: Dissolved oxygen
+    definition: Concentration of dissolved oxygen.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  turbidity:
+    label: Turbidity
+    definition: Optical turbidity.
+    unit: FNU
+    quantity: turbidity
+    kind: concentration
+    medium: quality
+  nitrate:
+    label: Nitrate as N
+    definition: Nitrate concentration expressed as nitrogen.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  chloride:
+    label: Chloride
+    definition: Chloride concentration.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  sulfate:
+    label: Sulfate
+    definition: Sulfate concentration.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  arsenic:
+    label: Arsenic
+    definition: Total or dissolved arsenic concentration (see caveat).
+    unit: ug/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  fluoride:
+    label: Fluoride
+    definition: Fluoride concentration.
+    unit: mg/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+  uranium:
+    label: Uranium
+    definition: Uranium concentration.
+    unit: ug/L
+    quantity: concentration
+    kind: concentration
+    medium: quality
+
+  # ---- Water use (aggregate) ------------------------------------------------------
+  withdrawal:
+    label: Water withdrawal
+    definition: Water withdrawn from surface or ground water for a use category, per area and period.
+    unit: af/yr
+    quantity: volume_rate
+    kind: flux
+    medium: use
+  consumptive_use:
+    label: Consumptive use / depletion
+    definition: Portion of withdrawal not returned to the hydrologic system (evaporated, transpired, incorporated, or exported).
+    unit: af/yr
+    quantity: volume_rate
+    kind: flux
+    medium: use
+  return_flow_volume:
+    label: Return flow volume
+    definition: Withdrawal minus consumptive use, returned to surface or ground water.
+    unit: af/yr
+    quantity: volume_rate
+    kind: flux
+    medium: use
+
+  # ---- Drought and climate indices -----------------------------------------------
+  pdsi:
+    label: Palmer Drought Severity Index
+    definition: Palmer index for a climate division or grid cell.
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  phdi:
+    label: Palmer Hydrological Drought Index
+    definition: Palmer hydrological index.
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  palmer_z:
+    label: Palmer Z index
+    definition: Palmer moisture anomaly (Z) index; monthly departure without the PDSI memory term.
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  pmdi:
+    label: Modified Palmer Drought Index
+    definition: Palmer Modified Drought Index (operational PDSI variant used by NOAA CPC).
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  spi:
+    label: Standardized Precipitation Index
+    definition: SPI; timescale in months is given in the source_param (e.g. sp03 = 3-month).
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  spei:
+    label: Standardized Precipitation-Evapotranspiration Index
+    definition: SPEI; timescale in source_param.
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+  drought_area_pct:
+    label: Percent area in drought category
+    definition: US Drought Monitor percent of area at or above the category named in source_param (D0..D4).
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  dsci:
+    label: Drought Severity and Coverage Index
+    definition: USDM DSCI (0-500).
+    unit: index
+    quantity: index
+    kind: index
+    medium: atmosphere
+
+  # ---- Forecasts -------------------------------------------------------------------
+  streamflow_forecast_volume:
+    label: Seasonal streamflow volume forecast
+    definition: NRCS/RFC forecast of runoff volume for a forecast period at an exceedance probability given in source_param.
+    unit: kaf
+    quantity: volume
+    kind: flux
+    medium: surface_water

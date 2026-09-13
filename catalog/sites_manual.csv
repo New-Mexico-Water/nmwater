@@ -1,0 +1,6 @@
+site_uid_a,site_uid_b,link_type,evidence
+usbr_hydrodata:1119,usgs:08361000,same_location_different_sensor,Elephant Butte Reservoir: Reclamation HDB storage vs USGS reservoir gauge
+usbr_hydrodata:1095,usgs:08313000,same_sensor,Rio Grande at Otowi Bridge: Reclamation mirrors the USGS gauge
+usbr_hydrodata:1513,usgs:08279500,same_sensor,Rio Grande at Embudo
+usbr_hydrodata:1534,usgs:08330000,same_sensor,Rio Grande at Albuquerque
+usbr_hydrodata:1542,usgs:08358400,same_sensor,Rio Grande Floodway at San Marcial

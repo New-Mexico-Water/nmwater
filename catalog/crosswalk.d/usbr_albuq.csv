@@ -1,0 +1,21 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+usbr_albuq,Elevation,Pool elevation,ft,reservoir_elevation,1,0,instantaneous,15min,identical,project datum; SUMNERDAM file is NAVD88
+usbr_albuq,Storage,Storage,acre-ft,reservoir_storage,1,0,instantaneous,15min,equivalent_method,provisional real-time
+usbr_albuq,Outflow,Outflow,cfs,reservoir_release,1,0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Inflow,Inflow,cfs,reservoir_inflow,1,0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Flow,Flow,cfs,discharge,1,0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,GH,Gage height,ft,stage,1,0,instantaneous,15min,identical,provisional real-time
+usbr_albuq,Narrows,Rio Grande at Narrows,cfs,discharge,1,0,instantaneous,15min,identical,Elephant Butte inflow gauge
+usbr_albuq,Otowi,Rio Grande at Otowi,cfs,discharge,1,0,instantaneous,15min,identical,USBR relay of USGS 08313000
+usbr_albuq,AzoteaOut,Azotea tunnel outlet,cfs,discharge,1,0,instantaneous,15min,identical,San Juan-Chama import to Willow Creek
+usbr_albuq,LaPuente,Rio Chama near La Puente,cfs,discharge,1,0,instantaneous,15min,identical,USBR relay of USGS 08284100
+usbr_albuq,PDLFlow,Pecos River near Puerto de Luna,cfs,discharge,1,0,instantaneous,15min,identical,
+usbr_albuq,Kaiser,Pecos River at Kaiser,cfs,discharge,1,0,instantaneous,15min,identical,Brantley inflow
+usbr_albuq,CIDCanal,CID main canal,cfs,diversion,1,0,instantaneous,15min,identical,Carlsbad Irrigation District diversion below Avalon
+usbr_albuq,Cochtiti,MRGCD Cochiti diversion,cfs,diversion,1,0,instantaneous,15min,identical,file header spells Cochtiti
+usbr_albuq,Cochiti,MRGCD Cochiti diversion,cfs,diversion,1,0,instantaneous,15min,identical,
+usbr_albuq,Angostura,MRGCD Angostura diversion,cfs,diversion,1,0,instantaneous,15min,identical,
+usbr_albuq,Isleta,MRGCD Isleta diversion,cfs,diversion,1,0,instantaneous,15min,identical,
+usbr_albuq,SanAcacia,MRGCD San Acacia diversion,cfs,diversion,1,0,instantaneous,15min,identical,
+usbr_albuq,EastGate,Caballo east gate opening,ft,,1,0,,,related_not_comparable,gate opening not mapped
+usbr_albuq,WestGate,Caballo west gate opening,ft,,1,0,,,related_not_comparable,gate opening not mapped
