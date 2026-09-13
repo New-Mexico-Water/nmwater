@@ -89,8 +89,12 @@ short enough to copy.
 
 ## License and attribution
 
-The code is MIT. The data are not uniformly free: most federal sources are public domain, PRISM
-requires attribution to the PRISM Climate Group at Oregon State University, and several state
-and research datasets carry their own citation requests. Every source's terms, citation, and
-caveats are recorded in `catalog/sources.yaml` and `catalog/sources.d/` and exported into
-`docs/data_dictionary.md`. Check them before republishing.
+The code is licensed under the **GNU General Public License, version 3 or later**. See
+[LICENSE](LICENSE) for the full text and [NOTICE](NOTICE) for the copyright statement.
+
+The data are a separate matter, and the GPL does not cover them. Most federal sources are public
+domain, PRISM is copyright Oregon State University and requires attribution to the PRISM Climate
+Group, Synoptic restricts redistribution of some member networks, and several state and research
+datasets carry their own citation requests. Every source's terms, citation, and caveats are
+recorded in `catalog/sources.yaml` and `catalog/sources.d/` and exported into
+`docs/data_dictionary.md`. Read them before republishing data obtained with these tools.
