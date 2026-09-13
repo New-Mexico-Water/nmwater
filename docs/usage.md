@@ -180,6 +180,15 @@ WHERE r.gnis_name = 'Rio Chama' ORDER BY r.totdasqkm DESC;
 reliable ordering than trying to parse it out of station names. `comid` is the reach's identifier
 in the national network and the join key a National Water Model integration would need.
 
+The same fetch also pulls reservoir and lake polygons (`waterbodies`) and matches reservoir/lake
+sites onto them (`site_waterbodies`), so every sensor an agency operates on a given reservoir can
+be found by the reservoir's actual name rather than by guessing at station-name spelling:
+
+```sql
+SELECT site_uid, match_type, distance_m FROM site_waterbodies
+WHERE gnis_name = 'Elephant Butte Reservoir' ORDER BY match_type, distance_m;
+```
+
 ### Querying by municipality or tract
 
 `nmwater fetch tiger` downloads Census boundaries and `catalog build` joins every located site

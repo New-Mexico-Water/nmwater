@@ -103,6 +103,15 @@ def build(settings: Settings) -> Path:
     flow_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "flowline_attributes.parquet"
     if flow_pq.exists():
         con.execute(f"CREATE TABLE flowlines AS SELECT * FROM read_parquet('{flow_pq.as_posix()}')")
+    wb_sites_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "site_waterbodies.parquet"
+    if wb_sites_pq.exists():
+        con.execute(f"CREATE TABLE site_waterbodies AS SELECT * FROM read_parquet('{wb_sites_pq.as_posix()}')")
+    else:
+        con.execute("CREATE TABLE site_waterbodies (site_uid VARCHAR, comid BIGINT, gnis_name VARCHAR, "
+                    "areasqkm DOUBLE, huc8 VARCHAR, match_type VARCHAR, distance_m DOUBLE)")
+    wb_attr_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "waterbody_attributes.parquet"
+    if wb_attr_pq.exists():
+        con.execute(f"CREATE TABLE waterbodies AS SELECT * FROM read_parquet('{wb_attr_pq.as_posix()}')")
 
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())

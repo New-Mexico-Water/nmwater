@@ -6,7 +6,11 @@ sources:
       with a COMID per reach, the named-stream identifier (GNIS), Strahler stream order,
       cumulative drainage area, and upstream/downstream topology. Stream, canal, diversion and
       return-flow sites are snapped to their nearest reach (site_reaches table) so gauges can be
-      related by position along a channel rather than only by name or by HUC.
+      related by position along a channel rather than only by name or by HUC. Also pulls the
+      companion nhdwaterbody layer - actual polygons for named reservoirs and lakes (Elephant
+      Butte, Navajo, Cochiti, Heron and the rest) with real surface area, and matches
+      reservoir/lake sites onto the polygon they fall inside or the nearest one within 2 km
+      (site_waterbodies table).
     url: https://api.water.usgs.gov/geoserver/wmadata/ows (via the pynhd/HyRiver client)
     license: Public domain (U.S. Government work). No key, no rate limit observed.
     citation: >-

@@ -17,6 +17,12 @@ depends on `wbd` having run first). Only the network-flagged flowlines are kept
 they carry the through-flow for named rivers like the Rio Grande where it widens into a
 reservoir.
 
+Reservoirs and lakes are also pulled, from the companion `nhdwaterbody` layer: Elephant Butte,
+Cochiti, Navajo, Heron and the rest come back as actual polygons with a COMID, a GNIS name, and
+a surface area, not just the point gauges the station sources already carry. Reservoir and lake
+sites are snapped to the waterbody they sit in or nearest to, the same way stream sites are
+snapped to a reach.
+
 Source: pynhd (HyRiver stack) against the USGS Water Mission Area GeoServer
 (api.water.usgs.gov/geoserver/wmadata/ows). Public, no key. Verified 2026-09-13: the WFS layer
 does not accept `huc8` as a CQL filter property ("Illegal property name"), so flowlines are
@@ -44,6 +50,11 @@ KEEP_COLS = [
     "streamorde", "streamcalc", "streamleve", "arbolatesu", "totdasqkm", "divergence",
     "fromnode", "tonode", "hydroseq", "levelpathi", "pathlength", "terminalpa", "startflag",
 ]
+WATERBODY_KEEP_COLS = ["comid", "gnis_id", "gnis_name", "areasqkm", "elevation", "reachcode",
+                       "ftype", "fcode", "onoffnet"]
+# Max distance (m) to associate a reservoir/lake site with a waterbody polygon it does not
+# fall inside - dam-crest and outlet gauges commonly sit just outside the digitized shoreline.
+WATERBODY_MAX_DISTANCE_M = 2000.0
 
 
 @register
@@ -51,7 +62,7 @@ class NHDPlus(Source):
     name = "nhdplus"
     agency = "USGS / EPA"
     description = "NHDPlus v2 medium-resolution flowlines, joined to sites via nearest-reach snap"
-    kinds = ("flowlines", "site_reaches")
+    kinds = ("flowlines", "site_reaches", "waterbodies", "site_waterbodies")
 
     def _dir(self) -> Path:
         d = self.settings.grids_dir / "nhdplus"
@@ -73,11 +84,8 @@ class NHDPlus(Source):
 
     def fetch(self, since: date | None = None, limit: int | None = None,
               site_ids: list[str] | None = None, refresh: bool = False, **opts) -> FetchSummary:
-        import geopandas as gpd
-        import pyogrio
-        from pynhd import WaterData
-
         summ = FetchSummary(self.name)
+        wanted = set(opts.get("kinds") or self.kinds)
         h8 = self._huc8_in_scope()
         if site_ids:
             want = {s.split(":")[-1] for s in site_ids}
@@ -85,16 +93,40 @@ class NHDPlus(Source):
         if limit:
             h8 = h8.head(limit)
 
-        gpkg = self._dir() / "flowlines.gpkg"
+        if "flowlines" in wanted or "site_reaches" in wanted:
+            gpkg = self._fetch_layer(h8, refresh, summ, layer="flowlines",
+                                     water_data="nhdflowline_network", keep_cols=KEEP_COLS,
+                                     label="reaches", attr_table="flowline_attributes")
+            if "site_reaches" in wanted:
+                n = self._snap_sites(gpkg)
+                summ.notes.append(f"{n} sites snapped to a flowline reach")
+
+        if "waterbodies" in wanted or "site_waterbodies" in wanted:
+            gpkg = self._fetch_layer(h8, refresh, summ, layer="waterbodies",
+                                     water_data="nhdwaterbody", keep_cols=WATERBODY_KEEP_COLS,
+                                     label="waterbodies", attr_table="waterbody_attributes")
+            if "site_waterbodies" in wanted:
+                n = self._snap_waterbody_sites(gpkg)
+                summ.notes.append(f"{n} sites matched to a waterbody polygon")
+        return summ
+
+    def _fetch_layer(self, h8: pd.DataFrame, refresh: bool, summ: FetchSummary, *, layer: str,
+                     water_data: str, keep_cols: list[str], label: str, attr_table: str) -> Path:
+        """Shared HUC8-by-HUC8 fetcher for both the flowline and waterbody NHDPlus layers."""
+        import geopandas as gpd
+        import pyogrio
+        from pynhd import WaterData
+
+        gpkg = self._dir() / f"{layer}.gpkg"
         already = set()
         if gpkg.exists() and not refresh:
             try:
-                existing = pyogrio.read_dataframe(gpkg, layer="flowlines", columns=["huc8"])
+                existing = pyogrio.read_dataframe(gpkg, layer=layer, columns=["huc8"])
                 already = set(existing["huc8"].astype(str).unique())
             except Exception:
                 already = set()
 
-        wd = WaterData("nhdflowline_network")
+        wd = WaterData(water_data)
         frames = []
         n_done = 0
         for row in h8.itertuples():
@@ -107,39 +139,34 @@ class NHDPlus(Source):
                 if geom_row is None:
                     summ.notes.append(f"{huc8}: no polygon found in WBD, skipped")
                     continue
-                flo = wd.bygeom(geom_row.geometry, geo_crs=geom_row.crs)
+                feat = wd.bygeom(geom_row.geometry, geo_crs=geom_row.crs)
                 summ.n_requests += 1
             except Exception as ex:
                 summ.n_errors += 1
-                summ.notes.append(f"{huc8}: {str(ex)[:120]}")
-                log.warning("nhdplus %s failed: %s", huc8, str(ex)[:200])
+                summ.notes.append(f"{layer} {huc8}: {str(ex)[:120]}")
+                log.warning("nhdplus %s %s failed: %s", layer, huc8, str(ex)[:200])
                 continue
-            if flo is None or flo.empty:
+            if feat is None or feat.empty:
                 continue
-            cols = [c for c in KEEP_COLS if c in flo.columns]
-            flo = flo[[*cols, "geometry"]].copy()
-            flo["huc8"] = huc8
-            flo["huc8_name"] = row.name
-            frames.append(flo)
+            cols = [c for c in keep_cols if c in feat.columns]
+            feat = feat[[*cols, "geometry"]].copy()
+            feat["huc8"] = huc8
+            feat["huc8_name"] = row.name
+            frames.append(feat)
             n_done += 1
             if n_done % 20 == 0:
-                log.info("nhdplus: %d/%d HUC8s fetched", n_done, len(h8))
+                log.info("nhdplus %s: %d/%d HUC8s fetched", layer, n_done, len(h8))
 
         if frames:
             new = pd.concat(frames, ignore_index=True)
             new = gpd.GeoDataFrame(new, geometry="geometry", crs=4326)
             mode = "a" if gpkg.exists() and not refresh else "w"
-            new.to_file(gpkg, driver="GPKG", layer="flowlines", mode=mode)
+            new.to_file(gpkg, driver="GPKG", layer=layer, mode=mode)
             summ.n_rows += len(new)
-            summ.notes.append(f"{len(new)} reaches across {n_done} HUC8s -> {gpkg.name}")
+            summ.notes.append(f"{len(new)} {label} across {n_done} HUC8s -> {gpkg.name}")
             attrs = pd.DataFrame(new.drop(columns=["geometry"])).drop_duplicates("comid")
-            self.store.write_table(attrs, "reference", self.name, "flowline_attributes")
-
-        # Snap stream/canal/diversion sites to their nearest reach.
-        if "site_reaches" in (opts.get("kinds") or self.kinds):
-            n = self._snap_sites(gpkg)
-            summ.notes.append(f"{n} sites snapped to a flowline reach")
-        return summ
+            self.store.write_table(attrs, "reference", self.name, attr_table)
+        return gpkg
 
     def _huc8_geometry(self, huc8: str):
         import geopandas as gpd
@@ -188,4 +215,54 @@ class NHDPlus(Source):
             "snap_distance_m": joined["snap_distance_m"].round(1).values,
         }).drop_duplicates("site_uid")
         self.store.write_table(out, "reference", self.name, "site_reaches")
+        return len(out)
+
+    def _snap_waterbody_sites(self, gpkg: Path) -> int:
+        """Match reservoir/lake sites to the waterbody polygon they fall inside, falling back to
+        the nearest one within WATERBODY_MAX_DISTANCE_M for dam-crest and outlet gauges that sit
+        just outside the digitized shoreline. `match_type` records which rule fired, so a
+        consumer can tell a point genuinely inside Elephant Butte from one merely near it."""
+        import geopandas as gpd
+
+        if not gpkg.exists():
+            return 0
+        sites = self.store.read_sites()
+        sites = sites[sites["site_type"].isin(["reservoir", "lake"])
+                      & sites["lat"].notna() & sites["lon"].notna()]
+        if sites.empty:
+            return 0
+        wb = gpd.read_file(gpkg, layer="waterbodies",
+                           columns=["comid", "gnis_name", "areasqkm", "ftype", "huc8", "huc8_name"])
+        wb = wb[wb["ftype"].isin(["LakePond", "Reservoir"])]
+        if wb.empty:
+            return 0
+        pts = gpd.GeoDataFrame(sites[["site_uid"]], geometry=gpd.points_from_xy(sites["lon"], sites["lat"]), crs=4326)
+        aea = 5070
+        pts_p, wb_p = pts.to_crs(aea), wb.to_crs(aea)
+
+        within = gpd.sjoin(pts_p, wb_p, how="inner", predicate="within")
+        within_ids = set(within["site_uid"]) if len(within) else set()
+        remaining = pts_p[~pts_p["site_uid"].isin(within_ids)]
+        nearest = (gpd.sjoin_nearest(remaining, wb_p, max_distance=WATERBODY_MAX_DISTANCE_M,
+                                     distance_col="distance_m")
+                   if len(remaining) else remaining.assign(distance_m=pd.Series(dtype=float)))
+
+        rows = []
+        if len(within):
+            rows.append(pd.DataFrame({
+                "site_uid": within["site_uid"].values, "comid": within["comid"].values,
+                "gnis_name": within["gnis_name"].values, "areasqkm": within["areasqkm"].values,
+                "huc8": within["huc8"].values, "match_type": "within", "distance_m": 0.0,
+            }))
+        if len(nearest):
+            rows.append(pd.DataFrame({
+                "site_uid": nearest["site_uid"].values, "comid": nearest["comid"].values,
+                "gnis_name": nearest["gnis_name"].values, "areasqkm": nearest["areasqkm"].values,
+                "huc8": nearest["huc8"].values, "match_type": "nearest",
+                "distance_m": nearest["distance_m"].round(1).values,
+            }))
+        if not rows:
+            return 0
+        out = pd.concat(rows, ignore_index=True).drop_duplicates("site_uid")
+        self.store.write_table(out, "reference", self.name, "site_waterbodies")
         return len(out)
