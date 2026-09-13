@@ -9,6 +9,26 @@ enforce.
 Each section states what the data support, what they do not, and how to tell the difference from
 inside the catalog.
 
+## Before a number goes into a report
+
+The checks below take a minute each and catch most of the errors this archive makes easy.
+
+1. **Which capacity?** A fill percentage needs a denominator, and `reservoir_capacity` has three.
+   `normal_storage_af` for "how full is the supply"; `nid_storage_af` only for flood capacity.
+   Say which one you used. At Abiquiu they differ by a factor of eight.
+2. **Which vintage?** Capacity shrinks as sediment accumulates. A percentage computed against a
+   1916 design figure overstates how empty a reservoir is today. See the sediment section below.
+3. **Supply or demand geography?** A gauge inside a city is not measuring that city's water.
+   Aggregate flows by watershed, people by place. See the first section below.
+4. **Flux or stock?** Storage is summed over space, never over time. Flow is summed over time.
+5. **Is it counted twice?** Check `site_links` for `same_sensor` before any statewide total.
+6. **Is it provisional?** Anything from the current water year probably is. Check `qualifier`.
+7. **Is it below detection?** Non-detects in water quality are not zero. Check the detection
+   condition column.
+8. **Does the grid share ancestry with the stations?** Agreement between gridMET and the gauges
+   under it is not confirmation; it is the same data twice.
+
+
 ## Supply and demand are different geographies
 
 The archive carries two partitions of space, and they do not line up.
@@ -189,6 +209,47 @@ supply."
 
 The safe default for an ordinary fill percentage is `normal_storage_af`. Use `nid_storage_af`
 only when the question is genuinely about flood capacity, and say so.
+
+### Capacity figures do not track sediment, and the archive can prove it
+
+Does the capacity account for sediment fill? Mostly no. The National Inventory of Dams records
+whatever the dam's owner or state regulator last reported; it does not systematically update for
+sedimentation, and it does not say which survey a figure came from. `nid_storage_af` is usually
+the original design value. `normal_storage_af` may or may not reflect a resurvey, depending on the
+owner.
+
+The archive's own storage record shows what sediment has done at Elephant Butte. The maximum
+storage ever recorded in each decade:
+
+| Decade | Maximum storage, acre-feet |
+|---|---|
+| 1920s | 2,215,676 |
+| 1940s | 2,302,800 |
+| 1980s | 2,118,100 |
+| 1990s | 2,049,300 |
+| 2000s | 1,739,255 |
+
+The reservoir filled to the same spillway in the 1940s and the 1980s, and held roughly 185,000
+acre-feet less the second time. The 1916 design figure NID carries, 2,593,255, has never been
+observed. NID's normal-storage figure of 2,065,010 is close to the 1990s full-pool maximum, which
+suggests it reflects a later resurvey, but NID does not say so and that is an inference.
+
+Three consequences for anything you publish:
+
+- A fill percentage against the design figure understates fullness for every old reservoir, and
+  by more each decade.
+- A storage series that spans a resurvey is not a consistent measurement. When Reclamation
+  adopts a new elevation-capacity table, the same lake level maps to a different volume, so a
+  step in the series may be a table change rather than water.
+- Where a resurveyed capacity matters, the authority is Reclamation's own sedimentation surveys,
+  which the archive indexes: 78 survey reports and area-capacity tables for New Mexico
+  reservoirs sit in the `usbr_rise` catalog items (Heron 2010, El Vado 2007, Ute 1992, Nambe
+  Falls 2013, Avalon 2023, Lake Sumner 2013, and others). They are documents, not yet parsed
+  numbers; see `docs/TODO.md`.
+
+The practical rule: report the capacity figure and its vintage next to any percentage, and prefer
+`max(value)` from the storage record itself as a sanity bound. A reservoir cannot be 20% full of
+a capacity it has exceeded in living memory.
 
 ## Vertical datums differ
 
