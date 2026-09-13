@@ -111,6 +111,7 @@ def discover(
 def fetch(
     sources: list[str] = typer.Argument(..., help="source names or 'all'"),
     since: Optional[str] = typer.Option(None, "--since", help="YYYY-MM-DD; only pull data after this date"),
+    until: Optional[str] = typer.Option(None, "--until", help="YYYY-MM-DD; stop at this date (use with --since to pull a range)"),
     limit: Optional[int] = typer.Option(None, "--limit", help="max sites (for testing)"),
     site: Optional[list[str]] = typer.Option(None, "--site", help="native site id(s) to restrict to"),
     refresh: bool = typer.Option(False, "--refresh", help="ignore archived responses"),
@@ -123,18 +124,24 @@ def fetch(
     names = _resolve(sources)
     ctx = _ctx(data_dir)
     since_d = date.fromisoformat(since) if since else None
+    until_d = date.fromisoformat(until) if until else None
+    if since_d and until_d and until_d < since_d:
+        raise typer.BadParameter("--until is before --since")
     total = FetchSummary("all")
     for name in names:
         cls = SOURCES[name]
         if not ctx.settings.source_config(name).enabled:
             console.print(f"[yellow]{name}: disabled in config, skipping[/yellow]")
             continue
-        run_id = ctx.ledger.start_run(name, "fetch", {"since": since, "limit": limit, "site": site})
+        run_id = ctx.ledger.start_run(name, "fetch",
+                                      {"since": since, "until": until, "limit": limit, "site": site})
         ctx.run_id = run_id
         src = cls(ctx)
         try:
             src.check_tokens()
             opts = {"kinds": list(kind)} if kind else {}
+            if until_d:
+                opts["until"] = until_d
             s = src.fetch(since=since_d, limit=limit, site_ids=site, refresh=refresh, **opts)
             ctx.ledger.finish_run(run_id, "ok" if s.n_errors == 0 else "partial",
                                   notes=f"{s.n_rows} rows, {s.n_requests} req, {s.n_errors} errors")

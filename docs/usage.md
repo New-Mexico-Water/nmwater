@@ -54,6 +54,7 @@ nmwater fetch prism --refresh               # ignore the archive, re-download
 | Option | Meaning |
 |---|---|
 | `--since YYYY-MM-DD` | Pull only data after this date. Sources translate it into their own filter. |
+| `--until YYYY-MM-DD` | Stop at this date. Paired with `--since` it names a closed span to fetch. |
 | `--kind K` | Restrict to a data kind the source supports; repeatable. See the table below. |
 | `--site ID` | Restrict to native site ids; repeatable. |
 | `--limit N` | Cap the units of work. Meaning is per source: sites, pages, or chunks. Use for smoke tests. |
@@ -76,8 +77,30 @@ Data kinds by source, where a source has more than one:
 | synoptic | `networks`, `sites`, `data` |
 | usbr_albuq | `daily`, `monthly`, `raw` |
 
-`usgs --kind continuous` is the 15-minute archive. It is opt-in because it is thousands of
-requests against an hourly rate limit; see [resume_needed.md](resume_needed.md).
+### The 15-minute archive
+
+`usgs --kind continuous` is the sub-daily record. The full public span starts 2007-10-01 and is
+250 to 500 million rows, which is thousands of requests against an hourly rate limit, so it is
+opt-in and it defaults to **the most recent year**:
+
+```bash
+nmwater fetch usgs --kind continuous                              # last year, every site
+nmwater fetch usgs --kind continuous --since 2015-01-01           # 2015 to today
+nmwater fetch usgs --kind continuous --since 2011-01-01 --until 2011-12-31   # one past year
+nmwater fetch usgs --kind continuous --site 08313000 --since 2007-10-01      # one gauge, all of it
+```
+
+Change the default horizon with `continuous_years` in `config/sources.yaml`.
+
+The two date options mean different things on purpose. `--since` on its own means catch up, so
+each series resumes from whatever was last fetched rather than re-walking ground already
+covered. `--since` with `--until` names a span you want regardless of what came before, which is
+how you go back for a flood year after the fact. Either way the ledger keys on the exact
+request, so re-asking for a window you already have costs nothing and downloads nothing.
+
+Pulling one year for one gauge is about 100,000 rows in three requests, so a targeted historical
+question is cheap. Pulling everything for every site is the thing worth avoiding until you need
+it; see [resume_needed.md](resume_needed.md).
 
 ### reprocess
 

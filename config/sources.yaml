@@ -22,6 +22,10 @@ sources:
                    "00021", "00036", "00052", "00035", "00025", "72036", "72037", "72038", "72039", "72040",
                    "72041", "00046", "00090", "00480", "72137", "72138", "72139", "00050", "00061"]
     include_continuous: false      # 15-minute data: opt in with `nmwater fetch usgs --kind continuous`
+    # Default horizon for the 15-minute archive. The full record starts 2007-10-01 and is
+    # 250-500 million rows; one year covers the usual operational questions. Override per run
+    # with --since / --until, which the ledger makes cheap to extend later.
+    continuous_years: 1
     continuous_params: ["00060", "00065", "00054", "00062", "00045", "00010", "72019", "62610", "62611", "00095"]
     continuous_window_days: 1000
 
