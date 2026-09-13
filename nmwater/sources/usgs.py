@@ -212,7 +212,7 @@ class USGS(Source):
         if "peaks" in kinds:
             summ.add(self.fetch_ogc_table("peaks", since, refresh, site_ids))
         if "continuous" in kinds:
-            summ.add(self.fetch_continuous(since, site_ids, limit, refresh))
+            summ.add(self.fetch_continuous(since, site_ids, limit, refresh, until=opts.get("until")))
         return summ
 
     # ---- daily values ------------------------------------------------------------
@@ -445,11 +445,38 @@ class USGS(Source):
         return self.xw.apply(out, self.name)
 
     # ---- continuous (15-min) -------------------------------------------------------
-    def fetch_continuous(self, since, site_ids, limit, refresh) -> FetchSummary:
+    def fetch_continuous(self, since, site_ids, limit, refresh, until=None) -> FetchSummary:
+        """15-minute unit values.
+
+        The full public record (2007-10-01 onward) is 250-500 million rows and thousands of
+        requests against an hourly rate limit, and most analysis never touches it. So the
+        default window is the most recent `continuous_years` (config, default 1). Ask for more
+        explicitly with a date range:
+
+            nmwater fetch usgs --kind continuous                          # last year
+            nmwater fetch usgs --kind continuous --since 2015-01-01       # 2015 to today
+            nmwater fetch usgs --kind continuous --since 2011-01-01 --until 2011-12-31
+            nmwater fetch usgs --kind continuous --site 08313000 --since 2007-10-01
+
+        Windows already completed are recorded in the ledger, so overlapping requests are served
+        from the archive and only genuinely new spans hit the network.
+        """
         summ = FetchSummary(self.name)
         params_ok = set(self.opt("continuous_params", ["00060"]))
         win = int(self.opt("continuous_window_days", 1000))
         floor = date(2007, 10, 1)
+        today = date.today()
+        end_cap = min(until, today) if until else today
+        # Default horizon when no explicit start was given.
+        if since is None:
+            years = float(self.opt("continuous_years", 1))
+            default_start = end_cap - timedelta(days=round(years * 365.25))
+            summ.notes.append(
+                f"continuous: defaulting to the last {years:g} year(s) "
+                f"({default_start} to {end_cap}); pass --since/--until for more"
+            )
+        else:
+            default_start = since
         sites = self.sites()
         if sites.empty:
             summ.notes.append("run `nmwater discover usgs` first (needs series catalog)")
@@ -467,11 +494,18 @@ class USGS(Source):
                 p = ent.get("parm")
                 if p not in params_ok or not ent.get("begin"):
                     continue
-                b = max(date.fromisoformat(ent["begin"][:10]), floor)
-                if since:
+                # Start at the later of: the series' own start, the archive floor, the requested
+                # start, and (for incremental runs) whatever has already been fetched.
+                b = max(date.fromisoformat(ent["begin"][:10]), floor, default_start)
+                # `--since X` alone means "catch up", so skip ahead to whatever has already been
+                # fetched. An explicit `--since X --until Y` names a span the caller wants, so
+                # honour it exactly; identical windows are still served from the archive.
+                if since is not None and until is None:
                     last = self.ledger.last_window_end(self.name, self.uid(sid), p)
-                    b = max(b, since, date.fromisoformat(last[:10]) if last else b)
-                e = min(date.fromisoformat(ent["end"][:10]) if ent.get("end") else date.today(), date.today())
+                    if last:
+                        b = max(b, date.fromisoformat(last[:10]))
+                series_end = date.fromisoformat(ent["end"][:10]) if ent.get("end") else today
+                e = min(series_end, end_cap)
                 cur = b
                 while cur <= e:
                     stop = min(cur + timedelta(days=win - 1), e)
