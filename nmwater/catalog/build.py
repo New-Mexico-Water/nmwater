@@ -113,6 +113,16 @@ def build(settings: Settings) -> Path:
     if wb_attr_pq.exists():
         con.execute(f"CREATE TABLE waterbodies AS SELECT * FROM read_parquet('{wb_attr_pq.as_posix()}')")
 
+    # Dam capacity (National Inventory of Dams), matched to a waterbody comid where possible so
+    # it joins to reservoir_storage observations via site_waterbodies without name matching.
+    cap_pq = settings.parquet_dir / "reference" / "source=nid" / "reservoir_capacity.parquet"
+    if cap_pq.exists():
+        con.execute(f"CREATE TABLE reservoir_capacity AS SELECT * FROM read_parquet('{cap_pq.as_posix()}')")
+    else:
+        con.execute("CREATE TABLE reservoir_capacity (nid_id VARCHAR, dam_name VARCHAR, state VARCHAR, "
+                    "river VARCHAR, nid_storage_af DOUBLE, max_storage_af DOUBLE, normal_storage_af DOUBLE, "
+                    "hazard_class VARCHAR, comid BIGINT, match_distance_m DOUBLE)")
+
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())
     con.execute("CREATE TABLE variables AS SELECT * FROM _vars")

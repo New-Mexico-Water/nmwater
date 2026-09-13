@@ -70,6 +70,7 @@ Basin inflows and outflows are not inside the state line.
 | `resopsus` | Harmonized daily reservoir operations for 22 New Mexico dams | 1930–2020 |
 | `wbd` | Watershed boundaries; supplies the HUC assignment for every site | reference |
 | `nhdplus` | NHDPlus v2 stream network and waterbody polygons: named reaches with drainage area and topology, named reservoirs and lakes with real surface area; snaps sites onto the channel or the reservoir they sit in | reference |
+| `nid` | National Inventory of Dams: design, maximum, and normal storage capacity per dam, matched to a reservoir polygon so it joins to storage observations | reference |
 | `tiger` | Census places, counties, tracts, block groups, tribal and urban areas; the demand-side geography | 2025 vintage |
 | `edi` | Sevilleta and Jornada research meteorology, Navajo Nation wells | 1988– |
 | `synoptic` | RAWS fire-weather and other mesonets (token required) | 1997– |

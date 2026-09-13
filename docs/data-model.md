@@ -144,6 +144,45 @@ SELECT site_uid, match_type, distance_m FROM site_waterbodies
 WHERE gnis_name = 'Elephant Butte Reservoir' ORDER BY match_type, distance_m;
 ```
 
+## reservoir_capacity
+
+The number `reservoir_storage` observations were missing until now: how much a reservoir can
+hold, from the National Inventory of Dams. Matched to a waterbody comid where a reservoir polygon
+exists within 3 km of the dam, which is what makes fill percentage over time possible without
+name matching.
+
+| Column | Meaning |
+|---|---|
+| `nid_id`, `dam_name` | the dam's identifier and name in the national registry |
+| `nid_storage_af` | design/maximum storage capacity, acre-feet - the flood-control ceiling |
+| `normal_storage_af` | normal (conservation-pool) capacity, acre-feet - what the dam is operated to hold day to day |
+| `max_storage_af` | maximum storage actually recorded |
+| `hazard_class`, `purpose`, `year_completed` | registry attributes |
+| `comid` | the matched waterbody, joining to `site_waterbodies.comid` |
+| `match_distance_m` | distance from the dam point to the matched polygon |
+
+**`nid_storage_af` and `normal_storage_af` are not interchangeable.** Flood-control dams are built
+to sit mostly empty and only fill during a flood: Abiquiu is rated at 1,369,000 acre-feet design
+capacity but normally holds around 170,000. Dividing storage by the wrong one answers a different
+question than the one usually intended. Use `normal_storage_af` for an ordinary "how full is it"
+and `nid_storage_af` only when flood capacity specifically is the question. See
+[interpretation.md](interpretation.md).
+
+```sql
+-- Elephant Butte, storage as a percent of normal operating capacity, by year
+WITH cap AS (
+  SELECT DISTINCT comid, normal_storage_af FROM reservoir_capacity WHERE dam_name = 'Elephant Butte Dam'
+)
+SELECT date_trunc('year', o.datetime_utc) AS year,
+       round(avg(o.value)) AS mean_storage_af,
+       round(100.0 * avg(o.value) / cap.normal_storage_af, 1) AS pct_of_normal_capacity
+FROM observations o
+JOIN site_waterbodies sw ON sw.site_uid = o.site_uid
+JOIN cap ON cap.comid = sw.comid
+WHERE o.variable = 'reservoir_storage'
+GROUP BY 1, cap.normal_storage_af ORDER BY 1;
+```
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.

@@ -176,6 +176,14 @@ sources:
     # 500 m tolerates GPS and digitizing offsets without jumping onto the wrong tributary.
     snap_max_distance_m: 500
 
+  nid:
+    concurrency: 1
+    timeout_s: 600          # single ~67 MB national CSV
+    # Max distance (m) to associate a dam point with the reservoir waterbody it holds back.
+    # 3 km covers narrow-canyon dams (Abiquiu, Cochiti) where the dam and the pool centroid
+    # are a real distance apart.
+    nid_max_distance_m: 3000
+
   usdm:
     concurrency: 2
 
