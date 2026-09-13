@@ -160,6 +160,14 @@ sources:
     min_interval_s: 1.0
     token_env: [SYNOPTIC_TOKEN]
 
+  tiger:
+    concurrency: 2
+    min_interval_s: 0.5
+    timeout_s: 1800
+    tiger_year: 2025
+    # State-scoped layers are pulled for these neighbours too, so border-county sites resolve.
+    tiger_neighbor_states: ["CO", "TX", "AZ", "OK"]
+
   usdm:
     concurrency: 2
 

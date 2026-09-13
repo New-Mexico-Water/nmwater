@@ -107,3 +107,67 @@ def assign_hucs(sites: pd.DataFrame, grids_dir: Path) -> pd.DataFrame:
     else:
         out["basin"] = out["huc8"].map(basin_from_huc)
     return out
+
+
+# --- Administrative geography (Census TIGER/Line) ---------------------------------
+# Watersheds say where water comes from; these say who uses it. Both partitions are kept
+# because the interesting questions sit where they disagree. See docs/interpretation.md.
+TIGER_LAYERS = {
+    # layer: (region_type, id column, name column)
+    "place": ("place", "GEOID", "NAMELSAD"),
+    "county": ("county", "GEOID", "NAMELSAD"),
+    "cousub": ("county_subdivision", "GEOID", "NAMELSAD"),
+    "tract": ("tract", "GEOID", "NAMELSAD"),
+    "bg": ("block_group", "GEOID", "NAMELSAD"),
+    "aiannh": ("tribal_area", "GEOID", "NAMELSAD"),
+    "uac": ("urban_area", "GEOID20", "NAMELSAD20"),
+}
+
+
+def assign_regions(sites: pd.DataFrame, grids_dir: Path, layers: list[str] | None = None) -> pd.DataFrame:
+    """Point-in-polygon every located site against the TIGER layers on disk.
+
+    Returns a long frame (site_uid, region_type, region_id, region_name). Long rather than wide
+    because a site sits in several nested regions at once, and most sites sit in none of the
+    small ones: 99% of New Mexico's area is outside any incorporated place.
+    """
+    empty = pd.DataFrame(columns=["site_uid", "region_type", "region_id", "region_name"])
+    try:
+        import geopandas as gpd
+    except ImportError:  # pragma: no cover
+        return empty
+    tdir = Path(grids_dir) / "tiger"
+    if not tdir.exists():
+        log.info("no TIGER boundaries yet; run `nmwater fetch tiger`")
+        return empty
+    pts = sites[sites["lat"].notna() & sites["lon"].notna()]
+    if pts.empty:
+        return empty
+    gpts = gpd.GeoDataFrame(pts[["site_uid"]].copy(),
+                            geometry=gpd.points_from_xy(pts["lon"], pts["lat"]), crs=4326)
+    out = []
+    for layer in (layers or TIGER_LAYERS):
+        rtype, idcol, namecol = TIGER_LAYERS[layer]
+        gpkg = tdir / f"{layer}.gpkg"
+        if not gpkg.exists():
+            continue
+        try:
+            poly = gpd.read_file(gpkg, layer=layer)
+            if poly.crs is not None and poly.crs.to_epsg() != 4326:
+                poly = poly.to_crs(4326)
+            cols = [c for c in (idcol, namecol) if c in poly.columns]
+            joined = gpd.sjoin(gpts, poly[cols + ["geometry"]], how="inner", predicate="within")
+            if joined.empty:
+                continue
+            out.append(pd.DataFrame({
+                "site_uid": joined["site_uid"].values,
+                "region_type": rtype,
+                "region_id": joined[idcol].values if idcol in joined else None,
+                "region_name": joined[namecol].values if namecol in joined else None,
+            }))
+            log.info("regions: %d sites in %s", len(joined), rtype)
+        except Exception as e:
+            log.warning("region join failed for %s: %s", layer, e)
+    if not out:
+        return empty
+    return pd.concat(out, ignore_index=True).drop_duplicates()

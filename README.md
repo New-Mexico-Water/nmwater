@@ -19,6 +19,8 @@ year can be answered across agency boundaries rather than one agency at a time.
 - **Quickstart** below gets you from clone to a first query.
 - **[docs/usage.md](docs/usage.md)** is the full command and workflow reference.
 - **[docs/data-model.md](docs/data-model.md)** explains the schema, units, and the crosswalk.
+- **[docs/interpretation.md](docs/interpretation.md)** is what the schema cannot enforce: which
+  comparisons are valid, which are category errors, and how to tell from inside the catalog.
 - **[docs/sources.md](docs/sources.md)** lists every source with period of record and caveats.
 - **[docs/adding-a-source.md](docs/adding-a-source.md)** is the guide to writing a new one.
 

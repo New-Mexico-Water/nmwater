@@ -164,6 +164,21 @@ inventories, landmark record checks (Embudo streamflow from 1889, Elephant Butte
 missing coordinates, sites without a HUC, unknown variables, and negative values in quantities
 that cannot be negative. Requires `catalog build` first.
 
+### Querying by municipality or tract
+
+`nmwater fetch tiger` downloads Census boundaries and `catalog build` joins every located site
+against them, producing `site_regions`.
+
+```sql
+SELECT r.region_name AS place, count(*) FILTER (WHERE s.site_type = 'well') AS wells
+FROM site_regions r JOIN sites s USING (site_uid)
+WHERE r.region_type = 'place' GROUP BY 1 ORDER BY wells DESC;
+```
+
+`region_id` is the Census GEOID, so it joins directly to American Community Survey population and
+housing tables. Read [interpretation.md](interpretation.md) first: this geography answers
+demand-side questions and misleads on supply-side ones.
+
 ### query
 
 ```bash

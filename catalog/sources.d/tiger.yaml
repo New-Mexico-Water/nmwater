@@ -1,0 +1,20 @@
+sources:
+  tiger:
+    agency: US Census Bureau, Geography Division
+    description: >-
+      TIGER/Line boundary shapefiles: incorporated places and census designated places, counties,
+      county subdivisions, tracts, block groups, American Indian/Alaska Native/Native Hawaiian
+      areas, and urban areas, for New Mexico and the neighbouring states in scope. Supplies the
+      administrative geography that `site_regions` assigns to every located site.
+    url: https://www2.census.gov/geo/tiger/TIGER2025/
+    license: Public domain (US Government work). No key, no rate limit.
+    citation: U.S. Census Bureau, TIGER/Line Shapefiles, 2025 vintage, accessed 2026.
+    refresh: annual vintage; re-fetch with --refresh when a new year is published
+    caveats: >-
+      Boundaries are statistical and cartographic, not legal survey products. 423 of New Mexico's
+      528 places are census designated places, which have no government and exist only for
+      counting. Place polygons cover a small fraction of the state's area, so a site falling in no
+      place is normal rather than a gap. Most importantly this is demand-side geography: it
+      answers who uses and who is counted, and it is a category error to attribute streamflow to
+      the municipality a gauge happens to sit in, because the water originates upstream and often
+      in another basin entirely. See docs/interpretation.md.
