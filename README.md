@@ -23,6 +23,8 @@ year can be answered across agency boundaries rather than one agency at a time.
   comparisons are valid, which are category errors, and how to tell from inside the catalog.
 - **[docs/sources.md](docs/sources.md)** lists every source with period of record and caveats.
 - **[docs/adding-a-source.md](docs/adding-a-source.md)** is the guide to writing a new one.
+- **[docs/TODO.md](docs/TODO.md)** is the open follow-up list: known data-quality problems,
+  incomplete pulls, access requests, and tooling gaps.
 
 ## Quickstart
 
