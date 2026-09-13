@@ -130,6 +130,20 @@ FROM site_reaches r JOIN sites s USING (site_uid)
 WHERE r.gnis_name = 'Rio Grande' ORDER BY r.totdasqkm DESC;
 ```
 
+`waterbodies` and `site_waterbodies` are the companion tables for reservoirs and lakes, also from
+NHDPlus: an actual polygon per named waterbody (Elephant Butte, Navajo, Cochiti, Heron, and the
+rest, each with a real surface area) rather than only the point gauges the station sources
+already carry. `match_type` on `site_waterbodies` says whether a site's coordinates fell inside
+the polygon (`within`) or were matched to the nearest one within 2 km (`nearest`, for dam-crest
+and outlet gauges that sit just outside the digitized shoreline); `distance_m` is 0 for the
+former and the actual gap for the latter.
+
+```sql
+-- every sensor associated with Elephant Butte, across every agency that operates one
+SELECT site_uid, match_type, distance_m FROM site_waterbodies
+WHERE gnis_name = 'Elephant Butte Reservoir' ORDER BY match_type, distance_m;
+```
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.
