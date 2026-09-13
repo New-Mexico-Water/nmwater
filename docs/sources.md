@@ -69,6 +69,7 @@ Basin inflows and outflows are not inside the state line.
 | `nass` | Agricultural census and irrigation survey: irrigated acres and water applied | 5-yearly |
 | `resopsus` | Harmonized daily reservoir operations for 22 New Mexico dams | 1930–2020 |
 | `wbd` | Watershed boundaries; supplies the HUC assignment for every site | reference |
+| `nhdplus` | NHDPlus v2 stream network: named reaches with drainage area and topology; snaps sites onto the channel | reference |
 | `tiger` | Census places, counties, tracts, block groups, tribal and urban areas; the demand-side geography | 2025 vintage |
 | `edi` | Sevilleta and Jornada research meteorology, Navajo Nation wells | 1988– |
 | `synoptic` | RAWS fire-weather and other mesonets (token required) | 1997– |

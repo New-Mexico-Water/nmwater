@@ -89,6 +89,21 @@ def build(settings: Settings) -> Path:
                     hive_partitioning=true, union_by_name=true)"""
             )
 
+    # NHDPlus stream network: which reach a site sits on, and the network's own attributes.
+    # Written by nmwater fetch nhdplus into the reference group under source=nhdplus; promoted
+    # to first-class tables here (same treatment as site_regions and site_links) because they
+    # are structural, not ad hoc reference data. Geometry for the reaches themselves stays in
+    # data/grids/nhdplus/flowlines.gpkg for GIS tools; these tables are attributes only.
+    reaches_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "site_reaches.parquet"
+    if reaches_pq.exists():
+        con.execute(f"CREATE TABLE site_reaches AS SELECT * FROM read_parquet('{reaches_pq.as_posix()}')")
+    else:
+        con.execute("CREATE TABLE site_reaches (site_uid VARCHAR, comid BIGINT, gnis_name VARCHAR, "
+                    "streamorde BIGINT, totdasqkm DOUBLE, huc8 VARCHAR, snap_distance_m DOUBLE)")
+    flow_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "flowline_attributes.parquet"
+    if flow_pq.exists():
+        con.execute(f"CREATE TABLE flowlines AS SELECT * FROM read_parquet('{flow_pq.as_posix()}')")
+
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())
     con.execute("CREATE TABLE variables AS SELECT * FROM _vars")

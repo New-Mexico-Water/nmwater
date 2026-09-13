@@ -67,11 +67,13 @@ queries work.
 
 ## B. Incomplete data pulls
 
-### B1. Water Quality Portal results — HIGH
-8 of roughly 700 county-by-decade chunks fetched. This is the largest remaining gap in the
-station backbone and the main source of ambient surface and groundwater chemistry, including
-NMED's own monitoring.
-**Do:** run `nmwater fetch wqp` to completion. Expect 10 to 40 million rows and 5 to 20 GB.
+### B1. Water Quality Portal results — IN PROGRESS
+Full backfill (525 county-by-decade chunks) started 2026-09-13. This is the largest remaining gap
+in the station backbone and the main source of ambient surface and groundwater chemistry,
+including NMED's own monitoring. The Portal rate-limits aggressively (HTTP 429 on most chunks);
+the fetcher retries with backoff and the run is expected to take several hours.
+**Do:** confirm it finished with `nmwater status wqp` and re-run for any chunk left in an error
+state.
 
 ### B2. Colorado DWR needs two or three more daily runs — HIGH
 CDSS enforces a daily data quota even with a registered key. 1,465 requests succeeded, 2,578
@@ -84,12 +86,11 @@ is roughly 25 to 30 GB and is what makes basin-scale water balance possible.
 **Do:** run the phase 3 backfills. Note PRISM's two-downloads-per-file-per-day limit and that
 SNODAS requires downloading full CONUS tars and clipping.
 
-### B4. ZiaMet is failing under load — MEDIUM
-7,150 of 20,544 requests done, 182 failures, 946 retry events; the NMSU server returns HTTP 500
-under sustained load, and at the current rate finishing takes about 33 hours.
-**Do:** decide whether it is worth it. ZiaMet's stations also appear in Synoptic and its
-precipitation overlaps GHCN, so the marginal value is modest. If continuing, lower concurrency
-and raise the interval for that source.
+### B4. ZiaMet finished with a 1.5% error rate — LOW
+Completed: 1,718,843 rows from 20,446 requests, 312 errors (the NMSU server returned HTTP 500
+under sustained load; it recovered faster than the ~33 hour estimate made mid-run).
+**Do:** optionally re-run to pick up the failed requests; not urgent, since ZiaMet's stations
+also appear in Synoptic and its precipitation overlaps GHCN.
 
 ### B5. BEMP has only 10 of about 30 sites — MEDIUM
 7,112 rows spanning 1997 to 2018 across 10 sites, but the Bosque Ecosystem Monitoring Program
@@ -189,10 +190,13 @@ other source.
 **Do:** decide whether to commit a generated QA report, or add a workflow that regenerates and
 publishes it.
 
-### D4. NHDPlus reach linking — MEDIUM
-`pynhd` is not installed, so stream-network COMIDs were never attached to sites. This is the join
-key for the National Water Model and for any upstream and downstream reasoning.
-**Do:** add `pynhd` and attach COMIDs to stream sites during catalog build.
+### D4. NHDPlus reach linking — DONE (2026-09-13)
+`pynhd` is installed and `nmwater/sources/nhdplus.py` fetches NHDPlus v2 flowlines per HUC8 and
+snaps stream, canal, diversion and return-flow sites onto the nearest reach within 500 m.
+`site_reaches` and `flowlines` are first-class tables in the catalog. Two follow-ups remain:
+confirm NWM v3.0's hydrofabric COMIDs match v2 before joining (the fork that surveyed the
+gridded sources flagged this as unverified), and spot-check snaps with a large `snap_distance_m`
+near confluences, since nearest-neighbour matching can pick the wrong tributary there.
 
 ### D5. Human review of site links — MEDIUM
 1,331 proximity-based `colocated` links were generated automatically at a 250 m threshold, plus

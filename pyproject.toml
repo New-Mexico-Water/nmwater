@@ -48,6 +48,11 @@ grids = [
 pdf = [
     "pdfplumber>=0.11",
 ]
+nhd = [
+    # HyRiver stack for NHDPlus flowlines and value-added attributes. pynhd wraps NLDI,
+    # WaterData (NHDPlus v2), and the VAA parquet; py3dep/pygeoogc/pygeoutils are its plumbing.
+    "pynhd>=0.19",
+]
 dev = [
     "pytest>=8",
     "pytest-httpx>=0.30",

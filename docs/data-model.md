@@ -97,6 +97,39 @@ This is the demand-side partition of space. `sites.huc8` and `sites.huc12` are t
 partition. They do not line up, and conflating them is the most common way to get a confident
 wrong answer from this archive. See [interpretation.md](interpretation.md).
 
+## site_reaches and flowlines
+
+Where `site_regions` says which administrative area a site sits in, `site_reaches` says which
+reach of the actual river network it sits on. Built from NHDPlus v2 by `nmwater fetch nhdplus`,
+which fetches flowlines for every HUC8 in scope and snaps stream, canal, diversion and
+return-flow sites onto the nearest reach within 500 m.
+
+| Column | Meaning |
+|---|---|
+| `site_uid` | the site |
+| `comid` | NHDPlus common identifier for the reach - the network's primary key |
+| `gnis_name` | the named stream, e.g. "Rio Grande", "Rio Chama", "Purgatoire River" |
+| `streamorde` | Strahler stream order |
+| `totdasqkm` | total drainage area upstream of this reach, km2 |
+| `huc8` | the watershed the reach belongs to |
+| `snap_distance_m` | how far the site's coordinates are from the reach; treat as a confidence signal |
+
+`flowlines` carries the network's own attributes per COMID (length, from/to node, hydrologic
+sequence, path length, divergence) without geometry; the reach geometry itself lives in
+`data/grids/nhdplus/flowlines.gpkg` for GIS tools.
+
+This is what makes "is gauge A upstream of gauge B" and "what is this river actually called"
+answerable in SQL rather than by reading station names. It is also the join key a National Water
+Model integration would need later - COMID is NWM v2's `feature_id` (v3 uses a revised
+hydrofabric; confirm the version before joining).
+
+```sql
+-- every site on the Rio Grande, ordered downstream to upstream by drainage area
+SELECT s.site_uid, s.name, r.totdasqkm, r.snap_distance_m
+FROM site_reaches r JOIN sites s USING (site_uid)
+WHERE r.gnis_name = 'Rio Grande' ORDER BY r.totdasqkm DESC;
+```
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.
