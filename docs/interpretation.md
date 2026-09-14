@@ -289,6 +289,10 @@ Check `vertical_datum_note` before mixing an ACAP elevation with any other eleva
 Elephant Butte's table is published in Reclamation Project Vertical Datum, 45.0 feet below
 NAVD88, and the operational elevation series uses the same datum.
 
+A worked end-to-end example, with every capacity vintage back to 1915 recovered from the
+operational record, is in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md); it
+generates `reports/elephant_butte_annual_fill.csv`.
+
 To compute percent full, interpolate capacity at the chosen full-pool elevation from the survey
 of the right vintage, then divide. Name the elevation you called full, because the answer moves:
 at Elephant Butte, full pool at the 4407-foot spillway crest is 2,011,169 acre-feet under the

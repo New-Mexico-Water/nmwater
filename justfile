@@ -56,3 +56,7 @@ test:
 # Live smoke tests against real endpoints (small requests)
 test-live:
     uv run pytest -q -m live
+
+# Derived report: Elephant Butte annual fill vs the capacity table in force
+report-elephant-butte:
+    uv run python scripts/elephant_butte_fill.py
