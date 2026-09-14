@@ -67,16 +67,15 @@ queries work.
 
 ## B. Incomplete data pulls
 
-### B1. Water Quality Portal results — DONE, 85 chunks to retry
-Full backfill finished 2026-09-13: 3,875,820 result rows across 440 successful requests; 85 of
-525 county-by-decade chunks ended in an error state after the Portal's rate limiting exhausted
-the retry budget. Those are recorded as errors in the ledger.
-**Do:** re-run `nmwater fetch wqp`; only the 85 failed chunks are requested again.
+### B1. Water Quality Portal results — DONE
+Full backfill finished 2026-09-13; the 85 county-by-decade chunks that had been exhausted by the
+Portal's rate limiting were retried successfully on 2026-09-14, adding 1,552,940 rows for zero
+errors. Compacted and folded into the catalog.
 
-### B2. Colorado DWR needs two or three more daily runs — HIGH
-CDSS enforces a daily data quota even with a registered key. 1,465 requests succeeded, 2,578
-remain. Documented in `resume_needed.md`.
-**Do:** re-run `nmwater fetch codwr` on successive days until the error count reaches zero.
+### B2. Colorado DWR — DONE
+CDSS enforces a daily data quota even with a registered key, so this needed successive daily
+runs. The 2026-09-14 run completed 2,019 requests for 1,562,128 rows with 5 errors, all HTTP 404
+on structures that have no daily diversion record. No quota rejections remain.
 
 ### B3. Gridded products are at test-pull scale — HIGH
 Five gridMET year-files, eight PRISM files, two SNODAS days, one nClimGrid month. The full pass
@@ -210,15 +209,24 @@ never exercised on a reservoir.
 **Do:** confirm each against provider documentation and record the answer in the crosswalk
 caveats.
 
-### D6b. Parse Reclamation sedimentation surveys into capacity vintages — MEDIUM
-NID capacity is owner-reported and does not track sediment; Elephant Butte's observed full pool
-fell ~185,000 acre-feet between the 1940s and 1980s. The authoritative resurveyed capacities are
-in 78 Reclamation sedimentation-survey documents and area-capacity (ACAP) tables already indexed
-in the `usbr_rise` catalog items (Heron 2010, El Vado 2007, Ute 1992, Nambe Falls 2013, Avalon
-2023, Lake Sumner 2013, Elephant Butte, and more), as PDFs and tables, not parsed numbers.
-**Do:** download the ACAP tables, parse elevation-capacity curves per survey year into a
-`capacity_surveys` table (reservoir comid, survey_year, capacity_af at normal pool, table
-source), and let fill-percentage queries pick the vintage matching the observation date.
+### D6b. Reclamation sedimentation surveys — DONE, extensible
+`nmwater fetch usbr_rise --kind acap` now downloads and parses Reclamation's area-capacity (ACAP)
+tables into `reservoir_acap`: 410 elevation rows across 7 New Mexico reservoirs (Elephant Butte
+2017/2019, Brantley 2013, Lake Sumner 2013, El Vado 2007, Heron 2010, Avalon 2023, Nambe Falls
+2013), each row carrying survey year, capacity, surface area, Reclamation's nonlinear
+interpolation coefficients, and the vertical datum note.
+
+Validated: interpolating the Elephant Butte table at each day's observed elevation reproduces
+Reclamation's published surface area exactly and published storage to within 0.08%, so the
+operational storage series is confirmed to use this table.
+
+**Still open, lower priority:**
+- Only reservoirs with a RISE ACAP item are covered. Ute 1992 and the pre-2007 Elephant Butte
+  surveys (1957, 1969, 1980, 1988, 1999) exist as PDF reports only, so the archive has one
+  vintage per reservoir rather than a time series of vintages. Parsing those PDFs would let a
+  fill percentage for, say, 1975 use the capacity table in force in 1975.
+- `reservoir_acap` joins to observations by reservoir name, not by comid. A comid or site_uid
+  column would make it join like `reservoir_capacity` does.
 
 ### D7. Plausible-range metadata for variables — LOW
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch

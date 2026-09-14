@@ -6,4 +6,14 @@ sources:
     license: Public domain (U.S. Government work)
     citation: Bureau of Reclamation, Reclamation Information Sharing Environment (RISE) API, accessed 2026.
     refresh: weekly
-    caveats: Requires Accept application/vnd.api+json; 10,000 results per page. Daily values are stamped 07:00Z (midnight MST) and are stored as local dates. Sedimentation survey records (Elephant Butte, Heron, El Vado, Nambe, Sumner, Brantley, Avalon, Ute) are report/attachment items without time series and are listed only in the reference.catalog_items table. Source parameter keys are "<parameterName> [<unit>]" because RISE reuses names across units.
+    caveats: >-
+      Requires Accept application/vnd.api+json; 10,000 results per page. Daily values are stamped 07:00Z
+      (midnight MST) and are stored as local dates. Sedimentation survey area-capacity (ACAP) tables are
+      parsed into reference.reservoir_acap by `fetch usbr_rise --kind acap` (7 reservoirs: Elephant Butte
+      2017/2019, Brantley 2013, Sumner 2013, El Vado 2007, Heron 2010, Avalon 2023, Nambe Falls 2013).
+      These are the only sediment-corrected capacities in the archive; NID storage is
+      design/owner-reported. Elevations carry a per-table vertical datum note and are NOT all NAVD88 -
+      Elephant Butte is Reclamation Project Vertical Datum, 45.0 ft below NAVD88. The narrative survey
+      reports, and surveys with no ACAP item (Ute 1992, Elephant Butte 1957-1999), remain PDF-only and are
+      listed in reference.catalog_items. Source parameter keys are "<parameterName> [<unit>]" because RISE
+      reuses names across units.
