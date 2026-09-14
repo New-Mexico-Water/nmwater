@@ -183,6 +183,54 @@ WHERE o.variable = 'reservoir_storage'
 GROUP BY 1, cap.normal_storage_af ORDER BY 1;
 ```
 
+## reservoir_acap
+
+Reclamation's area-capacity tables, from bathymetric sedimentation resurveys. This is the
+sediment-corrected capacity that `reservoir_capacity` is not: one row per elevation step,
+tagged with the year the survey was flown, for seven New Mexico reservoirs.
+
+| Column | Meaning |
+|---|---|
+| `reservoir`, `location_id` | reservoir name and RISE location id |
+| `survey_year`, `survey_label` | vintage of the survey; the label keeps multi-year surveys ("2017 and 2019") intact |
+| `elevation_ft` | water surface elevation, in the datum named by `vertical_datum_note` |
+| `capacity_af` | storage capacity at that elevation, acre-feet |
+| `area_acres` | water surface area at that elevation |
+| `interp_c`, `interp_m` | Reclamation's nonlinear interpolation coefficients between rows |
+| `vertical_datum_note` | the survey's datum statement, verbatim |
+
+**Read `vertical_datum_note` before joining on elevation.** Elephant Butte's table is in
+Reclamation Project Vertical Datum, 45.0 feet below NAVD88.
+
+Prefer this table over `reservoir_capacity` for any percent-full figure. The National Inventory
+of Dams carries design storage that is never revised for the sediment wedge; at Elephant Butte
+that is 2,593,255 acre-feet against a 2017-survey capacity of 2,011,169 at the spillway crest.
+See [interpretation.md](interpretation.md).
+
+```sql
+-- Elephant Butte, percent full against the 2017 sediment survey.
+-- Linear interpolation between the two bracketing ACAP rows at the chosen full-pool elevation.
+WITH t AS (
+  SELECT elevation_ft, capacity_af FROM reservoir_acap
+  WHERE reservoir = 'Elephant Butte Reservoir'
+),
+full_pool AS (              -- 4407 ft = spillway crest / top of conservation pool
+  SELECT (SELECT max(capacity_af) FROM t WHERE elevation_ft <= 4407)
+       + (4407 - (SELECT max(elevation_ft) FROM t WHERE elevation_ft <= 4407))
+       * ((SELECT min(capacity_af) FROM t WHERE elevation_ft >= 4407)
+          - (SELECT max(capacity_af) FROM t WHERE elevation_ft <= 4407))
+       / ((SELECT min(elevation_ft) FROM t WHERE elevation_ft >= 4407)
+          - (SELECT max(elevation_ft) FROM t WHERE elevation_ft <= 4407)) AS cap_af
+)
+SELECT o.datetime_utc::date AS day,
+       round(o.value) AS storage_af,
+       round(f.cap_af) AS capacity_af_2017_survey,
+       round(100.0 * o.value / f.cap_af, 2) AS pct_full
+FROM observations o CROSS JOIN full_pool f
+WHERE o.site_uid = 'usbr_hydrodata:1119' AND o.variable = 'reservoir_storage'
+ORDER BY o.datetime_utc DESC LIMIT 1;
+```
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.

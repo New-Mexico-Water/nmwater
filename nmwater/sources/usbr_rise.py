@@ -10,8 +10,10 @@ Header Accept: application/vnd.api+json is mandatory.
 
 from __future__ import annotations
 
+import io
 import json
 import logging
+import re
 from datetime import date
 
 import pandas as pd
@@ -36,7 +38,7 @@ class USBRRise(Source):
     name = "usbr_rise"
     agency = "USBR"
     description = "Reclamation RISE items not in HydroData (sediment surveys, evaporation, wells, Pecos gages)"
-    kinds = ("sites", "catalog", "data")
+    kinds = ("sites", "catalog", "data", "acap")
 
     @property
     def base(self) -> str:
@@ -58,10 +60,10 @@ class USBRRise(Source):
             page += 1
         rec_ids = []
         loc_of_rec = {}
-        for l in locs:
-            for r in l["relationships"].get("catalogRecords", {}).get("data", []):
+        for loc in locs:
+            for r in loc["relationships"].get("catalogRecords", {}).get("data", []):
                 rec_ids.append(r["id"])
-                loc_of_rec[r["id"]] = l["attributes"]["_id"]
+                loc_of_rec[r["id"]] = loc["attributes"]["_id"]
 
         def rec(rid):
             d = self._get(rid, refresh=True)["data"]
@@ -90,8 +92,8 @@ class USBRRise(Source):
         items_df = pd.DataFrame(items)
         self.store.write_table(items_df, "reference", self.name, "catalog_items")
         rows = []
-        for l in locs:
-            a = l["attributes"]
+        for loc in locs:
+            a = loc["attributes"]
             coords = (a.get("locationCoordinates") or {}).get("coordinates") or [None, None]
             ltype = (a.get("locationTypeName") or "").lower()
             stype = "other"
@@ -137,6 +139,11 @@ class USBRRise(Source):
         if items.empty:
             summ.notes.append("run `nmwater discover usbr_rise` first")
             return summ
+        wanted = set(opts.get("kinds") or ("data",))
+        if "acap" in wanted:
+            self._fetch_acap(items, summ, refresh)
+            if not wanted & {"data"}:
+                return summ
         items = items[~items["source_code"].fillna("").str.lower().isin(SKIP_SOURCES)
                       & (items["item_type"] == "DATA") & ~items["is_modeled"].fillna(False).astype(bool)
                       & (items["data_structure"].fillna("").str.lower().str.contains("time series"))]
@@ -177,6 +184,88 @@ class USBRRise(Source):
         summ.n_rows = int(sum(res))
         summ.n_errors = len(rows) - len(res)
         return summ
+
+
+    # ------------------------------------------------------------------- ACAP
+    # Area-capacity tables from Reclamation sedimentation resurveys. These are the only
+    # sediment-corrected capacity figures we have: NID publishes design/owner-reported
+    # storage that is never revised for the sediment wedge, while an ACAP table is the
+    # storage-elevation relationship measured by an actual bathymetric survey in a stated
+    # year. Reservoir "percent full" is only meaningful against one of these, matched to
+    # the vintage of the storage reading - see docs/interpretation.md.
+    #
+    # Items are ordinary RISE catalog items of type GEN whose itemTitle contains
+    # "ACAP Table"; the payload is a CSV linked from the item's `binaryFilePath`, with a
+    # metadata preamble (the vertical datum note lives there and matters: Elephant Butte
+    # is published in Reclamation Project Vertical Datum, 45.0 ft below NAVD88) and a
+    # "###Data###" marker before the header row NUMBER,BASE,V,A,C,M.
+    #   BASE = elevation ft, V = capacity acre-ft, A = surface area acres,
+    #   C, M = coefficients of the nonlinear interpolation Reclamation uses between rows.
+    ACAP_RE = re.compile(r"ACAP\s*Table", re.I)
+
+    def _fetch_acap(self, items: pd.DataFrame, summ: FetchSummary, refresh: bool) -> None:
+        sel = items[items["item_title"].fillna("").str.contains(self.ACAP_RE)]
+        if sel.empty:
+            summ.notes.append("no ACAP items in catalog")
+            return
+        frames = []
+        for r in sel.to_dict("records"):
+            iid = int(r["item_id"])
+            try:
+                meta = self._get(f"catalog-item/{iid}", kind="acap", refresh=refresh)
+                url = (meta.get("data", {}).get("attributes", {}) or {}).get("binaryFilePath")
+                summ.n_requests += 1
+                if not url:
+                    continue
+                art = self.get(url, kind="acap", refresh=refresh)
+                summ.n_requests += 1
+                if art.from_cache:
+                    summ.n_cached += 1
+                df = self._parse_acap(art.read_bytes(), r)
+                if df is not None and not df.empty:
+                    frames.append(df)
+            except Exception as e:  # one bad table must not sink the rest
+                log.warning("usbr_rise acap %s: %s", iid, e)
+                summ.n_errors += 1
+        if not frames:
+            return
+        out = pd.concat(frames, ignore_index=True)
+        self.store.write_table(out, "reference", self.name, "reservoir_acap")
+        summ.n_rows += len(out)
+        summ.notes.append(f"{out['item_id'].nunique()} ACAP tables, {len(out)} elevation rows, "
+                          f"{out['reservoir'].nunique()} reservoirs")
+
+    def _parse_acap(self, raw: bytes, item: dict) -> pd.DataFrame | None:
+        text = raw.decode("utf-8-sig", errors="replace")
+        lines = text.splitlines()
+        start = next((i for i, ln in enumerate(lines) if ln.lower().lstrip('" ').startswith("###data###")), None)
+        if start is None:
+            return None
+        datum = next((ln for ln in lines[:start] if "datum" in ln.lower()), "")
+        df = pd.read_csv(io.StringIO("\n".join(lines[start + 1:])))
+        df.columns = [str(c).strip().upper() for c in df.columns]
+        if not {"BASE", "V"} <= set(df.columns):
+            return None
+        for c in ("BASE", "V", "A", "C", "M"):
+            if c in df.columns:
+                df[c] = pd.to_numeric(df[c], errors="coerce")
+        df = df[df["BASE"].notna() & df["V"].notna()]
+        title = str(item.get("item_title") or "")
+        yrs = re.findall(r"(1[89]\d\d|20\d\d)", title)
+        return pd.DataFrame({
+            "item_id": int(item["item_id"]),
+            "location_id": item.get("location_id"),
+            "reservoir": re.sub(r"\s*\(.*", "", str(item.get("record_title") or "")
+                                ).replace(" Sedimentation Survey Data", "").strip(),
+            "survey_year": int(yrs[-1]) if yrs else None,
+            "survey_label": " and ".join(yrs) if yrs else None,
+            "elevation_ft": df["BASE"].astype(float),
+            "capacity_af": df["V"].astype(float),
+            "area_acres": df["A"].astype(float) if "A" in df else float("nan"),
+            "interp_c": df["C"].astype(float) if "C" in df else float("nan"),
+            "interp_m": df["M"].astype(float) if "M" in df else float("nan"),
+            "vertical_datum_note": datum.strip('" ,')[:500] or None,
+        })
 
     def _normalize_results(self, d: dict, r) -> pd.DataFrame | None:
         data = d.get("data") or []

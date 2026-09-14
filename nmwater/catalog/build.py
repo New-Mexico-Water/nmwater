@@ -123,13 +123,25 @@ def build(settings: Settings) -> Path:
                     "river VARCHAR, nid_storage_af DOUBLE, max_storage_af DOUBLE, normal_storage_af DOUBLE, "
                     "hazard_class VARCHAR, comid BIGINT, match_distance_m DOUBLE)")
 
+    # Sediment-corrected area-capacity tables from Reclamation resurveys. Unlike
+    # reservoir_capacity (NID design storage, never revised for sediment), each row here is a
+    # measured storage-elevation pair from a bathymetric survey in a stated year, so a percent-
+    # full figure computed against it is honest. Join on reservoir name / location_id.
+    acap_pq = settings.parquet_dir / "reference" / "source=usbr_rise" / "reservoir_acap.parquet"
+    if acap_pq.exists():
+        con.execute(f"CREATE TABLE reservoir_acap AS SELECT * FROM read_parquet('{acap_pq.as_posix()}')")
+    else:
+        con.execute("CREATE TABLE reservoir_acap (item_id BIGINT, location_id VARCHAR, reservoir VARCHAR, "
+                    "survey_year BIGINT, survey_label VARCHAR, elevation_ft DOUBLE, capacity_af DOUBLE, "
+                    "area_acres DOUBLE, interp_c DOUBLE, interp_m DOUBLE, vertical_datum_note VARCHAR)")
+
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())
     con.execute("CREATE TABLE variables AS SELECT * FROM _vars")
     con.register("_xw", xw.to_frame())
     con.execute("CREATE TABLE crosswalk AS SELECT * FROM _xw")
     rows = []
-    for src_yaml in [CATALOG_DIR / "sources.yaml"] + sorted((CATALOG_DIR / "sources.d").glob("*.yaml")):
+    for src_yaml in [CATALOG_DIR / "sources.yaml", *sorted((CATALOG_DIR / "sources.d").glob("*.yaml"))]:
         if not src_yaml.exists():
             continue
         with src_yaml.open() as f:

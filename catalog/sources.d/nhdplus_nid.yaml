@@ -53,5 +53,6 @@ sources:
       cannot be joined to storage observations. Capacity figures are owner-reported and not
       systematically corrected for sedimentation; NID Storage is usually the original design value
       and the archive's own storage maxima show Elephant Butte holding ~185,000 acre-feet less at
-      full pool in the 1980s than in the 1940s. Resurveyed capacities live in the Reclamation
-      sedimentation-survey documents indexed by usbr_rise. See docs/interpretation.md.
+      full pool in the 1980s than in the 1940s. Resurveyed, sediment-corrected capacities are in
+      reference.reservoir_acap (usbr_rise --kind acap); prefer that table for any percent-full
+      figure. See docs/interpretation.md.

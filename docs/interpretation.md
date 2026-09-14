@@ -241,15 +241,58 @@ Three consequences for anything you publish:
 - A storage series that spans a resurvey is not a consistent measurement. When Reclamation
   adopts a new elevation-capacity table, the same lake level maps to a different volume, so a
   step in the series may be a table change rather than water.
-- Where a resurveyed capacity matters, the authority is Reclamation's own sedimentation surveys,
-  which the archive indexes: 78 survey reports and area-capacity tables for New Mexico
-  reservoirs sit in the `usbr_rise` catalog items (Heron 2010, El Vado 2007, Ute 1992, Nambe
-  Falls 2013, Avalon 2023, Lake Sumner 2013, and others). They are documents, not yet parsed
-  numbers; see `docs/TODO.md`.
+- Where a resurveyed capacity matters, the authority is Reclamation's own sedimentation surveys.
+  The archive now carries the parsed tables in `reservoir_acap`; use them instead of NID.
 
 The practical rule: report the capacity figure and its vintage next to any percentage, and prefer
 `max(value)` from the storage record itself as a sanity bound. A reservoir cannot be 20% full of
 a capacity it has exceeded in living memory.
+
+### The sediment-corrected capacity table, and how to use it
+
+`reservoir_acap` holds Reclamation's area-capacity (ACAP) tables, one row per elevation step from
+an actual bathymetric survey, with the survey year attached. Seven New Mexico reservoirs have one:
+
+| Reservoir | Survey | Elevation range, ft | Capacity at top of table, acre-feet |
+|---|---|---|---|
+| Elephant Butte | 2017 and 2019 | 4234 to 4414 | 2,275,698 |
+| Brantley | 2013 | 3204 to 3312 | 1,298,523 |
+| Lake Sumner | 2013 | 4197 to 4300 | 224,227 |
+| El Vado | 2007 | 6766 to 6904 | 197,370 |
+| Heron | 2010 | 6963 to 7102 | 74,615 |
+| Avalon | 2023 | 3157 to 3194 | 31,135 |
+| Nambe Falls | 2013 | 6761 to 6840 | 2,616 |
+
+Two things make these tables trustworthy for percent-full work.
+
+First, the operator already uses them. Interpolating the 2017 Elephant Butte table at each day's
+observed lake elevation reproduces Reclamation's published surface area exactly and its published
+storage to within 0.08%, which is just the difference between linear interpolation and the
+nonlinear `interp_c` / `interp_m` form. The daily storage numbers in this archive are therefore
+already sediment-corrected to the 2017 survey. What they lack is a denominator.
+
+Second, the tables make the sediment loss measurable. Comparing storage at the same lake elevation
+between the 1915-era table, recoverable from the early operational record, and the 2017 survey:
+
+| Elevation, ft | 1915-era capacity | 2017 survey capacity | Lost |
+|---|---|---|---|
+| 4300 | 276,433 | 115,093 | 58% |
+| 4330 | 625,071 | 357,875 | 43% |
+| 4360 | 1,073,248 | 783,978 | 27% |
+| 4390 | 2,005,332 | 1,472,367 | 27% |
+
+The loss is largest low in the reservoir, which is where the delta deposits. That is why a
+percentage computed against a design figure is not merely high by a constant factor: the error
+grows as the reservoir empties, exactly when the number matters most.
+
+Check `vertical_datum_note` before mixing an ACAP elevation with any other elevation series.
+Elephant Butte's table is published in Reclamation Project Vertical Datum, 45.0 feet below
+NAVD88, and the operational elevation series uses the same datum.
+
+To compute percent full, interpolate capacity at the chosen full-pool elevation from the survey
+of the right vintage, then divide. Name the elevation you called full, because the answer moves:
+at Elephant Butte, full pool at the 4407-foot spillway crest is 2,011,169 acre-feet under the
+2017 survey, against the 2,593,255 design figure NID carries.
 
 ## Vertical datums differ
 
