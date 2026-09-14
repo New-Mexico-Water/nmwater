@@ -1,0 +1,310 @@
+reservoir,year,capacity_af,peak_af,peak_pct,mean_af,mean_pct,low_af,low_pct,n_days,capacity_confidence,full_pool_basis
+Elephant Butte,1915,2643340,518583,19.6,369770,14.0,47515,1.8,287,medium,spillway crest
+Elephant Butte,1916,2643340,959113,36.3,702962,26.6,359075,13.6,352,medium,spillway crest
+Elephant Butte,1917,2643340,1034157,39.1,752725,28.5,517978,19.6,315,medium,spillway crest
+Elephant Butte,1918,2643340,572553,21.7,372566,14.1,170904,6.5,336,medium,spillway crest
+Elephant Butte,1919,2643340,1137970,43.1,757002,28.6,222813,8.4,365,medium,spillway crest
+Elephant Butte,1920,2643340,2147029,81.2,1574863,59.6,1034998,39.2,366,medium,spillway crest
+Elephant Butte,1921,2643340,2098302,79.4,1852237,70.1,1622127,61.4,365,medium,spillway crest
+Elephant Butte,1922,2643340,1993613,75.4,1730649,65.5,1441084,54.5,365,medium,spillway crest
+Elephant Butte,1923,2643340,1564653,59.2,1437938,54.4,1321406,50.0,365,medium,spillway crest
+Elephant Butte,1924,2643340,2215676,83.8,1797098,68.0,1564653,59.2,366,medium,spillway crest
+Elephant Butte,1925,2643340,1670980,63.2,1321791,50.0,950792,36.0,365,medium,spillway crest
+Elephant Butte,1926,2384131,1442307,60.5,1144750,48.0,984580,41.3,365,medium,spillway crest
+Elephant Butte,1927,2384131,1386638,58.2,1223999,51.3,1080814,45.3,365,medium,spillway crest
+Elephant Butte,1928,2384131,1468817,61.6,1232343,51.7,969428,40.7,366,medium,spillway crest
+Elephant Butte,1929,2384131,1541233,64.6,1141882,47.9,895571,37.6,365,medium,spillway crest
+Elephant Butte,1930,2384131,1629246,68.3,1454863,61.0,1243491,52.2,365,medium,spillway crest
+Elephant Butte,1931,2384131,1338892,56.2,1086687,45.6,820635,34.4,365,medium,spillway crest
+Elephant Butte,1932,2384131,1629246,68.3,1302630,54.6,923976,38.8,366,medium,spillway crest
+Elephant Butte,1933,2384131,1437007,60.3,1262199,52.9,1102084,46.2,365,medium,spillway crest
+Elephant Butte,1934,2384131,1168026,49.0,790044,33.1,470400,19.7,365,medium,spillway crest
+Elephant Butte,1935,2218594,676500,30.5,558921,25.2,421600,19.0,365,medium,spillway crest
+Elephant Butte,1936,2218594,881400,39.7,689237,31.1,533400,24.0,366,medium,spillway crest
+Elephant Butte,1937,2218594,1418000,63.9,1070061,48.2,671800,30.3,365,medium,spillway crest
+Elephant Butte,1938,2218594,1330900,60.0,1212132,54.6,1079200,48.6,365,medium,spillway crest
+Elephant Butte,1939,2218594,1361000,61.3,1068255,48.2,776300,35.0,365,medium,spillway crest
+Elephant Butte,1940,2218594,900600,40.6,640369,28.9,418500,18.9,366,high,spillway crest
+Elephant Butte,1941,2218594,1993300,89.8,1353885,61.0,484200,21.8,365,high,spillway crest
+Elephant Butte,1942,2218594,2302800,103.8,1980623,89.3,1778900,80.2,365,high,spillway crest
+Elephant Butte,1943,2218594,1778900,80.2,1540307,69.4,1249500,56.3,365,high,spillway crest
+Elephant Butte,1944,2218594,1522400,68.6,1321975,59.6,1130100,50.9,366,high,spillway crest
+Elephant Butte,1945,2218594,1519700,68.5,1298904,58.5,1129100,50.9,365,high,spillway crest
+Elephant Butte,1946,2218594,1128100,50.8,824546,37.2,539800,24.3,365,high,spillway crest
+Elephant Butte,1947,2218594,575700,25.9,420219,18.9,298600,13.5,365,low,spillway crest
+Elephant Butte,1948,2218594,762300,34.4,517204,23.3,374700,16.9,366,low,spillway crest
+Elephant Butte,1949,2218594,795400,35.9,621764,28.0,491600,22.2,365,low,spillway crest
+Elephant Butte,1950,2218594,667800,30.1,476606,21.5,322700,14.5,365,low,spillway crest
+Elephant Butte,1951,2218594,329700,14.9,134181,6.0,17600,0.8,365,low,spillway crest
+Elephant Butte,1952,2218594,423200,19.1,241578,10.9,16300,0.7,366,low,spillway crest
+Elephant Butte,1953,2218594,378100,17.0,197596,8.9,87600,3.9,365,low,spillway crest
+Elephant Butte,1954,2218594,173700,7.8,85462,3.9,9900,0.4,365,low,spillway crest
+Elephant Butte,1955,2218594,160800,7.2,120480,5.4,62200,2.8,365,low,spillway crest
+Elephant Butte,1956,2199528,211800,9.6,101381,4.6,22800,1.0,366,low,spillway crest
+Elephant Butte,1957,2199528,777100,35.3,327541,14.9,33300,1.5,365,low,spillway crest
+Elephant Butte,1958,2199528,1216700,55.3,925067,42.1,690100,31.4,365,low,spillway crest
+Elephant Butte,1959,2199528,988800,45.0,728431,33.1,516100,23.5,365,low,spillway crest
+Elephant Butte,1960,2199528,595400,27.1,501195,22.8,384700,17.5,366,low,spillway crest
+Elephant Butte,1961,2199528,452200,20.6,311213,14.1,183800,8.4,365,low,spillway crest
+Elephant Butte,1962,2199528,460900,21.0,331202,15.1,219300,10.0,365,low,spillway crest
+Elephant Butte,1963,2199528,432800,19.7,228809,10.4,66500,3.0,365,low,spillway crest
+Elephant Butte,1964,2199528,168600,7.7,104512,4.8,42100,1.9,366,low,spillway crest
+Elephant Butte,1965,2199528,520300,23.7,270880,12.3,89300,4.1,365,low,spillway crest
+Elephant Butte,1966,2199528,573200,26.1,390468,17.8,258400,11.7,365,low,spillway crest
+Elephant Butte,1967,2199528,366800,16.7,229076,10.4,122900,5.6,365,low,spillway crest
+Elephant Butte,1968,2199528,343500,15.6,246804,11.2,135700,6.2,366,low,spillway crest
+Elephant Butte,1969,2199528,528200,24.0,375951,17.1,238500,10.8,365,low,spillway crest
+Elephant Butte,1970,2138208,544200,25.5,361386,16.9,167400,7.8,365,low,spillway crest
+Elephant Butte,1971,2138208,380000,17.8,192015,9.0,30600,1.4,365,low,spillway crest
+Elephant Butte,1972,2138208,303600,14.2,175424,8.2,53200,2.5,366,low,spillway crest
+Elephant Butte,1973,2138208,794200,37.1,562336,26.3,305100,14.3,365,low,spillway crest
+Elephant Butte,1974,2110441,866000,41.0,540850,25.6,315700,15.0,365,medium,spillway crest
+Elephant Butte,1975,2110441,620300,29.4,454492,21.5,365600,17.3,365,medium,spillway crest
+Elephant Butte,1976,2110441,727700,34.5,471727,22.4,285700,13.5,366,medium,spillway crest
+Elephant Butte,1977,2110441,356000,16.9,230807,10.9,119300,5.7,365,medium,spillway crest
+Elephant Butte,1978,2110441,288800,13.7,184875,8.8,90800,4.3,365,medium,spillway crest
+Elephant Butte,1979,2110441,943500,44.7,598527,28.4,185500,8.8,365,medium,spillway crest
+Elephant Butte,1980,2110441,1291600,61.2,1101659,52.2,920700,43.6,366,medium,spillway crest
+Elephant Butte,1981,2110441,1217400,57.7,943425,44.7,725200,34.4,365,high,spillway crest
+Elephant Butte,1982,2110441,918300,43.5,797726,37.8,725800,34.4,365,high,spillway crest
+Elephant Butte,1983,2110441,1359100,64.4,1149617,54.5,919700,43.6,365,high,spillway crest
+Elephant Butte,1984,2110441,1614500,76.5,1445404,68.5,1300800,61.6,366,high,spillway crest
+Elephant Butte,1985,2110441,2013800,95.4,1839927,87.2,1601300,75.9,365,high,spillway crest
+Elephant Butte,1986,2110441,2118100,100.4,2068487,98.0,1962400,93.0,365,high,spillway crest
+Elephant Butte,1987,2110441,2095600,99.3,2039631,96.6,1954600,92.6,365,high,spillway crest
+Elephant Butte,1988,2110441,2099200,99.5,2025306,96.0,1911100,90.6,366,high,spillway crest
+Elephant Butte,1989,2064866,2040200,98.8,1826853,88.5,1639000,79.4,365,high,spillway crest
+Elephant Butte,1990,2064866,1738600,84.2,1470799,71.2,1249100,60.5,365,high,spillway crest
+Elephant Butte,1991,2064866,1715200,83.1,1505325,72.9,1370900,66.4,365,high,spillway crest
+Elephant Butte,1992,2064866,2018100,97.7,1835030,88.9,1716800,83.1,366,high,spillway crest
+Elephant Butte,1993,2064866,2019200,97.8,1881949,91.1,1765200,85.5,365,high,spillway crest
+Elephant Butte,1994,2064866,2049300,99.2,1994627,96.6,1911000,92.5,365,high,spillway crest
+Elephant Butte,1995,2064866,2043107,98.9,1998323,96.8,1931900,93.6,365,high,spillway crest
+Elephant Butte,1996,2064866,2045290,99.1,1818431,88.1,1634100,79.1,366,high,spillway crest
+Elephant Butte,1997,2064866,1928380,93.4,1755309,85.0,1654155,80.1,365,high,spillway crest
+Elephant Butte,1998,2064866,1985862,96.2,1799742,87.2,1581123,76.6,365,high,spillway crest
+Elephant Butte,1999,2064866,1756101,85.0,1652531,80.0,1579929,76.5,365,high,spillway crest
+Elephant Butte,2000,2064866,1739255,84.2,1439315,69.7,1182071,57.2,366,high,spillway crest
+Elephant Butte,2001,2020044,1306114,64.7,1042011,51.6,840432,41.6,365,medium,spillway crest
+Elephant Butte,2002,2020044,916681,45.4,569171,28.2,280622,13.9,365,medium,spillway crest
+Elephant Butte,2003,2020044,405310,20.1,275061,13.6,147950,7.3,365,medium,spillway crest
+Elephant Butte,2004,2020044,322870,16.0,197699,9.8,94610,4.7,366,medium,spillway crest
+Elephant Butte,2005,2020044,560920,27.8,371521,18.4,196060,9.7,365,medium,spillway crest
+Elephant Butte,2006,2020044,515350,25.5,378616,18.7,183870,9.1,365,medium,spillway crest
+Elephant Butte,2007,2020044,611060,30.2,485625,24.0,323490,16.0,365,medium,spillway crest
+Elephant Butte,2008,2020044,648790,32.1,560388,27.7,410860,20.3,366,medium,spillway crest
+Elephant Butte,2009,2011201,705250,35.1,571173,28.4,448246,22.3,365,low,spillway crest
+Elephant Butte,2010,2011201,604147,30.0,479277,23.8,362101,18.0,365,low,spillway crest
+Elephant Butte,2011,2011201,504810,25.1,323464,16.1,189260,9.4,365,low,spillway crest
+Elephant Butte,2012,2011201,390020,19.4,244939,12.2,109440,5.4,366,low,spillway crest
+Elephant Butte,2013,2011201,280191,13.9,173501,8.6,60327,3.0,365,low,spillway crest
+Elephant Butte,2014,2011201,378177,18.8,256784,12.8,130889,6.5,365,low,spillway crest
+Elephant Butte,2015,2011201,399965,19.9,287946,14.3,166224,8.3,365,low,spillway crest
+Elephant Butte,2016,2011201,430441,21.4,259154,12.9,125963,6.3,366,low,spillway crest
+Elephant Butte,2017,2011201,516226,25.7,341040,17.0,205315,10.2,365,low,spillway crest
+Elephant Butte,2018,2011201,483692,24.0,250468,12.5,58240,2.9,365,low,spillway crest
+Elephant Butte,2019,2011201,577261,28.7,385941,19.2,116919,5.8,365,low,spillway crest
+Elephant Butte,2020,2011169,611125,30.4,314846,15.7,81640,4.1,366,published,spillway crest
+Elephant Butte,2021,2011169,245320,12.2,157147,7.8,97524,4.8,365,published,spillway crest
+Elephant Butte,2022,2011169,265222,13.2,176070,8.8,73855,3.7,365,published,spillway crest
+Elephant Butte,2023,2011169,570686,28.4,386875,19.2,229039,11.4,365,published,spillway crest
+Elephant Butte,2024,2011169,510200,25.4,310115,15.4,112586,5.6,366,published,spillway crest
+Elephant Butte,2025,2011169,282605,14.1,168392,8.4,62674,3.1,365,published,spillway crest
+Elephant Butte,2026,2011169,251819,12.5,162322,8.1,26732,1.3,252,published,spillway crest
+Brantley,1987,93323,0,0.0,0,0.0,0,0.0,1,low,flood pool
+Brantley,1990,93323,11050,11.8,9171,9.8,7540,8.1,59,low,flood pool
+Brantley,1991,93323,49270,52.8,22545,24.2,5940,6.4,354,low,flood pool
+Brantley,1992,93323,50130,53.7,28650,30.7,8910,9.5,346,low,flood pool
+Brantley,1993,93323,33330,35.7,24098,25.8,15360,16.5,358,medium,flood pool
+Brantley,1994,93323,41910,44.9,26163,28.0,11590,12.4,336,medium,flood pool
+Brantley,1995,93323,43830,47.0,27909,29.9,11230,12.0,363,medium,flood pool
+Brantley,1996,93323,39260,42.1,27081,29.0,13530,14.5,258,medium,flood pool
+Brantley,1997,93323,43620,46.7,28897,31.0,15290,16.4,241,medium,flood pool
+Brantley,1998,93323,47990,51.4,29204,31.3,16900,18.1,365,medium,flood pool
+Brantley,1999,93323,41300,44.3,37194,39.9,26853,28.8,147,medium,flood pool
+Brantley,2000,93323,44672,47.9,29576,31.7,15672,16.8,366,low,flood pool
+Brantley,2001,93323,39401,42.2,23456,25.1,6900,7.4,365,low,flood pool
+Brantley,2002,85629,30080,35.1,14683,17.1,6241,7.3,365,published,flood pool
+Brantley,2003,85629,20845,24.3,9921,11.6,2534,3.0,365,published,flood pool
+Brantley,2004,85629,42466,49.6,21955,25.6,5616,6.6,366,published,flood pool
+Brantley,2005,85629,43839,51.2,25881,30.2,9588,11.2,365,published,flood pool
+Brantley,2006,85629,35331,41.3,21386,25.0,11923,13.9,303,published,flood pool
+Brantley,2007,85629,42259,49.4,24715,28.9,4299,5.0,365,published,flood pool
+Brantley,2008,85629,39834,46.5,22107,25.8,8930,10.4,366,published,flood pool
+Brantley,2009,85629,29834,34.8,18318,21.4,10262,12.0,365,published,flood pool
+Brantley,2010,85629,33441,39.1,19909,23.3,6434,7.5,365,published,flood pool
+Brantley,2011,85629,29834,34.8,12138,14.2,5166,6.0,365,published,flood pool
+Brantley,2012,85629,22201,25.9,9599,11.2,1773,2.1,366,published,flood pool
+Brantley,2013,85629,38392,44.8,13600,15.9,4155,4.9,365,published,flood pool
+Brantley,2014,85629,81366,95.0,45670,53.3,16699,19.5,365,published,flood pool
+Brantley,2015,85629,85302,99.6,62930,73.5,19620,22.9,365,published,flood pool
+Brantley,2016,85629,44543,52.0,30417,35.5,14373,16.8,366,published,flood pool
+Brantley,2017,85629,40447,47.2,30096,35.1,11813,13.8,365,published,flood pool
+Brantley,2018,85629,45391,53.0,27595,32.2,9008,10.5,365,published,flood pool
+Brantley,2019,85629,42141,49.2,29278,34.2,12595,14.7,365,published,flood pool
+Brantley,2020,85629,44439,51.9,23202,27.1,4177,4.9,366,published,flood pool
+Brantley,2021,85629,48786,57.0,24561,28.7,9405,11.0,365,published,flood pool
+Brantley,2022,85629,36170,42.2,24754,28.9,7877,9.2,365,published,flood pool
+Brantley,2023,85629,39764,46.4,25961,30.3,12200,14.2,365,published,flood pool
+Brantley,2024,85629,42391,49.5,23761,27.7,12240,14.3,366,published,flood pool
+Brantley,2025,85629,42998,50.2,29253,34.2,14908,17.4,365,published,flood pool
+Brantley,2026,85629,29080,34.0,18705,21.8,8885,10.4,250,published,flood pool
+Lake Sumner,1972,110941,80520,72.6,80520,72.6,80520,72.6,1,high,spillway crest
+Lake Sumner,1973,110941,112400,101.3,98280,88.6,80520,72.6,356,high,spillway crest
+Lake Sumner,1974,110941,102200,92.1,46226,41.7,3280,3.0,365,high,spillway crest
+Lake Sumner,1975,110941,63340,57.1,32851,29.6,4000,3.6,365,high,spillway crest
+Lake Sumner,1976,110941,39900,36.0,16796,15.1,3440,3.1,366,high,spillway crest
+Lake Sumner,1977,110941,40120,36.2,23549,21.2,3710,3.3,365,high,spillway crest
+Lake Sumner,1978,110941,48360,43.6,17421,15.7,2460,2.2,365,high,spillway crest
+Lake Sumner,1979,110941,102500,92.4,69084,62.3,23080,20.8,365,high,spillway crest
+Lake Sumner,1980,110941,91160,82.2,43530,39.2,1680,1.5,366,high,spillway crest
+Lake Sumner,1981,110941,40590,36.6,27148,24.5,2160,1.9,365,high,spillway crest
+Lake Sumner,1982,110941,48360,43.6,23482,21.2,2840,2.6,365,medium,spillway crest
+Lake Sumner,1983,110941,38900,35.1,20008,18.0,4190,3.8,365,medium,spillway crest
+Lake Sumner,1984,110941,32830,29.6,20696,18.7,9210,8.3,366,medium,spillway crest
+Lake Sumner,1985,110941,46200,41.6,32402,29.2,8680,7.8,365,medium,spillway crest
+Lake Sumner,1986,110941,68111,61.4,45939,41.4,27080,24.4,365,medium,spillway crest
+Lake Sumner,1987,110941,67444,60.8,49729,44.8,27446,24.7,365,medium,spillway crest
+Lake Sumner,1988,101909,46469,45.6,29093,28.5,13730,13.5,366,medium,spillway crest
+Lake Sumner,1989,101909,36100,35.4,22572,22.1,12900,12.7,365,medium,spillway crest
+Lake Sumner,1990,101909,32200,31.6,18889,18.5,5350,5.2,316,medium,spillway crest
+Lake Sumner,1991,101909,56770,55.7,24572,24.1,2600,2.6,350,medium,spillway crest
+Lake Sumner,1992,101909,64040,62.8,38893,38.2,12170,11.9,357,medium,spillway crest
+Lake Sumner,1993,101909,44190,43.4,30518,29.9,13860,13.6,328,medium,spillway crest
+Lake Sumner,1994,101909,44880,44.0,27750,27.2,12200,12.0,354,medium,spillway crest
+Lake Sumner,1995,101909,37070,36.4,27035,26.5,19910,19.5,346,medium,spillway crest
+Lake Sumner,1996,101909,43320,42.5,24863,24.4,5190,5.1,255,medium,spillway crest
+Lake Sumner,1999,101909,42340,41.5,28949,28.4,22590,22.2,94,medium,spillway crest
+Lake Sumner,2000,101909,36440,35.8,20658,20.3,6510,6.4,366,medium,spillway crest
+Lake Sumner,2001,101909,40627,39.9,18709,18.4,3193,3.1,365,medium,spillway crest
+Lake Sumner,2002,101909,14232,14.0,4729,4.6,101,0.1,364,medium,spillway crest
+Lake Sumner,2003,90934,14723,16.2,8504,9.4,1619,1.8,365,medium,spillway crest
+Lake Sumner,2004,90934,23721,26.1,9654,10.6,2050,2.3,366,medium,spillway crest
+Lake Sumner,2005,90934,43954,48.3,33577,36.9,10206,11.2,365,medium,spillway crest
+Lake Sumner,2006,90934,35331,38.9,20722,22.8,11923,13.1,365,medium,spillway crest
+Lake Sumner,2007,90934,73837,81.2,25284,27.8,17626,19.4,365,published,spillway crest
+Lake Sumner,2008,90934,28612,31.5,18963,20.9,0,0.0,366,published,spillway crest
+Lake Sumner,2009,90934,24518,27.0,16586,18.2,7764,8.5,365,published,spillway crest
+Lake Sumner,2010,90934,31447,34.6,19657,21.6,13689,15.1,365,published,spillway crest
+Lake Sumner,2011,90934,25107,27.6,10642,11.7,1964,2.2,365,published,spillway crest
+Lake Sumner,2012,90934,16618,18.3,6076,6.7,1712,1.9,366,published,spillway crest
+Lake Sumner,2013,90934,36830,40.5,14917,16.4,3060,3.4,365,published,spillway crest
+Lake Sumner,2014,90934,44945,49.4,35734,39.3,24990,27.5,365,published,spillway crest
+Lake Sumner,2015,90934,47102,51.8,38107,41.9,28289,31.1,365,published,spillway crest
+Lake Sumner,2016,90934,46543,51.2,31065,34.2,17701,19.5,366,published,spillway crest
+Lake Sumner,2017,90934,39202,43.1,28629,31.5,19452,21.4,365,published,spillway crest
+Lake Sumner,2018,90934,42930,47.2,28877,31.8,17761,19.5,365,published,spillway crest
+Lake Sumner,2019,90934,33819,37.2,23939,26.3,13710,15.1,365,published,spillway crest
+Lake Sumner,2020,90934,27882,30.7,15500,17.0,4808,5.3,366,published,spillway crest
+Lake Sumner,2021,90934,19181,21.1,11174,12.3,4662,5.1,365,published,spillway crest
+Lake Sumner,2022,90934,16993,18.7,11560,12.7,3166,3.5,365,published,spillway crest
+Lake Sumner,2023,90934,28065,30.9,15757,17.3,8180,9.0,365,published,spillway crest
+Lake Sumner,2024,90934,24270,26.7,14437,15.9,4678,5.1,366,published,spillway crest
+Lake Sumner,2025,90934,22691,25.0,17814,19.6,9021,9.9,365,published,spillway crest
+Lake Sumner,2026,90934,24003,26.4,14762,16.2,3152,3.5,246,published,spillway crest
+El Vado,1975,194158,126270,65.0,126270,65.0,126270,65.0,1,high,spillway crest
+El Vado,1976,194158,109600,56.4,109600,56.4,109600,56.4,1,high,spillway crest
+El Vado,1977,194158,26430,13.6,26430,13.6,26430,13.6,1,high,spillway crest
+El Vado,1978,194158,52550,27.1,52550,27.1,52550,27.1,1,high,spillway crest
+El Vado,1979,194158,123235,63.5,123218,63.5,123200,63.5,2,high,spillway crest
+El Vado,1980,194158,124894,64.3,112846,58.1,85285,43.9,366,high,spillway crest
+El Vado,1981,194158,126019,64.9,97412,50.2,78860,40.6,365,high,spillway crest
+El Vado,1982,194158,127051,65.4,104596,53.9,97952,50.4,365,high,spillway crest
+El Vado,1983,194158,156301,80.5,131133,67.5,121495,62.6,365,high,spillway crest
+El Vado,1984,194158,146702,75.6,132696,68.3,124795,64.3,366,high,spillway crest
+El Vado,1985,194158,177791,91.6,155328,80.0,124949,64.4,365,high,spillway crest
+El Vado,1986,194158,190261,98.0,183402,94.5,167124,86.1,365,high,spillway crest
+El Vado,1987,184452,173785,94.2,156178,84.7,122097,66.2,365,published,spillway crest
+El Vado,1988,184452,179849,97.5,151659,82.2,117387,63.6,366,published,spillway crest
+El Vado,1989,184452,176066,95.5,139421,75.6,92894,50.4,365,published,spillway crest
+El Vado,1990,184452,179818,97.5,124709,67.6,85676,46.4,365,published,spillway crest
+El Vado,1991,184452,174533,94.6,137105,74.3,100153,54.3,365,published,spillway crest
+El Vado,1992,184452,180357,97.8,124715,67.6,82245,44.6,366,published,spillway crest
+El Vado,1993,184452,180389,97.8,123410,66.9,61197,33.2,365,published,spillway crest
+El Vado,1994,184452,182172,98.8,119133,64.6,79147,42.9,365,published,spillway crest
+El Vado,1995,184452,171488,93.0,125548,68.1,69953,37.9,365,published,spillway crest
+El Vado,1996,184452,159920,86.7,85872,46.6,42652,23.1,366,published,spillway crest
+El Vado,1997,184452,179880,97.5,119727,64.9,44509,24.1,365,published,spillway crest
+El Vado,1998,184452,179691,97.4,122929,66.6,71543,38.8,365,published,spillway crest
+El Vado,1999,184452,179913,97.5,144308,78.2,106238,57.6,365,published,spillway crest
+El Vado,2000,184452,179881,97.5,97828,53.0,16326,8.9,366,published,spillway crest
+El Vado,2001,184452,180549,97.9,98639,53.5,20811,11.3,365,published,spillway crest
+El Vado,2002,184452,112012,60.7,50985,27.6,7900,4.3,365,published,spillway crest
+El Vado,2003,184452,106547,57.8,43387,23.5,11221,6.1,365,published,spillway crest
+El Vado,2004,184452,118786,64.4,58684,31.8,25677,13.9,366,published,spillway crest
+El Vado,2005,184452,157931,85.6,89257,48.4,25667,13.9,365,published,spillway crest
+El Vado,2006,184452,130590,70.8,85493,46.3,52691,28.6,365,published,spillway crest
+El Vado,2007,184452,180643,97.9,128471,69.7,70398,38.2,365,published,spillway crest
+El Vado,2008,184452,181247,98.3,144928,78.6,91010,49.3,366,published,spillway crest
+El Vado,2009,184452,184703,100.1,146984,79.7,107751,58.4,365,low,spillway crest
+El Vado,2010,184452,184170,99.8,122373,66.3,91329,49.5,365,low,spillway crest
+El Vado,2011,184452,163009,88.4,113662,61.6,86560,46.9,365,low,spillway crest
+El Vado,2012,184452,141307,76.6,67932,36.8,10444,5.7,366,low,spillway crest
+El Vado,2013,184452,43773,23.7,21707,11.8,5309,2.9,365,low,spillway crest
+El Vado,2014,184452,64980,35.2,30375,16.5,5479,3.0,365,low,spillway crest
+El Vado,2015,184452,124957,67.7,70763,38.4,13676,7.4,365,low,spillway crest
+El Vado,2016,184452,128160,69.5,60229,32.7,34255,18.6,366,low,spillway crest
+El Vado,2017,184452,141806,76.9,96752,52.5,49997,27.1,365,low,spillway crest
+El Vado,2018,184452,84418,45.8,39166,21.2,9344,5.1,365,low,spillway crest
+El Vado,2019,184452,117372,63.6,59069,32.0,14015,7.6,365,low,spillway crest
+El Vado,2020,184452,68404,37.1,36359,19.7,18813,10.2,366,low,spillway crest
+El Vado,2021,184452,35154,19.1,20315,11.0,10849,5.9,365,published,spillway crest
+El Vado,2022,184452,19674,10.7,5858,3.2,1474,0.8,365,published,spillway crest
+El Vado,2023,184452,11080,6.0,2679,1.5,920,0.5,365,published,spillway crest
+El Vado,2024,184452,16523,9.0,4244,2.3,1555,0.8,366,published,spillway crest
+El Vado,2025,184452,25725,13.9,22565,12.2,16026,8.7,365,published,spillway crest
+El Vado,2026,184452,25447,13.8,22970,12.5,16414,8.9,253,published,spillway crest
+Avalon,2001,6066,1525,25.1,1525,25.1,1525,25.1,1,published,spillway crest
+Avalon,2002,6066,3678,60.6,1841,30.3,21,0.3,365,published,spillway crest
+Avalon,2003,6066,2204,36.3,1123,18.5,3,0.0,365,published,spillway crest
+Avalon,2004,6066,4466,73.6,2112,34.8,732,12.1,366,published,spillway crest
+Avalon,2005,6066,4466,73.6,1833,30.2,1026,16.9,365,published,spillway crest
+Avalon,2006,6066,2794,46.1,1562,25.8,619,10.2,303,published,spillway crest
+Avalon,2007,6066,2794,46.1,1581,26.1,619,10.2,365,published,spillway crest
+Avalon,2008,6066,3027,49.9,1652,27.2,966,15.9,366,published,spillway crest
+Avalon,2009,6066,3185,52.5,1648,27.2,790,13.0,365,published,spillway crest
+Avalon,2010,6066,3266,53.8,1809,29.8,675,11.1,365,published,spillway crest
+Avalon,2011,6066,2948,48.6,1649,27.2,347,5.7,365,published,spillway crest
+Avalon,2012,6066,2861,47.2,1879,31.0,918,15.1,366,published,spillway crest
+Avalon,2013,6066,6028,99.4,2512,41.4,826,13.6,365,published,spillway crest
+Avalon,2014,6066,8069,133.0,2566,42.3,357,5.9,365,published,spillway crest
+Avalon,2015,6066,5213,85.9,2953,48.7,1080,17.8,365,published,spillway crest
+Avalon,2016,6066,5074,83.6,2406,39.7,788,13.0,363,published,spillway crest
+Avalon,2017,6066,3215,53.0,1771,29.2,0,0.0,365,published,spillway crest
+Avalon,2018,6066,3683,60.7,1451,23.9,0,0.0,365,published,spillway crest
+Avalon,2019,6066,3282,54.1,1395,23.0,0,0.0,365,published,spillway crest
+Avalon,2020,6066,4638,76.5,1790,29.5,0,0.0,366,published,spillway crest
+Avalon,2021,6066,5692,93.8,2310,38.1,613,10.1,365,published,spillway crest
+Avalon,2022,6066,3008,49.6,1394,23.0,0,0.0,365,published,spillway crest
+Avalon,2023,6066,2117,34.9,1034,17.0,0,0.0,365,published,spillway crest
+Avalon,2024,6066,3033,50.0,2110,34.8,869,14.3,366,published,spillway crest
+Avalon,2025,6066,4119,67.9,2760,45.5,2060,34.0,364,published,spillway crest
+Avalon,2026,6066,4577,75.5,3033,50.0,2139,35.3,252,published,spillway crest
+Nambe Falls,1999,2171,1909,87.9,1660,76.5,1510,69.6,93,high,spillway crest
+Nambe Falls,2000,2171,2025,93.3,1483,68.3,926,42.7,329,high,spillway crest
+Nambe Falls,2001,2046,2040,99.7,1466,71.7,873,42.7,365,high,spillway crest
+Nambe Falls,2002,2046,1630,79.7,1035,50.6,674,32.9,365,high,spillway crest
+Nambe Falls,2003,2046,2026,99.0,1147,56.1,449,21.9,295,high,spillway crest
+Nambe Falls,2004,2046,1818,88.9,864,42.2,455,22.2,353,high,spillway crest
+Nambe Falls,2005,2046,2047,100.0,1645,80.4,886,43.3,356,high,spillway crest
+Nambe Falls,2006,2046,2022,98.8,1403,68.6,814,39.8,363,high,spillway crest
+Nambe Falls,2007,2046,2034,99.4,1655,80.9,952,46.5,347,high,spillway crest
+Nambe Falls,2008,2046,2034,99.4,1741,85.1,1188,58.1,338,high,spillway crest
+Nambe Falls,2009,2046,2036,99.5,1694,82.8,1096,53.6,365,high,spillway crest
+Nambe Falls,2010,2046,2040,99.7,1752,85.6,1193,58.3,349,high,spillway crest
+Nambe Falls,2011,2046,2023,98.9,1371,67.0,826,40.4,348,high,spillway crest
+Nambe Falls,2012,2046,2038,99.6,1461,71.4,893,43.6,365,high,spillway crest
+Nambe Falls,2013,2046,2094,102.3,1714,83.8,1087,53.1,364,high,spillway crest
+Nambe Falls,2014,2046,2052,100.3,1714,83.8,1053,51.5,365,high,spillway crest
+Nambe Falls,2015,2046,2061,100.7,1641,80.2,1060,51.8,362,high,spillway crest
+Nambe Falls,2016,2046,2041,99.8,1730,84.6,1133,55.4,334,high,spillway crest
+Nambe Falls,2017,2046,2040,99.7,1955,95.6,1596,78.0,284,high,spillway crest
+Nambe Falls,2018,2046,2025,99.0,1569,76.7,879,43.0,346,high,spillway crest
+Nambe Falls,2019,2046,2042,99.8,1760,86.0,1045,51.1,361,high,spillway crest
+Nambe Falls,2020,2046,2035,99.5,1478,72.2,758,37.0,339,high,spillway crest
+Nambe Falls,2021,1752,1731,98.8,1375,78.5,1070,61.1,339,published,spillway crest
+Nambe Falls,2022,1752,1760,100.5,1652,94.3,1276,72.8,365,published,spillway crest
+Nambe Falls,2023,1752,1751,99.9,1392,79.5,730,41.7,359,published,spillway crest
+Nambe Falls,2024,1752,1663,94.9,1505,85.9,1226,70.0,366,published,spillway crest
+Nambe Falls,2025,1752,1651,94.2,1509,86.1,1133,64.7,365,published,spillway crest
+Nambe Falls,2026,1752,1649,94.1,1312,74.9,856,48.9,253,published,spillway crest

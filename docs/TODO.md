@@ -224,9 +224,18 @@ Built on this: `scripts/elephant_butte_fill.py` recovers every capacity vintage 
 from the operational record and writes `reports/elephant_butte_annual_fill.csv`. Method and
 caveats in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md).
 
+Extended to all reservoirs: `scripts/reservoir_fill.py` covers Lake Sumner, El Vado, Brantley,
+Nambe Falls and Avalon as well. See [reports/reservoir-fill.md](reports/reservoir-fill.md).
+
 **Still open, lower priority:**
+- Heron is excluded because Reclamation's published ACAP table stops at 7102 ft / 74,615 AF,
+  below the reservoir's operating range. Request or locate the complete table.
+- El Vado needs a 1.45 ft elevation shift for its storage to reproduce from its ACAP table, but
+  the table's datum note implies ~12 ft. Reconcile before publishing El Vado externally.
+- Spillway crest elevations are detected from the record, not sourced. They should become
+  documented constants with citations rather than literals in the scripts.
 - Parsing the pre-2007 survey PDFs (1957, 1969, 1980, 1988, 1999, 2007) would replace every
-  derived capacity in that report with a published one and retire its confidence column.
+  derived capacity in these reports with a published one and retire the confidence column.
 - Only reservoirs with a RISE ACAP item are covered. Ute 1992 and the pre-2007 Elephant Butte
   surveys (1957, 1969, 1980, 1988, 1999) exist as PDF reports only, so the archive has one
   vintage per reservoir rather than a time series of vintages. Parsing those PDFs would let a

@@ -60,3 +60,8 @@ test-live:
 # Derived report: Elephant Butte annual fill vs the capacity table in force
 report-elephant-butte:
     uv run python scripts/elephant_butte_fill.py
+
+# All derived reservoir fill reports (Elephant Butte first; the general script folds it in)
+reports:
+    uv run python scripts/elephant_butte_fill.py
+    uv run python scripts/reservoir_fill.py

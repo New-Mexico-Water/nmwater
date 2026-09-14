@@ -290,8 +290,10 @@ Elephant Butte's table is published in Reclamation Project Vertical Datum, 45.0 
 NAVD88, and the operational elevation series uses the same datum.
 
 A worked end-to-end example, with every capacity vintage back to 1915 recovered from the
-operational record, is in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md); it
-generates `reports/elephant_butte_annual_fill.csv`.
+operational record, is in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md). The
+same treatment for all six reservoirs the archive can do honestly is in
+[reports/reservoir-fill.md](reports/reservoir-fill.md), which generates
+`reports/reservoir_annual_fill.csv`.
 
 To compute percent full, interpolate capacity at the chosen full-pool elevation from the survey
 of the right vintage, then divide. Name the elevation you called full, because the answer moves:
