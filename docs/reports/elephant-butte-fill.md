@@ -16,6 +16,47 @@ It reads only the DuckDB catalog and makes no network calls, so it is safe to re
 It needs `reservoir_acap` populated, which comes from `nmwater fetch usbr_rise --kind acap`
 followed by `nmwater catalog build`.
 
+## Data provenance
+
+**Storage, elevation, area.** Bureau of Reclamation, Upper Colorado Region HydroData, site
+`usbr_hydrodata:1119` (native id 1119, "ELEPHANT BUTTE"), at 33.154 N, 107.192 W in HUC 13030101,
+Rio Grande-Mimbres basin. Daily values, local calendar date.
+
+| Series | Observations | Period |
+|---|---|---|
+| `reservoir_storage` | 40,625 | 1915-03-20 to 2026-09-10 |
+| `reservoir_elevation` | 40,630 | 1915-03-20 to 2026-09-10 |
+| `reservoir_area` | 40,621 | 1915-03-20 to 2026-09-10 |
+
+This is the longest continuous paired reservoir record in the archive, 112 years with no decade
+missing. Three other sources carry Elephant Butte storage and agree with it to within 0.4%:
+`usace_cwms:E Butte` from 2005, `usbr_albuq:ELEPHANTBUTTEDAM` for the current fortnight, and
+`resopsus:657` to 2021.
+
+Source: `https://www.usbr.gov/uc/water/hydrodata/`, public, no key.
+Cite as: Bureau of Reclamation, Upper Colorado Region HydroData, accessed 2026.
+
+**Capacity.** Reclamation Information Sharing Environment (RISE) catalog item 11028, location 323,
+"Elephant Butte Reservoir (New Mexico) Sedimentation Survey ACAP Table 2017 and 2019", by
+Timothy J. Randle and Vincent Benoit, published 2019-12-31, file
+`ElephantButteReservoir_ElephantButteDam_NM00129_2017_ACAP2_RISE.csv`. 89 elevation rows, 4234 to
+4414 ft, 2,275,698 acre-feet at the top of the table.
+
+Source: `https://data.usbr.gov/rise/api`, public, requires header
+`Accept: application/vnd.api+json`. Fetched by `nmwater fetch usbr_rise --kind acap` into
+`reservoir_acap`.
+
+Six earlier Elephant Butte surveys are indexed in the same RISE record but exist only as PDF
+reports, not machine-readable tables: 1957, 1969, 1980, 1988, 1999 and 2007.
+
+**Datum.** Reclamation Project Vertical Datum for Elephant Butte Dam, 45.0 ft below NAVD88
+(Geoid 12A). The operational elevation series is on the same datum; no shift is applied.
+
+**Independent capacity figure used for validation.** National Inventory of Dams, U.S. Army Corps
+of Engineers, `https://nid.sec.usace.army.mil/api/nation/csv`, dam NM00129. Normal storage
+2,065,010 acre-feet, design storage 2,593,255. Neither is sediment-corrected; they are used here
+only as a check, never as an input.
+
 ## Columns
 
 | Column | Meaning |
