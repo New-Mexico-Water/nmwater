@@ -29,6 +29,21 @@ by `nmwater catalog build`.
 Capacity is in acre-feet at full pool. "Lost" is sediment, over the length of the record only,
 not since the dam was built.
 
+## Per-reservoir notes
+
+Each reservoir has its own notes file with its data provenance, capacity source, datum, crest
+detection, reservoir-specific method, validation and caveats. Read the one for the reservoir you
+are quoting; several carry warnings that change what a percentage means.
+
+| Reservoir | Notes | Read first because |
+|---|---|---|
+| Elephant Butte | [elephant-butte-fill.md](elephant-butte-fill.md) | 14 capacity vintages, hand-reviewed |
+| Lake Sumner | [lake-sumner-fill.md](lake-sumner-fill.md) | pre-2007 years are the weakest here |
+| El Vado | [el-vado-fill.md](el-vado-fill.md) | unresolved datum discrepancy; 2022+ is dam repair, not drought |
+| Brantley | [brantley-fill.md](brantley-fill.md) | flood pool, so percentages are not comparable |
+| Nambe Falls | [nambe-falls-fill.md](nambe-falls-fill.md) | tiny; it stays full, unlike the others |
+| Avalon | [avalon-fill.md](avalon-fill.md) | a diversion dam; low readings are operations, not drought |
+
 ## Why only six
 
 The method needs three things at once, and most reservoirs fail at least one.
