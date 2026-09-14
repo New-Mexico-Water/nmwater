@@ -220,7 +220,13 @@ Validated: interpolating the Elephant Butte table at each day's observed elevati
 Reclamation's published surface area exactly and published storage to within 0.08%, so the
 operational storage series is confirmed to use this table.
 
+Built on this: `scripts/elephant_butte_fill.py` recovers every capacity vintage back to 1915
+from the operational record and writes `reports/elephant_butte_annual_fill.csv`. Method and
+caveats in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md).
+
 **Still open, lower priority:**
+- Parsing the pre-2007 survey PDFs (1957, 1969, 1980, 1988, 1999, 2007) would replace every
+  derived capacity in that report with a published one and retire its confidence column.
 - Only reservoirs with a RISE ACAP item are covered. Ute 1992 and the pre-2007 Elephant Butte
   surveys (1957, 1969, 1980, 1988, 1999) exist as PDF reports only, so the archive has one
   vintage per reservoir rather than a time series of vintages. Parsing those PDFs would let a
