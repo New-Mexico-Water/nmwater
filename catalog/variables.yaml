@@ -40,9 +40,15 @@ units:
   degree:   {label: "degrees (direction)", si: "degree", to_si: 1.0}
   gpm:      {label: "gallons per minute", si: "m3/s", to_si: 0.0000630901964}
 
+# Provider "no data" markers dropped at ingest for every variable not marked `signed`. These are
+# magnitudes no measured quantity here can take; smaller markers (-99.9) are listed per variable.
+missing_codes_default: [-9999, -99999]
+
 variables:
   # ---- Surface water --------------------------------------------------------------
   discharge:
+    # No lower bound on purpose: 3,826 negative readings at 36 state ditch and canal gauges may be real
+    # reverse flow or backwater; see the follow-up issue. Only the -9999 no-data code is dropped.
     label: Streamflow / discharge
     definition: Volumetric flow rate of water past a stream, canal, ditch, or spring gauge.
     unit: cfs
@@ -66,6 +72,7 @@ variables:
     quantity: length
     kind: state
     medium: surface_water
+    missing_codes: [-99.99]
   water_temp:
     label: Water temperature
     definition: Temperature of surface or ground water at the sensor.
@@ -120,6 +127,8 @@ variables:
     kind: stock
     medium: reservoir
     comparability: USGS 00054, USBR datatype 17, USACE Stor, and NRCS RESC all report storage but may use different capacity tables (sedimentation resurveys change them). Treat as equivalent_method and compare with care across revisions.
+    valid_min: 0
+    noise_floor: -5      # rounding at an empty reservoir, af
   reservoir_elevation:
     label: Reservoir pool elevation
     definition: Water surface elevation of a reservoir. Vertical datum (NGVD29 vs NAVD88) is noted in the crosswalk caveat.
@@ -149,6 +158,7 @@ variables:
     kind: flux
     medium: reservoir
     comparability: Often computed as release + change in storage + evaporation; not an independent measurement.
+    signed: true         # computed by mass balance; negative on some days
   reservoir_inflow_volume:
     label: Reservoir inflow volume
     definition: Inflow volume during the interval.
@@ -156,6 +166,7 @@ variables:
     quantity: volume
     kind: flux
     medium: reservoir
+    signed: true
   reservoir_evaporation:
     label: Reservoir evaporation
     definition: Estimated evaporative loss from the reservoir surface during the interval.
@@ -177,6 +188,7 @@ variables:
     quantity: volume
     kind: flux
     medium: reservoir
+    signed: true         # net change; negative and large values are real
 
   # ---- Precipitation and snow -----------------------------------------------------
   precip:
@@ -188,6 +200,8 @@ variables:
     medium: atmosphere
     intervals: [15min, hourly, daily, monthly]
     comparability: NOT the same as precip_accumulated_wy. GHCN PRCP and USGS 00045 are daily totals; NRCS PRCP is the daily increment of the accumulation gauge.
+    valid_min: 0
+    missing_codes: [-99.9]   # NWS feed no-data marker
   precip_accumulated_wy:
     label: Water-year accumulated precipitation
     definition: Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.
@@ -196,6 +210,7 @@ variables:
     kind: stock
     medium: atmosphere
     comparability: related_not_comparable to precip; convert by differencing consecutive days within a water year.
+    missing_codes: [-99.9]
   snowfall:
     label: Snowfall
     definition: Depth of new snow during the interval.
@@ -211,6 +226,9 @@ variables:
     kind: stock
     medium: snow
     comparability: NRCS WTEQ (pillow), snow-course measurements, GHCN WESD (manual), and gridded SNODAS/UA SWE all estimate the same quantity by different methods.
+    valid_min: 0
+    noise_floor: -1      # pillow zero drift: 98% of negative SWE from the NWS feed is within 1 in of zero
+    missing_codes: []
   snow_depth:
     label: Snow depth
     definition: Total depth of snow on the ground.
@@ -218,6 +236,8 @@ variables:
     quantity: length
     kind: stock
     medium: snow
+    valid_min: 0
+    noise_floor: -5      # ultrasonic depth sensors drift below zero; anything under -5 in is junk
   snow_density:
     label: Snow density
     definition: SWE divided by snow depth, as percent.
@@ -248,6 +268,7 @@ variables:
     quantity: speed
     kind: state
     medium: atmosphere
+    missing_codes: [-99.9]
   wind_direction:
     label: Wind direction
     definition: Direction the wind blows from, degrees clockwise from north.

@@ -15,6 +15,42 @@ from .models import OBS_KEY, OBS_SCHEMA, SITES_SCHEMA
 
 log = logging.getLogger("nmwater.store")
 
+_REGISTRY = None
+
+
+def _registry():
+    """The canonical variable registry, loaded once (imported lazily: catalog imports core)."""
+    global _REGISTRY
+    if _REGISTRY is None:
+        from ..catalog.variables import VariableRegistry
+        _REGISTRY = VariableRegistry()
+    return _REGISTRY
+
+
+def missing_code_mask(df: pd.DataFrame) -> pd.Series:
+    """True for rows whose value is a provider "no data" marker for that row's variable.
+
+    Codes come from the registry: a default list of extreme values plus per-variable ones, and
+    variables marked `signed` are exempt. Matching uses a tolerance because some sources store
+    -99.9 as -99.90000000000001. Rows are never dropped for merely being negative here; that is
+    a quality flag applied in the catalog (docs/data-model.md, "Quality flags").
+    """
+    reg = _registry()
+    mask = pd.Series(False, index=df.index)
+    if "value" not in df.columns or "variable" not in df.columns or df.empty:
+        return mask
+    vals = pd.to_numeric(df["value"], errors="coerce")
+    for variable in df["variable"].dropna().unique():
+        codes = reg.missing_codes_for(variable)
+        if not codes:
+            continue
+        rows = df["variable"] == variable
+        hit = pd.Series(False, index=df.index)
+        for code in codes:
+            hit |= (vals - code).abs() < 1e-6
+        mask |= rows & hit
+    return mask
+
 _SAFE = re.compile(r"[^A-Za-z0-9_.\-]+")
 # Oldest plausible hydrologic observation. New Mexico's longest records begin in 1888 (OSE
 # streamflow compilation) and 1889 (USGS at Embudo); anything earlier is a data-entry error.
@@ -78,6 +114,12 @@ class Store:
                             source, int(bad.sum()), yr[bad].min(), yr[bad].max())
                 df = df[~bad]
         df = df[df["value"].notna()] if "value" in df.columns else df
+        if len(df):
+            codes = missing_code_mask(df)
+            if codes.any():
+                log.info("%s: dropped %d missing-value codes (%s)", source, int(codes.sum()),
+                         ", ".join(sorted(df.loc[codes, "variable"].unique())))
+                df = df[~codes]
         if len(df) == 0:
             return 0
         df = df.drop_duplicates(subset=OBS_KEY, keep="last")
@@ -92,6 +134,53 @@ class Store:
             pq.write_table(table, d / fname, compression="zstd")
             n += table.num_rows
         return n
+
+    def purge_missing_codes(self, source: str | None = None, dry_run: bool = False) -> dict[tuple[str, str], int]:
+        """Remove provider no-data markers from already-stored observations.
+
+        Ingest drops them now; this cleans what was written before that rule existed. Only files
+        that actually contain a code are rewritten. Returns {(source, variable): rows removed}.
+        """
+        import duckdb
+
+        reg = _registry()
+        base = self.root / "timeseries"
+        removed: dict[tuple[str, str], int] = {}
+        if not base.exists():
+            return removed
+        con = duckdb.connect()
+        for variable in sorted({d.name.split("=", 1)[1] for d in base.glob("source=*/variable=*")}):
+            codes = reg.missing_codes_for(variable)
+            if not codes:
+                continue
+            cond = " OR ".join(f"abs(value - ({c})) < 1e-6" for c in codes)
+            glob = f"{base}/source={_safe(source) if source else '*'}/variable={_safe(variable)}/year=*/*.parquet"
+            try:
+                files = [r[0] for r in con.execute(
+                    f"SELECT DISTINCT filename FROM read_parquet('{glob}', filename=true) WHERE {cond}").fetchall()]
+            except duckdb.IOException:
+                continue                      # no files for this variable under that source
+            for f in files:
+                path = Path(f)
+                table = pq.read_table(path)
+                df = table.to_pandas()
+                bad = missing_code_mask(df)
+                n = int(bad.sum())
+                if not n:
+                    continue
+                src = path.parts[path.parts.index("timeseries") + 1].split("=", 1)[1]
+                removed[(src, variable)] = removed.get((src, variable), 0) + n
+                if dry_run:
+                    continue
+                keep = df[~bad]
+                if keep.empty:
+                    path.unlink()
+                    continue
+                tmp = path.with_suffix(".parquet.tmp")
+                pq.write_table(coerce_to_schema(keep, OBS_SCHEMA), tmp, compression="zstd")
+                tmp.replace(path)
+        con.close()
+        return removed
 
     def compact(self, source: str | None = None, variable: str | None = None) -> dict[str, int]:
         """Merge part files per partition, dedup on OBS_KEY keeping the newest ingest_run_id."""
