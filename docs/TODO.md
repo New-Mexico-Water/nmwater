@@ -296,11 +296,12 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
 
 ### D9. Incremental-update defects found auditing every source (2026-09-23) — HIGH to LOW
 Delivery mechanics for every source are in [sources.md](sources.md#how-each-source-delivers-data).
-- **USGS 15-minute data stops at the last discovery (HIGH, confirmed).** Windows end at each
-  series' end date as recorded by `discover` (`usgs.py:518-519`), and `update` never re-runs
-  discovery. After the 2026-09-23 update, 15-minute data still ended 2026-09-12 while daily data
-  reached 2026-09-22. **Do:** cap at today for active series, or refresh the series catalog in
-  `update`.
+- **USGS 15-minute data stops at the last discovery (FIXED 2026-09-23).** Windows ended at each
+  series' end date as recorded by `discover`, which for an active gauge is just the day discovery
+  ran, so updates froze at 2026-09-12. Series whose recorded end is within 30 days
+  (`continuous_active_days`) of the catalog's newest end date are now treated as active and fetched
+  to today. After the fix, 268 of 285 15-minute gauges are current; the other 17 had stopped
+  reporting before the catalog was taken.
 - **The 30-day margin is discarded in four modules (HIGH).** iem_dcp, nrcs, usace_cwms and USGS
   15-minute start at the later of `since` and the last fetched window (`iem_dcp.py:87-89`,
   `nrcs.py:126-128`, `usace_cwms.py:178-180`, `usgs.py:514-517`), so revisions to recent
