@@ -1,5 +1,10 @@
 # Elephant Butte annual fill, 1915-present
 
+This is the curated, hand-reviewed Elephant Butte report. Elephant Butte also appears in the
+general reservoir reports, [reservoirs/elephant_butte.md](reservoirs/elephant_butte.md), which add
+inflow, release and pool detail and reproduce these capacities to within 0.12% in every year. The
+full set of 24 reservoirs is indexed at [reservoirs/index.md](reservoirs/index.md).
+
 ## What this is
 
 `reports/elephant_butte_annual_fill.csv` gives, for every year since 1915, how much water

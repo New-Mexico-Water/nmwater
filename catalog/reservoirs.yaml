@@ -1,0 +1,614 @@
+# Reservoir registry: which series, capacity table and pools describe each reservoir, and what its
+# data is good for. Read by scripts/reservoir_fill.py, which builds reports/*_annual_fill.csv and
+# renders docs/reports/<key>-fill.md from the text fields below plus computed provenance.
+#
+# Dam facts (owner, type, purposes, year completed, height, hazard class) are NOT repeated here:
+# they are read from the National Inventory of Dams at build time via `nid_id`.
+#
+# Fields
+#   name, dam, river, basin     display
+#   nid_id                      National Inventory of Dams id
+#   role                        storage | flood_control | dry_flood | diversion | municipal
+#                               storage       holds water for later use; percent of full pool is the headline
+#                               flood_control holds a conservation or recreation pool AND a large flood pool
+#                               dry_flood     no permanent pool; storage above zero means a flood is being held
+#                               diversion     operated as a forebay for canals, drained routinely
+#                               municipal     city water supply
+#   sites                       storage/elevation site_uids, highest priority first; spliced by day
+#   paired_site                 the site whose paired elevation+storage record drives capacity-era detection
+#   rating                      location name of the operator's Elev;Stor table in reservoir_ratings (CWMS)
+#   elev_shift_ft               added to observed elevation before table lookup (datum difference)
+#   pools                       from CWMS location levels unless given here; elevations in the table's datum
+#   pool_level_shift_ft         added to CWMS level elevations, scalar or per pool (Santa Rosa mixes datums)
+#   full_pool                   for reservoirs without published pools: {elev_ft, source}
+#   inflow_sites / release_sites  daily-mean cfs series, first available used per day
+#   release_gauges              USGS discharge gauges just below the dam; preferred for release
+#   pool_history                false to ignore published pool storages (they describe another structure)
+#   pool_history_levels         CWMS level names carrying dated published capacities of the full pool
+#   start_year, start_year_reason  drop years before the dam was in operation
+#   era_boundaries              force capacity-era start dates instead of detecting them
+#   capacity_basis_override     storage-only reservoirs with no usable table: {af, source}
+#   summary, uses, cautions     hand-written guidance rendered into the notes file
+
+reservoirs:
+
+  # ------------------------------------------------------------------ Rio Chama / upper Rio Grande
+  heron:
+    name: Heron Reservoir
+    dam: Heron Dam
+    river: Willow Creek, at the Rio Chama
+    basin: Rio Grande (Rio Chama)
+    nid_id: NM00122
+    role: storage
+    sites: [usbr_hydrodata:2686, usace_cwms:Heron]
+    paired_site: usbr_hydrodata:2686
+    rating: Heron
+    full_pool: {elev_ft: 7186.1, source: "detected from the record: 309 days at or above 7,186 ft and none above 7,187 in 52 years"}
+    inflow_sites: [usbr_hydrodata:2686]
+    release_sites: [usbr_hydrodata:2686]
+    summary: >-
+      The San Juan-Chama Project's main storage. Water diverted from San Juan River tributaries in
+      Colorado arrives through the Azotea Tunnel and is held here for the Project's contractors,
+      chiefly the Albuquerque Bernalillo County Water Utility Authority, the Middle Rio Grande
+      Conservancy District and the City of Santa Fe. Heron is operated to store imported
+      San Juan-Chama water, not native Rio Grande water.
+    uses:
+      - "**Imported supply.** Heron storage is the clearest single measure of how much Colorado River basin water New Mexico has banked for the middle Rio Grande. It moves independently of Rio Grande runoff."
+      - "**Contractor calls.** Releases show when contractors call their water down the Chama, typically for municipal supply or to offset river depletions."
+      - "**Snowpack in the San Juan mountains, not the Sangres.** Inflow tracks diversions through the Azotea Tunnel, so a good year here can coincide with a poor year on the Rio Grande."
+    cautions:
+      - "Reclamation's 2010 survey table published in RISE stops at 7,102 ft, far below the operating range. This report uses the complete operator table held in CWMS instead, which reproduces reported storage exactly."
+      - "Full pool is detected from the record, not taken from a published pool definition."
+
+  el_vado:
+    name: El Vado Reservoir
+    dam: El Vado Dam
+    river: Rio Chama
+    basin: Rio Grande (Rio Chama)
+    nid_id: NM10008
+    role: storage
+    sites: [usbr_hydrodata:2685, usace_cwms:El Vado]
+    paired_site: usbr_hydrodata:2685
+    rating: El Vado
+    full_pool: {elev_ft: 6900.0, source: "detected from the record: 195 days at or above 6,900 ft and none above 6,901 in 52 years"}
+    inflow_sites: [usbr_hydrodata:2685]
+    release_sites: [usbr_hydrodata:2685]
+    release_gauges: [usgs:08285500]
+    summary: >-
+      The Middle Rio Grande Conservancy District's storage reservoir, built in 1935 and now owned
+      by Reclamation. It holds native Rio Grande water from the Chama for irrigation in the middle
+      valley, including prior and paramount water for the six Middle Rio Grande Pueblos.
+    uses:
+      - "**Irrigation supply for the middle valley.** El Vado storage going into the irrigation season is the best single indicator of how much native water MRGCD has to work with."
+      - "**Rio Grande Compact constraints.** Storage in post-1929 reservoirs above Otowi is limited when Elephant Butte is low under Article VII of the Rio Grande Compact, so El Vado's ability to store in a given spring depends on conditions downstream."
+      - "**Chama runoff timing.** Inflow is a direct record of spring snowmelt from the Chama headwaters."
+    cautions:
+      - "Storage has been heavily restricted in recent years during dam safety work. The near-empty years of 2022 to 2024 reflect that, not drought alone. Confirm the restriction dates with Reclamation before attributing them."
+      - "An earlier version of this report used Reclamation's 2007 survey table and needed an unexplained 1.45 ft datum shift. The operator's current table, effective 2021, reproduces reported storage exactly with no shift, which resolves that discrepancy."
+
+  abiquiu:
+    name: Abiquiu Lake
+    dam: Abiquiu Dam
+    river: Rio Chama
+    basin: Rio Grande (Rio Chama)
+    nid_id: NM00001
+    role: flood_control
+    sites: [usbr_hydrodata:2729, usace_cwms:Abiquiu, usgs:08286900]
+    paired_site: usbr_hydrodata:2729
+    rating: Abiquiu
+    inflow_sites: [usbr_hydrodata:2729, usace_cwms:Abiquiu]
+    release_sites: [usbr_hydrodata:2729]
+    release_gauges: [usgs:08287000]
+    summary: >-
+      An Army Corps flood and sediment control dam on the Rio Chama below El Vado. Its
+      conservation pool is used to store San Juan-Chama water for Albuquerque and other
+      contractors under easements, while the much larger flood pool above it catches spring
+      runoff and storm flows and passes them on at safe rates.
+    uses:
+      - "**Two different signals in one series.** Storage below the top of conservation is mostly banked San Juan-Chama water. Storage above it is flood water being held back, and the `days_flood_storage` column counts when that happened."
+      - "**Spring runoff on the Chama.** Peak inflow and the timing of flood-pool use record how big and how early the Chama snowmelt was."
+      - "**Managed releases.** Release peaks show when the Corps and contractors moved water downstream, including coordinated spring releases."
+    cautions:
+      - "The top of the conservation pool was raised from 6,220 to 6,230 ft in April 2024 under the City of Albuquerque easement, adding about 44,000 acre-feet. Percentages use the pool capacity the Corps published for each date, so 2024 onward is measured against the larger pool. A rise in percent full across that date is a definition change, not water."
+      - "Design capacity in the dam registry, 1,369,000 acre-feet, is flood capacity to the top of the dam. It is not a meaningful denominator for how full the lake is."
+
+  nambe_falls:
+    name: Nambe Falls Reservoir
+    dam: Nambe Falls Dam
+    river: Rio Nambe
+    basin: Rio Grande
+    nid_id: NM00412
+    role: storage
+    sites: [usgs:08294200, usbr_hydrodata:2687]
+    paired_site: usgs:08294200
+    rating: Nambe
+    full_pool: {elev_ft: 6827.0, source: "detected from the record: 133 days at or above 6,827 ft and none above 6,828 in 27 years"}
+    inflow_sites: [usbr_hydrodata:2687]
+    release_sites: [usbr_hydrodata:2687]
+    release_gauges: [usgs:08294210]
+    summary: >-
+      A small Reclamation dam on the Rio Nambe supplying irrigation water in the Pojoaque Valley.
+      At under 2,000 acre-feet it is by far the smallest reservoir in these reports, and it is run
+      as a seasonal supply that refills each spring rather than as multi-year storage.
+    uses:
+      - "**A clean headwater snowmelt signal.** Because it refills almost every spring, the timing and size of its spring rise track Sangre de Cristo snowpack on the Rio Nambe directly."
+      - "**Local irrigation demand.** The summer drawdown is irrigation use in the Pojoaque Valley."
+    cautions:
+      - "A few dozen acre-feet of error is several percentage points here."
+      - "The dam registry lists the primary purpose as fish and wildlife, which does not match how the reservoir is operated."
+
+  # ------------------------------------------------------------------ middle Rio Grande
+  cochiti:
+    name: Cochiti Lake
+    dam: Cochiti Dam
+    river: Rio Grande, at the Santa Fe River confluence
+    basin: Rio Grande
+    nid_id: NM00404
+    role: flood_control
+    sites: [usbr_hydrodata:2696, usace_cwms:Cochiti, usgs:08317300]
+    paired_site: usbr_hydrodata:2696
+    rating: Cochiti
+    start_year: 1975
+    start_year_reason: storage in 1973 and 1974 is construction-era ponding before the dam was closed in 1975
+    pool_history_levels: [Recreation Pool]
+    inflow_sites: [usbr_hydrodata:2696, usace_cwms:Cochiti]
+    release_sites: [usbr_hydrodata:2696]
+    release_gauges: [usgs:08317400]
+    summary: >-
+      The Army Corps' flood and sediment control dam on the main stem of the Rio Grande above
+      Albuquerque, completed in 1975. It keeps a permanent recreation pool of about 1,200 surface
+      acres, maintained with San Juan-Chama water, and otherwise passes native Rio Grande flow
+      through except when it is holding back floods. Everything the Rio Grande delivers to the
+      middle valley passes through Cochiti first.
+    uses:
+      - "**The middle Rio Grande's inflow gauge.** Cochiti inflow is effectively the whole upper Rio Grande and Chama delivered to the middle valley. Its annual volume and peak are among the most useful single numbers for the health of the system."
+      - "**Flood regulation.** `days_flood_storage` and `peak_flood_pct` show when and how hard the flood pool was used. A spring with the pool filling and then drawing down is snowmelt being metered out."
+      - "**Managed spring releases for the bosque.** The Corps has used deviations in Cochiti's flood operations to hold spring runoff and release it as a shaped pulse that floods the bosque overbank and supports the Rio Grande silvery minnow. Those operations appear here as a spring storage rise followed by a sustained high release. Confirm specific years against Corps deviation records."
+      - "**Sediment trapping.** Cochiti stops most of the upper basin's sediment. Its capacity loss over time is a direct measure of the load that no longer reaches the middle valley and Elephant Butte."
+    cautions:
+      - "Percent of conservation pool describes the recreation pool only. It is expected to sit near 100% in almost every year and says little about water supply. The flood-pool columns carry the hydrological signal."
+      - "The dam registry's 722,000 acre-foot figure is flood capacity. Do not divide storage by it and call the result how full the lake is."
+
+  jemez_canyon:
+    name: Jemez Canyon Reservoir
+    dam: Jemez Canyon Dam
+    river: Jemez River, above its confluence with the Rio Grande
+    basin: Rio Grande
+    nid_id: NM00003
+    role: dry_flood
+    sites: [usbr_hydrodata:2744, usace_cwms:Jemez, usgs:08328500]
+    paired_site: usbr_hydrodata:2744
+    rating: Jemez
+    inflow_sites: [usace_cwms:Jemez]
+    release_sites: [usbr_hydrodata:2744]
+    release_gauges: [usgs:08328950, usgs:08329000]
+    summary: >-
+      An Army Corps flood and sediment control dam on the lower Jemez River, completed in 1953.
+      It no longer keeps a permanent pool; storage has been essentially zero outside of storm
+      events for years, so any storage recorded is a flood being held.
+    uses:
+      - "**Storm and flash-flood events on the Jemez.** Each year's peak storage and the number of days impounding are a record of monsoon and snowmelt floods from the Jemez Mountains, including post-fire runoff."
+      - "**Sediment from a fire-affected watershed.** Capacity loss here reflects sediment from the Jemez, whose upper watershed has burned repeatedly."
+    cautions:
+      - "Percent full is not meaningful for a dry dam. Use peak storage and days impounding."
+      - "In earlier decades Jemez Canyon did hold a sediment pool, so early-record storage is not comparable with recent years."
+
+  galisteo:
+    name: Galisteo Reservoir
+    dam: Galisteo Dam
+    river: Galisteo Creek
+    basin: Rio Grande
+    nid_id: NM00002
+    role: dry_flood
+    sites: [usace_cwms:Galisteo, usgs:08317900]
+    paired_site: usace_cwms:Galisteo
+    rating: Galisteo
+    inflow_sites: [usace_cwms:Galisteo]
+    release_sites: []
+    release_gauges: [usgs:08317950]
+    summary: >-
+      An Army Corps dry flood control dam on Galisteo Creek, completed in 1970. It has no
+      permanent pool and holds water only briefly during storms before draining through an
+      ungated outlet toward the Rio Grande below Cochiti.
+    uses:
+      - "**A storm-runoff detector.** Any storage at all is a flood event. Peak storage and days impounding describe the size and duration of Galisteo Creek floods, which are almost entirely monsoon driven."
+    cautions:
+      - "Percent full is not meaningful for a dry dam."
+      - "The operator table stops at 5,610 ft, just above the top of the flood pool, so storage above that level cannot be computed."
+
+  # ------------------------------------------------------------------ lower Rio Grande
+  elephant_butte:
+    name: Elephant Butte Reservoir
+    dam: Elephant Butte Dam
+    river: Rio Grande
+    basin: Rio Grande
+    nid_id: NM00129
+    role: storage
+    sites: [usbr_hydrodata:1119, usace_cwms:E Butte]
+    paired_site: usbr_hydrodata:1119
+    rating: E Butte
+    full_pool: {elev_ft: 4407.0, source: "detected from the record: the count of days at or above each elevation falls thirteenfold between 4,406 and 4,407 ft"}
+    inflow_sites: [usbr_hydrodata:1119]
+    release_sites: [usbr_hydrodata:1119]
+    release_gauges: [usgs:08361000]
+    era_boundaries: ["1915-01-01", "1925-11-30", "1934-12-31", "1939-12-31", "1946-12-31", "1950-12-31",
+                     "1955-12-31", "1960-12-31", "1969-12-31", "1973-12-31", "1980-12-31", "1988-12-31",
+                     "2000-12-31", "2008-12-31", "2019-12-31"]
+    summary: >-
+      New Mexico's largest reservoir and the storage for Reclamation's Rio Grande Project, which
+      irrigates the Elephant Butte Irrigation District in New Mexico and El Paso County Water
+      Improvement District No. 1 in Texas and supplies Mexico's treaty delivery. It is also where
+      New Mexico's Rio Grande Compact deliveries to Texas are measured.
+    uses:
+      - "**The lower Rio Grande's water supply.** Storage going into the irrigation season sets the Project allocation."
+      - "**Compact accounting.** Reservoir storage and releases are the basis of New Mexico's delivery obligation to Texas. Low storage also triggers Compact Article VII limits on upstream storage."
+      - "**Long-term sediment.** The 112-year record documents the loss of about a quarter of the original reservoir to sediment. See elephant-butte-fill.md for the curated treatment."
+    cautions:
+      - "Elephant Butte has a dedicated, hand-reviewed report (scripts/elephant_butte_fill.py). This general report reproduces its capacities using the same 14 table-adoption dates."
+      - "Evaporation from the reservoir is large, often a hundred thousand acre-feet or more a year, and is reported separately by Reclamation."
+
+  caballo:
+    name: Caballo Reservoir
+    dam: Caballo Dam
+    river: Rio Grande
+    basin: Rio Grande
+    nid_id: NM00131
+    role: storage
+    sites: [usbr_hydrodata:1094, usace_cwms:Caballo]
+    paired_site: usbr_hydrodata:1094
+    rating: Caballo
+    full_pool: {elev_ft: 4182.0, source: "detected from the record: 9 days at or above 4,182 ft and none above 4,183 in 88 years; also the top of the operator table"}
+    inflow_sites: [usbr_hydrodata:1094]
+    release_sites: [usbr_hydrodata:1094]
+    release_gauges: [usgs:08362500]
+    summary: >-
+      Reclamation's re-regulating reservoir 25 miles below Elephant Butte, completed in 1938. It
+      catches Elephant Butte's releases and meters them out to the irrigation diversions below,
+      and it adds flood protection for the lower valley.
+    uses:
+      - "**Irrigation-season operations.** Caballo fills in winter and early spring from Elephant Butte releases and drains through the irrigation season. Its annual cycle is a clear picture of Rio Grande Project delivery timing."
+      - "**Release to the lower valley.** Caballo release is the Rio Grande Project's delivery to the Rincon and Mesilla valleys and on to Texas."
+    cautions:
+      - "Caballo's storage mostly reflects how Elephant Butte is being operated, not local hydrology. Read the two together."
+      - "The operator table carries a 999999 sentinel above 4,182 ft, which is removed."
+
+  # ------------------------------------------------------------------ Pecos
+  santa_rosa:
+    name: Santa Rosa Lake
+    dam: Santa Rosa Dam
+    river: Pecos River
+    basin: Pecos
+    nid_id: NM00158
+    role: flood_control
+    sites: [usbr_hydrodata:2730, usace_cwms:Santa Rosa, usgs:08382810]
+    paired_site: usbr_hydrodata:2730
+    rating: Santa Rosa
+    pool_level_shift_ft: {conservation: 2.11, flood: 2.11}   # these two levels are NGVD29; the rest are NAVD88
+    inflow_sites: [usace_cwms:Santa Rosa, usbr_hydrodata:2730]
+    release_sites: [usbr_hydrodata:2730]
+    release_gauges: [usgs:08382830]
+    summary: >-
+      An Army Corps flood and sediment control dam on the Pecos, completed in 1979. Besides
+      flood control it holds irrigation water for the Carlsbad Project downstream, up to an
+      entitlement the Corps recalculates each year, which is why its conservation pool rarely
+      approaches the top.
+    uses:
+      - "**Upper Pecos runoff.** Inflow is the Pecos delivered out of the Sangre de Cristo and the upper basin."
+      - "**Carlsbad Project storage upstream.** Storage below the entitlement is irrigation water held for release to Sumner and Brantley and on to Carlsbad."
+      - "**Flood use.** Storage above the top of conservation is flood water held back."
+    cautions:
+      - "The Corps publishes Santa Rosa's conservation and flood pool elevations in NGVD29 but its capacity table and its other levels in NAVD88. Those two pools are shifted by +2.11 ft to match, which reproduces the published conservation-pool storage exactly."
+      - "The conservation pool is a physical pool, but the water that may actually be kept there is capped by the annual entitlement, currently about 103,000 acre-feet. Percentages against the full conservation pool will read low by design."
+
+  lake_sumner:
+    name: Lake Sumner
+    dam: Sumner Dam (formerly Alamogordo Dam)
+    river: Pecos River
+    basin: Pecos
+    nid_id: NM00130
+    role: flood_control
+    sites: [usbr_hydrodata:943, usace_cwms:Sumner, usgs:08384000]
+    paired_site: usbr_hydrodata:943
+    rating: Sumner
+    inflow_sites: [usace_cwms:Sumner, usbr_hydrodata:943]
+    release_sites: [usbr_hydrodata:943]
+    release_gauges: [usgs:08384500]
+    summary: >-
+      Reclamation storage for the Carlsbad Project on the Pecos in De Baca County, completed in
+      1937. Water is released in blocks to move it down to Brantley and Carlsbad.
+    uses:
+      - "**Carlsbad Project supply.** With Brantley and Santa Rosa, Sumner holds the Pecos irrigation supply."
+      - "**Block releases.** Release records show the large block releases used to move water down the Pecos efficiently."
+    cautions:
+      - "The top of the active conservation pool was lowered in June 2012 for dam maintenance, to 4,260.9 ft. The earlier, higher pool is not published in CWMS, so every year is measured against the reduced pool. Before 2012 that overstates percent full, and it counts as flood storage water that was then ordinary conservation storage. Percentages above 100% before 2012 should not be read as floods."
+      - "Sumner has a flood pool above its conservation pool (Flood Risk Reduction is its primary purpose in the dam registry), so it is treated as a flood-control reservoir here."
+      - "Pre-2007 capacities are derived from an elevation and storage pairing that is noisy in this record. Treat individual early years as approximate."
+
+  brantley:
+    name: Brantley Lake
+    dam: Brantley Dam
+    river: Pecos River
+    basin: Pecos
+    nid_id: NM00500
+    role: flood_control
+    sites: [usbr_hydrodata:937, usace_cwms:Brantley, usgs:08401450]
+    paired_site: usbr_hydrodata:937
+    rating: Brantley
+    inflow_sites: [usace_cwms:Brantley, usbr_hydrodata:937]
+    release_sites: [usbr_hydrodata:937]
+    release_gauges: [usgs:08401500]
+    summary: >-
+      Reclamation's dam above Carlsbad, completed in 1989 to replace McMillan Reservoir. It holds
+      the Carlsbad Project's irrigation supply in a conservation pool of about 42,000 acre-feet,
+      under a pool far larger reserved for Pecos floods.
+    uses:
+      - "**Carlsbad irrigation supply.** Percent of the conservation pool is the meaningful fill measure."
+      - "**Lower Pecos floods.** Storage above the conservation pool is flood water; 2014 and 2015 show it clearly."
+    cautions:
+      - "An earlier version of this report measured Brantley against its spillway, making it look far emptier than it is. It is now measured against its conservation pool."
+      - "The conservation pool is redefined almost every year by an entitlement; the current value is used for every year."
+
+  avalon:
+    name: Avalon Reservoir
+    dam: Avalon Dam
+    river: Pecos River
+    basin: Pecos
+    nid_id: NM00132
+    role: diversion
+    sites: [usbr_hydrodata:2684, usace_cwms:Avalon, usgs:08403800]
+    paired_site: usbr_hydrodata:2684
+    rating: Avalon
+    full_pool: {elev_ft: 3179.0, source: "detected from the record: 72 days at or above 3,178 ft and one above 3,179 in 26 years"}
+    inflow_sites: [usbr_hydrodata:2684]
+    release_sites: [usbr_hydrodata:2684]
+    release_gauges: [usgs:08404000]
+    summary: >-
+      The Carlsbad Irrigation District's diversion reservoir immediately above Carlsbad, the last
+      impoundment before water enters the canals. It is operated as a forebay, not as storage,
+      and is routinely drawn down or emptied.
+    uses:
+      - "**Diversion operations.** The pattern of fills and drawdowns shows canal operations, not hydrology."
+      - "**Pecos flood peaks.** Surcharges above full pool, such as September 2014, record lower Pecos floods."
+    cautions:
+      - "A low reading usually means the district was moving water, not that the Pecos was dry. The annual minimum is close to meaningless."
+
+  diamond_a:
+    name: Two Rivers Reservoir (Diamond A Dam)
+    dam: Diamond A Dam, Two Rivers project
+    river: Rio Hondo
+    basin: Pecos
+    nid_id: NM00004
+    role: dry_flood
+    sites: [usace_cwms:Diamond A, usgs:08390610]
+    paired_site: usace_cwms:Diamond A
+    rating: Diamond A
+    pool_history: false   # the Corps' published pool storages are for the combined Two Rivers system
+    inflow_sites: [usace_cwms:Diamond A]
+    release_sites: []
+    release_gauges: [usgs:08390800]
+    summary: >-
+      One of the two dry flood control dams of the Army Corps' Two Rivers project west of
+      Roswell, completed in 1963, protecting the city from Rio Hondo floods. It holds water only
+      during storms.
+    uses:
+      - "**Rio Hondo flood events.** Peak storage and days impounding record floods off the Sacramento Mountains' east slope."
+    cautions:
+      - "Percent full is not meaningful for a dry dam."
+      - "The Corps' combined Two Rivers series carries a constant offset against its own table, so Diamond A and Rocky are reported separately."
+
+  rocky:
+    name: Two Rivers Reservoir (Rocky Dam)
+    dam: Rocky Dam, Two Rivers project
+    river: Rocky Arroyo
+    basin: Pecos
+    nid_id: NM00004
+    role: dry_flood
+    sites: [usace_cwms:Rocky, usgs:08390620]
+    paired_site: usace_cwms:Rocky
+    rating: Rocky
+    pool_history: false   # the Corps' published pool storages are for the combined Two Rivers system
+    inflow_sites: [usace_cwms:Rocky]
+    release_sites: []
+    release_gauges: [usgs:08393300]
+    summary: >-
+      The second dry flood control dam of the Two Rivers project, on Rocky Arroyo. It holds water
+      only during storms.
+    uses:
+      - "**Rocky Arroyo flood events.** Peak storage and days impounding."
+    cautions:
+      - "Percent full is not meaningful for a dry dam."
+
+  # ------------------------------------------------------------------ Canadian
+  conchas:
+    name: Conchas Lake
+    dam: Conchas Dam
+    river: Canadian River, at the Conchas River
+    basin: Canadian
+    nid_id: NM00006
+    role: flood_control
+    sites: [usace_cwms:Conchas, usgs:07223500]
+    paired_site: usace_cwms:Conchas
+    rating: Conchas
+    inflow_sites: [usace_cwms:Conchas]
+    release_sites: []
+    summary: >-
+      An Army Corps dam on the Canadian River, completed in 1940. Its conservation pool supplies
+      the Arch Hurley Conservancy District around Tucumcari, and its flood pool protects the
+      Canadian valley downstream.
+    uses:
+      - "**Canadian basin supply.** Conservation-pool storage is the irrigation supply for the Tucumcari area."
+      - "**Plains storm runoff.** Inflow on the Canadian is dominated by summer storms rather than snowmelt, so it complements the Rio Grande reservoirs."
+    cautions:
+      - "Before 2004 the record is storage only, with no elevation, so the capacity table in force in those years cannot be identified. Those years use the earliest derived capacity and are flagged."
+      - "No release series is reported here. Most Conchas releases go into the Conchas Canal to Arch Hurley rather than down the Canadian, and the archive's canal and river gauges below the dam stop in the 1970s to 1990s, so they would understate releases badly."
+
+  ute:
+    name: Ute Reservoir
+    dam: Ute Dam
+    river: Canadian River
+    basin: Canadian
+    nid_id: NM00293
+    role: storage
+    sites: [usgs:07226800]
+    rating: Ute
+    capacity_basis_override: {af: 222500, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    summary: >-
+      Owned by the New Mexico Interstate Stream Commission, completed in 1963 near Logan. It is
+      intended as the source for the Eastern New Mexico Rural Water System and is otherwise used
+      for recreation.
+    uses:
+      - "**Eastern New Mexico's future supply.** Storage is the supply banked for the rural water system."
+      - "**Canadian River below Conchas.** Changes in storage integrate runoff and releases from upstream."
+    cautions:
+      - "Storage only: the archive has no usable elevation series for Ute, so its capacity table cannot be validated or its vintages identified. Percentages use the owner-reported normal storage and can exceed 100%."
+      - "An operator table from 2023 exists in CWMS. An elevation series would move Ute to the fully validated tier."
+
+  eagle_nest:
+    name: Eagle Nest Lake
+    dam: Eagle Nest Dam
+    river: Cimarron River headwaters
+    basin: Canadian
+    nid_id: NM00351
+    role: storage
+    sites: [usgs:07205500]
+    paired_site: usgs:07205500
+    rating: Eagle Nest
+    full_pool: {elev_ft: 8194.6, source: "the elevation at which the current table holds 81,000 acre-feet: the storage record (1986-2026) tops out at 81,360, matching the dam registry normal storage of 81,000"}
+    inflow_sites: []
+    release_sites: []
+    release_gauges: [usgs:07206000]
+    summary: >-
+      A high-elevation reservoir at the head of the Cimarron River, built in 1918 and owned by the
+      New Mexico Department of Game and Fish. It stores water for downstream irrigation and is a
+      major recreation and fishing lake.
+    uses:
+      - "**Northeastern headwater conditions.** Storage tracks snowmelt from the Moreno Valley and the surrounding peaks."
+    cautions:
+      - "Elevation is reported only from 2013. Storage before then cannot be tied to a capacity table vintage and is measured against the current table."
+      - "Since 2013 the lake has not risen above about 8,181 ft, roughly 50,600 acre-feet or 62% of full pool, though it routinely held 70,000 to 81,000 acre-feet before 2000. Whether that is drought alone or an operating restriction should be confirmed with the owner before drawing conclusions from the recent percentages."
+
+  # ------------------------------------------------------------------ San Juan
+  navajo:
+    name: Navajo Lake
+    dam: Navajo Dam
+    river: San Juan River
+    basin: San Juan
+    nid_id: NM00120
+    role: storage
+    sites: [usbr_hydrodata:920]
+    paired_site: usbr_hydrodata:920
+    rating: Navajo
+    inflow_sites: [usbr_hydrodata:920]
+    release_sites: [usbr_hydrodata:920]
+    release_gauges: [usgs:09355500]
+    summary: >-
+      Reclamation's Colorado River Storage Project reservoir on the San Juan, completed in 1963 and
+      the second-largest reservoir in New Mexico. It supplies the Navajo Indian Irrigation Project
+      and other San Juan basin uses, and its releases are shaped to meet flow recommendations for
+      endangered fish in the San Juan River.
+    uses:
+      - "**San Juan basin supply.** Storage is the supply for the Navajo Indian Irrigation Project and municipal and industrial users in the Four Corners."
+      - "**Endangered-fish flows.** Spring release peaks record the flows shaped for the San Juan River Basin Recovery Implementation Program."
+      - "**Colorado River context.** Navajo is part of the upper Colorado system, so its condition reflects basin-wide drought as much as local runoff."
+    cautions:
+      - "The Corps' CWMS storage series for Navajo runs about 51,000 acre-feet off its own table, likely an elevation datum difference, and is not used. Reclamation's series reproduces the table exactly."
+
+  # ------------------------------------------------------------------ storage only, no operator table
+  costilla:
+    name: Costilla Reservoir
+    dam: Costilla Dam
+    river: Rio Costilla
+    basin: Rio Grande
+    nid_id: NM00020
+    role: storage
+    sites: [usgs:08253900]
+    capacity_basis_override: {af: 15830, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    release_gauges: [usgs:08254000]
+    summary: >-
+      A privately owned irrigation reservoir in the Sangre de Cristo high country, built in 1920 and
+      operated by the Rio Costilla Cooperative Livestock Association. Its water is shared with
+      Colorado under the Costilla Creek Compact.
+    uses:
+      - "**High-elevation snowpack.** Spring fill tracks snowmelt from some of the state's highest terrain."
+    cautions:
+      - "Storage only, and percentages use the owner-reported normal storage, which observed storage exceeds in wet years."
+
+  mcclure:
+    name: McClure Reservoir
+    dam: McClure Dam
+    river: Santa Fe River
+    basin: Rio Grande
+    nid_id: NM00242
+    role: municipal
+    sites: [usgs:08315500]
+    capacity_basis_override: {af: 3282, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    summary: >-
+      The City of Santa Fe's upper water-supply reservoir on the Santa Fe River, in the closed
+      municipal watershed above the city. Built in 1926.
+    uses:
+      - "**Santa Fe's surface supply.** With Nichols, the city's share of surface water, as opposed to its wells and San Juan-Chama water from the Buckman diversion."
+    cautions:
+      - "Storage only; percentages use the owner-reported normal storage."
+
+  nichols:
+    name: Nichols Reservoir
+    dam: Nichols Dam
+    river: Santa Fe River
+    basin: Rio Grande
+    nid_id: NM00241
+    role: municipal
+    sites: [usgs:08316500]
+    capacity_basis_override: {af: 679, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    summary: >-
+      The City of Santa Fe's lower water-supply reservoir, below McClure on the Santa Fe River.
+      Built in 1943.
+    uses:
+      - "**Santa Fe's surface supply**, with McClure."
+    cautions:
+      - "Storage only; percentages use the owner-reported normal storage, which observed storage exceeds."
+
+  bluewater:
+    name: Bluewater Lake
+    dam: Bluewater Dam
+    river: Bluewater Creek
+    basin: Rio Grande (Rio San Jose)
+    nid_id: NM00239
+    role: storage
+    sites: [usgs:08341400]
+    capacity_basis_override: {af: 38510, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    release_gauges: [usgs:08341500]
+    summary: >-
+      An irrigation reservoir in the Zuni Mountains owned by the Bluewater-Toltec Irrigation
+      District, built in 1927. Also a state park.
+    uses:
+      - "**West-central New Mexico conditions.** One of very few reservoir records west of the Rio Grande."
+    cautions:
+      - "No operator capacity table is available; percentages use the owner-reported normal storage."
+
+  maloya:
+    name: Lake Maloya
+    dam: Lake Maloya Dam
+    river: Chicorica Creek
+    basin: Canadian
+    nid_id: NM00370
+    role: municipal
+    sites: [usgs:07199450]
+    capacity_basis_override: {af: 3690, source: "National Inventory of Dams normal storage (owner-reported, not sediment-corrected)"}
+    inflow_sites: []
+    release_sites: []
+    summary: >-
+      The City of Raton's water-supply reservoir, in Sugarite Canyon State Park. Built in 1914.
+    uses:
+      - "**Raton's supply.** A direct read on a small city's surface water security."
+    cautions:
+      - "No operator capacity table is available; percentages use the owner-reported normal storage."

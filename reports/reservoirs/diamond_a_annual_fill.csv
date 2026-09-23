@@ -1,0 +1,34 @@
+reservoir,role,year,n_days,capacity_table,capacity_confidence,full_pool_af,peak_af,mean_af,low_af,peak_date,peak_pct,mean_pct,low_pct,flood_pool_af,peak_flood_pct,days_flood_storage,inflow_af,peak_inflow_cfs,peak_inflow_date,n_days_inflow,release_af,peak_release_cfs,peak_release_date,n_days_release
+diamond_a,dry_flood,1990,92,earliest derived table (no elevation record yet),before_elevation_record,29505.0,407.0,45.0,0.0,1990-12-28,1.4,0.2,0.0,29505.0,1.4,15,,,,,,76.0,1990-10-01,92
+diamond_a,dry_flood,1991,273,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1150.0,67.0,0.0,1991-07-14,3.9,0.2,0.0,29505.0,3.9,50,,,,,25628.0,235.0,1991-08-16,365
+diamond_a,dry_flood,1995,92,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,1995-10-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,1952.0,34.0,1995-01-01,365
+diamond_a,dry_flood,1996,366,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1600.0,23.0,0.0,1996-09-12,5.4,0.1,0.0,29505.0,5.4,10,,,,,3721.0,224.0,1996-07-01,366
+diamond_a,dry_flood,1997,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,651.0,3.0,0.0,1997-06-08,2.2,0.0,0.0,29505.0,2.2,3,,,,,7160.0,204.0,1997-08-03,365
+diamond_a,dry_flood,1998,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,1998-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,977.0,55.0,1998-04-27,365
+diamond_a,dry_flood,1999,273,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,1999-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,152.0,53.0,1999-07-20,365
+diamond_a,dry_flood,2001,92,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2001-10-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,226.0,85.0,2001-04-30,365
+diamond_a,dry_flood,2002,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2002-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,167.0,31.0,2002-06-15,365
+diamond_a,dry_flood,2003,273,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2003-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,71.0,14.0,2003-10-07,365
+diamond_a,dry_flood,2004,92,earliest derived table (no elevation record yet),before_elevation_record,29505.0,49.0,1.0,0.0,2004-10-05,0.2,0.0,0.0,29505.0,0.2,1,,,,,2018.0,219.0,2004-07-25,366
+diamond_a,dry_flood,2005,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,248.0,1.0,0.0,2005-09-07,0.8,0.0,0.0,29505.0,0.8,7,,,,,1441.0,234.0,2005-09-07,365
+diamond_a,dry_flood,2006,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1278.0,103.0,0.0,2006-09-05,4.3,0.3,0.0,29505.0,4.3,64,,,,,15797.0,257.0,2006-10-16,365
+diamond_a,dry_flood,2007,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,6.0,0.0,0.0,2007-09-09,0.0,0.0,0.0,29505.0,0.0,0,,,,,3479.0,68.0,2007-12-03,365
+diamond_a,dry_flood,2008,366,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1328.0,10.0,0.0,2008-07-28,4.5,0.0,0.0,29505.0,4.5,5,,,,,8142.0,335.0,2008-07-29,366
+diamond_a,dry_flood,2009,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,227.0,1.0,0.0,2009-07-30,0.8,0.0,0.0,29505.0,0.8,1,,,,,332.0,167.0,2009-07-30,365
+diamond_a,dry_flood,2010,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,629.0,7.0,0.0,2010-04-15,2.1,0.0,0.0,29505.0,2.1,11,,,,,7170.0,214.0,2010-04-18,365
+diamond_a,dry_flood,2011,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2011-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,59.0,15.0,2011-08-23,365
+diamond_a,dry_flood,2012,366,earliest derived table (no elevation record yet),before_elevation_record,29505.0,104.0,0.0,0.0,2012-05-14,0.4,0.0,0.0,29505.0,0.4,1,,,,,263.0,123.0,2012-05-14,366
+diamond_a,dry_flood,2013,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1370.0,28.0,0.0,2013-09-17,4.6,0.1,0.0,29505.0,4.6,9,,,,,3606.0,261.0,2013-09-19,365
+diamond_a,dry_flood,2014,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,1200.0,26.0,0.0,2014-09-21,4.1,0.1,0.0,29505.0,4.1,17,,,,,10297.0,317.0,2014-09-26,365
+diamond_a,dry_flood,2015,365,earliest derived table (no elevation record yet),before_elevation_record,29505.0,204.0,2.0,0.0,2015-10-21,0.7,0.0,0.0,29505.0,0.7,6,,,,,10285.0,185.0,2015-12-30,365
+diamond_a,dry_flood,2016,366,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2016-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,7386.0,98.0,2016-02-25,366
+diamond_a,dry_flood,2017,59,earliest derived table (no elevation record yet),before_elevation_record,29505.0,0.0,0.0,0.0,2017-01-01,0.0,0.0,0.0,29505.0,0.0,0,,,,,418.0,148.0,2017-10-06,365
+diamond_a,dry_flood,2018,365,current table,current_table,29505.0,0.0,0.0,0.0,2018-01-01,0.0,0.0,0.0,29505.0,0.0,0,480.0,43.0,2018-10-27,364.0,726.0,88.0,2018-05-22,365
+diamond_a,dry_flood,2019,365,current table,current_table,29505.0,32.0,0.0,0.0,2019-11-28,0.1,0.0,0.0,29505.0,0.1,2,462.0,44.0,2019-02-19,365.0,536.0,41.0,2019-02-18,365
+diamond_a,dry_flood,2020,366,current table,current_table,29505.0,0.0,0.0,0.0,2020-01-01,0.0,0.0,0.0,29505.0,0.0,0,1242.0,103.0,2020-03-17,366.0,1469.0,119.0,2020-03-16,366
+diamond_a,dry_flood,2021,365,current table,current_table,29505.0,1111.0,53.0,0.0,2021-05-31,3.8,0.2,0.0,29505.0,3.8,51,13615.0,776.0,2021-06-01,364.0,13541.0,418.0,2021-05-31,365
+diamond_a,dry_flood,2022,365,current table,current_table,29505.0,1415.0,26.0,0.0,2022-08-21,4.8,0.1,0.0,29505.0,4.8,13,11287.0,671.0,2022-08-21,365.0,12502.0,580.0,2022-08-28,365
+diamond_a,dry_flood,2023,365,current table,current_table,29505.0,8.0,0.0,0.0,2023-10-10,0.0,0.0,0.0,29505.0,0.0,0,4440.0,55.0,2023-02-24,365.0,,55.0,2023-02-23,316
+diamond_a,dry_flood,2024,366,current table,current_table,29505.0,445.0,6.0,0.0,2024-10-20,1.5,0.0,0.0,29505.0,1.5,14,3731.0,251.0,2024-07-22,366.0,2992.0,189.0,2024-07-21,366
+diamond_a,dry_flood,2025,365,current table,current_table,29505.0,437.0,8.0,0.0,2025-07-10,1.5,0.0,0.0,29505.0,1.5,20,3265.0,204.0,2025-07-10,365.0,2742.0,102.0,2025-07-25,365
+diamond_a,dry_flood,2026,254,current table,current_table,29505.0,0.0,0.0,0.0,2026-01-01,0.0,0.0,0.0,29505.0,0.0,0,,6.0,2026-07-23,254.0,,5.0,2026-07-22,254

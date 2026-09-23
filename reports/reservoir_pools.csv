@@ -1,0 +1,47 @@
+pool,elev_ft,source,comment,level_storage_af,level_storage_date,capacity_current_af,reservoir
+full,7186.1,"detected from the record: 309 days at or above 7,186 ft and none above 7,187 in 52 years",,,,400031.0,heron
+full,6900.0,"detected from the record: 195 days at or above 6,900 ft and none above 6,901 in 52 years",,,,184343.0,el_vado
+conservation,6229.999999975079,CWMS level Abiquiu.Elev.Inst.0.Top of Conservation dated 2024-04-18,,229199.0,2024-04-18,229198.59388582915,abiquiu
+flood,6283.499999974866,CWMS level Abiquiu.Elev.Inst.0.Top of Flood dated 1900-01-01,,555778.0,2022-01-01,555777.7498121242,abiquiu
+spillway,6349.9999999746005,CWMS level Abiquiu.Elev.Inst.0.Spillway Crest dated 2014-05-01,,,,1212120.119687282,abiquiu
+dam,6380.999999974477,CWMS level Abiquiu.Elev.Inst.0.Top of Dam dated 1900-01-01,,1662770.0,2022-01-01,1662769.8995890007,abiquiu
+full,6827.0,"detected from the record: 133 days at or above 6,827 ft and none above 6,828 in 27 years",,,,1662.893,nambe_falls
+conservation,5345.469999978619,CWMS level Cochiti.Elev.Inst.0.Top of Conservation dated 2025-02-25,,44129.0,2025-02-25,44128.99997434243,cochiti
+flood,5460.4999999781585,CWMS level Cochiti.Elev.Inst.0.Top of Flood dated 1900-01-01,,570192.0000000001,2020-01-01,570191.9997990581,cochiti
+dam,5478.999999978084,CWMS level Cochiti.Elev.Inst.0.Top of Dam dated 1900-01-01,,766819.0,2020-01-01,766818.9997501565,cochiti
+flood,5231.9999999790725,CWMS level Jemez.Elev.Inst.0.Top of Flood dated 1900-01-01,,99334.00000000001,2019-01-01,99333.99994140308,jemez_canyon
+dam,5271.599999978915,CWMS level Jemez.Elev.Inst.0.Top of Dam dated 1900-01-01,,259342.0,2019-01-01,259341.99988824566,jemez_canyon
+conservation,5499.999999978,CWMS level Galisteo.Elev.Inst.0.Top of Conservation dated 2025-03-04,,0.0,2025-03-04,0.0,galisteo
+flood,5607.999999977568,CWMS level Galisteo.Elev.Inst.0.Top of Flood dated 1900-01-01,,89468.0,1900-01-01,89467.99995289327,galisteo
+dam,5645.499999977419,CWMS level Galisteo.Elev.Inst.0.Top of Dam dated 1900-01-01,,189000.00000000003,1900-01-01,93513.0,galisteo
+full,4407.0,"detected from the record: the count of days at or above each elevation falls thirteenfold between 4,406 and 4,407 ft",,,,2010900.0,elephant_butte
+full,4182.0,"detected from the record: 9 days at or above 4,182 ft and none above 4,183 in 88 years; also the top of the operator table",,,,324509.0,caballo
+conservation,4778.609999980894,"CWMS level Santa Rosa.Elev.Inst.0.Top of Conservation dated 2017-01-01, shifted +2.11 ft to the table datum",Top of Conservation in NGVD29 elevation as built,253470.00000000003,2017-01-01,253469.9998681703,santa_rosa
+flood,4799.109999980812,"CWMS level Santa Rosa.Elev.Inst.0.Top of Flood dated 2017-01-01, shifted +2.11 ft to the table datum",Top of Flood; converted to 88 (-2.11 to convert to NGVD29),438364.0,1900-01-01,432164.99980236765,santa_rosa
+dam,4826.109999980696,CWMS level Santa Rosa.Elev.Inst.0.Top of Dam dated 2017-01-01,Top of Dam Elevaion in NAVD88 ,810979.0000000001,2017-01-01,801173.9996814836,santa_rosa
+entitlement,4750.159999981,CWMS level Santa Rosa.Elev.Inst.0.Top of Entitlement dated 2025-01-01,"Top of Entitlement is calculated annually based on EAC survey 2017, actual storage for this elevaiton is 102,908 ",102895.00000000001,2025-01-01,102907.99992399898,santa_rosa
+conservation,4260.879999982956,CWMS level Sumner.Elev.Inst.0.Top of Conservation dated 2025-02-12,Top of Active Conservation (2012) Reduction of Maintenance,35917.00000000001,2025-02-12,35210.99995739017,lake_sumner
+flood,4283.879999982865,CWMS level Sumner.Elev.Inst.0.Top of Flood dated 2014-01-01,,124119.0,2014-01-01,122803.99990918514,lake_sumner
+dam,4302.879999982789,CWMS level Sumner.Elev.Inst.0.Top of Dam dated 2014-08-01,,260263.0,2014-08-01,218990.0,lake_sumner
+entitlement,4260.879999982957,CWMS level Sumner.Elev.Inst.0.Top of Entitlement dated 2025-01-01,"Top of Entitlement, 2025",35917.00000000001,2025-01-01,35210.99995739244,lake_sumner
+inactive,4232.279999983071,CWMS level Sumner.Elev.Inst.0.Top of Inactive dated 2024-01-01,,2500.0000000000005,2024-12-31,2373.9999949214725,lake_sumner
+conservation,3256.3999999869748,CWMS level Brantley.Elev.Inst.0.Top of Conservation dated 2025-01-01,Top of Conservation; Entitlement 2025,42835.0,2025-01-01,42933.999957016415,brantley
+flood,3284.599999986862,CWMS level Brantley.Elev.Inst.0.Top of Flood dated 1900-01-01,,384035.0,2014-01-01,384034.9997043926,brantley
+dam,3309.5999999867618,CWMS level Brantley.Elev.Inst.0.Top of Dam dated 1900-01-01,,1194318.0,2014-01-01,1194317.9994373787,brantley
+inactive,3229.239999987083,CWMS level Brantley.Elev.Inst.0.Top of Inactive dated 2019-01-01,,2513.0000000000005,2019-01-01,2513.9999948333425,brantley
+full,3179.0,"detected from the record: 72 days at or above 3,178 ft and one above 3,179 in 26 years",,,,6123.47,avalon
+conservation,3964.9999999841407,CWMS level Diamond A.Elev.Inst.0.Top of Conservation dated 2025-03-03,,0.0,2025-03-03,0.0,diamond_a
+flood,4031.9999999838724,CWMS level Diamond A.Elev.Inst.0.Top of Flood dated 1900-01-01,,163775.00000000003,1900-01-01,29504.99997827175,diamond_a
+dam,4053.9999999837846,CWMS level Diamond A.Elev.Inst.0.Top of Dam dated 1900-01-01,,294495.00000000006,1900-01-01,70541.99996115913,diamond_a
+conservation,3948.999999984205,CWMS level Rocky.Elev.Inst.0.Top of Conservation dated 2025-03-03,,0.0,2025-03-03,2.999999908071968,rocky
+flood,4031.9999999838724,CWMS level Rocky.Elev.Inst.0.Top of Flood dated 1900-01-01,,163775.00000000003,1900-01-01,135494.99994244377,rocky
+dam,4053.9999999837846,CWMS level Rocky.Elev.Inst.0.Top of Dam dated 1900-01-01,,294495.00000000006,1900-01-01,229004.99991965765,rocky
+conservation,4200.999999983196,CWMS level Conchas.Elev.Inst.0.Top of Conservation dated 1900-01-01,,314796.99999999994,2017-01-01,314796.9998403637,conchas
+flood,4217.999999983129,CWMS level Conchas.Elev.Inst.0.Top of Flood dated 1900-01-01,,514264.0,2017-01-01,514263.9997739269,conchas
+dam,4234.99999998306,CWMS level Conchas.Elev.Inst.0.Top of Dam dated 1900-01-01,,780378.0,2017-01-01,780377.9997103218,conchas
+inactive,4154.99999998338,CWMS level Conchas.Elev.Inst.0.Top of Inactive dated 1900-01-01,,60375.0,2017-01-01,60374.99995512571,conchas
+full,8194.6,"the elevation at which the current table holds 81,000 acre-feet: the storage record (1986-2026) tops out at 81,360, matching the dam registry normal storage of 81,000",,,,81072.60000000267,eagle_nest
+conservation,6084.989999975661,CWMS level Navajo.Elev.Inst.0.Top of Conservation dated 2023-01-01,,1701299.0000000002,2023-01-01,1647778.549616293,navajo
+flood,6084.999999975661,CWMS level Navajo.Elev.Inst.0.Top of Flood dated 2002-02-01,,1701300.0,2002-02-01,1647936.1996162958,navajo
+dam,6107.999999975569,CWMS level Navajo.Elev.Inst.0.Top of Dam dated 1900-01-01,,2096500.0,2002-02-01,2046386.7995392343,navajo
+inactive,5989.999999976041,CWMS level Navajo.Elev.Inst.0.Top of Inactive dated 2002-02-01,,661800.0000000001,2002-02-01,626034.3998275205,navajo

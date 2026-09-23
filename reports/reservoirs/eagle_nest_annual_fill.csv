@@ -1,0 +1,42 @@
+reservoir,role,year,n_days,capacity_table,capacity_confidence,full_pool_af,peak_af,mean_af,low_af,peak_date,peak_pct,mean_pct,low_pct,release_af,peak_release_cfs,peak_release_date,n_days_release
+eagle_nest,storage,1986,5,earliest derived table (no elevation record yet),before_elevation_record,83232.0,76120.0,75152.0,74590.0,1986-12-31,91.5,90.3,89.6,,35.0,1986-10-13,86
+eagle_nest,storage,1987,190,earliest derived table (no elevation record yet),before_elevation_record,83232.0,77840.0,72704.0,70460.0,1987-06-30,93.5,87.4,84.7,31875.0,167.0,1987-04-16,365
+eagle_nest,storage,1988,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,73250.0,69398.0,65360.0,1988-04-08,88.0,83.4,78.5,10366.0,60.0,1988-05-09,366
+eagle_nest,storage,1989,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,73590.0,67308.0,62680.0,1989-04-22,88.4,80.9,75.3,11867.0,70.0,1989-07-14,365
+eagle_nest,storage,1990,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,71800.0,65434.0,62120.0,1990-05-14,86.3,78.6,74.6,10065.0,84.0,1990-07-05,365
+eagle_nest,storage,1991,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,74990.0,70735.0,62790.0,1991-12-30,90.1,85.0,75.4,10287.0,78.0,1991-06-07,365
+eagle_nest,storage,1992,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,75880.0,70571.0,62830.0,1992-04-30,91.2,84.8,75.5,23646.0,97.0,1992-07-14,366
+eagle_nest,storage,1993,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,77410.0,70267.0,64160.0,1993-06-15,93.0,84.4,77.1,15508.0,75.0,1993-07-11,365
+eagle_nest,storage,1994,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,81360.0,72922.0,69700.0,1994-05-21,97.8,87.6,83.7,40301.0,303.0,1994-05-24,365
+eagle_nest,storage,1995,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,79600.0,73838.0,68990.0,1995-06-04,95.6,88.7,82.9,32966.0,170.0,1995-06-06,365
+eagle_nest,storage,1996,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,72280.0,63140.0,54800.0,1996-04-10,86.8,75.9,65.8,18102.0,132.0,1996-07-29,366
+eagle_nest,storage,1997,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,73100.0,64307.0,55600.0,1997-06-19,87.8,77.3,66.8,10123.0,114.0,1997-09-02,365
+eagle_nest,storage,1998,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,69400.0,62582.0,56500.0,1998-05-17,83.4,75.2,67.9,14471.0,155.0,1998-07-01,365
+eagle_nest,storage,1999,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,67300.0,63056.0,58000.0,1999-06-20,80.9,75.8,69.7,6835.0,59.0,1999-09-02,365
+eagle_nest,storage,2000,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,67600.0,60912.0,53600.0,2000-05-04,81.2,73.2,64.4,13430.0,65.0,2000-08-07,366
+eagle_nest,storage,2001,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,58900.0,52956.0,46100.0,2001-05-23,70.8,63.6,55.4,11848.0,114.0,2001-09-26,365
+eagle_nest,storage,2002,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,48300.0,41197.0,34540.0,2002-03-28,58.0,49.5,41.5,11801.0,45.0,2002-08-18,365
+eagle_nest,storage,2003,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,37530.0,31765.0,25300.0,2003-05-04,45.1,38.2,30.4,14033.0,146.0,2003-08-21,365
+eagle_nest,storage,2004,360,earliest derived table (no elevation record yet),before_elevation_record,83232.0,30400.0,26675.0,24820.0,2004-05-20,36.5,32.0,29.8,5520.0,32.0,2004-10-26,366
+eagle_nest,storage,2005,350,earliest derived table (no elevation record yet),before_elevation_record,83232.0,45970.0,37288.0,25610.0,2005-06-12,55.2,44.8,30.8,6859.0,47.0,2005-08-05,365
+eagle_nest,storage,2006,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,40730.0,36015.0,31520.0,2006-03-24,48.9,43.3,37.9,10141.0,51.0,2006-06-04,365
+eagle_nest,storage,2007,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,42320.0,37944.0,32210.0,2007-06-14,50.8,45.6,38.7,7712.0,54.0,2007-08-21,365
+eagle_nest,storage,2008,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,50960.0,45465.0,37400.0,2008-06-06,61.2,54.6,44.9,10421.0,60.0,2008-06-27,366
+eagle_nest,storage,2009,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,52320.0,47294.0,43150.0,2009-06-03,62.9,56.8,51.8,12528.0,59.0,2009-07-20,365
+eagle_nest,storage,2010,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,61150.0,52681.0,43690.0,2010-05-30,73.5,63.3,52.5,10016.0,43.0,2010-09-04,365
+eagle_nest,storage,2011,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,52690.0,45230.0,37980.0,2011-03-21,63.3,54.3,45.6,13571.0,80.0,2011-06-29,365
+eagle_nest,storage,2012,366,earliest derived table (no elevation record yet),before_elevation_record,83232.0,41410.0,35164.0,28790.0,2012-04-19,49.8,42.2,34.6,13489.0,59.0,2012-05-30,366
+eagle_nest,storage,2013,365,earliest derived table (no elevation record yet),before_elevation_record,83232.0,30100.0,25052.0,20690.0,2013-04-05,36.2,30.1,24.9,10609.0,72.0,2013-05-30,365
+eagle_nest,storage,2014,365,2013-2014 table,low,83232.0,22040.0,20038.0,16860.0,2014-06-01,26.5,24.1,20.3,7009.0,45.0,2014-07-14,365
+eagle_nest,storage,2015,365,current table,current_table,81073.0,31320.0,25963.0,17210.0,2015-08-17,38.6,32.0,21.2,3132.0,24.0,2015-09-12,365
+eagle_nest,storage,2016,366,current table,current_table,81073.0,35510.0,31896.0,29170.0,2016-06-12,43.8,39.3,36.0,6410.0,42.0,2016-07-25,366
+eagle_nest,storage,2017,365,current table,current_table,81073.0,43710.0,39128.0,29830.0,2017-06-08,53.9,48.3,36.8,3811.0,34.0,2017-07-13,365
+eagle_nest,storage,2018,365,current table,current_table,81073.0,43060.0,38378.0,33120.0,2018-04-02,53.1,47.3,40.9,8851.0,41.0,2018-06-21,365
+eagle_nest,storage,2019,365,current table,current_table,81073.0,51240.0,43663.0,33300.0,2019-06-22,63.2,53.9,41.1,7851.0,44.0,2019-08-31,365
+eagle_nest,storage,2020,366,current table,current_table,81073.0,48010.0,41927.0,35070.0,2020-04-29,59.2,51.7,43.3,12391.0,62.0,2020-07-04,366
+eagle_nest,storage,2021,365,current table,current_table,81073.0,39150.0,36896.0,35010.0,2021-08-08,48.3,45.5,43.2,7223.0,37.0,2021-10-01,365
+eagle_nest,storage,2022,365,current table,current_table,81073.0,38430.0,34935.0,31290.0,2022-04-28,47.4,43.1,38.6,9315.0,49.0,2022-07-25,365
+eagle_nest,storage,2023,365,current table,current_table,81073.0,43220.0,36894.0,31580.0,2023-06-16,53.3,45.5,39.0,9103.0,44.0,2023-09-14,365
+eagle_nest,storage,2024,366,current table,current_table,81073.0,38210.0,33910.0,29020.0,2024-05-20,47.1,41.8,35.8,10908.0,47.0,2024-08-15,366
+eagle_nest,storage,2025,365,current table,current_table,81073.0,32730.0,30893.0,29620.0,2025-06-12,40.4,38.1,36.5,3295.0,17.0,2025-09-15,365
+eagle_nest,storage,2026,254,current table,current_table,81073.0,30030.0,27245.0,21080.0,2026-03-02,37.0,33.6,26.0,,42.0,2026-07-23,254

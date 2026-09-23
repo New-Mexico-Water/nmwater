@@ -231,6 +231,44 @@ WHERE o.site_uid = 'usbr_hydrodata:1119' AND o.variable = 'reservoir_storage'
 ORDER BY o.datetime_utc DESC LIMIT 1;
 ```
 
+## reservoir_ratings
+
+The operators' current elevation-to-storage tables, from the Corps' CWMS Data API
+(`nmwater fetch usace_cwms --kind ratings`). One row per point, at 0.01 ft resolution for most
+reservoirs. CWMS holds the Corps' own tables and mirrors Reclamation's, the Interstate Stream
+Commission's, USGS's and Colorado's; the agency is the suffix of the rating id.
+
+| Column | Meaning |
+|---|---|
+| `location`, `rating_id` | CWMS location name and full rating id, e.g. `Cochiti.Elev;Stor.Linear.Step;USACE` |
+| `rating_agency` | who maintains the table |
+| `effective_date` | when this table took effect, as CWMS records it; some are nominal import dates |
+| `elev_datum` | the table's vertical datum, from its parameter label, where stated |
+| `elevation_ft`, `storage_af` | the table |
+
+CWMS serves only the currently effective table per reservoir, not the tables it replaced. Earlier
+capacities are recovered from the operational record; see
+[reports/reservoir-fill.md](reports/reservoir-fill.md).
+
+## reservoir_levels
+
+Named pools and levels (`nmwater fetch usace_cwms --kind levels`): top of conservation, top of
+flood control, spillway crest, top of dam, entitlements, recreation pools. Some carry dated
+history, such as Cochiti's recreation-pool capacity under eight survey tables from 1973 to 2020.
+
+| Column | Meaning |
+|---|---|
+| `location`, `level_id`, `level_name`, `parameter` | e.g. `Cochiti`, `Cochiti.Elev.Inst.0.Top of Flood`, `Top of Flood`, `Elev` |
+| `level_date` | effective date; 1900-01-01 means as built |
+| `value`, `unit` | converted to feet, acre-feet, acres or cfs |
+| `value_si`, `unit_si` | as published |
+| `comment` | the operator's note, often naming the survey table or entitlement year |
+
+**Check the datum before using a level.** Santa Rosa publishes its conservation and flood pools in
+NGVD29 but its table and its other levels in NAVD88. Some entries are clerical errors (one
+Brantley storage level is an elevation). Compare a level's published storage with the table's
+storage at its elevation before trusting it; `reports/reservoir_pools.csv` does this.
+
 ## Non-timeseries tables
 
 Some data are not time series and are not forced into that shape.

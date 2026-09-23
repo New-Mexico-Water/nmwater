@@ -135,6 +135,15 @@ def build(settings: Settings) -> Path:
                     "survey_year BIGINT, survey_label VARCHAR, elevation_ft DOUBLE, capacity_af DOUBLE, "
                     "area_acres DOUBLE, interp_c DOUBLE, interp_m DOUBLE, vertical_datum_note VARCHAR)")
 
+    # Operator elevation-to-storage tables and named pool levels from the Corps' CWMS, covering
+    # Corps dams and most other New Mexico reservoirs (Reclamation, NMISC and USGS tables are
+    # mirrored there too). The current table per reservoir, and the pool definitions that make a
+    # flood-control reservoir's storage interpretable. See docs/reports/reservoir-fill.md.
+    for tbl in ("reservoir_ratings", "reservoir_levels"):
+        pq = settings.parquet_dir / "reference" / "source=usace_cwms" / f"{tbl}.parquet"
+        if pq.exists():
+            con.execute(f"CREATE TABLE {tbl} AS SELECT * FROM read_parquet('{pq.as_posix()}')")
+
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())
     con.execute("CREATE TABLE variables AS SELECT * FROM _vars")

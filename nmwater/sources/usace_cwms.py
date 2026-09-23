@@ -3,6 +3,17 @@
     {base}/locations?office=SPA                              -> all SPA locations (latin-1 JSON)
     {base}/catalog/TIMESERIES?office=SPA&page-size=20000&includeExtents=true
     {base}/timeseries?office=SPA&name=<tsid>&begin=&end=&unit=EN&page-size=-1
+    {base}/ratings?office=SPA&name=*.Elev;Stor*&begin=1900-01-01T00:00:00Z&end=...   (kind "ratings")
+    {base}/levels?office=SPA&level-id-mask=*&page-size=5000                         (kind "levels")
+
+Ratings and levels are the capacity side of reservoir storage. An Elev;Stor rating is the
+operator's current elevation-to-storage table (the Corps' own for Corps dams; Reclamation's,
+NMISC's, USGS's or CDWR's for the others, identified by the rating version suffix), at 0.01-ft
+resolution. CDA serves only the currently effective table per rating id, not superseded ones.
+Location levels are the named pools: Top of Conservation, Top of Flood, Spillway Crest, Top of Dam,
+Maximum Pool and so on, some carrying dated history (Cochiti's recreation-pool capacity is recorded
+under eight elevation-area-capacity tables, 1973-2020). They are what turns "storage" into "how
+full" for a flood-control dam, whose meaningful denominators are pools, not one capacity.
 
 Time-series id: Location.Parameter.Type.Interval.Duration.Version, values [epoch_ms, value, quality].
 Long windows fail with "Request is taking too long", so series are pulled in interval-dependent
@@ -14,6 +25,7 @@ from __future__ import annotations
 import json
 import logging
 from datetime import date, timedelta
+from typing import ClassVar
 from zoneinfo import ZoneInfo
 
 import httpx
@@ -53,7 +65,7 @@ class USACECWMS(Source):
     name = "usace_cwms"
     agency = "USACE"
     description = "CWMS Data API: SPA reservoirs, stream and MRGCD diversion gauges (1982-)"
-    kinds = ("sites", "catalog", "data")
+    kinds = ("sites", "catalog", "data", "ratings", "levels")
 
     @property
     def base(self) -> str:
@@ -101,12 +113,12 @@ class USACECWMS(Source):
               "latest": (e.get("extents") or [{}])[0].get("latest-time")} for e in cat]),
             "reference", self.name, "timeseries_catalog")
         rows = []
-        for l in locs:
-            lat, lon = l.get("latitude"), l.get("longitude")
-            st = l.get("state-initial")
-            if not (self.scope.in_bbox(lat, lon) or st in ("NM",) or l["name"] in by_loc):
+        for loc in locs:
+            lat, lon = loc.get("latitude"), loc.get("longitude")
+            st = loc.get("state-initial")
+            if not (self.scope.in_bbox(lat, lon) or st in ("NM",) or loc["name"] in by_loc):
                 continue
-            ltype = (l.get("location-type") or "").lower()
+            ltype = (loc.get("location-type") or "").lower()
             stype = LOC_TYPE_MAP.get(ltype, "other")
             agency = "USACE"
             if ltype == "diversion gauge":
@@ -115,16 +127,16 @@ class USACECWMS(Source):
                 agency = "RAWS via USACE"
             elif ltype == "snotel":
                 agency = "NRCS via USACE"
-            elev = l.get("elevation")
-            if elev is not None and (l.get("elevation-units") or "m").lower() in ("ft", "feet"):
+            elev = loc.get("elevation")
+            if elev is not None and (loc.get("elevation-units") or "m").lower() in ("ft", "feet"):
                 elev = float(elev) * 0.3048
             rows.append({
-                "native_id": l["name"],
-                "name": l.get("public-name") or l.get("long-name") or l["name"],
+                "native_id": loc["name"],
+                "name": loc.get("public-name") or loc.get("long-name") or loc["name"],
                 "lat": lat, "lon": lon, "elevation_m": elev, "site_type": stype, "agency": agency,
-                "state": st, "active": l.get("active"),
-                "raw_metadata": json.dumps({**{k: v for k, v in l.items() if k not in ("latitude", "longitude")},
-                                            "series": by_loc.get(l["name"], [])}, default=str),
+                "state": st, "active": loc.get("active"),
+                "raw_metadata": json.dumps({**{k: v for k, v in loc.items() if k not in ("latitude", "longitude")},
+                                            "series": by_loc.get(loc["name"], [])}, default=str),
             })
         return pd.DataFrame(rows)
 
@@ -132,6 +144,13 @@ class USACECWMS(Source):
     def fetch(self, since: date | None = None, limit: int | None = None,
               site_ids: list[str] | None = None, refresh: bool = False, **opts) -> FetchSummary:
         summ = FetchSummary(self.name)
+        wanted = set(opts.get("kinds") or ("data",))
+        if "ratings" in wanted:
+            self._fetch_ratings(summ, refresh)
+        if "levels" in wanted:
+            self._fetch_levels(summ, refresh)
+        if not wanted & {"data", "sites", "catalog"}:
+            return summ
         cat = self._catalog(refresh=bool(since) or refresh)
         series = []
         for e in cat:
@@ -172,6 +191,73 @@ class USACECWMS(Source):
         summ.n_rows = int(sum(res))
         summ.n_errors = len(series) - len(res)
         return summ
+
+    # ------------------------------------------------------------ ratings, levels
+    SI_TO_EN: ClassVar[dict[str, tuple[str, float]]] = {"m": ("ft", 3.280839895), "m3": ("ac-ft", 1 / 1233.48183754752),
+                "m2": ("acre", 1 / 4046.8564224), "cms": ("cfs", 35.3146667), "mm": ("in", 1 / 25.4)}
+
+    def _fetch_ratings(self, summ: FetchSummary, refresh: bool) -> None:
+        art = self.get(f"{self.base}/ratings", headers=HDR, kind="ratings", refresh=refresh,
+                       params={"office": self.office, "name": "*.Elev;Stor*",
+                               "begin": "1900-01-01T00:00:00Z", "end": "2100-01-01T00:00:00Z"})
+        summ.n_requests += 1
+        d = self._json(art).get("ratings", {})
+        frames = []
+        for r in d.get("ratings", []):
+            sr = r.get("simple-rating") or r
+            vals = sr.get("values") or []
+            if not vals:
+                continue
+            name = sr.get("name", "")
+            ind = (sr.get("ind-parameters") or [""])[0]          # e.g. "Elev (ft NGVD29)"
+            datum = ind[ind.find("(") + 1: ind.rfind(")")].replace("ft", "").strip() if "(" in ind else ""
+            arr = pd.DataFrame(vals, columns=["elevation_ft", "storage_af"]).astype(float)
+            frames.append(arr.assign(
+                location=name.split(".")[0], rating_id=name,
+                rating_agency=name.rsplit(";", 1)[-1] if ";" in name.split(".")[-1] else None,
+                effective_date=(sr.get("effective-date") or "")[:10] or None,
+                elev_datum=datum or None, dep_parameter=sr.get("dep-parameter"),
+                description=sr.get("description")))
+        if not frames:
+            summ.notes.append("no Elev;Stor ratings returned")
+            return
+        out = pd.concat(frames, ignore_index=True)
+        # CDA uses 999999-style sentinels at the top of some tables (Caballo); drop them
+        out = out[(out.storage_af >= 0) & (out.storage_af < 9.99e5 * 100)]
+        out = out[~out.storage_af.isin([999999.0, 9999999.0])]
+        self.store.write_table(out, "reference", self.name, "reservoir_ratings")
+        summ.n_rows += len(out)
+        summ.notes.append(f"{out.rating_id.nunique()} Elev;Stor ratings, {len(out):,} points")
+
+    def _fetch_levels(self, summ: FetchSummary, refresh: bool) -> None:
+        rows, page = [], None
+        while True:
+            params = {"office": self.office, "level-id-mask": "*", "page-size": 5000}
+            if page:
+                params["page"] = page
+            art = self.get(f"{self.base}/levels", headers=HDR, kind="levels", refresh=refresh, params=params)
+            summ.n_requests += 1
+            d = self._json(art)
+            rows += d.get("levels", [])
+            page = d.get("next-page")
+            if not page:
+                break
+        out = []
+        for lv in rows:
+            v, u = lv.get("constant-value"), lv.get("level-units-id")
+            if v is None:
+                continue
+            en_u, f = self.SI_TO_EN.get(u, (u, 1.0))
+            lid = lv.get("location-level-id", "")
+            out.append({"location": lid.split(".")[0], "level_id": lid,
+                        "level_name": lv.get("specified-level-id"), "parameter": lv.get("parameter-id"),
+                        "level_date": (lv.get("level-date") or "")[:10] or None,
+                        "value_si": float(v), "unit_si": u, "value": float(v) * f, "unit": en_u,
+                        "comment": lv.get("level-comment")})
+        df = pd.DataFrame(out)
+        self.store.write_table(df, "reference", self.name, "reservoir_levels")
+        summ.n_rows += len(df)
+        summ.notes.append(f"{len(df)} location levels at {df.location.nunique()} locations")
 
     def _fetch_window(self, tsid, p, b: date, e: date, interval: str, summ: FetchSummary, refresh: bool) -> int:
         params = {"office": self.office, "name": tsid, "begin": f"{b.isoformat()}T00:00:00Z",
