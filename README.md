@@ -29,8 +29,8 @@ year can be answered across agency boundaries rather than one agency at a time.
 ## Quickstart
 
 ```bash
-git clone https://github.com/deserat/water_newmexico.git
-cd water_newmexico
+git clone https://github.com/New-Mexico-Water/nmwater.git
+cd nmwater
 uv sync --all-extras
 ```
 
