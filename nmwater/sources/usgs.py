@@ -212,7 +212,8 @@ class USGS(Source):
         if "peaks" in kinds:
             summ.add(self.fetch_ogc_table("peaks", since, refresh, site_ids))
         if "continuous" in kinds:
-            summ.add(self.fetch_continuous(since, site_ids, limit, refresh, until=opts.get("until")))
+            summ.add(self.fetch_continuous(since, site_ids, limit, refresh, until=opts.get("until"),
+                                           revise=bool(opts.get("revise"))))
         return summ
 
     # ---- daily values ------------------------------------------------------------
@@ -456,7 +457,7 @@ class USGS(Source):
         return self.xw.apply(out, self.name)
 
     # ---- continuous (15-min) -------------------------------------------------------
-    def fetch_continuous(self, since, site_ids, limit, refresh, until=None) -> FetchSummary:
+    def fetch_continuous(self, since, site_ids, limit, refresh, until=None, revise: bool = False) -> FetchSummary:
         """15-minute unit values.
 
         The full public record (2007-10-01 onward) is 250-500 million rows and thousands of
@@ -523,7 +524,9 @@ class USGS(Source):
                 # `--since X` alone means "catch up", so skip ahead to whatever has already been
                 # fetched. An explicit `--since X --until Y` names a span the caller wants, so
                 # honour it exactly; identical windows are still served from the archive.
-                if since is not None and until is None:
+                # `nmwater update` passes revise=True: its since already includes a deliberate
+                # overlap to re-pull provisional values, so it is honoured exactly.
+                if since is not None and until is None and not revise:
                     last = self.ledger.last_window_end(self.name, self.uid(sid), p)
                     if last:
                         b = max(b, date.fromisoformat(last[:10]))

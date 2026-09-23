@@ -84,9 +84,11 @@ class IEMDCP(Source):
             b = date.fromisoformat(b) if b else date(2002, 1, 1)
             e = date.fromisoformat(e) if e else today
             e = min(e, today)
-            if since:
+            if since and not opts.get("revise"):   # manual --since: catch up; update: honour since
                 last = self.ledger.last_window_end(self.name, self.uid(r.native_id))
                 b = max(b, since, date.fromisoformat(last[:10]) if last else b)
+            elif since:
+                b = max(b, since)
             cur = b
             while cur <= e:
                 stop = min(date(cur.year + span, 1, 1) - timedelta(days=1), e)

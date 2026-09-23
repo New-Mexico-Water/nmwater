@@ -135,8 +135,8 @@ def fetch(
 
 
 def _fetch_one(ctx: Context, name: str, since_d, until_d, limit, site, refresh: bool,
-               kinds: list[str] | None, verbose: bool, total: FetchSummary | None = None
-               ) -> tuple[str, FetchSummary | None, str | None, str]:
+               kinds: list[str] | None, verbose: bool, total: FetchSummary | None = None,
+               extra: dict | None = None) -> tuple[str, FetchSummary | None, str | None, str]:
     """Fetch one source through the ledger. Returns (status, summary, run_id, note)."""
     cls = SOURCES[name]
     if not ctx.settings.source_config(name).enabled:
@@ -150,6 +150,7 @@ def _fetch_one(ctx: Context, name: str, since_d, until_d, limit, site, refresh: 
     try:
         src.check_tokens()
         opts = {"kinds": list(kinds)} if kinds else {}
+        opts.update(extra or {})
         if until_d:
             opts["until"] = until_d
         s = src.fetch(since=since_d, limit=limit, site_ids=site, refresh=refresh, **opts)
@@ -311,7 +312,11 @@ def update(
         r.rows_before, r.parquet_bytes_before = parquet_stats(st.parquet_dir, name)
         console.rule(f"{name} since {r.since}")
         t0 = time.monotonic()
-        status, summ, run_id, fnote = _fetch_one(ctx, name, sd, None, None, None, False, kinds, verbose)
+        # revise=True: sources that would otherwise skip ahead to what the ledger says is already
+        # fetched (usgs continuous, usace_cwms, nrcs, iem_dcp) honour `since` exactly, so the
+        # margin actually re-pulls recent provisional values.
+        status, summ, run_id, fnote = _fetch_one(ctx, name, sd, None, None, None, False, kinds, verbose,
+                                                 extra={"revise": True})
         r.fetch_seconds = round(time.monotonic() - t0, 1)
         r.status, r.notes = status, fnote or note
         if summ:

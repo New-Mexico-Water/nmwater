@@ -269,6 +269,11 @@ re-pulls a month that providers revise after first publication: USGS promotes pr
 approved, NRCS and the Corps edit recent values, PRISM revises grids for six months. Compaction
 keeps the newest copy of any re-pulled observation, so the overlap costs time, not duplicates.
 
+`update` runs each fetch as a revision pass. Some sources normally treat `--since` as "catch up":
+a manual `nmwater fetch usgs --kind continuous --since 2026-08-01` skips ahead to whatever the
+ledger says was already fetched. Under `update` those sources (USGS 15-minute, the Corps, NRCS and
+the NWS DCP archive) honour the start date exactly, so the overlap is really re-pulled.
+
 Policies are in `config/sources.yaml` under `update:`. Reference layers (census boundaries,
 NHDPlus, the dam registry, watershed boundaries) and static or blocked sources are skipped with a
 stated reason; `kinds:` chooses what a delta covers, for example USGS includes the 15-minute
