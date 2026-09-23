@@ -22,8 +22,15 @@ fetch src="all":
     uv run nmwater fetch {{src}}
 
 # Incremental update since a date for one source (or all)
-update since src="all":
-    uv run nmwater fetch {{src}} --since {{since}}
+# Incremental refresh: fetch the delta for every source, compact, rebuild the catalog, regenerate
+# reports. Logs rows, bytes and time per source to reports/update_log.csv.
+#   just update                      every source, from its last fetch minus 30 days
+#   just update usgs nrcs            only these
+#   just update --since 2026-09-01   a fixed start for everything
+update *ARGS:
+    uv run nmwater update {{ARGS}}
+    uv run python scripts/elephant_butte_fill.py
+    uv run python scripts/reservoir_fill.py
 
 # Phase 1: federal station backbone
 phase1:

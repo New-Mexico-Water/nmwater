@@ -199,6 +199,17 @@ class Ledger:
             row = self._conn.execute(q, args).fetchone()
         return row["m"] if row else None
 
+    def last_successful_fetch(self) -> dict[str, str]:
+        """Start time of each source's most recent fetch run that finished ok or partial."""
+        cur = self._conn.execute("SELECT source, max(started_at) FROM runs WHERE command='fetch' "
+                                 "AND status IN ('ok','partial') GROUP BY source")
+        return {r[0]: r[1] for r in cur.fetchall()}
+
+    def bytes_for_run(self, run_id: str) -> int:
+        """Bytes received from the network by one run (cache hits are not re-recorded)."""
+        cur = self._conn.execute("SELECT coalesce(sum(bytes),0) FROM fetches WHERE run_id=?", (run_id,))
+        return int(cur.fetchone()[0] or 0)
+
     def stats(self, source: str | None = None) -> list[dict[str, Any]]:
         q = """SELECT source, status, COUNT(*) AS n, COALESCE(SUM(bytes),0) AS bytes,
                       COALESCE(SUM(n_rows),0) AS rows, MIN(fetched_at) AS first, MAX(fetched_at) AS last

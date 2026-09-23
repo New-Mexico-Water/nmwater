@@ -36,8 +36,8 @@ Report: `reports/reservoirs/maloya_annual_fill.csv`. Regenerate with `just repor
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usgs:07199450` | 13,362 | 1987-10-01 | 2026-09-11 |
-| storage | `usgs:07199450` | 14,206 | 1987-10-01 | 2026-09-11 |
+| elevation | `usgs:07199450` | 13,372 | 1987-10-01 | 2026-09-21 |
+| storage | `usgs:07199450` | 14,216 | 1987-10-01 | 2026-09-21 |
 
 Sources:
 
@@ -49,7 +49,7 @@ Sources:
 
 ## What the record shows
 
-Record: 1987 to 2026, 40 years, 14,206 days of storage.
+Record: 1987 to 2026, 40 years, 14,216 days of storage.
 
 Fullest years, by annual peak: 2010 107.0%; 1995 106.5%; 2005 104.9%.
 
@@ -57,4 +57,4 @@ Emptiest years, by annual peak: 1991 68.6%; 2002 90.5%; 2011 90.5%.
 
 Average annual mean fill: 90.6% over the first ten complete years, 94.7% over the last ten.
 
-2026 so far (254 days): peak 3,664 af, 99.3% of full pool; latest low 3,420 af.
+2026 so far (264 days): peak 3,664 af, 99.3% of full pool; latest low 3,386 af.

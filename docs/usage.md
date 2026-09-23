@@ -256,13 +256,53 @@ uses SQLite in WAL mode and tolerates concurrent writers.
 ### Keeping current
 
 ```bash
-just update 2026-09-01          # every source, only data after that date
-nmwater fetch usgs --since 2026-09-01
+nmwater update --dry-run          # show each source's start date and policy
+nmwater update                    # fetch the delta everywhere, compact, rebuild the catalog
+nmwater update usgs nrcs          # only these sources
+nmwater update --since 2026-09-01 # one fixed start date for everything
+just update                       # update, then regenerate the reservoir reports
 ```
 
-Incremental pulls reuse the ledger to skip windows already completed. For sources whose
-providers revise published values (PRISM revises for six months, USGS promotes provisional data
-to approved), add `--refresh` periodically for the affected window.
+`update` starts each source 30 days (`--margin-days`) before the earlier of its last successful
+fetch and its newest observation, then fetches, compacts and rebuilds the catalog. The margin
+re-pulls a month that providers revise after first publication: USGS promotes provisional data to
+approved, NRCS and the Corps edit recent values, PRISM revises grids for six months. Compaction
+keeps the newest copy of any re-pulled observation, so the overlap costs time, not duplicates.
+
+Policies are in `config/sources.yaml` under `update:`. Reference layers (census boundaries,
+NHDPlus, the dam registry, watershed boundaries) and static or blocked sources are skipped with a
+stated reason; `kinds:` chooses what a delta covers, for example USGS includes the 15-minute
+archive and the Corps includes its capacity tables and pool levels. Sources that have never
+completed a fetch are skipped.
+
+Two sources re-download whole files for any delta: Reclamation HydroData and NOAA GHCN-Daily
+publish each series as one full-history file. Only new rows are written, but the download is the
+full file. Colorado caps data per day and PRISM limits each file to two downloads a day, so a
+large delta may need a second day for those.
+
+#### The update log
+
+Every run appends one row per source to `reports/update_log.csv`, plus a `_catalog_build` row and
+a `_total` row, all sharing an `update_id`. It is committed, so it accumulates into a record of how
+fast the archive grows and what keeping it current costs.
+
+| Column | Meaning |
+|---|---|
+| `update_id` | UTC timestamp identifying one run |
+| `source`, `policy`, `since`, `status` | what was attempted and how it ended (`ok`, `partial`, `error`, `skipped`) |
+| `fetch_seconds`, `compact_seconds` | wall-clock time |
+| `n_requests`, `n_cached`, `n_errors` | requests made, answered from the raw archive, failed |
+| `bytes_downloaded` | bytes received from the network, from the ledger |
+| `rows_fetched` | rows written by the fetch, before deduplication |
+| `duplicates_removed` | rows dropped by compaction: mostly the re-pulled margin |
+| `rows_before`, `rows_after`, `net_new_rows` | rows in the source's Parquet before and after |
+| `raw_bytes_*`, `parquet_bytes_*`, `grid_bytes_*` | size on disk of the raw archive, Parquet and grids for the source, before and after |
+| `disk_bytes_delta` | total change on disk |
+| `notes` | the source's own summary, or why it was skipped |
+
+Growth per update is `net_new_rows` and `disk_bytes_delta`; consumption is `bytes_downloaded`,
+`n_requests` and the two time columns. `rows_fetched` minus `net_new_rows` is roughly what the
+margin re-pulled.
 
 ### Resuming after failures
 

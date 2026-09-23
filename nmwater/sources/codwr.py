@@ -17,6 +17,7 @@ import json
 import logging
 from datetime import date
 
+import httpx
 import pandas as pd
 
 from .base import FetchSummary, Source, register
@@ -184,8 +185,18 @@ class CODWR(Source):
                 # without one, re-run on a later day and the ledger resumes the failed series.
                 if self.settings.tokens.get("CODWR_API_KEY"):
                     q["apiKey"] = self.settings.tokens["CODWR_API_KEY"]
-                art = self.get(f"{self.base}/{paths[kind]}", params=q, kind=kind, refresh=do_refresh,
-                               site_uid=self.uid(nid), window=(since.isoformat() if since else "1800-01-01", date.today().isoformat()))
+                try:
+                    art = self.get(f"{self.base}/{paths[kind]}", params=q, kind=kind, refresh=do_refresh,
+                                   site_uid=self.uid(nid),
+                                   window=(since.isoformat() if since else "1800-01-01", date.today().isoformat()))
+                except httpx.HTTPStatusError as e:
+                    # CDSS answers 404 "properly formatted, but returns zero records" when a station
+                    # has nothing in the window. For an incremental update that is the normal case for
+                    # inactive stations (1,716 of 1,734 "failures" in the first update), not an error.
+                    if e.response is not None and e.response.status_code == 404 and "zero records" in e.response.text:
+                        summ.n_requests += 1
+                        break
+                    raise
                 summ.n_requests += 1
                 if art.from_cache:
                     summ.n_cached += 1

@@ -40,19 +40,19 @@ Report: `reports/reservoirs/brantley_annual_fill.csv`. Regenerate with `just rep
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Brantley` | 8,132 | 1999-02-28 | 2026-09-12 |
+| elevation | `usace_cwms:Brantley` | 8,134 | 1999-02-28 | 2026-09-14 |
 | inflow | `usace_cwms:Brantley` | 3,134 | 2018-01-02 | 2026-08-25 |
-| storage | `usace_cwms:Brantley` | 8,096 | 1999-02-28 | 2026-09-12 |
-| elevation | `usbr_hydrodata:937` | 12,575 | 1988-01-01 | 2026-09-11 |
-| inflow | `usbr_hydrodata:937` | 982 | 2024-01-01 | 2026-09-08 |
-| release | `usbr_hydrodata:937` | 11,017 | 1990-10-01 | 2026-09-12 |
-| storage | `usbr_hydrodata:937` | 14,072 | 1988-01-01 | 2026-09-11 |
+| storage | `usace_cwms:Brantley` | 8,098 | 1999-02-28 | 2026-09-14 |
+| elevation | `usbr_hydrodata:937` | 12,585 | 1988-01-01 | 2026-09-21 |
+| inflow | `usbr_hydrodata:937` | 995 | 2024-01-01 | 2026-09-21 |
+| release | `usbr_hydrodata:937` | 11,027 | 1990-10-01 | 2026-09-22 |
+| storage | `usbr_hydrodata:937` | 14,082 | 1988-01-01 | 2026-09-21 |
 | storage | `usgs:08401450` | 10,409 | 1988-10-01 | 2017-03-31 |
-| release (gauge below dam) | `usgs:08401500` | 19,905 | 1971-10-01 | 2026-09-11 |
+| release (gauge below dam) | `usgs:08401500` | 19,915 | 1971-10-01 | 2026-09-21 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:937` 14,072, `usace_cwms:Brantley` 63.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:937` 14,082, `usace_cwms:Brantley` 62.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:937` vs `usace_cwms:Brantley` 89 af over 8,033 shared days; `usace_cwms:Brantley` vs `usgs:08401450` 44 af over 4,651 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:937` vs `usace_cwms:Brantley` 89 af over 8,036 shared days; `usace_cwms:Brantley` vs `usgs:08401450` 44 af over 4,651 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08401500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -66,7 +66,7 @@ Sources:
 
 **Capacity table:** `Brantley.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2020-01-01, elevations in NAVD88. 10,601 points from 3,204.00 to 3,310.00 ft, 1,211,371 acre-feet at the top.
 
-**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.4 acre-feet, over 2,443 days.
+**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.4 acre-feet, over 2,453 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11016, survey 2013) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -106,7 +106,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1990-1992 table | 1990-10-01 to 1992-12-31 | 3234.5-3257.4 | 2,060 | 45,577, high | 388,226, medium |
 | 1993-1999 table | 1993-01-01 to 1999-12-31 | 3239.3-3254.8 | 5,468 | 45,577, low | 388,226, low |
 | 2000-2001 table | 2000-01-01 to 2001-12-31 | 3237.1-3254.6 | 5,576 | 45,577, low | 388,226, low |
-| current table | 2002-01-01 to 2026-09-11 | 3230.2-3264.4 | 0 | 42,934, current_table | 384,035, current_table |
+| current table | 2002-01-01 to 2026-09-21 | 3230.2-3264.4 | 0 | 42,934, current_table | 384,035, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -114,7 +114,7 @@ Capacity of the top of conservation fell from 45,577 to 42,934 acre-feet over th
 
 ## What the record shows
 
-Record: 1988 to 2026, 39 years, 14,135 days of storage.
+Record: 1988 to 2026, 39 years, 14,144 days of storage.
 
 Largest use of the flood pool: 2015 peaking at 22.2% of flood capacity on 2015-03-28, 244 days above the conservation pool; 2014 peaking at 21.2% of flood capacity on 2014-12-29, 103 days above the conservation pool.
 
@@ -128,4 +128,4 @@ Annual inflow, complete years: median 68,950 af, largest 95,289 af in 2024, smal
 
 Highest daily releases, measured below the dam: 1,400 cfs on 2013-09-24; 1,370 cfs on 2014-05-01; 1,320 cfs on 2015-08-04.
 
-2026 so far (255 days): peak 29,080 af, 67.9% of full pool; latest low 8,885 af.
+2026 so far (264 days): peak 29,080 af, 67.9% of full pool; latest low 8,885 af.

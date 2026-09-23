@@ -268,6 +268,32 @@ table stops at 7,102 ft); El Vado's 1.45 ft discrepancy disappears against its 2
 - **Colorado reservoirs** that shape New Mexico inflow (Platoro, Rio Grande Reservoir, Vallecito,
   Lemon) have CWMS tables and could be added to the registry.
 
+### D8. Findings from the first `nmwater update` (2026-09-23) — HIGH to LOW
+The first incremental update surfaced these; costs are in `reports/update_log.csv`.
+- **NOAA ISD-Lite has stopped (HIGH).** There is no 2026 directory and the 2025 files were last
+  modified 2025-08-29, so the archive's hourly airport and AWOS record ends there. NOAA's successor
+  is the hourly Global Historical Climatology Network (GHCNh). `noaa_isd` is now skipped by
+  `update`. **Do:** add a `noaa_ghcnh` source.
+- **ZiaMet hosts are unreliable (MEDIUM).** duststorm.nmsu.edu and ziamet.org refused connections;
+  weather.nmsu.edu answered slowly and returned HTTP 500 for most one-minute feeds, so the update
+  spent 2 h 11 min mostly retrying and was stopped by hand. weather.nmsu.edu is now the primary
+  host and updates cover daily data only. **Do:** confirm the next update completes, and cap
+  per-request retries for this source.
+- **Seven Rivers has no date filter (LOW).** Its API returns full history per point and analyte, so
+  every update re-requests all 2,701 chemistry series. **Do:** skip chemistry in routine updates, or
+  update it monthly.
+- **PRISM's revision window is the largest download (LOW).** About 190 days of daily grids are
+  re-pulled each update, roughly 2.5 GB, by design. **Do:** consider a shorter `revision_days` for
+  routine updates and a full window monthly.
+- **USGS annual peaks were never in the archive (FIXED).** The peaks collection rejects any
+  datetime filter ("datetime query not supported"), and all 175 peaks requests in the original
+  backfill had failed unnoticed. Peaks are now pulled whole, one request of about 37,000 rows:
+  25,385 discharge peaks at 710 sites and 23,941 stage peaks, water years 1884-2025.
+- **Colorado counted empty answers as errors (FIXED).** CDSS returns HTTP 404 "zero records" for a
+  station with nothing new; 1,716 of 1,734 errors were that. The module now treats them as empty.
+- **Reclamation HydroData removed 32 series (LOW).** Those site-datatype files now return 404.
+  **Do:** confirm with the metadata file and retire them from discovery.
+
 ### D7. Plausible-range metadata for variables — LOW
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch
 impossible values generically rather than through hand-written checks.
