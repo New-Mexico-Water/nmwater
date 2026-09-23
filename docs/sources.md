@@ -95,3 +95,63 @@ retrospective (0.5–1 TB for New Mexico reaches), AORC hourly 1 km forcing (~6 
 precipitation (50–200 GB), full Daymet, and MODIS daily snow and evapotranspiration tiles.
 NEXRAD Level II is excluded outright at 100+ TB, since Stage IV and MRMS already provide the
 gauge-corrected product.
+
+## How each source delivers data
+
+What `nmwater update` can ask each provider for, and what it costs. Compiled from the source
+modules on 2026-09-23; citations are `module.py:line`. "Skipped" means `update: skip` in
+`config/sources.yaml`.
+
+**Delivery types.** *API, date-filtered*: the server accepts a start date, so a delta is small.
+*API, no date filter*: the server returns full history per request. *Full-history file*: one file
+per station or series holding the whole record; a delta re-downloads it and keeps new rows.
+*Per-period files*: one file per year, month or day; a delta fetches only recent periods.
+*Snapshot*: the whole current dataset every time. *Rolling window*: the provider only serves recent
+days, so data is lost if updates lapse longer than the window. *Documents*: PDFs and spreadsheets.
+
+| Source | Delivery | Start-date parameter | What `--since` does in our code | Other filters and paging | Auth and limits | Cost of a delta |
+|---|---|---|---|---|---|---|
+| cocorahs | API, date-filtered | `StartDate`/`EndDate` | start = since; last 62 days re-fetched `cocorahs.py:108-119` | `State=NM`; monthly windows | 1 worker, 1.5 s | cheap |
+| codwr | API, date-filtered | `min-measDate`, `min-dataMeasDate`, `min-measurementDate` `codwr.py:171` | server filter `:177` | division, abbrev, wdid, wellId; `pageSize`/`pageIndex` | optional `CODWR_API_KEY`; daily data quota | one request per series, about 1,700 |
+| gridmet | API, date-filtered (THREDDS subset) | `time_start`/`time_end` | years from since; current year re-fetched `gridmet.py:66-82` | bbox, variable | slow server | 20 variables × current year |
+| iem_dcp | API, date-filtered | `sts`/`ets` | start = later of since and last fetched window `iem_dcp.py:87-89` | network, station; 2-year windows | none | cheap |
+| isc_sevenrivers | API, date-filtered | `start`/`end` (epoch ms) | server filter `:70` | point id, analyte id | none | 2,774 requests regardless |
+| nass | API, date-filtered by year | `year` | years from since | state, commodity | `NASS_API_KEY`; 50,000 rows per call | cheap; skipped |
+| nmed_st2 | API, date-filtered (SensorThings) | `$filter=phenomenonTime ge` | server filter | keyset on id, `$top=5000` | none | cheap |
+| nmwdi_st2 | API, date-filtered (SensorThings) | same | server filter | same | none | cheap |
+| nrcs | API, date-filtered | `beginDate`/`endDate`; forecasts `beginPublicationDate` | data: later of since and last window `nrcs.py:126-128`; forecasts always from 1900 `:163` | station triplets, HUCs, elements, duration | none | data cheap; forecasts full history |
+| ose_meas | API, date-filtered (session POST) | `sDate`/`eDate` | yearly windows from since `ose_meas.py:86` | station id, type, product | session cookie | about 900 requests |
+| synoptic | API, date-filtered | `start`/`end` | server filter | station batches, variables | `SYNOPTIC_TOKEN`; 100,000 station-hours per request | cheap; skipped |
+| usace_cwms | API, date-filtered; tables and pool levels are snapshots | `begin`/`end` | later of since and last window minus one day `usace_cwms.py:178-180` | office, series id; `page-size=-1`; windows halve on timeout | none | cheap |
+| usbr_rise | API, date-filtered | `dateTime[after]` | server filter `usbr_rise.py:160` | item id; 10,000 per page | JSON:API header required | cheap |
+| usdm | API, date-filtered | `startdate`/`enddate` | server filter | state, county, climate division, HUC | none | cheap |
+| usgs | API, date-filtered; peaks has no date filter | daily `startDT`/`endDT`; OGC `datetime=a/b`; peaks none | daily and field measurements: server filter; 15-minute: later of since and last window, capped at the series end recorded at discovery `usgs.py:514-519`; peaks: whole table | state, bbox, site, parameter; 50,000 per page | `USGS_API_KEY`; 1,000 requests per hour | daily cheap; 15-minute about 500 requests; peaks whole table |
+| usgs_wateruse | Full-history files (ScienceBase) plus an API | NWDC `startDate`/`endDate` | ignored | county, model, variable | NWDC 600 per page | whole dataset; skipped |
+| wqp | API, date-filtered | `startDateLo`/`startDateHi` | server filter by county and decade `wqp.py:126-151` | state, county, bbox, site id | slow; 429s under load | cheap |
+| ziamet | Daily: API, date-filtered (POST form); feeds: rolling window | `sdate`/`edate` | years from since `ziamet.py:212` | station, product; CSRF token | hosts unreliable | 214 stations × 3 products; updates take daily only |
+| nmbgmr | API, no date filter | none | filtered after download | WKT tiles, point id; `page`/`size` | production host unreachable | whole history per point; skipped |
+| edi | Full-history file | none | filtered after download | package, entity | PASTA returned 403 | skipped |
+| nclimdiv | Full-history file, all states from 1895 | none | ignored; each monthly release has a new filename | none | none | whole dataset per monthly release |
+| noaa_ghcnd | Full-history file per station | none | skips stations whose inventory ended before since's year; re-downloads the rest `noaa_ghcnd.py:100-124` | none | none | about 1 GB of whole files per update |
+| resopsus | Full-history file (Zenodo) | none | filtered after download | none | none | static to 2020; skipped |
+| usbr_hydrodata | Full-history file per series | none | re-downloads every series, keeps new rows `usbr_hydrodata.py:111-127` | none | none | about 100 MB of whole files per update |
+| nclimgrid | Per-period files (monthly NetCDF, CONUS) | none | months from since; last two re-fetched | clipped after download | none | two or three 64 MB files |
+| noaa_isd | Per-period files (station-year) | none | years from since | none | none | stopped publishing August 2025; skipped |
+| prism | Per-period files (daily and monthly CONUS zips) | none | re-downloads every file inside the 190-day revision window `prism.py:118` | clipped after download | two downloads per file per day | about 3 GB per update |
+| snodas | Per-period files (daily CONUS tar) | none | days from since; completed days skipped | clipped after download | none | about 3 MB per day |
+| ua_swe | Per-period files (water-year NetCDF) | none | water years from since | none | Earthdata login | ends WY2023; skipped |
+| uscrn | Per-period files (station-year) | none | years from since | none | none | cheap |
+| ckan | Snapshot (catalog) and manual files | none | filtered after download | `limit`/`offset` | Cloudflare blocks downloads | skipped |
+| nhdplus | Snapshot (WFS by watershed) | none | ignored | geometry per HUC8 | none | frozen; skipped |
+| nid | Snapshot (national CSV) | none | ignored | none | none | about 67 MB; skipped |
+| ose_arcgis | Snapshot (ArcGIS layers) | none | fetch makes no request; it re-reads the last discovered layer `ose_arcgis.py:240` | `resultOffset`/`resultRecordCount` | none | nothing; layers refresh only on discover |
+| tiger | Snapshot (annual vintage) | none | ignored | none | none | skipped |
+| twdb | Snapshot (nightly 83 MB zip) | none | re-downloads the zip, keeps new rows | filtered by county after download | none | 83 MB per update |
+| wbd | Snapshot (watershed GeoPackages) | none | ignored | none | none | frozen; skipped |
+| nwps | Rolling window (about 30 days) and forecasts | none | ignored; fetched once per day | bbox | none | cheap; gaps if updates lapse over 30 days |
+| usbr_albuq | Rolling window (about 7 days) | none | ignored; fetched once per day | none | none | cheap; gaps if updates lapse over 7 days |
+| ibwc | Rolling window (current page plus about 5 months of daily pages) and documents | none | drops dated pages before since | none | none | cheap |
+| bemp | Documents (full-history workbooks) | none | filtered after download | none | none | ends 2017; skipped |
+| ose_reports | Documents (PDF, XLSX) | none | ignored | none | CKAN files blocked | skipped |
+
+Known problems with incremental updates are tracked in [TODO.md](TODO.md) under D9.

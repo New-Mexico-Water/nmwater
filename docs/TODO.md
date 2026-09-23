@@ -294,6 +294,38 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
 - **Reclamation HydroData removed 32 series (LOW).** Those site-datatype files now return 404.
   **Do:** confirm with the metadata file and retire them from discovery.
 
+### D9. Incremental-update defects found auditing every source (2026-09-23) — HIGH to LOW
+Delivery mechanics for every source are in [sources.md](sources.md#how-each-source-delivers-data).
+- **USGS 15-minute data stops at the last discovery (HIGH, confirmed).** Windows end at each
+  series' end date as recorded by `discover` (`usgs.py:518-519`), and `update` never re-runs
+  discovery. After the 2026-09-23 update, 15-minute data still ended 2026-09-12 while daily data
+  reached 2026-09-22. **Do:** cap at today for active series, or refresh the series catalog in
+  `update`.
+- **The 30-day margin is discarded in four modules (HIGH).** iem_dcp, nrcs, usace_cwms and USGS
+  15-minute start at the later of `since` and the last fetched window (`iem_dcp.py:87-89`,
+  `nrcs.py:126-128`, `usace_cwms.py:178-180`, `usgs.py:514-517`), so revisions to recent
+  provisional values are never picked up. **Do:** when called by `update`, honour `since`.
+- **Corps time series ended 2026-09-15 after the update (MEDIUM).** Check whether CWMS catalog
+  extents lag or the window logic stops early.
+- **Reference tables accumulate duplicates (MEDIUM, confirmed).** Tables written with
+  `append_table` get a new part file every run and compaction does not cover them: USGS peaks and
+  field measurements, WQP results, NMED drinking-water results, Seven Rivers readings, TWDB
+  quality. USGS peaks already has 44 part files from one fetch. **Do:** deduplicate these in
+  `compact`, or replace instead of append for whole-table pulls such as peaks.
+- **ose_arcgis update fetches nothing (MEDIUM, confirmed).** Points of diversion refresh only on
+  `discover`. **Do:** make update re-run the layer pull, or give it a discover step.
+- **GHCN-D stations will drop out in January (MEDIUM).** Stations are filtered on the inventory's
+  last year from discovery (`noaa_ghcnd.py:100-107`); when since's year becomes 2027, stations
+  recorded as ending 2026 are silently skipped. **Do:** refresh the inventory in update.
+- **NRCS forecasts re-pull full history every run (LOW).** `nrcs.py:163`.
+- **Rolling-window sources lose data if updates lapse (LOW).** usbr_albuq keeps about 7 days, nwps
+  about 30. **Do:** schedule updates at least weekly, or at least note the gap.
+- **SensorThings and WQP miss late-loaded history (LOW).** Filtering on observation time skips
+  records loaded late with old timestamps.
+- **USGS field-measurements can truncate silently (LOW).** Full pages split only three levels deep
+  and are then returned without warning (`usgs.py:367`).
+- **PRISM can exceed its two-downloads-a-day limit (LOW)** if update runs twice in a day.
+
 ### D7. Plausible-range metadata for variables — LOW
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch
 impossible values generically rather than through hand-written checks.
