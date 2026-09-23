@@ -27,7 +27,7 @@ and keeps the newest ingest run.
 Consider making `catalog build` refuse to run against an uncompacted store, or compact
 automatically.
 
-### A2. 106,920 negative snow water equivalent values — HIGH
+### A2. 106,920 negative snow water equivalent values — DONE (2026-09-24)
 **Issue:** [#1](https://github.com/New-Mexico-Water/nmwater/issues/1)
 Snow water equivalent cannot be negative. Almost certainly NRCS sensor spikes and reset
 artifacts; the fork that wrote that module noted unfiltered spikes such as air temperature of
