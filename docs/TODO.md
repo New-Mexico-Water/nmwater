@@ -224,24 +224,49 @@ Built on this: `scripts/elephant_butte_fill.py` recovers every capacity vintage 
 from the operational record and writes `reports/elephant_butte_annual_fill.csv`. Method and
 caveats in [reports/elephant-butte-fill.md](reports/elephant-butte-fill.md).
 
-Extended to all reservoirs: `scripts/reservoir_fill.py` covers Lake Sumner, El Vado, Brantley,
-Nambe Falls and Avalon as well. See [reports/reservoir-fill.md](reports/reservoir-fill.md).
+Superseded for capacity by D6c: reports now use the operators' current tables from CWMS, with
+these survey tables kept as corroboration.
 
 **Still open, lower priority:**
-- Heron is excluded because Reclamation's published ACAP table stops at 7102 ft / 74,615 AF,
-  below the reservoir's operating range. Request or locate the complete table.
-- El Vado needs a 1.45 ft elevation shift for its storage to reproduce from its ACAP table, but
-  the table's datum note implies ~12 ft. Reconcile before publishing El Vado externally.
-- Spillway crest elevations are detected from the record, not sourced. They should become
-  documented constants with citations rather than literals in the scripts.
-- Parsing the pre-2007 survey PDFs (1957, 1969, 1980, 1988, 1999, 2007) would replace every
-  derived capacity in these reports with a published one and retire the confidence column.
-- Only reservoirs with a RISE ACAP item are covered. Ute 1992 and the pre-2007 Elephant Butte
-  surveys (1957, 1969, 1980, 1988, 1999) exist as PDF reports only, so the archive has one
-  vintage per reservoir rather than a time series of vintages. Parsing those PDFs would let a
-  fill percentage for, say, 1975 use the capacity table in force in 1975.
-- `reservoir_acap` joins to observations by reservoir name, not by comid. A comid or site_uid
-  column would make it join like `reservoir_capacity` does.
+- Parsing the pre-2007 survey PDFs (1957, 1969, 1980, 1988, 1999, 2007) would replace derived
+  capacities with published ones. Ute 1992 and the pre-2007 Elephant Butte surveys exist only as
+  PDF reports.
+- `reservoir_acap` joins to observations by reservoir name, not by comid.
+
+### D6c. Reservoir reports for 24 reservoirs — DONE, with open items
+`nmwater fetch usace_cwms --kind ratings --kind levels` brings in the operators' current
+elevation-to-storage tables (49 reservoirs) and named pool levels (18 locations).
+`catalog/reservoirs.yaml` registers 24 New Mexico reservoirs with their sites, capacity source,
+pools, release gauges and hand-written usage guidance; `scripts/reservoir_fill.py` builds annual
+storage, fill, flood-pool use, inflow and release for each, plus one generated notes file per
+reservoir. Index at [reports/reservoirs/index.md](reports/reservoirs/index.md), method at
+[reports/reservoir-fill.md](reports/reservoir-fill.md).
+
+Resolved along the way: Heron is now covered (the CWMS table is complete where the RISE survey
+table stops at 7,102 ft); El Vado's 1.45 ft discrepancy disappears against its 2021 table.
+
+**Open:**
+- **Lake Sumner before June 2012.** The conservation pool was lowered in 2012 and the earlier pool
+  is not in CWMS. Find the pre-2012 top of conservation (Reclamation or the Corps) so earlier years
+  are not measured against the reduced pool.
+- **Eagle Nest since 2013.** The lake has not exceeded about 62% of full pool since elevation
+  reporting began. Confirm with the NM Department of Game and Fish whether an operating
+  restriction applies.
+- **El Vado 1979-2009.** Negative departures from the current table suggest an elevation datum
+  change in the older record. Confirm with Reclamation.
+- **Jemez Canyon permanent pool.** Find when the Corps stopped keeping a sediment pool, so early
+  flood-storage counts can be separated from ordinary storage.
+- **Cochiti and Abiquiu spring deviations.** Obtain the Corps' list of deviation years for spring
+  pulse releases, so they can be labelled in the reports rather than inferred.
+- **Six reservoirs without a validated table** (Ute, Costilla, McClure, Nichols, Bluewater,
+  Maloya): an elevation series would move Ute and Costilla, which have CWMS tables, to the
+  validated tier. The others need a capacity table from their owners.
+- **Conchas release.** Releases go mostly to the Conchas Canal; find a current canal record.
+- **Full-pool elevations detected from the record** for Heron, El Vado, Nambe Falls, Elephant
+  Butte, Caballo and Avalon should be replaced with published pool definitions and citations.
+- **Water years.** Add an October-September option; flow volumes are conventionally by water year.
+- **Colorado reservoirs** that shape New Mexico inflow (Platoro, Rio Grande Reservoir, Vallecito,
+  Lemon) have CWMS tables and could be added to the registry.
 
 ### D7. Plausible-range metadata for variables — LOW
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch
