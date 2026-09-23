@@ -123,9 +123,11 @@ class NRCS(Source):
             trip, dur, codes, begin, end = j
             b = max(date.fromisoformat(begin), date(1900, 1, 1))
             e = min(date.fromisoformat(end), today)
-            if since:
+            if since and not opts.get("revise"):   # manual --since: catch up; update: honour since
                 last = self.ledger.last_window_end(self.name, self.uid(trip), dur)
                 b = max(b, since, date.fromisoformat(last[:10]) if last else b)
+            elif since:
+                b = max(b, since)
             yrs = HOURLY_WINDOW_YEARS if dur == "HOURLY" else DAILY_WINDOW_YEARS
             total = 0
             cur = b

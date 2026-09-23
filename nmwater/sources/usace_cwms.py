@@ -175,9 +175,11 @@ class USACECWMS(Source):
             interval = INTERVAL_MAP.get(p["interval"].lower(), "irregular")
             b = date.fromisoformat(earliest[:10]) if earliest else EARLIEST
             e = min(date.fromisoformat(latest[:10]) + timedelta(days=1), today) if latest else today
-            if since:
+            if since and not opts.get("revise"):   # manual --since: catch up; update: honour since
                 last = self.ledger.last_window_end(self.name, self.uid(p["location"]), tsid)
                 b = max(b, since, date.fromisoformat(last[:10]) - timedelta(days=1) if last else b)
+            elif since:
+                b = max(b, since)
             total = 0
             cur = b
             win = WINDOW_DAYS.get(interval, 366)
