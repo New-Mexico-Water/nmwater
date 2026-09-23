@@ -22,6 +22,9 @@ The checks below take a minute each and catch most of the errors this archive ma
    Aggregate flows by watershed, people by place. See the first section below.
 4. **Flux or stock?** Storage is summed over space, never over time. Flow is summed over time.
 5. **Is it counted twice?** Check `site_links` for `same_sensor` before any statewide total.
+   Also use `observations_clean`, not `observations`: it excludes implausible values (negative snow
+   water equivalent beyond sensor drift, for instance) that would otherwise skew a sum or mean.
+   See "Quality flags" in [data-model.md](data-model.md).
 6. **Is it provisional?** Anything from the current water year probably is. Check `qualifier`.
 7. **Is it below detection?** Non-detects in water quality are not zero. Check the detection
    condition column.

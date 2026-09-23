@@ -47,6 +47,48 @@ The store drops rows with impossible timestamps (before 1850 or beyond next year
 many. Real data contains year 990 and year 2316 typos; New Mexico's oldest genuine hydrologic
 records begin in 1888.
 
+Providers also mark missing data with a number instead of leaving a gap. The store drops those
+markers at ingest, using `missing_codes_default` and each variable's `missing_codes` in
+`catalog/variables.yaml`: `-9999` and `-99999` everywhere, and smaller ones only where they are
+impossible for that variable (`-99.9` for precipitation and wind speed, `-99.99` for stage). A
+variable marked `signed: true`, such as change in storage or computed inflow, is exempt, because a
+real value can equal a code. Matching uses a tolerance, since some sources store `-99.9` as
+`-99.90000000000001`. `nmwater purge-missing-codes` removes markers from data stored before this
+rule existed; the raw responses still hold the originals.
+
+### Quality flags
+
+Being negative is not the same as being wrong, so the store does not delete negative values.
+Instead each variable in `catalog/variables.yaml` can declare plausibility bounds, and the catalog
+classifies every observation:
+
+| `qc_flag` | Meaning |
+|---|---|
+| `ok` | Within bounds, or the variable has none. |
+| `near_zero` | Below `valid_min` but at or above `noise_floor`: instrument drift around zero. Kept. |
+| `implausible` | Below the noise floor, or above `valid_max`. |
+
+Two views expose this. `observations_qc` is every observation with its `qc_flag`.
+`observations_clean` is the same without the `implausible` rows. Analysis should use
+`observations_clean` unless it needs the raw values; the underlying `observations` view and the
+Parquet files are never altered.
+
+Bounds set today, and why:
+
+| Variable | `valid_min` | `noise_floor` | Reason |
+|---|---|---|---|
+| `swe` | 0 in | -1 in | 98% of negative values from the NWS feed lie within 1 inch of zero: pillow drift |
+| `snow_depth` | 0 in | -5 in | ultrasonic sensors drift; below -5 in is junk (some readings reach -739) |
+| `precip` | 0 in | none | any negative value is impossible |
+| `reservoir_storage` | 0 af | -5 af | rounding at an empty reservoir |
+
+`discharge` has **no lower bound on purpose**. 3,826 negative readings at 36 state ditch and canal
+gauges may be real reverse flow or backwater rather than error, and only the operator can say.
+Only the `-9999` no-data code is removed from discharge.
+
+Averaging `near_zero` snow values as if they were zero biases a season low; clamp them to zero
+deliberately if that is what an analysis wants, and say so.
+
 ## sites
 
 One row per station, well, reservoir, or area.

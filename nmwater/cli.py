@@ -376,6 +376,26 @@ def update(
     ctx.ledger.close()
 
 
+@app.command("purge-missing-codes")
+def purge_missing_codes(
+    source: Optional[str] = typer.Argument(None, help="one source, or all"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="count only; change nothing"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+):
+    """Remove provider no-data markers (-9999, -99.9, ...) from stored observations.
+
+    New data has them dropped at ingest. Run this once to clean data written before that rule, or
+    after adding a code to catalog/variables.yaml. Rebuild the catalog afterwards."""
+    _setup_logging(False)
+    ctx = _ctx(data_dir)
+    res = ctx.store.purge_missing_codes(source, dry_run=dry_run)
+    t = Table("source", "variable", "rows removed" if not dry_run else "rows found")
+    for (s, v), n in sorted(res.items(), key=lambda kv: -kv[1]):
+        t.add_row(s, v, f"{n:,}")
+    console.print(t)
+    console.print(f"{'would remove' if dry_run else 'removed'} {sum(res.values()):,} rows")
+
+
 @app.command()
 def status(
     source: Optional[str] = typer.Argument(None),

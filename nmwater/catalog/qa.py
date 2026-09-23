@@ -98,10 +98,18 @@ def run(settings: Settings, out: Path | None = None) -> Path:
                     FROM observations GROUP BY ALL HAVING c > 1)"""
         ).fetchone()[0]
         lines.append(f"- duplicate observation keys (run `nmwater compact`): {dup:,}")
-        neg = con.execute(
-            "SELECT variable, COUNT(*) FROM observations WHERE value < 0 AND variable IN ('discharge','reservoir_storage','precip','swe','snow_depth') GROUP BY 1"
+        flags = con.execute(
+            "SELECT variable, qc_flag, COUNT(*) FROM observations_qc WHERE qc_flag <> 'ok' GROUP BY ALL ORDER BY 3 DESC"
         ).fetchall()
-        lines.append("- negative values in non-negative variables: " + (", ".join(f"{v}={n:,}" for v, n in neg) if neg else "none"))
+        imp = [(v, n) for v, f, n in flags if f == "implausible"]
+        nz = [(v, n) for v, f, n in flags if f == "near_zero"]
+        lines.append("- implausible values, excluded from observations_clean (bounds in variables.yaml): "
+                     + (", ".join(f"{v}={n:,}" for v, n in imp) if imp else "none"))
+        lines.append("- near-zero values within instrument noise, kept and flagged near_zero: "
+                     + (", ".join(f"{v}={n:,}" for v, n in nz) if nz else "none"))
+        unb = con.execute(
+            "SELECT COUNT(*) FROM observations WHERE value < 0 AND variable = 'discharge'").fetchone()[0]
+        lines.append(f"- negative discharge, deliberately unbounded pending confirmation that canal reverse flow is real: {unb:,}")
     except Exception as e:
         lines.append(f"- hygiene checks failed: {e}")
 

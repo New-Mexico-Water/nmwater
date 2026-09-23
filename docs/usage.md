@@ -114,6 +114,16 @@ Re-runs normalization from the archived responses with no network access. Use it
 parser or changing the crosswalk. `--replace` is the honest option when a parser bug produced
 wrong rows, since it clears the source's partitions before rewriting.
 
+### purge-missing-codes
+
+```bash
+nmwater purge-missing-codes --dry-run    # count provider no-data markers in stored data
+nmwater purge-missing-codes              # remove them; rebuild the catalog afterwards
+```
+
+New data has them dropped at ingest. This cleans older data, or applies a code you have just added
+to `catalog/variables.yaml`. See "Values are guarded" in [data-model.md](data-model.md).
+
 ### compact
 
 ```bash

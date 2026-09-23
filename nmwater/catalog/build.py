@@ -20,6 +20,29 @@ from .variables import VariableRegistry
 log = logging.getLogger("nmwater.catalog")
 
 
+# Quality flag from the variable registry's plausibility bounds (catalog/variables.yaml):
+#   implausible  below valid_min and under the noise band, or above valid_max
+#   near_zero    in the noise band [noise_floor, valid_min): sensor drift; kept and flagged
+#   ok           everything else, including every variable with no bounds
+QC_FLAG_SQL = """
+    CASE
+        WHEN v.valid_min IS NOT NULL AND o.value < v.valid_min
+             THEN CASE WHEN v.noise_floor IS NOT NULL AND o.value >= v.noise_floor
+                       THEN 'near_zero' ELSE 'implausible' END
+        WHEN v.valid_max IS NOT NULL AND o.value > v.valid_max THEN 'implausible'
+        ELSE 'ok'
+    END"""
+
+
+def create_qc_views(con) -> None:
+    """observations_qc: every observation with a qc_flag. observations_clean: without the
+    implausible ones. The stored observations are never altered."""
+    con.execute(f"""CREATE OR REPLACE VIEW observations_qc AS
+        SELECT o.*, {QC_FLAG_SQL} AS qc_flag
+        FROM observations o LEFT JOIN variables v ON v.variable = o.variable""")
+    con.execute("CREATE OR REPLACE VIEW observations_clean AS SELECT * FROM observations_qc WHERE qc_flag <> 'implausible'")
+
+
 def build(settings: Settings) -> Path:
     settings.ensure_dirs()
     store = Store(settings.parquet_dir)
@@ -147,6 +170,8 @@ def build(settings: Settings) -> Path:
     # Catalog tables --------------------------------------------------------------------
     con.register("_vars", reg.to_frame())
     con.execute("CREATE TABLE variables AS SELECT * FROM _vars")
+    if has_ts:
+        create_qc_views(con)
     con.register("_xw", xw.to_frame())
     con.execute("CREATE TABLE crosswalk AS SELECT * FROM _xw")
     rows = []
