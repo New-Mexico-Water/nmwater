@@ -41,19 +41,15 @@ Report: `reports/reservoirs/santa_rosa_annual_fill.csv`. Regenerate with `just r
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Santa Rosa` | 16,051 | 1982-10-02 | 2026-09-12 |
+| elevation | `usace_cwms:Santa Rosa` | 16,053 | 1982-10-02 | 2026-09-14 |
 | inflow | `usace_cwms:Santa Rosa` | 10,108 | 1999-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Santa Rosa` | 10,115 | 1999-01-02 | 2026-09-12 |
-| elevation | `usbr_hydrodata:2730` | 16,052 | 1982-10-01 | 2026-09-11 |
-| inflow | `usbr_hydrodata:2730` | 982 | 2024-01-01 | 2026-09-08 |
-| release | `usbr_hydrodata:2730` | 13,401 | 1990-01-01 | 2026-09-10 |
-| storage | `usbr_hydrodata:2730` | 17,056 | 1980-01-01 | 2026-09-11 |
+| storage | `usace_cwms:Santa Rosa` | 10,117 | 1999-01-02 | 2026-09-14 |
+| elevation | `usbr_hydrodata:2730` | 16,062 | 1982-10-01 | 2026-09-21 |
+| inflow | `usbr_hydrodata:2730` | 995 | 2024-01-01 | 2026-09-21 |
+| release | `usbr_hydrodata:2730` | 13,412 | 1990-01-01 | 2026-09-21 |
+| storage | `usbr_hydrodata:2730` | 17,066 | 1980-01-01 | 2026-09-21 |
 | storage | `usgs:08382810` | 13,434 | 1980-04-22 | 2017-01-31 |
-| release (gauge below dam) | `usgs:08382830` | 17,035 | 1980-01-17 | 2026-09-11 |
-
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2730` 17,056, `usace_cwms:Santa Rosa` 1.
-
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2730` vs `usace_cwms:Santa Rosa` 24 af over 10,114 shared days; `usace_cwms:Santa Rosa` vs `usgs:08382810` 25 af over 6,604 shared days.
+| release (gauge below dam) | `usgs:08382830` | 17,045 | 1980-01-17 | 2026-09-21 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08382830`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -67,7 +63,7 @@ Sources:
 
 **Capacity table:** `Santa Rosa.Elev;Stor.Linear.Step;USACE` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USACE, effective 2017-01-01, elevations in NAVD88. 15,812 points from 4,668.00 to 4,826.11 ft, 801,174 acre-feet at the top.
 
-**Validation.** Since 2017-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 3,541 days.
+**Validation.** Since 2017-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 3,551 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -98,7 +94,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1999-2002 table | 1999-01-01 to 2002-12-31 | 4684.2-4745.6 | 5,054 | 273,202, low | 456,024, low | 116,913, high |
 | 2003-2005 table | 2003-01-01 to 2005-12-31 | 4676.5-4745.0 | 7,484 | 273,189, low | 456,019, low | 116,888, high |
 | 2006-2016 table | 2006-01-01 to 2016-12-31 | 4682.7-4747.3 | 9,802 | 273,189, low | 456,019, low | 116,888, high |
-| current table | 2017-01-01 to 2026-09-11 | 4693.3-4748.4 | 0 | 253,470, current_table | 432,165, current_table | 102,908, current_table |
+| current table | 2017-01-01 to 2026-09-21 | 4693.3-4748.4 | 0 | 253,470, current_table | 432,165, current_table | 102,908, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -106,7 +102,7 @@ Capacity of the top of conservation fell from 282,801 to 253,470 acre-feet over 
 
 ## What the record shows
 
-Record: 1980 to 2026, 47 years, 17,057 days of storage.
+Record: 1980 to 2026, 47 years, 17,066 days of storage.
 
 Years holding flood water: 0 of 46 complete years.
 
@@ -118,4 +114,4 @@ Annual inflow, complete years: median 57,228 af, largest 134,017 af in 2005, sma
 
 Highest daily releases, measured below the dam: 2,100 cfs on 1997-06-12; 1,940 cfs on 2026-07-29; 1,910 cfs on 1991-09-14.
 
-2026 so far (255 days): peak 75,594 af, 29.8% of full pool; latest low 3,563 af.
+2026 so far (264 days): peak 75,594 af, 29.8% of full pool; latest low 3,563 af.

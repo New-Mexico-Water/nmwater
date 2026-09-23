@@ -36,8 +36,8 @@ Report: `reports/reservoirs/costilla_annual_fill.csv`. Regenerate with `just rep
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| storage | `usgs:08253900` | 12,948 | 1991-04-01 | 2026-09-11 |
-| release (gauge below dam) | `usgs:08254000` | 23,948 | 1937-04-09 | 2026-09-11 |
+| storage | `usgs:08253900` | 12,958 | 1991-04-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08254000` | 23,958 | 1937-04-09 | 2026-09-21 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08254000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -51,7 +51,7 @@ Sources:
 
 ## What the record shows
 
-Record: 1991 to 2026, 36 years, 12,948 days of storage.
+Record: 1991 to 2026, 36 years, 12,958 days of storage.
 
 Fullest years, by annual peak: 1994 104.2%; 1995 104.2%; 2005 102.6%.
 
@@ -61,4 +61,4 @@ Average annual mean fill: 47.3% over the first ten complete years, 37.2% over th
 
 Highest daily releases, measured below the dam: 189 cfs on 1994-06-02; 166 cfs on 1995-06-20; 147 cfs on 1993-07-26.
 
-2026 so far (254 days): peak 3,660 af, 23.1% of full pool; latest low 677 af.
+2026 so far (264 days): peak 3,660 af, 23.1% of full pool; latest low 677 af.

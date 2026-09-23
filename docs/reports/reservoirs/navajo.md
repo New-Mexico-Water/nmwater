@@ -39,11 +39,11 @@ Report: `reports/reservoirs/navajo_annual_fill.csv`. Regenerate with `just repor
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usbr_hydrodata:920` | 23,454 | 1962-06-26 | 2026-09-11 |
-| inflow | `usbr_hydrodata:920` | 23,448 | 1962-07-02 | 2026-09-11 |
-| release | `usbr_hydrodata:920` | 23,448 | 1962-07-02 | 2026-09-11 |
-| storage | `usbr_hydrodata:920` | 23,449 | 1962-07-01 | 2026-09-11 |
-| release (gauge below dam) | `usgs:09355500` | 26,217 | 1954-12-01 | 2026-09-11 |
+| elevation | `usbr_hydrodata:920` | 23,464 | 1962-06-26 | 2026-09-21 |
+| inflow | `usbr_hydrodata:920` | 23,458 | 1962-07-02 | 2026-09-21 |
+| release | `usbr_hydrodata:920` | 23,458 | 1962-07-02 | 2026-09-21 |
+| storage | `usbr_hydrodata:920` | 23,459 | 1962-07-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:09355500` | 26,227 | 1954-12-01 | 2026-09-21 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:09355500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -56,7 +56,7 @@ Sources:
 
 **Capacity table:** `Navajo.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2020-01-01, elevations in NGVD29. 3,351 points from 5,775.00 to 6,200.00 ft, 6,000,000 acre-feet at the top.
 
-**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.1 acre-feet (0.00%), 95th percentile 55,168.7 acre-feet, over 2,446 days.
+**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.1 acre-feet (0.00%), 95th percentile 55,167.5 acre-feet, over 2,456 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -88,7 +88,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1972-1977 table | 1972-01-01 to 1977-12-31 | 6011.1-6086.4 | 49,328 | 1,696,440, high | 1,696,593, high |
 | 1978-1996 table | 1978-01-01 to 1996-12-31 | 6023.7-6083.6 | 50,430 | 1,696,440, high | 1,696,593, high |
 | 1997-2018 table | 1997-01-01 to 2018-12-31 | 5996.2-6080.1 | 55,051 | 1,696,440, high | 1,696,593, high |
-| current table | 2019-01-01 to 2026-09-11 | 6014.1-6074.6 | 0 | 1,647,779, current_table | 1,647,936, current_table |
+| current table | 2019-01-01 to 2026-09-21 | 6011.3-6074.6 | 0 | 1,647,779, current_table | 1,647,936, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -96,7 +96,7 @@ Capacity of the top of conservation fell from 1,711,638 to 1,647,779 acre-feet o
 
 ## What the record shows
 
-Record: 1962 to 2026, 65 years, 23,449 days of storage.
+Record: 1962 to 2026, 65 years, 23,459 days of storage.
 
 Fullest years, by annual peak: 1973 102.1%; 1986 99.1%; 1983 99.0%.
 
@@ -108,4 +108,4 @@ Annual inflow, complete years: median 772,536 af, largest 1,892,161 af in 1985, 
 
 Highest daily releases, measured below the dam: 6,420 cfs on 1965-06-21; 5,620 cfs on 1973-07-04; 5,620 cfs on 1997-06-04.
 
-2026 so far (254 days): peak 1,031,383 af, 60.6% of full pool; latest low 781,822 af.
+2026 so far (264 days): peak 1,031,383 af, 60.6% of full pool; latest low 777,694 af.

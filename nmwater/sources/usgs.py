@@ -31,8 +31,8 @@ SITE_TYPE_MAP = {
     "GW-HZ": "well", "SP": "spring", "AT": "met", "FA-DV": "diversion", "FA-WWTP": "wwtp",
     "FA-OF": "outfall", "FA-WDS": "other", "FA-STS": "other", "LA-SH": "other", "AG": "area",
     "AS": "area", "AW": "area", "ES": "other", "OC": "other", "WE": "other", "FA": "other",
-    "FA-CI": "other", "FA-CS": "other", "FA-DV": "diversion", "FA-FON": "other", "FA-GC": "other",
-    "FA-HP": "other", "FA-LF": "other", "FA-OF": "outfall", "FA-PV": "other", "FA-QC": "other",
+    "FA-CI": "other", "FA-CS": "other", "FA-FON": "other", "FA-GC": "other",
+    "FA-HP": "other", "FA-LF": "other", "FA-PV": "other", "FA-QC": "other",
     "FA-SEW": "wwtp", "FA-SPS": "other", "FA-TEP": "other", "LA": "other", "LA-EX": "other",
     "LA-OU": "other", "LA-SNK": "other", "LA-SR": "other", "LA-VOL": "other", "LA-PLY": "area",
     "SB": "other", "SB-CV": "other", "SB-GWD": "other", "SB-TSM": "other", "SB-UZ": "other",
@@ -324,6 +324,7 @@ class USGS(Source):
 
     # ---- OGC tables: peaks, field-measurements ---------------------------------------
     OGC_PAGE = 50000
+    OGC_NO_DATETIME = frozenset({"peaks"})   # collections that reject a datetime filter
     OGC_FIRST_YEAR = 1850
 
     def _ogc_windows(self, since) -> list[tuple[date, date]]:
@@ -343,7 +344,9 @@ class USGS(Source):
     def _ogc_fetch_window(self, collection: str, base: dict, b: date, e: date, refresh: bool,
                           summ: FetchSummary, depth: int = 0) -> list[pd.DataFrame]:
         """Fetch one time window; if the page is full, split the window and recurse."""
-        params = {**base, "datetime": f"{b.isoformat()}T00:00:00Z/{e.isoformat()}T23:59:59Z"}
+        params = dict(base)
+        if collection not in self.OGC_NO_DATETIME:
+            params["datetime"] = f"{b.isoformat()}T00:00:00Z/{e.isoformat()}T23:59:59Z"
         art = self.get(f"{self.ogc}/collections/{collection}/items", params=params, kind=collection,
                        window=(b.isoformat(), e.isoformat()), refresh=refresh)
         summ.n_requests += 1
@@ -356,6 +359,11 @@ class USGS(Source):
             df = pd.read_csv(io.StringIO(text), dtype=str)
         except Exception:
             return []
+        if collection in self.OGC_NO_DATETIME:
+            if len(df) >= self.OGC_PAGE:
+                log.warning("usgs %s returned a full page (%d rows) and cannot be split by time; "
+                            "results are truncated", collection, len(df))
+            return [df]
         if len(df) < self.OGC_PAGE or depth >= 3 or b == e:
             return [df]
         # Full page: split the window in halves (year -> ~6 months -> ~3 months -> ~45 days)
@@ -369,7 +377,10 @@ class USGS(Source):
         key = self._api_key()
         common = {"f": "csv", "limit": self.OGC_PAGE, **key}
         jobs: list[tuple[dict, date, date]] = []
-        wins = self._ogc_windows(since)
+        # peaks rejects any datetime filter ("datetime query not supported"); the whole New Mexico
+        # table is one request of ~37,000 rows, so it is simply re-pulled whole every time.
+        wins = [(date(self.OGC_FIRST_YEAR, 1, 1), date.today())] if collection in self.OGC_NO_DATETIME \
+            else self._ogc_windows(since)
         if site_ids:
             for sid in site_ids:
                 jobs.append(({**common, "monitoring_location_id": f"USGS-{sid}"}, wins[0][0], date.today()))

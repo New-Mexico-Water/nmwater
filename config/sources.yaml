@@ -1,4 +1,9 @@
 # Per-source runtime settings. Keys not listed under defaults become source options.
+#
+# update: policy for `nmwater update` (the incremental refresh). Omitted means fetch the delta with
+# the source's default kinds, starting --margin-days before its last successful fetch.
+#   skip: true, reason: "..."   not fetched by update (reference layers, static or blocked sources)
+#   kinds: [...]                 which data kinds an update covers
 defaults:
   concurrency: 2
   min_interval_s: 0.5
@@ -7,6 +12,7 @@ defaults:
 
 sources:
   usgs:
+    update: {kinds: [daily, gwlevels, peaks, measurements, continuous]}   # continuous is opt-in for plain fetch
     # Measured 2026-09-13 with a registered key: x-ratelimit-limit = 1000 requests/hour.
     # 2 workers x 4 s spacing sustains ~900/hour and never trips the limit. The retry layer
     # still backs off on 429. Legacy WaterServices (bulk RDB) is not metered this way.
@@ -35,11 +41,13 @@ sources:
     base_url: https://www.usbr.gov/uc/water/hydrodata
 
   usbr_rise:
+    update: {kinds: [data]}                    # survey tables (acap) are static
     concurrency: 2
     min_interval_s: 0.5
     base_url: https://data.usbr.gov/rise/api
 
   usace_cwms:
+    update: {kinds: [data, ratings, levels]}   # tables and pool levels are two requests; keep them current
     concurrency: 3
     min_interval_s: 0.3
     base_url: https://cwms-data.usace.army.mil/cwms-data
@@ -59,6 +67,7 @@ sources:
     min_interval_s: 0.2
 
   noaa_isd:
+    update: {skip: true, reason: "NOAA ISD-Lite stopped: no 2026 files, 2025 files last modified 2025-08-29; successor is GHCNh (docs/TODO.md D8)"}
     concurrency: 3
     min_interval_s: 0.3
 
@@ -94,6 +103,7 @@ sources:
     base_url: https://nmenv.newmexicowaterdata.org/FROST-Server/v1.1
 
   nmbgmr:
+    update: {skip: true, reason: "host unreachable or 403 at last attempt; see docs/TODO.md"}
     concurrency: 2
     min_interval_s: 0.5
     base_url: https://waterdata.nmt.edu/latest
@@ -113,6 +123,7 @@ sources:
     base_url: https://nmisc-wf.gladata.com/api
 
   ose_reports:
+    update: {skip: true, reason: "PDF report library; new reports are rare and added by hand"}
     concurrency: 1
     min_interval_s: 1.0
     timeout_s: 600
@@ -140,27 +151,35 @@ sources:
     timeout_s: 900
 
   ziamet:
+    # 2026-09-23: duststorm.nmsu.edu and ziamet.org refused connections; weather.nmsu.edu answered
+    # (slowly). Put the working host first; the module still rotates on failure.
+    update: {kinds: [daily]}   # rolling 1-5 min feeds failed 94/214 in the first update; capture by hand with --kind feed
     concurrency: 2
     min_interval_s: 0.5
-    base_url: https://duststorm.nmsu.edu
+    base_url: https://weather.nmsu.edu
 
   edi:
+    update: {skip: true, reason: "PASTA returned 403; never completed a fetch"}
     concurrency: 2
 
   bemp:
+    update: {skip: true, reason: "public spreadsheets end in 2017; later data is by request"}
     concurrency: 1
 
   ckan:
+    update: {skip: true, reason: "blocked by Cloudflare; see docs/manual_downloads.md"}
     concurrency: 1
     min_interval_s: 1.0
     base_url: https://catalog.newmexicowaterdata.org
 
   synoptic:
+    update: {skip: true, reason: "never completed a fetch; run by hand once the token is confirmed"}
     concurrency: 1
     min_interval_s: 1.0
     token_env: [SYNOPTIC_TOKEN]
 
   tiger:
+    update: {skip: true, reason: "reference boundaries; annual vintage, refresh by hand with --refresh"}
     concurrency: 2
     min_interval_s: 0.5
     timeout_s: 1800
@@ -169,6 +188,7 @@ sources:
     tiger_neighbor_states: ["CO", "TX", "AZ", "OK"]
 
   nhdplus:
+    update: {skip: true, reason: "NHDPlus v2 is frozen; river network does not change"}
     concurrency: 2
     min_interval_s: 0.3
     timeout_s: 300          # per-HUC8 geometry query against a WFS can be slow for dense reaches
@@ -177,6 +197,7 @@ sources:
     snap_max_distance_m: 500
 
   nid:
+    update: {skip: true, reason: "dam registry changes a few times a year; refresh by hand"}
     concurrency: 1
     timeout_s: 600          # single ~67 MB national CSV
     # Max distance (m) to associate a dam point with the reservoir waterbody it holds back.
@@ -204,3 +225,13 @@ sources:
     concurrency: 2
     min_interval_s: 1.0
     timeout_s: 1800
+  wbd:
+    update: {skip: true, reason: "watershed boundaries are frozen"}
+  ua_swe:
+    update: {skip: true, reason: "dataset ends WY2023; nothing new to fetch"}
+  resopsus:
+    update: {skip: true, reason: "static Zenodo release ending 2020"}
+  usgs_wateruse:
+    update: {skip: true, reason: "five-year compilations; refresh when a new edition is released"}
+  nass:
+    update: {skip: true, reason: "census cycle; never completed a fetch"}

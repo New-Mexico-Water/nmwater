@@ -129,39 +129,49 @@ def fetch(
         raise typer.BadParameter("--until is before --since")
     total = FetchSummary("all")
     for name in names:
-        cls = SOURCES[name]
-        if not ctx.settings.source_config(name).enabled:
-            console.print(f"[yellow]{name}: disabled in config, skipping[/yellow]")
-            continue
-        run_id = ctx.ledger.start_run(name, "fetch",
-                                      {"since": since, "until": until, "limit": limit, "site": site})
-        ctx.run_id = run_id
-        src = cls(ctx)
-        try:
-            src.check_tokens()
-            opts = {"kinds": list(kind)} if kind else {}
-            if until_d:
-                opts["until"] = until_d
-            s = src.fetch(since=since_d, limit=limit, site_ids=site, refresh=refresh, **opts)
-            ctx.ledger.finish_run(run_id, "ok" if s.n_errors == 0 else "partial",
-                                  notes=f"{s.n_rows} rows, {s.n_requests} req, {s.n_errors} errors")
-            total.add(s)
-            console.print(
-                f"[green]{name}[/green]: {s.n_rows:,} rows, {s.n_requests} requests "
-                f"({s.n_cached} cached), {s.n_errors} errors"
-            )
-            for note in s.notes[:20]:
-                console.print(f"  - {note}")
-        except SourceUnavailable as e:
-            ctx.ledger.finish_run(run_id, "skipped", notes=str(e))
-            console.print(f"[yellow]{e}[/yellow]")
-        except Exception as e:
-            ctx.ledger.finish_run(run_id, "error", notes=str(e)[:500])
-            console.print(f"[red]{name}: {e}[/red]")
-            if verbose:
-                raise
+        _fetch_one(ctx, name, since_d, until_d, limit, site, refresh, list(kind) if kind else None, verbose, total)
     ctx.http.close()
     ctx.ledger.close()
+
+
+def _fetch_one(ctx: Context, name: str, since_d, until_d, limit, site, refresh: bool,
+               kinds: list[str] | None, verbose: bool, total: FetchSummary | None = None
+               ) -> tuple[str, FetchSummary | None, str | None, str]:
+    """Fetch one source through the ledger. Returns (status, summary, run_id, note)."""
+    cls = SOURCES[name]
+    if not ctx.settings.source_config(name).enabled:
+        console.print(f"[yellow]{name}: disabled in config, skipping[/yellow]")
+        return "skipped", None, None, "disabled in config"
+    run_id = ctx.ledger.start_run(name, "fetch", {"since": since_d.isoformat() if since_d else None,
+                                                 "until": until_d.isoformat() if until_d else None,
+                                                 "limit": limit, "site": site, "kinds": kinds})
+    ctx.run_id = run_id
+    src = cls(ctx)
+    try:
+        src.check_tokens()
+        opts = {"kinds": list(kinds)} if kinds else {}
+        if until_d:
+            opts["until"] = until_d
+        s = src.fetch(since=since_d, limit=limit, site_ids=site, refresh=refresh, **opts)
+        status = "ok" if s.n_errors == 0 else "partial"
+        ctx.ledger.finish_run(run_id, status, notes=f"{s.n_rows} rows, {s.n_requests} req, {s.n_errors} errors")
+        if total is not None:
+            total.add(s)
+        console.print(f"[green]{name}[/green]: {s.n_rows:,} rows, {s.n_requests} requests "
+                      f"({s.n_cached} cached), {s.n_errors} errors")
+        for note in s.notes[:20]:
+            console.print(f"  - {note}")
+        return status, s, run_id, "; ".join(s.notes[:3])
+    except SourceUnavailable as e:
+        ctx.ledger.finish_run(run_id, "skipped", notes=str(e))
+        console.print(f"[yellow]{e}[/yellow]")
+        return "skipped", None, run_id, str(e)[:300]
+    except Exception as e:
+        ctx.ledger.finish_run(run_id, "error", notes=str(e)[:500])
+        console.print(f"[red]{name}: {e}[/red]")
+        if verbose:
+            raise
+        return "error", None, run_id, str(e)[:300]
 
 
 @app.command()
@@ -209,6 +219,156 @@ def compact(
     res = ctx.store.compact(source)
     removed = sum(res.values())
     console.print(f"compacted {len(res)} partitions, removed {removed:,} duplicate rows")
+
+
+@app.command()
+def update(
+    sources: list[str] = typer.Argument(None, help="sources to update (default: all with an update policy)"),
+    margin_days: int = typer.Option(30, "--margin-days",
+                                    help="start this many days before each source's last successful fetch, "
+                                         "to pick up revisions of provisional data"),
+    since: Optional[str] = typer.Option(None, "--since", help="YYYY-MM-DD for every source, overriding the ledger"),
+    catalog: bool = typer.Option(True, "--catalog/--no-catalog", help="rebuild the DuckDB catalog afterwards"),
+    dry_run: bool = typer.Option(False, "--dry-run", help="show the plan and exit"),
+    log: Path = typer.Option(Path("reports/update_log.csv"), "--log", help="append one row per source here"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+    verbose: bool = typer.Option(False, "-v"),
+):
+    """Fetch everything new since each source's last successful fetch, compact, rebuild the catalog,
+    and log rows, bytes and time per source to reports/update_log.csv.
+
+    Per-source policy lives under `update:` in config/sources.yaml: `skip: true` with a reason for
+    reference layers and blocked sources, `kinds:` to choose what a delta covers. Sources that have
+    never completed a fetch are skipped; run them once by hand with `nmwater fetch`."""
+    import time
+    from datetime import UTC, datetime, timedelta
+
+    from .catalog.build import build as build_catalog
+    from .core.update import UpdateRow, append_log, dir_bytes, parquet_stats
+
+    _setup_logging(verbose)
+    names = _resolve(sources or ["all"])
+    ctx = _ctx(data_dir)
+    st = ctx.settings
+    uid = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
+    fixed = date.fromisoformat(since) if since else None
+    last = ctx.ledger.last_successful_fetch()
+    # What each source actually holds. A fetch limited to some kinds (e.g. usace_cwms ratings) is a
+    # successful run that says nothing about the time series, so the delta starts from the earlier
+    # of the last run and the newest observation. Coverage is only trusted within 90 days of the
+    # run date: some feeds publish with a long lag (NOAA ISD year files, the state SensorThings
+    # groundwater server) and should not drag every update back a year.
+    cover: dict[str, date] = {}
+    if st.duckdb_path.exists():
+        import duckdb
+        try:
+            con = duckdb.connect(str(st.duckdb_path), read_only=True)
+            con.execute("SET TimeZone='UTC'")
+            for src_name, d in con.execute(
+                    "select source, max(last_datetime)::date from site_variables "
+                    "where last_datetime <= now() + interval 2 day group by 1").fetchall():
+                cover[src_name] = d
+            con.close()
+        except Exception as e:
+            console.print(f"[yellow]catalog coverage unavailable ({e}); using the ledger only[/yellow]")
+
+    plan = []
+    for name in names:
+        pol = st.source_config(name).options.get("update") or {}
+        if pol.get("skip"):
+            plan.append((name, "skip", None, None, pol.get("reason", "skipped by policy")))
+            continue
+        if fixed:
+            plan.append((name, "delta", fixed, pol.get("kinds"), ""))
+            continue
+        if name not in last:
+            plan.append((name, "skip", None, None, "never completed a fetch; run `nmwater fetch` once by hand"))
+            continue
+        ran = date.fromisoformat(last[name][:10])
+        cov = cover.get(name)
+        basis = f"last fetch {ran}"
+        if cov and cov < ran and (ran - cov).days <= 90:
+            ran, basis = cov, f"newest data {cov}"
+        plan.append((name, "delta", ran - timedelta(days=margin_days), pol.get("kinds"), basis))
+
+    t = Table("source", "policy", "since", "kinds", "note")
+    for name, pol, sd, kinds, note in plan:
+        t.add_row(name, pol, sd.isoformat() if sd else "", ",".join(kinds or []), note)
+    console.print(t)
+    if dry_run:
+        return
+
+    rows: list[UpdateRow] = []
+    for name, pol, sd, kinds, note in plan:
+        r = UpdateRow(update_id=uid, source=name, policy=pol, since=sd.isoformat() if sd else "", notes=note)
+        if pol == "skip":
+            r.status = "skipped"
+            rows.append(r)
+            append_log(log, [r])
+            continue
+        raw_dir, grid_dir = st.raw_dir / name, st.grids_dir / name
+        r.raw_bytes_before, r.grid_bytes_before = dir_bytes(raw_dir), dir_bytes(grid_dir)
+        r.rows_before, r.parquet_bytes_before = parquet_stats(st.parquet_dir, name)
+        console.rule(f"{name} since {r.since}")
+        t0 = time.monotonic()
+        status, summ, run_id, fnote = _fetch_one(ctx, name, sd, None, None, None, False, kinds, verbose)
+        r.fetch_seconds = round(time.monotonic() - t0, 1)
+        r.status, r.notes = status, fnote or note
+        if summ:
+            r.n_requests, r.n_cached, r.n_errors, r.rows_fetched = (summ.n_requests, summ.n_cached,
+                                                                    summ.n_errors, summ.n_rows)
+        if run_id:
+            r.bytes_downloaded = ctx.ledger.bytes_for_run(run_id)
+        t1 = time.monotonic()
+        try:
+            r.duplicates_removed = int(sum(ctx.store.compact(name).values()))
+        except Exception as e:
+            r.notes = (r.notes + f"; compact failed: {e}")[:300]
+        r.compact_seconds = round(time.monotonic() - t1, 1)
+        r.raw_bytes_after, r.grid_bytes_after = dir_bytes(raw_dir), dir_bytes(grid_dir)
+        r.rows_after, r.parquet_bytes_after = parquet_stats(st.parquet_dir, name)
+        r.net_new_rows = r.rows_after - r.rows_before
+        r.disk_bytes_delta = ((r.raw_bytes_after - r.raw_bytes_before) + (r.grid_bytes_after - r.grid_bytes_before)
+                              + (r.parquet_bytes_after - r.parquet_bytes_before))
+        console.print(f"  {r.fetch_seconds:,.0f} s fetch, {r.compact_seconds:,.0f} s compact, "
+                      f"{_human(r.bytes_downloaded)} downloaded, {r.net_new_rows:+,} net rows, "
+                      f"{_human(r.disk_bytes_delta)} on disk")
+        rows.append(r)
+        append_log(log, [r])        # append as we go, so an interrupted run still leaves a record
+
+    extra = []
+    if catalog:
+        console.rule("catalog build")
+        t0 = time.monotonic()
+        cstat = "ok"
+        try:
+            build_catalog(st)
+        except Exception as e:
+            cstat = f"error: {e}"[:200]
+        extra.append(UpdateRow(update_id=uid, source="_catalog_build", policy="summary", status=cstat,
+                               fetch_seconds=round(time.monotonic() - t0, 1),
+                               parquet_bytes_after=dir_bytes(st.duckdb_path.parent)))
+    done = [r for r in rows if r.policy == "delta"]
+    tot = UpdateRow(update_id=uid, source="_total", policy="summary",
+                    status=f"{sum(r.status == 'ok' for r in done)} ok, {sum(r.status == 'partial' for r in done)} "
+                           f"partial, {sum(r.status == 'error' for r in done)} error, "
+                           f"{sum(r.policy == 'skip' for r in rows)} skipped")
+    for f in ("fetch_seconds", "compact_seconds", "n_requests", "n_cached", "n_errors", "rows_fetched",
+              "bytes_downloaded", "duplicates_removed", "rows_before", "rows_after", "net_new_rows",
+              "raw_bytes_before", "raw_bytes_after", "parquet_bytes_before", "parquet_bytes_after",
+              "grid_bytes_before", "grid_bytes_after", "disk_bytes_delta"):
+        setattr(tot, f, round(sum(getattr(r, f) for r in done), 1))
+    tot.fetch_seconds += sum(r.fetch_seconds for r in extra)
+    append_log(log, [*extra, tot])
+
+    t = Table("source", "status", "time", "requests", "downloaded", "rows fetched", "net new rows", "disk")
+    for r in [*done, *extra, tot]:
+        t.add_row(r.source, r.status, f"{r.fetch_seconds + r.compact_seconds:,.0f} s", f"{r.n_requests:,}",
+                  _human(r.bytes_downloaded), f"{r.rows_fetched:,}", f"{r.net_new_rows:+,}", _human(r.disk_bytes_delta))
+    console.print(t)
+    console.print(f"logged to {log}")
+    ctx.http.close()
+    ctx.ledger.close()
 
 
 @app.command()
@@ -288,6 +448,8 @@ def query(sql: str, data_dir: Optional[Path] = typer.Option(None, "--data-dir"))
 
 def _human(n: float | None) -> str:
     n = float(n or 0)
+    if n < 0:
+        return "-" + _human(-n)
     for unit in ("B", "KB", "MB", "GB", "TB"):
         if n < 1024:
             return f"{n:.1f} {unit}"
