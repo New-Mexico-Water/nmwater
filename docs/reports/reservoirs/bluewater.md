@@ -36,8 +36,8 @@ Report: `reports/reservoirs/bluewater_annual_fill.csv`. Regenerate with `just re
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usgs:08341400` | 8,385 | 2000-03-29 | 2026-09-21 |
-| storage | `usgs:08341400` | 13,152 | 1988-10-02 | 2026-09-21 |
+| elevation | `usgs:08341400` | 8,386 | 2000-03-29 | 2026-09-22 |
+| storage | `usgs:08341400` | 13,154 | 1988-10-02 | 2026-09-23 |
 | release (gauge below dam) | `usgs:08341500` | 8,815 | 1951-03-17 | 2001-02-22 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08341500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
@@ -52,7 +52,7 @@ Sources:
 
 ## What the record shows
 
-Record: 1988 to 2026, 39 years, 13,152 days of storage.
+Record: 1988 to 2026, 39 years, 13,154 days of storage.
 
 Fullest years, by annual peak: 1993 92.8%; 1998 71.4%; 1994 67.3%.
 
@@ -62,4 +62,4 @@ Average annual mean fill: 23.3% over the first ten complete years, 14.6% over th
 
 Highest daily releases, measured below the dam: 98 cfs on 1995-05-05; 86 cfs on 1999-05-19; 84 cfs on 1996-05-29.
 
-2026 so far (251 days): peak 4,506 af, 11.7% of full pool; latest low 2,993 af.
+2026 so far (253 days): peak 4,506 af, 11.7% of full pool; latest low 2,996 af.

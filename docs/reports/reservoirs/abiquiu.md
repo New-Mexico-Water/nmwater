@@ -41,19 +41,19 @@ Report: `reports/reservoirs/abiquiu_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Abiquiu` | 8,238 | 2004-02-25 | 2026-09-14 |
-| inflow | `usace_cwms:Abiquiu` | 5,730 | 2011-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Abiquiu` | 8,238 | 2004-02-25 | 2026-09-14 |
+| elevation | `usace_cwms:Abiquiu` | 8,247 | 2004-02-25 | 2026-09-23 |
+| inflow | `usace_cwms:Abiquiu` | 5,742 | 2011-01-02 | 2026-09-23 |
+| storage | `usace_cwms:Abiquiu` | 8,247 | 2004-02-25 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2729` | 18,892 | 1974-12-31 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2729` | 9,395 | 2001-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2729` | 6,108 | 2010-01-01 | 2026-09-21 |
 | storage | `usbr_hydrodata:2729` | 19,256 | 1974-01-02 | 2026-09-21 |
 | storage | `usgs:08286900` | 7,509 | 1969-10-01 | 2008-11-30 |
-| release (gauge below dam) | `usgs:08287000` | 23,700 | 1961-11-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08287000` | 23,702 | 1961-11-01 | 2026-09-23 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2729` 19,256, `usgs:08286900` 1,554.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2729` 19,256, `usgs:08286900` 1,554, `usace_cwms:Abiquiu` 2.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2729` vs `usace_cwms:Abiquiu` 95 af over 8,238 shared days; `usace_cwms:Abiquiu` vs `usgs:08286900` 34 af over 30 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2729` vs `usace_cwms:Abiquiu` 95 af over 8,245 shared days; `usace_cwms:Abiquiu` vs `usgs:08286900` 34 af over 30 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08287000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -114,7 +114,7 @@ Capacity of the top of conservation fell from 253,354 to 229,199 acre-feet over 
 
 ## What the record shows
 
-Record: 1969 to 2026, 58 years, 20,810 days of storage.
+Record: 1969 to 2026, 58 years, 20,812 days of storage.
 
 Largest use of the flood pool: 1987 peaking at 72.3% of flood capacity on 1987-06-22, 306 days above the conservation pool; 1985 peaking at 67.4% of flood capacity on 1985-06-11, 270 days above the conservation pool; 1986 peaking at 63.3% of flood capacity on 1986-12-18, 347 days above the conservation pool; 1995 peaking at 55.0% of flood capacity on 1995-06-25, 249 days above the conservation pool; 1993 peaking at 47.6% of flood capacity on 1993-06-07, 195 days above the conservation pool.
 
@@ -128,4 +128,4 @@ Annual inflow, complete years: median 271,213 af, largest 516,701 af in 2019, sm
 
 Highest daily releases, measured below the dam: 2,660 cfs on 1985-05-15; 2,550 cfs on 1970-06-13; 2,530 cfs on 1984-06-28.
 
-2026 so far (264 days): peak 122,637 af, 53.5% of full pool; latest low 107,947 af.
+2026 so far (266 days): peak 122,637 af, 53.5% of full pool; latest low 107,947 af.

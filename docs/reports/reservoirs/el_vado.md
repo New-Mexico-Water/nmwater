@@ -40,13 +40,17 @@ Report: `reports/reservoirs/el_vado_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:El Vado` | 5,315 | 2012-02-23 | 2026-09-14 |
-| storage | `usace_cwms:El Vado` | 5,315 | 2012-02-23 | 2026-09-14 |
+| elevation | `usace_cwms:El Vado` | 5,324 | 2012-02-23 | 2026-09-23 |
+| storage | `usace_cwms:El Vado` | 5,324 | 2012-02-23 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2685` | 18,892 | 1975-01-01 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2685` | 9,395 | 2001-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2685` | 18,893 | 1975-01-01 | 2026-09-22 |
 | storage | `usbr_hydrodata:2685` | 17,072 | 1974-12-31 | 2026-09-21 |
-| release (gauge below dam) | `usgs:08285500` | 33,207 | 1914-05-09 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08285500` | 33,209 | 1914-05-09 | 2026-09-23 |
+
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2685` 17,072, `usace_cwms:El Vado` 2.
+
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2685` vs `usace_cwms:El Vado` 62 af over 5,322 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08285500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -93,7 +97,7 @@ Capacity of the full pool fell from 189,987 to 184,343 acre-feet over the record
 
 ## What the record shows
 
-Record: 1974 to 2026, 53 years, 17,072 days of storage.
+Record: 1974 to 2026, 53 years, 17,074 days of storage.
 
 Fullest years, by annual peak: 1986 103.2%; 2009 100.2%; 2010 99.9%.
 
@@ -105,4 +109,4 @@ Annual inflow, complete years: median 259,290 af, largest 482,611 af in 2019, sm
 
 Highest daily releases, measured below the dam: 5,690 cfs on 1985-05-06; 5,070 cfs on 2009-05-09; 4,910 cfs on 1984-05-17.
 
-2026 so far (264 days): peak 25,447 af, 13.8% of full pool; latest low 16,025 af.
+2026 so far (266 days): peak 25,447 af, 13.8% of full pool; latest low 16,025 af.

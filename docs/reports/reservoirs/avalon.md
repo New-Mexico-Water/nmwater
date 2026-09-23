@@ -39,18 +39,18 @@ Report: `reports/reservoirs/avalon_annual_fill.csv`. Regenerate with `just repor
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Avalon` | 7,824 | 1999-02-28 | 2026-09-14 |
-| storage | `usace_cwms:Avalon` | 7,824 | 1999-02-28 | 2026-09-14 |
+| elevation | `usace_cwms:Avalon` | 7,833 | 1999-02-28 | 2026-09-23 |
+| storage | `usace_cwms:Avalon` | 7,833 | 1999-02-28 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2684` | 8,963 | 2002-01-01 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2684` | 995 | 2024-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2684` | 9,762 | 2000-01-01 | 2026-09-22 |
 | storage | `usbr_hydrodata:2684` | 21,744 | 1965-10-01 | 2026-09-21 |
 | storage | `usgs:08403800` | 18,347 | 1965-10-01 | 2017-03-31 |
-| release (gauge below dam) | `usgs:08404000` | 27,507 | 1951-06-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08404000` | 27,509 | 1951-06-01 | 2026-09-23 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2684` 21,744, `usace_cwms:Avalon` 65.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2684` 21,744, `usace_cwms:Avalon` 67.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2684` vs `usace_cwms:Avalon` 45 af over 7,759 shared days; `usace_cwms:Avalon` vs `usgs:08403800` 441 af over 4,372 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2684` vs `usace_cwms:Avalon` 46 af over 7,766 shared days; `usace_cwms:Avalon` vs `usgs:08403800` 441 af over 4,372 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08404000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -90,7 +90,7 @@ Confidence: `current_table` means reported storage reproduces from the current t
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 21,809 days of storage.
+Record: 1965 to 2026, 62 years, 21,811 days of storage.
 
 Fullest years, by annual peak: 1966 144.0%; 2014 131.8%; 1974 100.8%.
 
@@ -100,4 +100,4 @@ Average annual mean fill: 35.9% over the first ten complete years, 30.1% over th
 
 Highest daily releases, measured below the dam: 33,600 cfs on 1966-08-23; 18,485 cfs on 2004-04-03; 17,000 cfs on 1986-06-24.
 
-2026 so far (264 days): peak 4,577 af, 74.8% of full pool; latest low 2,139 af.
+2026 so far (266 days): peak 4,577 af, 74.8% of full pool; latest low 2,139 af.

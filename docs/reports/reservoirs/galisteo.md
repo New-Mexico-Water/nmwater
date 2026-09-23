@@ -39,13 +39,13 @@ Report: `reports/reservoirs/galisteo_annual_fill.csv`. Regenerate with `just rep
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Galisteo` | 3,176 | 2018-01-01 | 2026-09-11 |
-| inflow | `usace_cwms:Galisteo` | 3,174 | 2018-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Galisteo` | 3,176 | 2018-01-01 | 2026-09-11 |
+| elevation | `usace_cwms:Galisteo` | 3,188 | 2018-01-01 | 2026-09-23 |
+| inflow | `usace_cwms:Galisteo` | 3,186 | 2018-01-02 | 2026-09-23 |
+| storage | `usace_cwms:Galisteo` | 3,188 | 2018-01-01 | 2026-09-23 |
 | storage | `usgs:08317900` | 12,419 | 1983-10-01 | 2017-09-30 |
-| release (gauge below dam) | `usgs:08317950` | 20,639 | 1970-03-20 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08317950` | 20,641 | 1970-03-20 | 2026-09-23 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08317900` 12,419, `usace_cwms:Galisteo` 3,176.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08317900` 12,419, `usace_cwms:Galisteo` 3,188.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08317950`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -58,7 +58,7 @@ Sources:
 
 **Capacity table:** `Galisteo.Elev;Stor.Linear.Step;USACE` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USACE, effective 1984-01-01, elevations in NGVD29. 1,060 points from 5,504.00 to 5,609.90 ft, 93,513 acre-feet at the top.
 
-**Validation.** Since 1984-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 3,176 days.
+**Validation.** Since 1984-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 3,188 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -82,13 +82,13 @@ Reported storage departs from the current table in earlier years because older t
 
 | Era | Dates | Elevation range (ft) | Departure (af) | Top of flood control capacity (af), confidence |
 |---|---|---|---|---|
-| current table | 2018-01-01 to 2026-09-11 | 5498.4-5500.0 | 0 | 89,468, current_table |
+| current table | 2018-01-01 to 2026-09-23 | 5498.4-5500.0 | 0 | 89,468, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
 ## What the record shows
 
-Record: 1983 to 2026, 44 years, 15,595 days of storage.
+Record: 1983 to 2026, 44 years, 15,607 days of storage.
 
 Largest flood-storage years, by peak storage (a flood is storage above 45 af): 2014 1,587 af on 2014-07-31 (1.8% of the flood pool); 2013 837 af on 2013-09-22 (0.9% of the flood pool); 2018 85 af on 2018-07-24 (0.1% of the flood pool); 1984 49 af on 1984-06-19 (0.1% of the flood pool).
 
@@ -98,4 +98,4 @@ Annual inflow, complete years: median 1,264 af, largest 2,102 af in 2018, smalle
 
 Highest daily releases, measured below the dam: 1,843 cfs on 2013-09-15; 1,730 cfs on 1997-08-23; 1,585 cfs on 1996-07-06.
 
-2026 so far (254 days): peak 0 af, 0.0% of full pool; latest low 0 af.
+2026 so far (266 days): peak 2 af, 0.0% of full pool; latest low 0 af.

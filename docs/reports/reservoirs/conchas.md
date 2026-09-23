@@ -40,12 +40,12 @@ Report: `reports/reservoirs/conchas_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Conchas` | 8,252 | 2004-02-11 | 2026-09-14 |
-| inflow | `usace_cwms:Conchas` | 5,732 | 2011-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Conchas` | 8,252 | 2004-02-11 | 2026-09-14 |
+| elevation | `usace_cwms:Conchas` | 8,261 | 2004-02-11 | 2026-09-23 |
+| inflow | `usace_cwms:Conchas` | 5,744 | 2011-01-02 | 2026-09-23 |
+| storage | `usace_cwms:Conchas` | 8,261 | 2004-02-11 | 2026-09-23 |
 | storage | `usgs:07223500` | 18,870 | 1965-10-01 | 2017-05-30 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:07223500` 14,012, `usace_cwms:Conchas` 8,252.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:07223500` 14,012, `usace_cwms:Conchas` 8,261.
 
 Agreement where sites overlap, median absolute difference in storage: `usace_cwms:Conchas` vs `usgs:07223500` 54 af over 4,858 shared days.
 
@@ -58,7 +58,7 @@ Sources:
 
 **Capacity table:** `Conchas.Elev;Stor.Linear.Step;USACE` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USACE, effective 2017-01-01, elevations in NGVD29. 15,001 points from 4,085.00 to 4,235.00 ft, 780,378 acre-feet at the top.
 
-**Validation.** Since 2017-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.3 acre-feet (0.00%), 95th percentile 1.2 acre-feet, over 3,544 days.
+**Validation.** Since 2017-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.3 acre-feet (0.00%), 95th percentile 1.2 acre-feet, over 3,553 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -85,7 +85,7 @@ Reported storage departs from the current table in earlier years because older t
 | Era | Dates | Elevation range (ft) | Departure (af) | Top of conservation capacity (af), confidence | Top of flood control capacity (af), confidence |
 |---|---|---|---|---|---|
 | 2004-2016 table | 2004-02-11 to 2016-12-31 | 4153.7-4186.6 | 1,265 | 316,122, medium | 515,695, low |
-| current table | 2017-01-01 to 2026-09-14 | 4158.5-4196.6 | 0 | 314,797, current_table | 514,264, current_table |
+| current table | 2017-01-01 to 2026-09-23 | 4158.5-4196.6 | 0 | 314,797, current_table | 514,264, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -93,7 +93,7 @@ Capacity of the top of conservation fell from 316,122 to 314,797 acre-feet over 
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 22,264 days of storage.
+Record: 1965 to 2026, 62 years, 22,273 days of storage.
 
 Largest use of the flood pool: 1966 peaking at 67.3% of flood capacity on 1966-02-27, 108 days above the conservation pool; 1987 peaking at 65.0% of flood capacity on 1987-03-03, 23 days above the conservation pool.
 
@@ -105,4 +105,4 @@ Average annual mean storage as a share of the conservation pool: 71.4% over the 
 
 Annual inflow, complete years: median 50,765 af, largest 208,873 af in 2017, smallest 11,183 af in 2012.
 
-2026 so far (257 days): peak 242,305 af, 77.0% of full pool; latest low 148,645 af.
+2026 so far (266 days): peak 242,305 af, 77.0% of full pool; latest low 145,375 af.

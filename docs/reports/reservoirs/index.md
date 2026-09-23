@@ -20,7 +20,7 @@ Each reservoir has its own notes file covering the dam, how its data can be used
 | [Brantley Lake](brantley.md) | Pecos | Concrete | Flood Risk Reduction | flood control + conservation pool | Bureau of Reclamation | 1989 | 1988-2026 | operator table, validated | 42,835 | 94.4% | 67.9% (2026) |
 | [Avalon Reservoir](avalon.md) | Pecos | Earth | Irrigation | diversion forebay | Bureau of Reclamation | 1907 | 1965-2026 | operator table, validated | 6,123 | 61.9% | 74.8% (2026) |
 | [Two Rivers Reservoir (Diamond A Dam)](diamond_a.md) | Pecos | Earth | Flood Risk Reduction | dry flood control | USACE - Albuquerque District | 1963 | 1990-2026 | operator table, validated | 29,505 | 0.8% | 0.0% (2026) |
-| [Two Rivers Reservoir (Rocky Dam)](rocky.md) | Pecos | Earth | Flood Risk Reduction | dry flood control | USACE - Albuquerque District | 1963 | 1995-2026 | operator table, validated | 135,495 | 0.0% | 0.0% (2026) |
+| [Two Rivers Reservoir (Rocky Dam)](rocky.md) | Pecos | Earth | Flood Risk Reduction | dry flood control | USACE - Albuquerque District | 1963 | 1995-2026 | operator table, validated | 135,495 | 0.0% | 0.2% (2026) |
 | [Conchas Lake](conchas.md) | Canadian | Gravity | Flood Risk Reduction | flood control + conservation pool | USACE - Albuquerque District | 1940 | 1965-2026 | operator table, validated | 314,797 | 68.7% | 77.0% (2026) |
 | [Ute Reservoir](ute.md) | Canadian | Earth | Water Supply | storage | New Mexico Interstate Stream Commission | 1963 | 1965-2026 | dam registry normal storage (not validated) | 222,500 | 79.2% | 88.1% (2026) |
 | [Eagle Nest Lake](eagle_nest.md) | Canadian | Arch | Irrigation | storage | New Mexico Department of Game and Fish | 1918 | 1986-2026 | operator table, validated | 81,073 | 60.2% | 37.0% (2026) |

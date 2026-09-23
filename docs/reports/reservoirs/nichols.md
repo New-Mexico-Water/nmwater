@@ -36,7 +36,7 @@ Report: `reports/reservoirs/nichols_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| storage | `usgs:08316500` | 16,792 | 1965-10-01 | 2026-09-21 |
+| storage | `usgs:08316500` | 16,794 | 1965-10-01 | 2026-09-23 |
 
 Sources:
 
@@ -48,7 +48,7 @@ Sources:
 
 ## What the record shows
 
-Record: 1965 to 2026, 49 years, 16,792 days of storage.
+Record: 1965 to 2026, 49 years, 16,794 days of storage.
 
 Fullest years, by annual peak: 1985 107.2%; 1979 106.8%; 1973 105.9%.
 
@@ -56,4 +56,4 @@ Emptiest years, by annual peak: 1977 39.0%; 1978 63.5%; 1981 64.4%.
 
 Average annual mean fill: 62.6% over the first ten complete years, 54.8% over the last ten.
 
-2026 so far (264 days): peak 657 af, 96.7% of full pool; latest low 302 af.
+2026 so far (266 days): peak 657 af, 96.7% of full pool; latest low 303 af.
