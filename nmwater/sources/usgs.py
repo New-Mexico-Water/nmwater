@@ -492,15 +492,27 @@ class USGS(Source):
         if sites.empty:
             summ.notes.append("run `nmwater discover usgs` first (needs series catalog)")
             return summ
-        jobs: list[tuple[str, str, date, date]] = []
+        inventories: list[tuple[str, dict]] = []
         for r in sites.itertuples(index=False):
             sid = r.native_id
             if site_ids and sid not in site_ids:
                 continue
             try:
-                inv = json.loads(r.raw_metadata).get("inventory", {})
+                inventories.append((sid, json.loads(r.raw_metadata).get("inventory", {})))
             except Exception:
-                inv = {}
+                inventories.append((sid, {}))
+        # The series catalog is a snapshot taken at `discover`: an active gauge's recorded end date
+        # is simply the day discovery ran. Capping windows at it froze incremental updates at the
+        # last discovery (2026-09-23: 15-minute data stuck at 2026-09-12 while daily data reached
+        # 2026-09-22). So a series whose recorded end is within ACTIVE_DAYS of the catalog's newest
+        # end date is treated as active and fetched up to today; series that ended earlier are
+        # genuinely discontinued and keep their end date.
+        ends = [date.fromisoformat(ent["end"][:10]) for _, inv in inventories
+                for ent in inv.get("uv", []) + inv.get("iv", []) if ent.get("end")]
+        catalog_as_of = max(ends) if ends else today
+        active_after = catalog_as_of - timedelta(days=int(self.opt("continuous_active_days", 30)))
+        jobs: list[tuple[str, str, date, date]] = []
+        for sid, inv in inventories:
             for ent in inv.get("uv", []) + inv.get("iv", []):
                 p = ent.get("parm")
                 if p not in params_ok or not ent.get("begin"):
@@ -516,6 +528,8 @@ class USGS(Source):
                     if last:
                         b = max(b, date.fromisoformat(last[:10]))
                 series_end = date.fromisoformat(ent["end"][:10]) if ent.get("end") else today
+                if series_end >= active_after:
+                    series_end = today          # still reporting when the catalog was taken
                 e = min(series_end, end_cap)
                 cur = b
                 while cur <= e:
