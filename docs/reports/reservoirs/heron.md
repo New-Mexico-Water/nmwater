@@ -40,12 +40,16 @@ Report: `reports/reservoirs/heron_annual_fill.csv`. Regenerate with `just report
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Heron` | 5,348 | 2012-01-09 | 2026-09-14 |
-| storage | `usace_cwms:Heron` | 5,348 | 2012-01-09 | 2026-09-14 |
+| elevation | `usace_cwms:Heron` | 5,357 | 2012-01-09 | 2026-09-23 |
+| storage | `usace_cwms:Heron` | 5,357 | 2012-01-09 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2686` | 18,893 | 1974-12-31 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2686` | 9,395 | 2001-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2686` | 9,395 | 2001-01-01 | 2026-09-21 |
 | storage | `usbr_hydrodata:2686` | 18,893 | 1974-12-31 | 2026-09-21 |
+
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2686` 18,893, `usace_cwms:Heron` 2.
+
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2686` vs `usace_cwms:Heron` 165 af over 5,355 shared days.
 
 Sources:
 
@@ -83,7 +87,7 @@ Capacity of the full pool fell from 401,333 to 400,031 acre-feet over the record
 
 ## What the record shows
 
-Record: 1974 to 2026, 53 years, 18,893 days of storage.
+Record: 1974 to 2026, 53 years, 18,895 days of storage.
 
 Fullest years, by annual peak: 1994 100.2%; 1982 100.1%; 1985 100.1%.
 
@@ -95,4 +99,4 @@ Annual inflow, complete years: median 91,554 af, largest 181,410 af in 2017, sma
 
 Highest daily releases, reported: 920 cfs on 2002-06-25; 901 cfs on 2018-07-24; 855 cfs on 2008-07-13.
 
-2026 so far (264 days): peak 55,071 af, 13.8% of full pool; latest low 26,432 af.
+2026 so far (266 days): peak 55,071 af, 13.8% of full pool; latest low 26,432 af.

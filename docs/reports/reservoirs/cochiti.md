@@ -42,15 +42,19 @@ Report: `reports/reservoirs/cochiti_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Cochiti` | 12,309 | 1993-01-02 | 2026-09-14 |
-| inflow | `usace_cwms:Cochiti` | 12,304 | 1993-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Cochiti` | 12,309 | 1993-01-02 | 2026-09-14 |
+| elevation | `usace_cwms:Cochiti` | 12,318 | 1993-01-02 | 2026-09-23 |
+| inflow | `usace_cwms:Cochiti` | 12,316 | 1993-01-02 | 2026-09-23 |
+| storage | `usace_cwms:Cochiti` | 12,318 | 1993-01-02 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2696` | 18,893 | 1974-12-31 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2696` | 9,395 | 2001-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2696` | 9,762 | 2000-01-01 | 2026-09-22 |
 | storage | `usbr_hydrodata:2696` | 18,893 | 1974-12-31 | 2026-09-21 |
 | storage | `usgs:08317300` | 16,344 | 1973-01-01 | 2017-09-30 |
-| release (gauge below dam) | `usgs:08317400` | 20,445 | 1970-10-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08317400` | 20,447 | 1970-10-01 | 2026-09-23 |
+
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2696` 18,892, `usace_cwms:Cochiti` 2.
+
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2696` vs `usace_cwms:Cochiti` 64 af over 12,316 shared days; `usace_cwms:Cochiti` vs `usgs:08317300` 71 af over 9,038 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08317400`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -116,7 +120,7 @@ Capacity of the top of conservation fell from 80,368 to 44,129 acre-feet over th
 
 ## What the record shows
 
-Record: 1975 to 2026, 52 years, 18,892 days of storage.
+Record: 1975 to 2026, 52 years, 18,894 days of storage.
 
 Largest use of the flood pool: 1987 peaking at 65.9% of flood capacity on 1987-06-23, 311 days above the conservation pool; 1986 peaking at 50.0% of flood capacity on 1986-07-03, 276 days above the conservation pool; 1985 peaking at 47.0% of flood capacity on 1985-06-28, 267 days above the conservation pool; 1988 peaking at 41.2% of flood capacity on 1988-01-01, 152 days above the conservation pool; 1979 peaking at 30.7% of flood capacity on 1979-06-21, 180 days above the conservation pool.
 
@@ -130,4 +134,4 @@ Annual inflow, complete years: median 776,578 af, largest 1,687,556 af in 1995, 
 
 Highest daily releases, measured below the dam: 9,020 cfs on 1984-05-30; 8,295 cfs on 1985-05-06; 7,230 cfs on 1993-06-04.
 
-2026 so far (264 days): peak 44,454 af, 100.7% of full pool; latest low 41,459 af.
+2026 so far (266 days): peak 44,454 af, 100.7% of full pool; latest low 41,459 af.

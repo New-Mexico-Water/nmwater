@@ -42,13 +42,17 @@ The curated, hand-reviewed treatment of this reservoir, with its full capacity h
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:E Butte` | 7,728 | 2005-02-27 | 2026-09-14 |
-| storage | `usace_cwms:E Butte` | 7,728 | 2005-02-27 | 2026-09-14 |
+| elevation | `usace_cwms:E Butte` | 7,730 | 2005-02-27 | 2026-09-23 |
+| storage | `usace_cwms:E Butte` | 7,730 | 2005-02-27 | 2026-09-23 |
 | elevation | `usbr_hydrodata:1119` | 40,640 | 1915-03-21 | 2026-09-21 |
 | inflow | `usbr_hydrodata:1119` | 9,395 | 2001-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:1119` | 40,169 | 1916-10-01 | 2026-09-22 |
 | storage | `usbr_hydrodata:1119` | 40,635 | 1915-03-21 | 2026-09-21 |
-| release (gauge below dam) | `usgs:08361000` | 40,168 | 1915-06-15 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08361000` | 40,170 | 1915-06-15 | 2026-09-23 |
+
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1119` 40,635, `usace_cwms:E Butte` 2.
+
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:1119` vs `usace_cwms:E Butte` 659 af over 7,728 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08361000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -102,7 +106,7 @@ Capacity of the full pool fell from 2,643,179 to 2,010,900 acre-feet over the re
 
 ## What the record shows
 
-Record: 1915 to 2026, 112 years, 40,635 days of storage.
+Record: 1915 to 2026, 112 years, 40,637 days of storage.
 
 Fullest years, by annual peak: 1942 103.8%; 1986 100.5%; 1988 99.6%.
 
@@ -114,4 +118,4 @@ Annual inflow, complete years: median 456,473 af, largest 1,031,657 af in 2005, 
 
 Highest daily releases, measured below the dam: 8,220 cfs on 1942-05-22; 6,000 cfs on 1915-06-15; 5,270 cfs on 1994-05-31.
 
-2026 so far (264 days): peak 251,819 af, 12.5% of full pool; latest low 26,732 af.
+2026 so far (266 days): peak 251,819 af, 12.5% of full pool; latest low 26,732 af.

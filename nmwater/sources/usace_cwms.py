@@ -169,12 +169,24 @@ class USACECWMS(Source):
             keep = set(locs[:limit])
             series = [s for s in series if s[1]["location"] in keep]
         today = date.today() + timedelta(days=1)
+        # CWMS catalog extents lag the data: on 2026-09-23 the catalog gave Cochiti's 15-minute
+        # storage a latest-time of 2026-09-14 while the series had readings through that morning.
+        # Capping windows at latest-time froze updates at the catalog's date. A series whose
+        # latest-time is within `active_days` of the newest latest-time in the catalog is treated
+        # as still reporting and fetched to today; older series really have stopped.
+        latests = [date.fromisoformat(x[3][:10]) for x in series if x[3]]
+        catalog_as_of = max(latests) if latests else today
+        active_after = catalog_as_of - timedelta(days=int(self.opt("active_days", 30)))
 
         def one(s) -> int:
             tsid, p, earliest, latest = s
             interval = INTERVAL_MAP.get(p["interval"].lower(), "irregular")
             b = date.fromisoformat(earliest[:10]) if earliest else EARLIEST
-            e = min(date.fromisoformat(latest[:10]) + timedelta(days=1), today) if latest else today
+            if not latest:
+                e = today
+            else:
+                last_t = date.fromisoformat(latest[:10])
+                e = today if last_t >= active_after else min(last_t + timedelta(days=1), today)
             if since and not opts.get("revise"):   # manual --since: catch up; update: honour since
                 last = self.ledger.last_window_end(self.name, self.uid(p["location"]), tsid)
                 b = max(b, since, date.fromisoformat(last[:10]) - timedelta(days=1) if last else b)

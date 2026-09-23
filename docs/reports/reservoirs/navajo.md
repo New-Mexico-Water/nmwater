@@ -43,7 +43,7 @@ Report: `reports/reservoirs/navajo_annual_fill.csv`. Regenerate with `just repor
 | inflow | `usbr_hydrodata:920` | 23,458 | 1962-07-02 | 2026-09-21 |
 | release | `usbr_hydrodata:920` | 23,458 | 1962-07-02 | 2026-09-21 |
 | storage | `usbr_hydrodata:920` | 23,459 | 1962-07-01 | 2026-09-21 |
-| release (gauge below dam) | `usgs:09355500` | 26,227 | 1954-12-01 | 2026-09-21 |
+| release (gauge below dam) | `usgs:09355500` | 26,229 | 1954-12-01 | 2026-09-23 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:09355500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 

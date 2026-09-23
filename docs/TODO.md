@@ -307,11 +307,11 @@ Delivery mechanics for every source are in [sources.md](sources.md#how-each-sour
   date was given, so the margin never re-pulled anything. `update` now passes `revise=True` and
   those modules honour the start date exactly; a manual `nmwater fetch --since` keeps its
   catch-up behaviour.
-- **Corps updates stop at the catalog's stale end date (HIGH, confirmed).** Windows end at the
-  CWMS catalog extent `latest-time` + 1 day (`usace_cwms.py:177`), and CWMS updates extents
-  infrequently: on 2026-09-23 the catalog gave Cochiti's 15-minute storage a latest time of
-  2026-09-14 while the series itself had data through that morning. Same pattern as the USGS bug.
-  **Do:** treat series whose extent is recent as active and fetch to today.
+- **Corps updates stopped at the catalog's stale end date (FIXED 2026-09-23).** Windows ended at
+  the CWMS catalog's `latest-time` + 1 day, and CWMS updates extents infrequently (Cochiti's
+  15-minute storage: catalog 2026-09-14, data through 2026-09-23). Series whose latest-time is
+  within 30 days (`active_days`) of the catalog's newest are now fetched to today. After the fix,
+  all 147 Corps locations reporting since August are current.
 - **Reference tables accumulate duplicates (MEDIUM, confirmed).** Tables written with
   `append_table` get a new part file every run and compaction does not cover them: USGS peaks and
   field measurements, WQP results, NMED drinking-water results, Seven Rivers readings, TWDB

@@ -39,17 +39,17 @@ Report: `reports/reservoirs/caballo_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Caballo` | 7,804 | 2005-02-17 | 2026-09-14 |
-| storage | `usace_cwms:Caballo` | 7,278 | 2005-04-22 | 2026-09-14 |
+| elevation | `usace_cwms:Caballo` | 7,813 | 2005-02-17 | 2026-09-23 |
+| storage | `usace_cwms:Caballo` | 7,287 | 2005-04-22 | 2026-09-23 |
 | elevation | `usbr_hydrodata:1094` | 32,343 | 1938-02-08 | 2026-09-21 |
 | inflow | `usbr_hydrodata:1094` | 6,473 | 2009-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:1094` | 32,382 | 1938-01-01 | 2026-09-22 |
 | storage | `usbr_hydrodata:1094` | 32,347 | 1938-02-08 | 2026-09-21 |
 | release (gauge below dam) | `usgs:08362500` | 27,758 | 1938-01-01 | 2013-12-30 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1094` 32,347, `usace_cwms:Caballo` 16.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1094` 32,347, `usace_cwms:Caballo` 18.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:1094` vs `usace_cwms:Caballo` 83 af over 7,262 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:1094` vs `usace_cwms:Caballo` 83 af over 7,269 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08362500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -98,7 +98,7 @@ Capacity of the full pool fell from 354,526 to 324,509 acre-feet over the record
 
 ## What the record shows
 
-Record: 1938 to 2026, 89 years, 32,363 days of storage.
+Record: 1938 to 2026, 89 years, 32,365 days of storage.
 
 Fullest years, by annual peak: 1942 100.0%; 1943 96.9%; 1988 91.7%.
 
@@ -110,4 +110,4 @@ Annual inflow, complete years: median 481,617 af, largest 723,149 af in 2009, sm
 
 Highest daily releases, measured below the dam: 7,650 cfs on 1942-05-20; 4,650 cfs on 1987-07-11; 4,540 cfs on 1995-07-17.
 
-2026 so far (264 days): peak 48,447 af, 14.9% of full pool; latest low 13,811 af.
+2026 so far (266 days): peak 48,447 af, 14.9% of full pool; latest low 13,811 af.

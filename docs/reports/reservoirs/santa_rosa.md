@@ -41,15 +41,19 @@ Report: `reports/reservoirs/santa_rosa_annual_fill.csv`. Regenerate with `just r
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Santa Rosa` | 16,053 | 1982-10-02 | 2026-09-14 |
-| inflow | `usace_cwms:Santa Rosa` | 10,108 | 1999-01-02 | 2026-09-11 |
-| storage | `usace_cwms:Santa Rosa` | 10,117 | 1999-01-02 | 2026-09-14 |
+| elevation | `usace_cwms:Santa Rosa` | 16,062 | 1982-10-02 | 2026-09-23 |
+| inflow | `usace_cwms:Santa Rosa` | 10,120 | 1999-01-02 | 2026-09-23 |
+| storage | `usace_cwms:Santa Rosa` | 10,126 | 1999-01-02 | 2026-09-23 |
 | elevation | `usbr_hydrodata:2730` | 16,062 | 1982-10-01 | 2026-09-21 |
 | inflow | `usbr_hydrodata:2730` | 995 | 2024-01-01 | 2026-09-21 |
 | release | `usbr_hydrodata:2730` | 13,412 | 1990-01-01 | 2026-09-21 |
 | storage | `usbr_hydrodata:2730` | 17,066 | 1980-01-01 | 2026-09-21 |
 | storage | `usgs:08382810` | 13,434 | 1980-04-22 | 2017-01-31 |
-| release (gauge below dam) | `usgs:08382830` | 17,045 | 1980-01-17 | 2026-09-21 |
+| release (gauge below dam) | `usgs:08382830` | 17,047 | 1980-01-17 | 2026-09-23 |
+
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2730` 17,066, `usace_cwms:Santa Rosa` 2.
+
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2730` vs `usace_cwms:Santa Rosa` 24 af over 10,124 shared days; `usace_cwms:Santa Rosa` vs `usgs:08382810` 25 af over 6,604 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08382830`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -102,7 +106,7 @@ Capacity of the top of conservation fell from 282,801 to 253,470 acre-feet over 
 
 ## What the record shows
 
-Record: 1980 to 2026, 47 years, 17,066 days of storage.
+Record: 1980 to 2026, 47 years, 17,068 days of storage.
 
 Years holding flood water: 0 of 46 complete years.
 
@@ -114,4 +118,4 @@ Annual inflow, complete years: median 57,228 af, largest 134,017 af in 2005, sma
 
 Highest daily releases, measured below the dam: 2,100 cfs on 1997-06-12; 1,940 cfs on 2026-07-29; 1,910 cfs on 1991-09-14.
 
-2026 so far (264 days): peak 75,594 af, 29.8% of full pool; latest low 3,563 af.
+2026 so far (266 days): peak 75,594 af, 29.8% of full pool; latest low 3,563 af.
