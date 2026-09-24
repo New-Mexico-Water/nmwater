@@ -24,6 +24,7 @@ log = logging.getLogger("nmwater.gridmet")
 BASE = "https://thredds.northwestknowledge.net/thredds"
 DEFAULT_VARS = ["pr", "tmmn", "tmmx", "rmin", "rmax", "sph", "srad", "vs", "vpd", "etr", "pet",
                 "pdsi", "spi30d", "spi90d", "spi180d", "spi1y", "spei30d", "spei1y", "eddi30d", "eddi1y"]
+DROUGHT_PREFIXES = ("pdsi", "spi", "spei", "eddi")
 CITATION = ("Abatzoglou, J.T. (2013), Development of gridded surface meteorological data for ecological "
             "applications and modelling. Int. J. Climatol. 33:121-131. gridMET via Climatology Lab.")
 
@@ -67,7 +68,8 @@ class GridMET(Source):
         if limit:
             years = years[-limit:]
         w, s, e, n = self.scope.bbox_buffered
-        jobs = [(v, y) for v in variables for y in years]
+        # the drought indices (pentad series) begin 1980-01-05; a 1979 request is a 400
+        jobs = [(v, y) for v in variables for y in years if not (y < 1980 and v.startswith(DROUGHT_PREFIXES))]
 
         def one(j) -> int:
             var, year = j
