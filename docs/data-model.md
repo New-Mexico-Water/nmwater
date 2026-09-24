@@ -86,6 +86,11 @@ Bounds set today, and why:
 gauges may be real reverse flow or backwater rather than error, and only the operator can say.
 Only the `-9999` no-data code is removed from discharge.
 
+Background: ditch flow is commonly computed from water depth through a rating curve, which cannot
+sense direction and drifts when the channel changes, and ditch flows of only a few cfs make a small
+offset look large. This is context from one Taos-area study, not evidence about how the State
+Engineer computes its values; see [references.md](references.md#cruz-et-al-2019).
+
 Averaging `near_zero` snow values as if they were zero biases a season low; clamp them to zero
 deliberately if that is what an analysis wants, and say so.
 
