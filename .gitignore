@@ -37,3 +37,9 @@ docs/qa/
 
 # Local Claude Code settings (machine-specific; sets a permissive default mode)
 .claude/
+
+# Papers and publisher PDFs: cite them in docs/references.md, never commit them (no publishing rights)
+docs/refs/
+references/
+*.pdf
+!docs/**/figures/*.pdf
