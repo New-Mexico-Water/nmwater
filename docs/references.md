@@ -3,6 +3,9 @@
 Published work this archive's documentation relies on, with what each source does and does not
 support. Cite from here rather than repeating a claim without its source.
 
+Papers are cited here and summarised in our own words; the papers themselves are never committed
+to this repository, because we do not hold publishing rights to them.
+
 ## Where to find papers
 
 Places to look when a question needs published support. Add to this list as we find more. Papers
