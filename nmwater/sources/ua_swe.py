@@ -17,7 +17,7 @@ from pathlib import Path
 import httpx
 import pandas as pd
 
-from ..core.grids import clip_to_bbox, grid_done, grid_path, record_grid, register_grid, write_netcdf
+from ..core.grids import NC_LOCK, clip_to_bbox, grid_done, grid_path, record_grid, register_grid, write_netcdf
 from ..core.http import request_key
 from .base import FetchSummary, Source, register
 
@@ -93,7 +93,7 @@ class UASWE(Source):
                             h.update(chunk)
                             nb += len(chunk)
                 summ.n_requests += 1
-                with xr.open_dataset(tp) as ds:
+                with NC_LOCK, xr.open_dataset(tp) as ds:
                     sub = clip_to_bbox(ds, self.scope.bbox_buffered).load()
                 sub.attrs.update({"title": f"UA SWE/depth WY{wy} NM clip", "source": CITATION})
                 write_netcdf(sub, out)

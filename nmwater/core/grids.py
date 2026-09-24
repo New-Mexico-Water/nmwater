@@ -11,6 +11,7 @@ import gzip
 import hashlib
 import logging
 import shutil
+import threading
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -23,6 +24,10 @@ from .ledger import FetchRecord, Ledger, now_iso
 from .store import Store
 
 log = logging.getLogger("nmwater.grids")
+
+# The netCDF4/HDF5 C library is not thread-safe: sources fetch in threads, so every NetCDF open,
+# load and write goes through this lock (downloads and raster clipping still run in parallel).
+NC_LOCK = threading.RLock()
 
 
 def grid_path(settings: Settings, dataset: str, variable: str, when: Any) -> Path:
@@ -85,7 +90,8 @@ def write_netcdf(ds, path: Path, attrs: dict[str, Any] | None = None) -> Path:
         if c in ds.coords and hasattr(ds[c].values, "dtype") and np.issubdtype(ds[c].values.dtype, np.datetime64):
             enc[c] = {"units": "days since 1900-01-01 00:00:00", "calendar": "standard", "dtype": "float64"}
     tmp = path.with_suffix(".tmp.nc")
-    ds.to_netcdf(tmp, engine="netcdf4", encoding=enc)
+    with NC_LOCK:
+        ds.to_netcdf(tmp, engine="netcdf4", encoding=enc)
     tmp.replace(path)
     return path
 
