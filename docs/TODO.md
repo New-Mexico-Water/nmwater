@@ -36,7 +36,7 @@ artifacts; the fork that wrote that module noted unfiltered spikes such as air t
 values and mark them, which suits an archive better. Whichever, the rule belongs in the source
 module and the caveat belongs in the crosswalk. Also 8 negative reservoir storage values remain.
 
-### A3. 158,726 observation sites missing from the sites table — HIGH
+### A3. 158,726 observation sites missing from the sites table — DONE (2026-09-24)
 **Issue:** [#2](https://github.com/New-Mexico-Water/nmwater/issues/2)
 Observations exist for site_uids that have no row in `sites`. Almost all are OSE points of
 diversion, whose drilling-time water levels are written as observations while the site rows come

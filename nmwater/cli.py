@@ -160,6 +160,11 @@ def _fetch_one(ctx: Context, name: str, since_d, until_d, limit, site, refresh: 
             total.add(s)
         console.print(f"[green]{name}[/green]: {s.n_rows:,} rows, {s.n_requests} requests "
                       f"({s.n_cached} cached), {s.n_errors} errors")
+        if ctx.store.has_observations_without_sites(name):
+            msg = (f"{name} has observations but no rows in sites; run `nmwater discover {name}` "
+                   "and check the ledger for a failed discover")
+            console.print(f"[yellow]warning: {msg}[/yellow]")
+            s.notes.append(msg)
         for note in s.notes[:20]:
             console.print(f"  - {note}")
         return status, s, run_id, "; ".join(s.notes[:3])

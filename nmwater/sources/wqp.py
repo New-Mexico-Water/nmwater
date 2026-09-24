@@ -19,12 +19,13 @@ from datetime import date
 
 import pandas as pd
 
+from ..core.constants import NM_COUNTY_FIPS
 from .base import FetchSummary, Source, register
 
 log = logging.getLogger("nmwater.wqp")
 
 BASE = "https://www.waterqualitydata.us/data"
-NM_COUNTIES = [f"{c:03d}" for c in range(1, 62, 2)]  # NM county FIPS are odd 001..061
+NM_COUNTIES = [c[2:] for c in NM_COUNTY_FIPS]   # three-digit county codes, all 33
 KEEP_COLS = [
     "OrganizationIdentifier", "OrganizationFormalName", "ActivityIdentifier", "ActivityTypeCode", "ActivityMediaName",
     "ActivityMediaSubdivisionName", "ActivityStartDate", "ActivityStartTime/Time", "ActivityStartTime/TimeZoneCode",

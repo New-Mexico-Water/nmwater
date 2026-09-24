@@ -66,3 +66,26 @@ def test_qc_flag_classifies_by_registry_bounds():
         "ok", "ok", "near_zero", "near_zero", "implausible", "implausible", "ok", "implausible", "ok", "ok"]
     assert con.execute("select count(*) from observations_clean").fetchone()[0] == 7
     assert "CASE" in QC_FLAG_SQL
+
+
+def test_store_flags_observations_without_sites(tmp_path):
+    store = Store(tmp_path)
+    df = pd.DataFrame({"site_uid": "t:1", "variable": "swe", "value": [1.0],
+                       "datetime_utc": pd.to_datetime(["2026-01-01"], utc=True),
+                       "unit": "in", "interval": "daily", "statistic": "mean"})
+    store.write_observations(df, "t", run_id="r")
+    assert store.has_observations_without_sites("t")
+    store.write_sites(pd.DataFrame({"native_id": ["1"], "name": ["x"]}), "t")
+    assert not store.has_observations_without_sites("t")
+    assert not store.has_observations_without_sites("never_fetched")
+
+
+def test_orphan_sites_by_source():
+    from nmwater.catalog.build import orphan_sites_by_source
+
+    con = duckdb.connect()
+    con.execute("CREATE TABLE sites (site_uid VARCHAR)")
+    con.execute("CREATE TABLE site_variables (site_uid VARCHAR, source VARCHAR)")
+    con.execute("INSERT INTO sites VALUES ('a:1')")
+    con.execute("INSERT INTO site_variables VALUES ('a:1','a'), ('b:1','b'), ('b:2','b')")
+    assert orphan_sites_by_source(con) == {"b": 2}

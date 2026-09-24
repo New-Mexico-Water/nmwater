@@ -43,6 +43,29 @@ def create_qc_views(con) -> None:
     con.execute("CREATE OR REPLACE VIEW observations_clean AS SELECT * FROM observations_qc WHERE qc_flag <> 'implausible'")
 
 
+def orphan_sites_by_source(con) -> dict[str, int]:
+    """Observation sites with no row in `sites`, by source. Empty when the store is consistent."""
+    rows = con.execute(
+        """SELECT sv.source, COUNT(DISTINCT sv.site_uid) FROM site_variables sv
+           LEFT JOIN sites s USING (site_uid) WHERE s.site_uid IS NULL GROUP BY 1 ORDER BY 2 DESC"""
+    ).fetchall()
+    return dict(rows)
+
+
+def warn_orphan_sites(con) -> None:
+    """Log any source whose observations point at sites that were never written. Such data is
+    invisible to site queries, maps and regional summaries, and it happened silently once: a
+    crashed `discover` left 158,029 OSE observation sites without rows."""
+    try:
+        orphans = orphan_sites_by_source(con)
+    except Exception as e:                     # an empty catalog has no site_variables to check
+        log.debug("orphan check skipped: %s", e)
+        return
+    for src, n in orphans.items():
+        log.warning("catalog: %d observation sites from %s have no row in sites; run `nmwater discover %s` "
+                    "and check for a failed discover in the ledger", n, src, src)
+
+
 def build(settings: Settings) -> Path:
     settings.ensure_dirs()
     store = Store(settings.parquet_dir)
@@ -194,6 +217,7 @@ def build(settings: Settings) -> Path:
     reg.to_frame().to_csv(DOCS_DIR / "data_dictionary_variables.csv", index=False)
     xw.to_frame().to_csv(DOCS_DIR / "data_dictionary_crosswalk.csv", index=False)
     _write_dictionary_md(reg, xw, con, has_ts)
+    warn_orphan_sites(con)
     con.close()
     return dbp
 

@@ -15,12 +15,13 @@ from datetime import date
 
 import pandas as pd
 
+from ..core.constants import NM_COUNTY_FIPS
 from .base import FetchSummary, Source, register
 
 log = logging.getLogger("nmwater.usdm")
 
 BASE = "https://usdmdataservices.unl.edu/api"
-NM_COUNTIES = [f"35{c:03d}" for c in range(1, 62, 2)]
+NM_COUNTIES = list(NM_COUNTY_FIPS)
 NM_CLIMDIVS = [f"29{d:02d}" for d in range(1, 9)]
 
 

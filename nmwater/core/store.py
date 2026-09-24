@@ -210,6 +210,11 @@ class Store:
         return out
 
     # Sites ---------------------------------------------------------------
+    def has_observations_without_sites(self, source: str) -> bool:
+        """True when a source has stored observations but no sites file: a discover never wrote one."""
+        obs = self.root / "timeseries" / f"source={_safe(source)}"
+        return obs.exists() and any(obs.rglob("*.parquet")) and not self.sites_path(source).exists()
+
     def sites_path(self, source: str) -> Path:
         d = self.root / "sites" / f"source={_safe(source)}"
         d.mkdir(parents=True, exist_ok=True)
