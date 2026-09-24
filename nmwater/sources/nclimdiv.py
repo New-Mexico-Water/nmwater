@@ -16,6 +16,7 @@ from datetime import date
 
 import pandas as pd
 
+from ..core.constants import NM_COUNTY_FIPS
 from .base import FetchSummary, Source, register
 
 log = logging.getLogger("nmwater.nclimdiv")
@@ -57,10 +58,10 @@ class NClimDiv(Source):
                 rows.append({"native_id": f"div:{did}", "name": f"Climate division {did} " + NM_DIV_NAMES.get(f"{d:02d}", "") if sc == "29" else f"Climate division {did}",
                              "site_type": "area", "agency": "NOAA NCEI", "state": STATE_CODES.get(sc), "active": True,
                              "raw_metadata": json.dumps({"climdiv_state": sc, "division": d})})
-        for c in range(1, 62, 2):
-            rows.append({"native_id": f"cty:35{c:03d}", "name": f"County 35{c:03d}", "site_type": "area",
-                         "agency": "NOAA NCEI", "state": "NM", "county_fips": f"35{c:03d}", "active": True,
-                         "raw_metadata": json.dumps({"climdiv_state": "29", "county": f"{c:03d}"})})
+        for fips in NM_COUNTY_FIPS:
+            rows.append({"native_id": f"cty:{fips}", "name": f"County {fips}", "site_type": "area",
+                         "agency": "NOAA NCEI", "state": "NM", "county_fips": fips, "active": True,
+                         "raw_metadata": json.dumps({"climdiv_state": "29", "county": fips[2:]})})
         return pd.DataFrame(rows)
 
     def fetch(self, since: date | None = None, limit: int | None = None,

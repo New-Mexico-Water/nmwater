@@ -108,16 +108,40 @@ class NMBGMR(Source):
                                             "data_source": thing.get("data_source"), "public_release": p.get("public_release"),
                                             "thing": thing}, default=str),
             })
+        cn_rows: list[dict] = []
         # Healy collaborative network locations (subset) as a reference table
         try:
             art = self.get(f"{self.base}/collaborative_network/locations", kind="collabnet", refresh=True)
             cn = (art.read_json() or {}).get("features") or []
-            self.store.write_table(pd.DataFrame([{**(x.get("properties") or {}), "lon": (x.get("geometry") or {}).get("coordinates", [None, None])[0],
-                                                  "lat": (x.get("geometry") or {}).get("coordinates", [None, None])[1]} for x in cn]).drop(columns=["thing"], errors="ignore"),
+            cn_rows = [{**(x.get("properties") or {}), "lon": (x.get("geometry") or {}).get("coordinates", [None, None])[0],
+                        "lat": (x.get("geometry") or {}).get("coordinates", [None, None])[1]} for x in cn]
+            self.store.write_table(pd.DataFrame(cn_rows).drop(columns=["thing"], errors="ignore"),
                                    "reference", self.name, "collabnet_locations")
         except Exception as e:
             log.warning("collabnet locations failed: %s", e)
+        if not rows and cn_rows:
+            # The full locations endpoint is closed to us (issue #11), but the collaborative-network
+            # subset is open and carries coordinates, so its wells still get site rows. Without
+            # them 618 wells with 35,924 observations were invisible to site queries.
+            log.warning("nmbgmr: locations endpoint unavailable; building sites from the collaborative network (%d)",
+                        len(cn_rows))
+            rows = [self._collabnet_site(p) for p in cn_rows if p.get("point_id")]
         return pd.DataFrame(rows)
+
+    @staticmethod
+    def _collabnet_site(p: dict) -> dict:
+        ft = p.get("elevation_ft")
+        return {
+            "native_id": p["point_id"], "name": p.get("site_names") or p["point_id"],
+            "lat": p.get("lat"), "lon": p.get("lon"),
+            "elevation_m": float(ft) * 0.3048 if ft not in (None, "") and pd.notna(ft) else None,
+            "site_type": SITE_TYPES.get(p.get("site_type"), "other"), "agency": "NMBGMR",
+            "state": p.get("state") or "NM",
+            "raw_metadata": json.dumps({"usgs_site_id": p.get("site_id"), "alternate_site_id": p.get("alternate_site_id"),
+                                        "county": p.get("county"), "altitude_datum": p.get("altitude_datum"),
+                                        "public_release": p.get("public_release"), "location_url": p.get("location_url"),
+                                        "origin": "collaborative_network subset"}, default=str),
+        }
 
     # -- fetch ---------------------------------------------------------------------------
     def fetch(self, since: date | None = None, limit: int | None = None,

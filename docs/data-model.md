@@ -127,6 +127,11 @@ record the USGS site number when they mirror one), proximity matching within 250
 of the same kind from different sources, and hand-curated rows in `catalog/sites_manual.csv`,
 which always win.
 
+**Points of diversion are not proximity-linked.** The 279,990 OSE points of diversion in `sites`
+(`ose_arcgis:pod:*`) are well and diversion permit locations, not monitoring sites. Matching them by
+distance added 182,070 low-confidence `colocated` pairs, mostly to water-quality and USGS wells
+within 250 m, so they are excluded from that step. Exact-identifier links are unaffected.
+
 ## site_regions
 
 Which administrative areas each site falls inside, from Census TIGER/Line: place, county, county

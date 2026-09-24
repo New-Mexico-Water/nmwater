@@ -75,6 +75,11 @@ def _ms_to_date(v):
         return None
 
 
+def _missing(v) -> bool:
+    """None, NaN or NaT: a value a builder cannot turn into an identifier."""
+    return v is None or bool(pd.isna(v))
+
+
 @register
 class OSEArcGIS(Source):
     name = "ose_arcgis"
@@ -188,7 +193,10 @@ class OSEArcGIS(Source):
         rows = []
         for r in df.to_dict("records"):
             sid = r.get("Station_ID")
-            if sid in (None, "", 0):
+            # A meter with no station id arrives as NaN, which is neither None nor "" nor 0 and used
+            # to crash int(sid), aborting discovery for the whole source (2026-09-12) and leaving
+            # 158,029 point-of-diversion observations without site rows.
+            if _missing(sid) or sid in ("", 0):
                 continue
             rows.append({
                 "native_id": f"rtm:{int(sid)}",
@@ -203,6 +211,8 @@ class OSEArcGIS(Source):
     def _spring_sites(self, df: pd.DataFrame) -> pd.DataFrame:
         rows = []
         for r in df.to_dict("records"):
+            if _missing(r.get("SiteID")):
+                continue
             rows.append({
                 "native_id": f"spring:{r.get('SiteID')}",
                 "name": r.get("SiteName"), "lat": r.get("LatitudeDD"), "lon": r.get("LongitudeD"),
@@ -229,6 +239,8 @@ class OSEArcGIS(Source):
             except Exception:
                 pass
             nid = info.get("NATIONAL_ID") or info.get("OSE_DAM_FILE_NO") or info.get("ID") or r.get("OID")
+            if _missing(nid):
+                continue
             rows.append({
                 "native_id": f"dam:{nid}", "name": r.get("Name") or info.get("DAM_NAME"), "lat": lat, "lon": lon,
                 "site_type": "reservoir", "agency": "NM OSE Dam Safety", "state": "NM",

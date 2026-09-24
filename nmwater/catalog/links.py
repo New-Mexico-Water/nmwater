@@ -69,6 +69,10 @@ def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     return 2 * r * math.asin(math.sqrt(a))
 
 
+def _is_pod(df: pd.DataFrame) -> pd.Series:
+    return (df["source"] == "ose_arcgis") & df["native_id"].astype(str).str.startswith("pod:")
+
+
 def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | None = None) -> pd.DataFrame:
     rows: list[dict] = []
     usgs_ids = set(sites.loc[sites["source"] == "usgs", "native_id"].astype(str))
@@ -97,6 +101,11 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
 
     # 2. proximity within the same kind group, different sources
     pts = sites[sites["lat"].notna() & sites["lon"].notna()].copy()
+    # Points of diversion are well and diversion PERMIT locations, not monitoring sites. There are
+    # 280,000 of them, and matching them by proximity added 182,070 low-confidence links (mostly to
+    # water-quality and USGS wells within 250 m), taking the table from 120,000 to 302,000 pairs that
+    # nobody has reviewed. Exact-id matching above is unaffected.
+    pts = pts[~_is_pod(pts)]
     pts["grp"] = pts["site_type"].map(KIND_GROUPS)
     pts = pts[pts["grp"].notna()]
     # grid buckets of ~0.01 deg (~1.1 km) to limit comparisons

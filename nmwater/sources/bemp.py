@@ -134,10 +134,18 @@ class BEMP(Source):
             rows.append({"native_id": f"{sid}-ditch", "name": f"BEMP {nm} ditch/drain", "site_type": "canal",
                          "agency": "BEMP", "state": "NM", "basin": "Rio Grande-Elephant Butte",
                          "raw_metadata": json.dumps({**meta, "role": "ditch"})})
+            rows.append({"native_id": f"{sid}-river", "name": f"BEMP {nm} river sample", "site_type": "stream",
+                         "agency": "BEMP", "state": "NM", "basin": "Rio Grande-Elephant Butte",
+                         "raw_metadata": json.dumps({**meta, "role": "river"})})
             for g in ("open", "canopy"):
                 rows.append({"native_id": f"{sid}-{g}", "name": f"BEMP {nm} {g} rain gauge", "site_type": "met",
                              "agency": "BEMP", "state": "NM", "basin": "Rio Grande-Elephant Butte",
                              "raw_metadata": json.dumps({**meta, "role": f"precip_{g}"})})
+        # The water-quality workbook also reports "site 0", a river sample with no site record.
+        rows.append({"native_id": "0-river", "name": "BEMP river sample (site number 0)", "site_type": "stream",
+                     "agency": "BEMP", "state": "NM", "basin": "Rio Grande-Elephant Butte",
+                     "raw_metadata": json.dumps({"bemp_site_no": 0, "role": "river",
+                                                 "note": "appears in the water-quality workbook without a site record"})})
         return pd.DataFrame(rows)
 
     # ------------------------------------------------------------------ fetch

@@ -17,6 +17,7 @@ from datetime import date
 
 import pandas as pd
 
+from ..core.constants import NM_COUNTY_FIPS
 from .base import FetchSummary, Source, register
 
 log = logging.getLogger("nmwater.usgs_wateruse")
@@ -27,7 +28,7 @@ SB_ITEMS = {
 }
 NWDC = "https://api.water.usgs.gov/nwaa-data"
 NWDC_MODELS = ["wu-irrigation-wd", "wu-irrigation-cu", "wu-public-supply-wd", "wu-public-supply-cu", "wu-thermoelectric"]
-NM_COUNTIES = [f"35{c:03d}" for c in range(1, 62, 2)]
+NM_COUNTIES = list(NM_COUNTY_FIPS)
 
 
 @register
