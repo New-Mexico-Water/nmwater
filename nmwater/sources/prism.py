@@ -23,6 +23,7 @@ from pathlib import Path
 import pandas as pd
 
 from ..core.grids import (
+    NC_LOCK,
     clip_to_bbox,
     grid_done,
     grid_path,
@@ -89,7 +90,7 @@ class PRISM(Source):
             var, freq, year = j
             return self._fetch_var_year(var, freq, year, since, refresh, revise_after, summ, limit)
 
-        res = self.parallel(one, jobs, desc="var-years", workers=1)
+        res = self.parallel(one, jobs, desc="var-years")  # workers = config concurrency
         summ.n_rows = int(sum(res))
         summ.n_errors = len(jobs) - len(res)
         return summ
@@ -140,10 +141,9 @@ class PRISM(Source):
                     n_new += 1
                 else:
                     summ.n_cached += 1
-                ds = xr.open_dataset(clip_nc)
-                arrays.append(ds[var].load())
+                with NC_LOCK, xr.open_dataset(clip_nc) as ds:
+                    arrays.append(ds[var].load())
                 times.append(pd.Timestamp(d))
-                ds.close()
         if not arrays:
             return 0
         stacked = xr.concat(arrays, dim=pd.Index(times, name="time"))

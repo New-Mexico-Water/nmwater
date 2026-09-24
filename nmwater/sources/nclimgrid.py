@@ -15,6 +15,7 @@ from pathlib import Path
 import pandas as pd
 
 from ..core.grids import (
+    NC_LOCK,
     clip_to_bbox,
     grid_done,
     grid_path,
@@ -81,7 +82,7 @@ class NClimGrid(Source):
                 tp = Path(td) / "m.nc"
                 status, sha, nb = stream_download(self.http, self.name, url, tp)
                 summ.n_requests += 1
-                with xr.open_dataset(tp) as ds:
+                with NC_LOCK, xr.open_dataset(tp) as ds:
                     sub = clip_to_bbox(ds, self.scope.bbox_buffered).load()
                 sub.attrs.update({"title": f"nClimGrid-Daily {y}-{m:02d} NM clip", "source": CITATION})
                 write_netcdf(sub, out)

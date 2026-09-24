@@ -88,11 +88,11 @@ class GridMET(Source):
             out = grid_path(self.settings, "gridmet", var, str(year))
             import xarray as xr
 
-            from ..core.grids import write_netcdf
+            from ..core.grids import NC_LOCK, write_netcdf
 
             tmp = out.with_suffix(".raw.nc")
             tmp.write_bytes(art.read_bytes())
-            with xr.open_dataset(tmp, engine="netcdf4") as ds0:
+            with NC_LOCK, xr.open_dataset(tmp, engine="netcdf4") as ds0:
                 ds = ds0.load()
             tmp.unlink(missing_ok=True)
             if "day" in ds.dims:

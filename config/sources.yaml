@@ -221,7 +221,7 @@ sources:
     timeout_s: 1800
 
   prism:
-    concurrency: 1
+    concurrency: 3        # var-years in parallel; each file is still downloaded once (PRISM allows two per day)
     min_interval_s: 2.0
     timeout_s: 1800
 
