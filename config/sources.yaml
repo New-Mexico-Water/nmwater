@@ -71,6 +71,10 @@ sources:
     concurrency: 3
     min_interval_s: 0.3
 
+  noaa_ghcnh:
+    concurrency: 3
+    min_interval_s: 0.3
+
   uscrn:
     concurrency: 2
 
