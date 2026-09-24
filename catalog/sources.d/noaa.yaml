@@ -14,7 +14,15 @@ sources:
     license: Public domain
     citation: NOAA NCEI Integrated Surface Database (ISD), ISD-Lite format.
     refresh: yearly files; current and previous year re-downloaded on each run
-    caveats: Times are UTC; utc_offset_min is set to the nominal NM standard offset (-420). Hourly precipitation is sparsely reported at many ASOS sites. GHCNh station list stored as reference only.
+    caveats: Times are UTC; utc_offset_min is set to the nominal NM standard offset (-420). Hourly precipitation is sparsely reported at many ASOS sites. ENDED - NOAA stopped publishing ISD-Lite in August 2025 (no 2026 files); noaa_ghcnh continues the record.
+  noaa_ghcnh:
+    agency: NOAA National Centers for Environmental Information
+    description: GHCNh hourly surface observations (air temperature, wind speed and direction, relative humidity, hourly precipitation, snow depth) at airport, AWOS/ASOS, USCRN and cooperative stations in NM and the border buffer, 1930s-present. Successor to ISD-Lite.
+    url: https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly
+    license: Public domain
+    citation: NOAA National Centers for Environmental Information, Global Historical Climatology Network hourly (GHCNh), version 1.1.0 (documentation updated 2026-03-10), https://www.ncei.noaa.gov/products/global-historical-climatology-network-hourly. Quality control follows Dunn, R.J.H., Willett, K.M., Parker, D.E., and Mitchell, L., 2016, Geosci. Instrum. Method. Data Syst. Discuss., doi:10.5194/gi-2016-9.
+    refresh: yearly files, current and previous year re-downloaded on each update; station-years come from the published inventory
+    caveats: Sources are merged so several reports can fall in one hour; the archive keeps one value per hour (the report nearest the hour, or for precipitation the last report of the reporting period, which is a running total). Reports GHCNh flagged erroneous or failed its QC (letter codes) are dropped; suspect values are kept and the quality code is stored in qualifier. Times are UTC; utc_offset_min is the nominal NM standard offset (-420). Many stations are also in noaa_ghcnd and noaa_isd (same instruments), so these sources are not independent. Snow depth is sparse and has undetected outliers.
   uscrn:
     agency: NOAA NCEI / U.S. Climate Reference Network
     description: Research-grade hourly and daily observations (air temperature, weighing-gauge precipitation, solar radiation, RH, 5-depth soil moisture and temperature) at 3 operational NM USCRN sites (Sevilleta 2004-, Valles Caldera 2005-, Jornada 2007-) plus 22 closed USRCRN sites.

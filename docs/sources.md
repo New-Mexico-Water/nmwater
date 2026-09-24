@@ -22,7 +22,8 @@ Per-source licence, citation, refresh cadence, and caveats live in `catalog/sour
 | `usace_cwms` | Corps reservoirs (Abiquiu, Cochiti, Conchas, Santa Rosa and more) plus 281 MRGCD diversion gauges | 1993– | 73.2M rows |
 | `nrcs` | SNOTEL snow water equivalent, snow courses, soil moisture, water-supply forecasts | 1971– | 737K rows |
 | `noaa_ghcnd` | Daily precipitation, snowfall, snow depth, temperature from every cooperative station | 1850– | 61.8M rows, 2,989 stations |
-| `noaa_isd` | Hourly surface weather from airport and automated stations | 1941– | 64.9M rows, 175 stations |
+| `noaa_isd` | Hourly surface weather from airport and automated stations. Ended: NOAA stopped publishing ISD-Lite in August 2025; `noaa_ghcnh` continues it | 1941–2025 | 64.9M rows, 175 stations |
+| `noaa_ghcnh` | Hourly surface weather (GHCNh, successor to ISD-Lite): temperature, wind, humidity, hourly precipitation, snow depth, one value per hour | 1892– | 120.9M rows, 185 stations (2026-09-24) |
 | `uscrn` | Climate Reference Network: the best-instrumented stations in the state, with weighing precipitation gauges and five soil depths | 2004– | 7.4M rows |
 | `cocorahs` | Volunteer daily precipitation, filling the gaps between official gauges | 2005– | 5.4M rows, 2,141 stations |
 | `iem_dcp` | The archived National Weather Service SHEF/DCP feed, including sensors no other archive keeps | 2010– | 59.2M rows |
@@ -137,6 +138,7 @@ days, so data is lost if updates lapse longer than the window. *Documents*: PDFs
 | usbr_hydrodata | Full-history file per series | none | re-downloads every series, keeps new rows `usbr_hydrodata.py:111-127` | none | none | about 100 MB of whole files per update |
 | nclimgrid | Per-period files (monthly NetCDF, CONUS) | none | months from since; last two re-fetched | clipped after download | none | two or three 64 MB files |
 | noaa_isd | Per-period files (station-year) | none | years from since | none | none | stopped publishing August 2025; skipped |
+| noaa_ghcnh | Per-period files (station-year Parquet) | none | years from since; current and previous year re-downloaded | none | none | about 190 files per update |
 | prism | Per-period files (daily and monthly CONUS zips) | none | re-downloads every file inside the 190-day revision window `prism.py:118` | clipped after download | two downloads per file per day | about 3 GB per update |
 | snodas | Per-period files (daily CONUS tar) | none | days from since; completed days skipped | clipped after download | none | about 3 MB per day |
 | ua_swe | Per-period files (water-year NetCDF) | none | water years from since | none | Earthdata login | ends WY2023; skipped |

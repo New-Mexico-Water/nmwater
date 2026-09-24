@@ -21,12 +21,12 @@ precip,Precipitation,in,length,flux,atmosphere,,Depth of liquid-equivalent preci
 precip_accumulated_wy,Water-year accumulated precipitation,in,length,stock,atmosphere,,"Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.",related_not_comparable to precip; convert by differencing consecutive days within a water year.,,,
 snowfall,Snowfall,in,length,flux,snow,,Depth of new snow during the interval.,,,,
 swe,Snow water equivalent,in,length,stock,snow,,Depth of water contained in the snowpack at the observation time.,"NRCS WTEQ (pillow), snow-course measurements, GHCN WESD (manual), and gridded SNODAS/UA SWE all estimate the same quantity by different methods.",0.0,-1.0,
-snow_depth,Snow depth,in,length,stock,snow,,Total depth of snow on the ground.,,0.0,-5.0,
+snow_depth,Snow depth,in,length,stock,snow,,Total depth of snow on the ground.,,0.0,-5.0,300.0
 snow_density,Snow density,percent,ratio,state,snow,,"SWE divided by snow depth, as percent.",,,,
-air_temp,Air temperature,degC,temperature,state,atmosphere,,Air temperature at the station's standard height. Use the statistic column (mean/max/min/instantaneous).,,,,
+air_temp,Air temperature,degC,temperature,state,atmosphere,,Air temperature at the station's standard height. Use the statistic column (mean/max/min/instantaneous).,,-60.0,,60.0
 relative_humidity,Relative humidity,percent,ratio,state,atmosphere,,Relative humidity of the air.,,,,
-wind_speed,Wind speed,mph,speed,state,atmosphere,,Wind speed at the station's anemometer height.,,,,
-wind_direction,Wind direction,degree,angle,state,atmosphere,,"Direction the wind blows from, degrees clockwise from north.",,,,
+wind_speed,Wind speed,mph,speed,state,atmosphere,,Wind speed at the station's anemometer height.,,0.0,,150.0
+wind_direction,Wind direction,degree,angle,state,atmosphere,,"Direction the wind blows from, degrees clockwise from north.",,0.0,,360.0
 solar_radiation,Solar radiation,W/m2,irradiance,flux,atmosphere,,"Incoming shortwave radiation, mean over the interval.",,,,
 vapor_pressure_deficit,Vapor pressure deficit,kPa,pressure,state,atmosphere,,Saturation minus actual vapor pressure.,,,,
 et_reference,Reference evapotranspiration,mm,length,flux,atmosphere,,"Evapotranspiration from a reference crop surface (grass ETo or alfalfa ETr; see caveat) computed from weather data. A demand ceiling, not actual ET.",,,,

@@ -308,7 +308,7 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
 - **NOAA ISD-Lite has stopped (HIGH).** There is no 2026 directory and the 2025 files were last
   modified 2025-08-29, so the archive's hourly airport and AWOS record ends there. NOAA's successor
   is the hourly Global Historical Climatology Network (GHCNh). `noaa_isd` is now skipped by
-  `update`. **Do:** add a `noaa_ghcnh` source.
+  `update`. **DONE 2026-09-24:** `noaa_ghcnh` added (185 stations, 1892–present, one value per hour).
 - **ZiaMet hosts are unreliable (MEDIUM).** duststorm.nmsu.edu and ziamet.org refused connections;
   weather.nmsu.edu answered slowly and returned HTTP 500 for most one-minute feeds, so the update
   spent 2 h 11 min mostly retrying and was stopped by hand. weather.nmsu.edu is now the primary

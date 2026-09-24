@@ -237,6 +237,7 @@ variables:
     kind: stock
     medium: snow
     valid_min: 0
+    valid_max: 300       # in; NM's deepest snowpack is well under this, larger values are sensor or coding errors
     noise_floor: -5      # ultrasonic depth sensors drift below zero; anything under -5 in is junk
   snow_density:
     label: Snow density
@@ -254,6 +255,8 @@ variables:
     quantity: temperature
     kind: state
     medium: atmosphere
+    valid_min: -60       # degC; NM's recorded extremes are roughly -46 to 50, so these bounds catch only errors
+    valid_max: 60
   relative_humidity:
     label: Relative humidity
     definition: Relative humidity of the air.
@@ -268,6 +271,8 @@ variables:
     quantity: speed
     kind: state
     medium: atmosphere
+    valid_min: 0
+    valid_max: 150       # mph; sustained wind, above this is a coding or sensor error
     missing_codes: [-99.9]
   wind_direction:
     label: Wind direction
@@ -276,6 +281,8 @@ variables:
     quantity: angle
     kind: state
     medium: atmosphere
+    valid_min: 0
+    valid_max: 360       # METAR "variable" (999) and other codes above 360 are not directions
   solar_radiation:
     label: Solar radiation
     definition: Incoming shortwave radiation, mean over the interval.

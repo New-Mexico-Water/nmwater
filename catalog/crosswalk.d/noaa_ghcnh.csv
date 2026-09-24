@@ -1,0 +1,14 @@
+source,source_param,source_name,source_unit,variable,factor,offset,statistic,interval,equivalence,caveat
+noaa_ghcnh,temperature,Air temperature,degC,air_temp,1,0,instantaneous,hourly,identical,report nearest the top of the hour
+noaa_ghcnh,wind_speed,Wind speed,m/s,wind_speed,2.236936,0,instantaneous,hourly,identical,2-minute average at the report time; gusts are not mapped
+noaa_ghcnh,wind_direction,Wind direction,degrees,wind_direction,1,0,instantaneous,hourly,identical,direction the wind blows from
+noaa_ghcnh,precipitation,Hourly liquid precipitation,mm,precip,0.03937007874,0,total,hourly,identical,last report of each reporting period (running total); trace recorded as 0 with qualifier T; many ASOS sites report it only when precipitation occurs
+noaa_ghcnh,relative_humidity,Relative humidity,percent,relative_humidity,1,0,instantaneous,hourly,equivalent_method,measured or derived from temperature and dew point depending on the source
+noaa_ghcnh,snow_depth,Snow depth,mm,snow_depth,0.03937007874,0,instantaneous,hourly,identical,sparse: reported by few stations and irregularly
+noaa_ghcnh,dew_point_temperature,Dew point,degC,,1,0,,,related_not_comparable,not mapped
+noaa_ghcnh,wind_gust,Wind gust,m/s,,1,0,,,related_not_comparable,not mapped (no canonical gust variable)
+noaa_ghcnh,station_level_pressure,Station pressure,hPa,,1,0,,,related_not_comparable,not mapped
+noaa_ghcnh,sea_level_pressure,Sea level pressure,hPa,,1,0,,,related_not_comparable,not mapped
+noaa_ghcnh,wet_bulb_temperature,Wet bulb temperature,degC,,1,0,,,related_not_comparable,not mapped
+noaa_ghcnh,visibility,Visibility,km,,1,0,,,related_not_comparable,not mapped
+noaa_ghcnh,altimeter,Altimeter setting,hPa,,1,0,,,related_not_comparable,not mapped
