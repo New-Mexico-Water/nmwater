@@ -42,4 +42,3 @@ docs/qa/
 docs/refs/
 references/
 *.pdf
-!docs/**/figures/*.pdf
