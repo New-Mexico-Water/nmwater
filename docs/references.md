@@ -3,6 +3,34 @@
 Published work this archive's documentation relies on, with what each source does and does not
 support. Cite from here rather than repeating a claim without its source.
 
+## Where to find papers
+
+Places to look when a question needs published support. Add to this list as we find more. Papers
+themselves are cited here, never committed; see the note at the top of this file.
+
+### OpenSIUC: Journal of Contemporary Water Research & Education
+
+<https://opensiuc.lib.siu.edu/jcwre/>
+
+The journal of the Universities Council on Water Resources (UCOWR), open access, hosted in
+Southern Illinois University Carbondale's OpenSIUC repository. It was published as *Water
+Resources Update* until June 2004. Topics seen so far include water policy, water law, irrigation
+and climate adaptation, and northern New Mexico irrigation (the Taos ditch study below).
+
+- **Coverage is in flux.** The landing page (checked 2026-09-24) says the journal was formerly
+  published on Wiley Online, that articles appear here from January 2025, that the site is being
+  updated, and that archives for 2008 to 2024 "will be added". It links issues from volume 77 to
+  the current issue, volume 183 issue 1 (2026), so an older paper may still need to be found
+  through its DOI.
+- **It also hosts UCOWR conference proceedings** (for example `ucowrconfs_2004`, `_2005`, `_2007`
+  under `opensiuc.lib.siu.edu`), which turned up in searches and include Rio Grande material.
+- **How to search from a script.** A web search restricted to the domain works, for example with
+  `allowed_domains: ["opensiuc.lib.siu.edu"]`. Article pages and issue pages load from a script
+  and give the title, authors, abstract, "Recommended Citation" and DOI.
+- **What is blocked.** The site's own search and every PDF download sit behind a Cloudflare
+  browser check, so a script gets a 403 and an "Enable JavaScript" page. To read a paper, download
+  the PDF in a browser to `~/Downloads` (outside the repository) and point me at it.
+
 ## Ditch and canal gauging
 
 ### Cruz et al. 2019
