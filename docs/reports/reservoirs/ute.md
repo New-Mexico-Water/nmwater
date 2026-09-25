@@ -39,7 +39,7 @@ Report: `reports/reservoirs/ute_annual_fill.csv`. Regenerate with `just reports`
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
 | elevation | `usgs:07226800` | 66 | 2007-10-14 | 2017-07-25 |
-| storage | `usgs:07226800` | 19,339 | 1965-10-01 | 2026-09-23 |
+| storage | `usgs:07226800` | 19,340 | 1965-10-01 | 2026-09-24 |
 
 Sources:
 
@@ -53,7 +53,7 @@ An operator table exists in CWMS (`Ute.Elev;Stor.Linear.Step;NMISC`, effective 2
 
 ## What the record shows
 
-Record: 1965 to 2026, 57 years, 19,339 days of storage.
+Record: 1965 to 2026, 57 years, 19,340 days of storage.
 
 Fullest years, by annual peak: 1987 112.3%; 1991 111.4%; 1999 111.3%.
 
@@ -61,4 +61,4 @@ Emptiest years, by annual peak: 1983 19.1%; 1984 21.7%; 1985 34.2%.
 
 Average annual mean fill: 43.0% over the first ten complete years, 73.2% over the last ten.
 
-2026 so far (266 days): peak 196,100 af, 88.1% of full pool; latest low 174,507 af.
+2026 so far (267 days): peak 196,100 af, 88.1% of full pool; latest low 174,507 af.

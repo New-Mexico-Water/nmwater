@@ -40,19 +40,19 @@ Report: `reports/reservoirs/jemez_canyon_annual_fill.csv`. Regenerate with `just
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Jemez` | 6,110 | 2010-01-01 | 2026-09-23 |
-| inflow | `usace_cwms:Jemez` | 6,104 | 2010-01-02 | 2026-09-23 |
-| storage | `usace_cwms:Jemez` | 6,110 | 2010-01-01 | 2026-09-23 |
-| elevation | `usbr_hydrodata:2744` | 18,893 | 1974-12-31 | 2026-09-21 |
-| release | `usbr_hydrodata:2744` | 6,108 | 2010-01-01 | 2026-09-21 |
-| storage | `usbr_hydrodata:2744` | 19,256 | 1974-01-02 | 2026-09-21 |
+| elevation | `usace_cwms:Jemez` | 6,111 | 2010-01-01 | 2026-09-24 |
+| inflow | `usace_cwms:Jemez` | 6,105 | 2010-01-02 | 2026-09-24 |
+| storage | `usace_cwms:Jemez` | 6,111 | 2010-01-01 | 2026-09-24 |
+| elevation | `usbr_hydrodata:2744` | 18,895 | 1974-12-31 | 2026-09-23 |
+| release | `usbr_hydrodata:2744` | 6,110 | 2010-01-01 | 2026-09-23 |
+| storage | `usbr_hydrodata:2744` | 19,258 | 1974-01-02 | 2026-09-23 |
 | storage | `usgs:08328500` | 18,232 | 1965-10-01 | 2015-08-31 |
-| release (gauge below dam) | `usgs:08328950` | 6,147 | 2009-09-30 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08328950` | 6,148 | 2009-09-30 | 2026-09-24 |
 | release (gauge below dam) | `usgs:08329000` | 24,836 | 1936-04-01 | 2009-09-29 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2744` 19,255, `usgs:08328500` 3,015, `usace_cwms:Jemez` 2.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2744` 19,257, `usgs:08328500` 3,015, `usace_cwms:Jemez` 1.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2744` vs `usace_cwms:Jemez` 0 af over 6,108 shared days; `usace_cwms:Jemez` vs `usgs:08328500` 0 af over 2,069 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2744` vs `usace_cwms:Jemez` 0 af over 6,110 shared days; `usace_cwms:Jemez` vs `usgs:08328500` 0 af over 2,069 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08328950`, `usgs:08329000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -66,7 +66,7 @@ Sources:
 
 **Capacity table:** `Jemez.Elev;Stor.Linear.Step;USACE` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USACE, effective 2019-01-01, elevations in NGVD29. 14,163 points from 5,125.00 to 5,274.60 ft, 275,131 acre-feet at the top.
 
-**Validation.** Since 2019-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,821 days.
+**Validation.** Since 2019-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,823 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -96,7 +96,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1996-1998 table | 1996-01-01 to 1998-12-31 | 5189.0-5196.8 | -1,582 | 103,283, low |
 | 1999-2001 table | 1999-01-01 to 2001-12-31 | 5155.0-5195.0 | -3,414 | 99,334, low |
 | 2002-2018 table | 2002-01-01 to 2018-12-30 | 5155.0-5155.0 | -754 | 99,334, low |
-| current table | 2019-01-01 to 2026-09-21 | 5125.0-5133.5 | 0 | 99,334, current_table |
+| current table | 2019-01-01 to 2026-09-23 | 5125.0-5133.5 | 0 | 99,334, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -104,7 +104,7 @@ Capacity of the top of flood control fell from 106,170 to 99,334 acre-feet over 
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 22,272 days of storage.
+Record: 1965 to 2026, 62 years, 22,273 days of storage.
 
 Largest flood-storage years, by peak storage (a flood is storage above 53 af): 1987 72,114 af on 1987-06-01 (69.8% of the flood pool); 1992 45,536 af on 1992-04-23 (44.1% of the flood pool); 1991 39,539 af on 1991-08-15 (38.3% of the flood pool); 1986 39,334 af on 1986-05-13 (38.1% of the flood pool); 1988 34,964 af on 1988-05-10 (33.9% of the flood pool).
 
@@ -114,4 +114,4 @@ Annual inflow, complete years: median 19,886 af, largest 56,393 af in 2023, smal
 
 Highest daily releases, measured below the dam: 2,410 cfs on 1973-05-05; 2,410 cfs on 2004-04-04; 2,190 cfs on 1979-06-24.
 
-2026 so far (266 days): peak 1,338 af, 1.3% of full pool; latest low 0 af.
+2026 so far (267 days): peak 1,275 af, 1.3% of full pool; latest low 0 af.

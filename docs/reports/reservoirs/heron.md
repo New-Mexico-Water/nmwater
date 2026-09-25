@@ -40,16 +40,16 @@ Report: `reports/reservoirs/heron_annual_fill.csv`. Regenerate with `just report
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Heron` | 5,357 | 2012-01-09 | 2026-09-23 |
-| storage | `usace_cwms:Heron` | 5,357 | 2012-01-09 | 2026-09-23 |
-| elevation | `usbr_hydrodata:2686` | 18,893 | 1974-12-31 | 2026-09-21 |
-| inflow | `usbr_hydrodata:2686` | 9,395 | 2001-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:2686` | 9,395 | 2001-01-01 | 2026-09-21 |
-| storage | `usbr_hydrodata:2686` | 18,893 | 1974-12-31 | 2026-09-21 |
+| elevation | `usace_cwms:Heron` | 5,358 | 2012-01-09 | 2026-09-24 |
+| storage | `usace_cwms:Heron` | 5,358 | 2012-01-09 | 2026-09-24 |
+| elevation | `usbr_hydrodata:2686` | 18,895 | 1974-12-31 | 2026-09-23 |
+| inflow | `usbr_hydrodata:2686` | 9,397 | 2001-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:2686` | 9,397 | 2001-01-01 | 2026-09-23 |
+| storage | `usbr_hydrodata:2686` | 18,895 | 1974-12-31 | 2026-09-23 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2686` 18,893, `usace_cwms:Heron` 2.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2686` 18,895, `usace_cwms:Heron` 1.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2686` vs `usace_cwms:Heron` 165 af over 5,355 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2686` vs `usace_cwms:Heron` 165 af over 5,357 shared days.
 
 Sources:
 
@@ -60,7 +60,7 @@ Sources:
 
 **Capacity table:** `Heron.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2020-01-01, elevations in the project datum (unstated). 23,601 points from 6,963.00 to 7,199.00 ft, 478,375 acre-feet at the top.
 
-**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,456 days.
+**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,458 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11030, survey 2010) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -79,7 +79,7 @@ Reported storage departs from the current table in earlier years because older t
 | Era | Dates | Elevation range (ft) | Departure (af) | Full pool capacity (af), confidence |
 |---|---|---|---|---|
 | 1974-2011 table | 1974-12-31 to 2011-12-31 | 7111.2-7186.1 | 1,321 | 401,333, high |
-| current table | 2012-01-01 to 2026-09-21 | 7063.1-7160.5 | 0 | 400,031, current_table |
+| current table | 2012-01-01 to 2026-09-23 | 7063.1-7160.5 | 0 | 400,031, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -87,7 +87,7 @@ Capacity of the full pool fell from 401,333 to 400,031 acre-feet over the record
 
 ## What the record shows
 
-Record: 1974 to 2026, 53 years, 18,895 days of storage.
+Record: 1974 to 2026, 53 years, 18,896 days of storage.
 
 Fullest years, by annual peak: 1994 100.2%; 1982 100.1%; 1985 100.1%.
 
@@ -99,4 +99,4 @@ Annual inflow, complete years: median 91,554 af, largest 181,410 af in 2017, sma
 
 Highest daily releases, reported: 920 cfs on 2002-06-25; 901 cfs on 2018-07-24; 855 cfs on 2008-07-13.
 
-2026 so far (266 days): peak 55,071 af, 13.8% of full pool; latest low 26,432 af.
+2026 so far (267 days): peak 55,071 af, 13.8% of full pool; latest low 26,432 af.

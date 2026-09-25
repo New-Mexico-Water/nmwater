@@ -38,14 +38,14 @@ Report: `reports/reservoirs/rocky_annual_fill.csv`. Regenerate with `just report
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Rocky` | 3,395 | 1999-03-01 | 2026-09-23 |
-| inflow | `usace_cwms:Rocky` | 3,185 | 2018-01-02 | 2026-09-22 |
-| storage | `usace_cwms:Rocky` | 3,395 | 1999-03-01 | 2026-09-23 |
+| elevation | `usace_cwms:Rocky` | 3,396 | 1999-03-01 | 2026-09-24 |
+| inflow | `usace_cwms:Rocky` | 3,187 | 2018-01-02 | 2026-09-24 |
+| storage | `usace_cwms:Rocky` | 3,396 | 1999-03-01 | 2026-09-24 |
 | elevation | `usgs:08390620` | 1 | 2022-08-23 | 2022-08-23 |
 | storage | `usgs:08390620` | 6,725 | 1995-10-01 | 2017-02-28 |
-| release (gauge below dam) | `usgs:08393300` | 7,055 | 1963-05-01 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08393300` | 7,056 | 1963-05-01 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08390620` 6,516, `usace_cwms:Rocky` 3,395.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08390620` 6,516, `usace_cwms:Rocky` 3,396.
 
 Agreement where sites overlap, median absolute difference in storage: `usace_cwms:Rocky` vs `usgs:08390620` 0 af over 209 shared days.
 
@@ -62,7 +62,7 @@ Sources:
 
 Table note: _Area is from Right edge to foe wall at saddle dike to seperate Diamond A and Rocky_
 
-**Validation.** Since 2023-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 1,362 days.
+**Validation.** Since 2023-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 1,363 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -80,20 +80,20 @@ Reported storage departs from the current table in earlier years because older t
 
 | Era | Dates | Elevation range (ft) | Departure (af) | Top of conservation capacity (af), confidence | Top of flood control capacity (af), confidence |
 |---|---|---|---|---|---|
-| current table | 1999-03-01 to 2026-09-23 | 3945.0-3963.1 | 0 | 3, current_table | 135,495, current_table |
+| current table | 1999-03-01 to 2026-09-24 | 3945.0-3963.0 | 0 | 3, current_table | 135,495, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
 ## What the record shows
 
-Record: 1995 to 2026, 31 years, 9,911 days of storage.
+Record: 1995 to 2026, 31 years, 9,912 days of storage.
 
 Largest flood-storage years, by peak storage (a flood is storage above 68 af): 2021 6,246 af on 2021-06-01 (4.6% of the flood pool); 2013 5,353 af on 2013-09-12 (4.0% of the flood pool); 2022 3,638 af on 2022-08-22 (2.7% of the flood pool); 2024 2,791 af on 2024-10-21 (2.1% of the flood pool); 2014 2,100 af on 2014-09-21 (1.5% of the flood pool).
 
-Years with any flood storage: 10 of 31.
+Years with any flood storage: 9 of 31.
 
 Annual inflow, complete years: median 0 af, largest 10,426 af in 2021, smallest 0 af in 2018.
 
 Highest daily releases, measured below the dam: 41 cfs on 2025-07-03; 1 cfs on 2024-11-02; 0 cfs on 2026-07-18.
 
-2026 so far (266 days): peak 205 af, 0.2% of full pool; latest low 0 af.
+2026 so far (267 days): peak 0 af, 0.0% of full pool; latest low 0 af.

@@ -39,18 +39,18 @@ Report: `reports/reservoirs/avalon_annual_fill.csv`. Regenerate with `just repor
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Avalon` | 7,833 | 1999-02-28 | 2026-09-23 |
-| storage | `usace_cwms:Avalon` | 7,833 | 1999-02-28 | 2026-09-23 |
-| elevation | `usbr_hydrodata:2684` | 8,963 | 2002-01-01 | 2026-09-21 |
-| inflow | `usbr_hydrodata:2684` | 995 | 2024-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:2684` | 9,762 | 2000-01-01 | 2026-09-22 |
-| storage | `usbr_hydrodata:2684` | 21,744 | 1965-10-01 | 2026-09-21 |
+| elevation | `usace_cwms:Avalon` | 7,834 | 1999-02-28 | 2026-09-24 |
+| storage | `usace_cwms:Avalon` | 7,834 | 1999-02-28 | 2026-09-24 |
+| elevation | `usbr_hydrodata:2684` | 8,965 | 2002-01-01 | 2026-09-23 |
+| inflow | `usbr_hydrodata:2684` | 997 | 2024-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:2684` | 9,764 | 2000-01-01 | 2026-09-24 |
+| storage | `usbr_hydrodata:2684` | 21,746 | 1965-10-01 | 2026-09-23 |
 | storage | `usgs:08403800` | 18,347 | 1965-10-01 | 2017-03-31 |
-| release (gauge below dam) | `usgs:08404000` | 27,509 | 1951-06-01 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08404000` | 27,510 | 1951-06-01 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2684` 21,744, `usace_cwms:Avalon` 67.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2684` 21,746, `usace_cwms:Avalon` 66.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2684` vs `usace_cwms:Avalon` 46 af over 7,766 shared days; `usace_cwms:Avalon` vs `usgs:08403800` 441 af over 4,372 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2684` vs `usace_cwms:Avalon` 46 af over 7,768 shared days; `usace_cwms:Avalon` vs `usgs:08403800` 441 af over 4,372 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08404000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -64,7 +64,7 @@ Sources:
 
 **Capacity table:** `Avalon.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2020-01-01, elevations in LOCAL. 2,600 points from 3,158.01 to 3,184.00 ft, 12,374 acre-feet at the top.
 
-**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.1 acre-feet (0.01%), 95th percentile 23.0 acre-feet, over 2,454 days.
+**Validation.** Since 2020-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.1 acre-feet (0.01%), 95th percentile 23.0 acre-feet, over 2,456 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 128691, survey 2023) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -84,13 +84,13 @@ Reported storage departs from the current table in earlier years because older t
 |---|---|---|---|---|
 | 2002-2005 table | 2002-01-01 to 2005-12-31 | 3169.1-3177.3 | 66 | 6,123, high |
 | 2006-2011 table | 2006-01-01 to 2011-12-31 | 3172.2-3176.0 | 62 | 6,123, medium |
-| current table | 2012-01-01 to 2026-09-21 | 3159.3-3178.1 | 0 | 6,123, current_table |
+| current table | 2012-01-01 to 2026-09-23 | 3159.3-3178.1 | 0 | 6,123, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 21,811 days of storage.
+Record: 1965 to 2026, 62 years, 21,812 days of storage.
 
 Fullest years, by annual peak: 1966 144.0%; 2014 131.8%; 1974 100.8%.
 
@@ -100,4 +100,4 @@ Average annual mean fill: 35.9% over the first ten complete years, 30.1% over th
 
 Highest daily releases, measured below the dam: 33,600 cfs on 1966-08-23; 18,485 cfs on 2004-04-03; 17,000 cfs on 1986-06-24.
 
-2026 so far (266 days): peak 4,577 af, 74.8% of full pool; latest low 2,139 af.
+2026 so far (267 days): peak 4,577 af, 74.8% of full pool; latest low 2,139 af.

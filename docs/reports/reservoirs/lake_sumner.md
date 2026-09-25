@@ -41,19 +41,19 @@ Report: `reports/reservoirs/lake_sumner_annual_fill.csv`. Regenerate with `just 
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:Sumner` | 8,349 | 1999-02-28 | 2026-09-23 |
+| elevation | `usace_cwms:Sumner` | 8,350 | 1999-02-28 | 2026-09-24 |
 | inflow | `usace_cwms:Sumner` | 3,157 | 2018-01-02 | 2026-08-25 |
-| storage | `usace_cwms:Sumner` | 8,253 | 1999-02-28 | 2026-09-23 |
-| elevation | `usbr_hydrodata:943` | 18,399 | 1973-01-01 | 2026-09-21 |
-| inflow | `usbr_hydrodata:943` | 995 | 2024-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:943` | 11,660 | 1990-02-28 | 2026-09-22 |
-| storage | `usbr_hydrodata:943` | 22,182 | 1965-10-01 | 2026-09-21 |
+| storage | `usace_cwms:Sumner` | 8,254 | 1999-02-28 | 2026-09-24 |
+| elevation | `usbr_hydrodata:943` | 18,401 | 1973-01-01 | 2026-09-23 |
+| inflow | `usbr_hydrodata:943` | 997 | 2024-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:943` | 11,662 | 1990-02-28 | 2026-09-24 |
+| storage | `usbr_hydrodata:943` | 22,184 | 1965-10-01 | 2026-09-23 |
 | storage | `usgs:08384000` | 18,725 | 1965-10-01 | 2017-01-31 |
-| release (gauge below dam) | `usgs:08384500` | 40,442 | 1912-10-01 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08384500` | 40,443 | 1912-10-01 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:943` 22,182, `usgs:08384000` 63, `usace_cwms:Sumner` 2.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:943` 22,184, `usgs:08384000` 63, `usace_cwms:Sumner` 1.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:943` vs `usace_cwms:Sumner` 78 af over 8,251 shared days; `usace_cwms:Sumner` vs `usgs:08384000` 28 af over 4,733 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:943` vs `usace_cwms:Sumner` 78 af over 8,253 shared days; `usace_cwms:Sumner` vs `usgs:08384000` 28 af over 4,733 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08384500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -67,7 +67,7 @@ Sources:
 
 **Capacity table:** `Sumner.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2026-01-01, elevations in NAVD88. 9,803 points from 4,100.00 to 4,299.00 ft, 218,990 acre-feet at the top.
 
-**Validation.** Since 2026-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 257 days.
+**Validation.** Since 2026-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 259 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11031, survey 2013) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -103,7 +103,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1992-1996 table | 1992-01-01 to 1996-09-16 | 4237.6-4267.0 | 6,267 | 43,366, high | 140,343, medium |
 | 1999-2000 table | 1999-09-29 to 2000-12-31 | 4238.5-4260.4 | 5,291 | 43,366, high | 139,087, medium |
 | 2001-2006 table | 2001-01-01 to 2006-12-31 | 4220.1-4263.0 | 1,088 | 37,646, high | 126,758, medium |
-| 2007-2026 table | 2007-01-01 to 2026-09-21 | 4231.2-4264.8 | 735 | 35,944, high | 124,310, medium |
+| 2007-2026 table | 2007-01-01 to 2026-09-23 | 4231.2-4264.8 | 735 | 35,944, high | 124,310, medium |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -111,7 +111,7 @@ Capacity of the top of conservation fell from 51,135 to 35,944 acre-feet over th
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 22,247 days of storage.
+Record: 1965 to 2026, 62 years, 22,248 days of storage.
 
 Largest use of the flood pool: 1973 peaking at 76.4% of flood capacity on 1973-04-17, 356 days above the conservation pool; 1979 peaking at 69.7% of flood capacity on 1979-07-26, 236 days above the conservation pool; 1974 peaking at 69.5% of flood capacity on 1974-03-08, 139 days above the conservation pool; 1980 peaking at 62.0% of flood capacity on 1980-03-04, 171 days above the conservation pool; 2007 peaking at 59.4% of flood capacity on 2007-11-19, 7 days above the conservation pool.
 
@@ -125,4 +125,4 @@ Annual inflow, complete years: median 86,743 af, largest 127,166 af in 2023, sma
 
 Highest daily releases, measured below the dam: 1,980 cfs on 1973-05-15; 1,720 cfs on 2025-09-09; 1,695 cfs on 2014-08-02.
 
-2026 so far (266 days): peak 24,003 af, 66.8% of full pool; latest low 2,663 af.
+2026 so far (267 days): peak 24,003 af, 66.8% of full pool; latest low 2,675 af.
