@@ -219,7 +219,7 @@ class ZiaMet(Source):
             s = date(y, 1, 1) if not (since and y == since.year) else since
             e = min(date(y, 12, 31), today)
             data = {"sid": sid, "sdate": s.isoformat(), "edate": e.isoformat(), "dtype": "dly",
-                    "output": "CSV", "units": "English"}
+                    "output": "csv", "units": "iu"}  # option codes, not labels
             for k, v in (self.opt("form_extra") or {}).items():
                 data[k] = v
             headers = {"Referer": f"{self.host}{path}", "X-CSRFToken": token or ""}
