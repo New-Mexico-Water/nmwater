@@ -161,6 +161,9 @@ sources:
     concurrency: 2
     min_interval_s: 0.5
     base_url: https://weather.nmsu.edu
+    # tmps (soil temperature) is left out until soil depth is part of the observation key; its
+    # columns are not parsed yet and would collide across depths (issue #63)
+    daily_products: [sfwx, dret]
 
   edi:
     update: {skip: true, reason: "PASTA returned 403; never completed a fetch"}
