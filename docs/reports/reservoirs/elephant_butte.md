@@ -42,17 +42,17 @@ The curated, hand-reviewed treatment of this reservoir, with its full capacity h
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:E Butte` | 7,730 | 2005-02-27 | 2026-09-23 |
-| storage | `usace_cwms:E Butte` | 7,730 | 2005-02-27 | 2026-09-23 |
-| elevation | `usbr_hydrodata:1119` | 40,640 | 1915-03-21 | 2026-09-21 |
-| inflow | `usbr_hydrodata:1119` | 9,395 | 2001-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:1119` | 40,169 | 1916-10-01 | 2026-09-22 |
-| storage | `usbr_hydrodata:1119` | 40,635 | 1915-03-21 | 2026-09-21 |
-| release (gauge below dam) | `usgs:08361000` | 40,170 | 1915-06-15 | 2026-09-23 |
+| elevation | `usace_cwms:E Butte` | 7,731 | 2005-02-27 | 2026-09-24 |
+| storage | `usace_cwms:E Butte` | 7,731 | 2005-02-27 | 2026-09-24 |
+| elevation | `usbr_hydrodata:1119` | 40,642 | 1915-03-21 | 2026-09-23 |
+| inflow | `usbr_hydrodata:1119` | 9,397 | 2001-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:1119` | 40,171 | 1916-10-01 | 2026-09-24 |
+| storage | `usbr_hydrodata:1119` | 40,637 | 1915-03-21 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08361000` | 40,171 | 1915-06-15 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1119` 40,635, `usace_cwms:E Butte` 2.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1119` 40,637, `usace_cwms:E Butte` 1.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:1119` vs `usace_cwms:E Butte` 659 af over 7,728 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:1119` vs `usace_cwms:E Butte` 658 af over 7,730 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08361000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -66,7 +66,7 @@ Sources:
 
 **Capacity table:** `E Butte.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2019-11-01, elevations in LOCAL. 18,001 points from 4,234.00 to 4,414.00 ft, 2,275,698 acre-feet at the top.
 
-**Validation.** Since 2019-11-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,516 days.
+**Validation.** Since 2019-11-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,518 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11028, survey 2017 and 2019) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -98,7 +98,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1988-2000 table | 1988-12-31 to 2000-12-30 | 4378.2-4406.4 | 44,200 | 2,063,815, high |
 | 2000-2008 table | 2000-12-31 to 2008-12-30 | 4294.6-4382.8 | 24,104 | 2,020,284, medium |
 | 2008-2019 table | 2008-12-31 to 2019-12-30 | 4286.4-4353.7 | 12,644 | 2,011,387, low |
-| current table | 2019-12-31 to 2026-09-21 | 4275.3-4348.8 | 0 | 2,010,900, current_table |
+| current table | 2019-12-31 to 2026-09-23 | 4275.3-4348.8 | 0 | 2,010,900, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -106,7 +106,7 @@ Capacity of the full pool fell from 2,643,179 to 2,010,900 acre-feet over the re
 
 ## What the record shows
 
-Record: 1915 to 2026, 112 years, 40,637 days of storage.
+Record: 1915 to 2026, 112 years, 40,638 days of storage.
 
 Fullest years, by annual peak: 1942 103.8%; 1986 100.5%; 1988 99.6%.
 
@@ -118,4 +118,4 @@ Annual inflow, complete years: median 456,473 af, largest 1,031,657 af in 2005, 
 
 Highest daily releases, measured below the dam: 8,220 cfs on 1942-05-22; 6,000 cfs on 1915-06-15; 5,270 cfs on 1994-05-31.
 
-2026 so far (266 days): peak 251,819 af, 12.5% of full pool; latest low 26,732 af.
+2026 so far (267 days): peak 251,819 af, 12.5% of full pool; latest low 26,732 af.

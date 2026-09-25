@@ -37,9 +37,9 @@ Report: `reports/reservoirs/eagle_nest_annual_fill.csv`. Regenerate with `just r
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usgs:07205500` | 3,178 | 2013-10-01 | 2026-09-22 |
-| storage | `usgs:07205500` | 14,320 | 1986-10-07 | 2026-09-23 |
-| release (gauge below dam) | `usgs:07206000` | 27,905 | 1950-05-01 | 2026-09-23 |
+| elevation | `usgs:07205500` | 3,179 | 2013-10-01 | 2026-09-23 |
+| storage | `usgs:07205500` | 14,321 | 1986-10-07 | 2026-09-24 |
+| release (gauge below dam) | `usgs:07206000` | 27,906 | 1950-05-01 | 2026-09-24 |
 
 Release is taken first from the USGS gauge just below the dam (`usgs:07206000`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -51,7 +51,7 @@ Sources:
 
 **Capacity table:** `Eagle Nest.Elev;Stor.Linear.Step;NMISC` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by NMISC, effective 1900-01-01, elevations in NGVD29. 111 points from 8,091.80 to 8,201.80 ft, 99,897 acre-feet at the top.
 
-**Validation.** Since 1900-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 3.2 acre-feet (0.01%), 95th percentile 393.4 acre-feet, over 3,178 days.
+**Validation.** Since 1900-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 3.2 acre-feet (0.01%), 95th percentile 393.4 acre-feet, over 3,179 days.
 
 **Pools.** Pools are defined by elevation; capacity is looked up in the current table, so it changes when the table does. The published storage for each level, where the Corps records one, is shown for comparison and often comes from an older table.
 
@@ -68,7 +68,7 @@ Reported storage departs from the current table in earlier years because older t
 | Era | Dates | Elevation range (ft) | Departure (af) | Full pool capacity (af), confidence |
 |---|---|---|---|---|
 | 2013-2014 table | 2013-10-01 to 2014-12-31 | 8155.7-8160.8 | 363 | 83,232, low |
-| current table | 2015-01-01 to 2026-09-22 | 8156.2-8180.8 | 0 | 81,073, current_table |
+| current table | 2015-01-01 to 2026-09-23 | 8156.2-8180.8 | 0 | 81,073, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -76,7 +76,7 @@ Capacity of the full pool fell from 83,232 to 81,073 acre-feet over the record, 
 
 ## What the record shows
 
-Record: 1986 to 2026, 41 years, 14,320 days of storage.
+Record: 1986 to 2026, 41 years, 14,321 days of storage.
 
 Fullest years, by annual peak: 1994 97.8%; 1995 95.6%; 1993 93.0%.
 
@@ -86,4 +86,4 @@ Average annual mean fill: 82.7% over the first ten complete years, 45.5% over th
 
 Highest daily releases, measured below the dam: 303 cfs on 1994-05-24; 170 cfs on 1995-06-06; 167 cfs on 1987-04-16.
 
-2026 so far (266 days): peak 30,030 af, 37.0% of full pool; latest low 20,585 af.
+2026 so far (267 days): peak 30,030 af, 37.0% of full pool; latest low 20,585 af.

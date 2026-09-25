@@ -39,17 +39,17 @@ Report: `reports/reservoirs/nambe_falls_annual_fill.csv`. Regenerate with `just 
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usbr_hydrodata:2687` | 6,839 | 2008-01-01 | 2026-09-21 |
-| inflow | `usbr_hydrodata:2687` | 6,839 | 2008-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:2687` | 17,339 | 1979-01-01 | 2026-09-22 |
-| storage | `usbr_hydrodata:2687` | 17,587 | 1974-12-31 | 2026-09-21 |
-| elevation | `usgs:08294200` | 9,444 | 1999-10-01 | 2026-09-22 |
-| storage | `usgs:08294200` | 15,607 | 1984-01-01 | 2026-09-23 |
-| release (gauge below dam) | `usgs:08294210` | 17,338 | 1979-01-01 | 2026-09-23 |
+| elevation | `usbr_hydrodata:2687` | 6,841 | 2008-01-01 | 2026-09-23 |
+| inflow | `usbr_hydrodata:2687` | 6,841 | 2008-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:2687` | 17,341 | 1979-01-01 | 2026-09-24 |
+| storage | `usbr_hydrodata:2687` | 17,589 | 1974-12-31 | 2026-09-23 |
+| elevation | `usgs:08294200` | 9,445 | 1999-10-01 | 2026-09-23 |
+| storage | `usgs:08294200` | 15,608 | 1984-01-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08294210` | 17,339 | 1979-01-01 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08294200` 15,607, `usbr_hydrodata:2687` 2,195.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08294200` 15,608, `usbr_hydrodata:2687` 2,195.
 
-Agreement where sites overlap, median absolute difference in storage: `usgs:08294200` vs `usbr_hydrodata:2687` 1 af over 15,392 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usgs:08294200` vs `usbr_hydrodata:2687` 1 af over 15,394 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08294210`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -62,7 +62,7 @@ Sources:
 
 **Capacity table:** `Nambe.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2024-01-01, elevations in the project datum (unstated). 86 points from 6,760.00 to 6,845.00 ft, 2,874 acre-feet at the top.
 
-**Validation.** Since 2024-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.3 acre-feet (0.02%), 95th percentile 0.7 acre-feet, over 996 days.
+**Validation.** Since 2024-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.3 acre-feet (0.02%), 95th percentile 0.7 acre-feet, over 997 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11033, survey 2013) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -83,7 +83,7 @@ Reported storage departs from the current table in earlier years because older t
 | 1999-2000 table | 1999-10-01 to 2000-12-31 | 6789.5-6825.5 | 505 | 2,167, high |
 | 2001-2020 table | 2001-01-01 to 2020-12-22 | 6789.8-6827.2 | 330 | 2,044, high |
 | 2021-2023 table | 2021-01-04 to 2023-12-31 | 6806.0-6827.1 | 79 | 1,749, high |
-| current table | 2024-01-01 to 2026-09-22 | 6808.4-6827.0 | 0 | 1,663, current_table |
+| current table | 2024-01-01 to 2026-09-23 | 6808.4-6827.0 | 0 | 1,663, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -91,7 +91,7 @@ Capacity of the full pool fell from 2,167 to 1,663 acre-feet over the record, 23
 
 ## What the record shows
 
-Record: 1974 to 2026, 53 years, 17,802 days of storage.
+Record: 1974 to 2026, 53 years, 17,803 days of storage.
 
 Fullest years, by annual peak: 2013 102.4%; 2015 100.8%; 2022 100.6%.
 
@@ -103,4 +103,4 @@ Annual inflow, complete years: median 7,618 af, largest 12,355 af in 2023, small
 
 Highest daily releases, measured below the dam: 236 cfs on 1979-06-09; 112 cfs on 1985-06-10; 111 cfs on 1984-05-16.
 
-2026 so far (266 days): peak 1,649 af, 99.2% of full pool; latest low 855 af.
+2026 so far (267 days): peak 1,649 af, 99.2% of full pool; latest low 855 af.

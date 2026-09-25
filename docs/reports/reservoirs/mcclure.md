@@ -36,7 +36,7 @@ Report: `reports/reservoirs/mcclure_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| storage | `usgs:08315500` | 22,258 | 1965-10-01 | 2026-09-23 |
+| storage | `usgs:08315500` | 22,259 | 1965-10-01 | 2026-09-24 |
 
 Sources:
 
@@ -48,7 +48,7 @@ Sources:
 
 ## What the record shows
 
-Record: 1965 to 2026, 62 years, 22,258 days of storage.
+Record: 1965 to 2026, 62 years, 22,259 days of storage.
 
 Fullest years, by annual peak: 1995 99.9%; 1997 99.9%; 2007 99.5%.
 
@@ -56,4 +56,4 @@ Emptiest years, by annual peak: 2015 5.0%; 2002 27.2%; 1971 30.8%.
 
 Average annual mean fill: 54.3% over the first ten complete years, 38.2% over the last ten.
 
-2026 so far (264 days): peak 1,509 af, 46.0% of full pool; latest low 389 af.
+2026 so far (265 days): peak 1,509 af, 46.0% of full pool; latest low 389 af.

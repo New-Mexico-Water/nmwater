@@ -40,17 +40,17 @@ Report: `reports/reservoirs/el_vado_annual_fill.csv`. Regenerate with `just repo
 
 | Series | Site | Observations (daily) | From | To |
 |---|---|---|---|---|
-| elevation | `usace_cwms:El Vado` | 5,324 | 2012-02-23 | 2026-09-23 |
-| storage | `usace_cwms:El Vado` | 5,324 | 2012-02-23 | 2026-09-23 |
-| elevation | `usbr_hydrodata:2685` | 18,892 | 1975-01-01 | 2026-09-21 |
-| inflow | `usbr_hydrodata:2685` | 9,395 | 2001-01-01 | 2026-09-21 |
-| release | `usbr_hydrodata:2685` | 18,893 | 1975-01-01 | 2026-09-22 |
-| storage | `usbr_hydrodata:2685` | 17,072 | 1974-12-31 | 2026-09-21 |
-| release (gauge below dam) | `usgs:08285500` | 33,209 | 1914-05-09 | 2026-09-23 |
+| elevation | `usace_cwms:El Vado` | 5,325 | 2012-02-23 | 2026-09-24 |
+| storage | `usace_cwms:El Vado` | 5,325 | 2012-02-23 | 2026-09-24 |
+| elevation | `usbr_hydrodata:2685` | 18,894 | 1975-01-01 | 2026-09-23 |
+| inflow | `usbr_hydrodata:2685` | 9,397 | 2001-01-01 | 2026-09-23 |
+| release | `usbr_hydrodata:2685` | 18,895 | 1975-01-01 | 2026-09-24 |
+| storage | `usbr_hydrodata:2685` | 17,074 | 1974-12-31 | 2026-09-23 |
+| release (gauge below dam) | `usgs:08285500` | 33,210 | 1914-05-09 | 2026-09-24 |
 
-Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2685` 17,072, `usace_cwms:El Vado` 2.
+Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2685` 17,074, `usace_cwms:El Vado` 1.
 
-Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2685` vs `usace_cwms:El Vado` 62 af over 5,322 shared days.
+Agreement where sites overlap, median absolute difference in storage: `usbr_hydrodata:2685` vs `usace_cwms:El Vado` 62 af over 5,324 shared days.
 
 Release is taken first from the USGS gauge just below the dam (`usgs:08285500`), which measures what actually leaves the reservoir plus minor local inflow and has a longer record than the operator's reported release; the reported release fills days the gauge lacks.
 
@@ -64,7 +64,7 @@ Sources:
 
 **Capacity table:** `El Vado.Elev;Stor.Linear.Step;USBR` from the Corps' CWMS, the operator's current elevation-to-storage table, maintained by USBR, effective 2021-01-01, elevations in LOCAL. 13,901 points from 6,770.00 to 6,909.00 ft, 215,534 acre-feet at the top.
 
-**Validation.** Since 2021-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,090 days.
+**Validation.** Since 2021-01-01, looking up each day's reported elevation in this table reproduces reported storage to a median of 0.0 acre-feet (0.00%), 95th percentile 0.0 acre-feet, over 2,092 days.
 
 Reclamation's sedimentation-survey table (RISE catalog item 11019, survey 2007) is also in the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is what the operator computes storage with today.
 
@@ -89,7 +89,7 @@ Reported storage departs from the current table in earlier years because older t
 | 2006-2009 table | 2006-01-01 to 2009-12-31 | 6842.7-6900.2 | -1,606 | 184,343, low |
 | 2010-2018 table | 2010-01-01 to 2018-12-31 | 6793.0-6899.0 | 1,446 | 184,343, high |
 | 2019-2020 table | 2019-01-01 to 2020-12-31 | 6805.6-6876.1 | 1,285 | 184,343, medium |
-| current table | 2021-01-01 to 2026-09-21 | 6783.4-6828.3 | 0 | 184,343, current_table |
+| current table | 2021-01-01 to 2026-09-23 | 6783.4-6828.3 | 0 | 184,343, current_table |
 
 Confidence: `current_table` means reported storage reproduces from the current table; `high` means the lake reached the pool elevation during that era, or came within 10 ft; `medium` within 30 ft; `low` farther, or the monotone fit had to move the estimate more than 2%.
 
@@ -97,7 +97,7 @@ Capacity of the full pool fell from 189,987 to 184,343 acre-feet over the record
 
 ## What the record shows
 
-Record: 1974 to 2026, 53 years, 17,074 days of storage.
+Record: 1974 to 2026, 53 years, 17,075 days of storage.
 
 Fullest years, by annual peak: 1986 103.2%; 2009 100.2%; 2010 99.9%.
 
@@ -109,4 +109,4 @@ Annual inflow, complete years: median 259,290 af, largest 482,611 af in 2019, sm
 
 Highest daily releases, measured below the dam: 5,690 cfs on 1985-05-06; 5,070 cfs on 2009-05-09; 4,910 cfs on 1984-05-17.
 
-2026 so far (266 days): peak 25,447 af, 13.8% of full pool; latest low 16,025 af.
+2026 so far (267 days): peak 25,447 af, 13.8% of full pool; latest low 16,025 af.
