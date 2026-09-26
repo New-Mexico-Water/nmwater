@@ -1,0 +1,959 @@
+segment,gauge,source_used,week_start,mean_cfs,n_days,in_segment_mean
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-09-22,211.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-09-29,221.1,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-10-06,225.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-10-13,639.3,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-10-20,622.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-10-27,499.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-11-03,761.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-11-10,768.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-11-17,748.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-11-24,725.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-12-01,625.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-12-08,589.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-12-15,597.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-12-22,595.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2025-12-29,548.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-01-05,547.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-01-12,447.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-01-19,448.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-01-26,402.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-02-02,470.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-02-09,517.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-02-16,487.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-02-23,499.3,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-03-02,666.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-03-09,652.3,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-03-16,580.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-03-23,490.3,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-03-30,287.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-04-06,269.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-04-13,255.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-04-20,224.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-04-27,215.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-05-04,255.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-05-11,223.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-05-18,225.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-05-25,244.4,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-06-01,212.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-06-08,192.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-06-15,191.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-06-22,175.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-06-29,157.3,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-07-06,146.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-07-13,144.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-07-20,141.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-07-27,143.6,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-08-03,139.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-08-10,141.1,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-08-17,141.7,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-08-24,145.1,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-08-31,145.0,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-09-07,140.9,7,True
+Upper Rio Grande,"Rio Grande At Embudo, NM",usgs,2026-09-14,154.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-09-22,376.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-09-29,291.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-10-06,248.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-10-13,805.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-10-20,789.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-10-27,572.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-11-03,806.9,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-11-10,847.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-11-17,875.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-11-24,937.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-12-01,1775.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-12-08,1691.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-12-15,1016.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-12-22,832.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2025-12-29,784.9,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-01-05,805.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-01-12,703.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-01-19,684.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-01-26,589.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-02-02,631.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-02-09,677.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-02-16,642.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-02-23,638.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-03-02,767.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-03-09,747.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-03-16,689.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-03-23,653.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-03-30,641.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-04-06,585.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-04-13,525.9,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-04-20,439.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-04-27,433.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-05-04,362.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-05-11,321.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-05-18,421.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-05-25,322.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-06-01,302.9,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-06-08,332.9,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-06-15,278.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-06-22,323.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-06-29,298.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-07-06,282.0,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-07-13,305.6,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-07-20,242.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-07-27,231.4,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-08-03,244.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-08-10,243.3,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-08-17,266.7,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-08-24,188.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-08-31,396.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-09-07,170.1,7,True
+Upper Rio Grande,"Rio Grande At Otowi Bridge, NM",usgs,2026-09-14,341.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-09-22,190.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-09-29,198.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-10-06,203.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-10-13,637.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-10-20,588.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-10-27,486.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-11-03,755.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-11-10,747.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-11-17,726.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-11-24,710.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-12-01,619.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-12-08,584.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-12-15,594.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-12-22,596.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2025-12-29,552.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-01-05,549.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-01-12,448.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-01-19,446.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-01-26,398.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-02-02,471.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-02-09,517.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-02-16,481.0,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-02-23,485.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-03-02,616.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-03-09,592.0,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-03-16,514.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-03-23,434.9,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-03-30,239.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-04-06,236.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-04-13,227.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-04-20,204.9,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-04-27,204.0,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-05-04,241.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-05-11,214.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-05-18,224.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-05-25,242.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-06-01,211.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-06-08,193.7,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-06-15,192.9,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-06-22,171.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-06-29,152.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-07-06,139.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-07-13,139.4,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-07-20,139.1,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-07-27,140.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-08-03,134.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-08-10,135.0,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-08-17,137.3,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-08-24,139.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-08-31,138.9,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-09-07,139.6,7,True
+Upper Rio Grande,"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usgs,2026-09-14,148.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-09-22,65.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-09-29,71.3,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-10-06,77.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-10-13,486.2,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-10-20,392.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-10-27,341.3,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-11-03,612.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-11-10,572.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-11-17,551.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-11-24,530.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-12-01,450.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-12-08,433.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-12-15,432.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-12-22,435.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2025-12-29,399.7,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-01-05,392.1,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-01-12,309.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-01-19,302.7,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-01-26,262.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-02-02,335.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-02-09,375.7,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-02-16,339.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-02-23,354.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-03-02,478.1,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-03-09,454.3,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-03-16,387.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-03-23,292.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-03-30,112.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-04-06,111.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-04-13,101.3,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-04-20,85.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-04-27,86.2,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-05-04,117.7,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-05-11,90.1,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-05-18,99.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-05-25,110.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-06-01,85.1,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-06-08,69.2,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-06-15,68.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-06-22,56.3,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-06-29,50.5,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-07-06,44.2,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-07-13,39.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-07-20,38.9,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-07-27,38.0,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-08-03,35.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-08-10,33.4,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-08-17,32.6,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-08-24,32.8,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-08-31,36.5,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-09-07,34.1,7,True
+Upper Rio Grande,"Rio Grande Near Cerro, NM",usgs,2026-09-14,34.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-09-22,204.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-09-29,191.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-10-06,136.7,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-10-13,449.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-10-20,849.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-10-27,465.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-11-03,657.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-11-10,795.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-11-17,828.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-11-24,957.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-12-01,1721.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-12-08,1821.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-12-15,1016.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-12-22,741.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2025-12-29,707.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-01-05,795.1,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-01-12,615.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-01-19,639.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-01-26,535.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-02-02,592.1,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-02-09,629.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-02-16,599.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-02-23,564.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-03-02,701.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-03-09,722.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-03-16,630.1,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-03-23,513.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-03-30,482.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-04-06,452.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-04-13,399.7,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-04-20,328.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-04-27,330.7,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-05-04,222.1,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-05-11,222.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-05-18,278.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-05-25,212.4,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-06-01,151.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-06-08,138.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-06-15,173.7,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-06-22,155.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-06-29,159.1,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-07-06,127.3,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-07-13,132.6,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-07-20,157.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-07-27,90.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-08-03,55.0,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-08-10,62.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-08-17,95.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-08-24,66.2,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-08-31,200.7,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-09-07,67.9,7,True
+Rio Grande-Santa Fe,"Rio Grande Below Cochiti Dam, NM",usgs,2026-09-14,248.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-09-22,40.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-09-29,307.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-10-06,400.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-10-13,262.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-10-20,584.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-10-27,416.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-11-03,567.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-11-10,790.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-11-17,849.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-11-24,973.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-12-01,1112.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-12-08,1507.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-12-15,1140.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-12-22,667.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2025-12-29,576.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-01-05,675.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-01-12,549.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-01-19,566.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-01-26,468.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-02-02,447.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-02-09,492.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-02-16,507.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-02-23,461.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-03-02,319.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-03-09,321.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-03-16,200.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-03-23,89.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-03-30,9.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-04-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-04-13,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-04-20,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-04-27,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-05-04,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-05-11,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-05-18,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-05-25,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-06-01,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-06-08,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-06-15,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-06-22,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-06-29,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-07-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-07-13,28.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-07-20,18.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-07-27,18.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-08-03,3.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-08-10,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-08-17,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-08-24,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-08-31,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usgs,2026-09-07,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usbr_hydrodata,2026-09-14,43.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-09-22,80.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-09-29,131.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-10-06,79.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-10-13,283.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-10-20,735.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-10-27,432.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-11-03,596.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-11-10,747.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-11-17,772.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-11-24,857.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-12-01,1365.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-12-08,1611.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-12-15,966.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-12-22,628.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2025-12-29,580.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-01-05,664.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-01-12,520.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-01-19,563.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-01-26,469.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-02-02,509.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-02-09,546.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-02-16,524.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-02-23,481.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-03-02,469.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-03-09,481.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-03-16,411.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-03-23,327.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-03-30,295.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-04-06,258.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-04-13,222.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-04-20,176.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-04-27,140.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-05-04,69.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-05-11,31.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-05-18,84.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-05-25,42.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-06-01,3.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-06-08,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-06-15,5.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-06-22,0.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-06-29,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-07-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-07-13,3.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-07-20,22.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-07-27,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-08-03,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-08-10,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-08-17,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-08-24,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-08-31,16.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-09-07,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Albuquerque, NM",usgs,2026-09-14,269.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-09-22,135.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-09-29,270.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-10-06,272.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-10-13,143.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-10-20,417.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-10-27,320.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-11-03,498.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-11-10,725.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-11-17,790.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-11-24,904.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-12-01,1168.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-12-08,1615.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-12-15,1186.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-12-22,696.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2025-12-29,625.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-01-05,744.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-01-12,681.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-01-19,659.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-01-26,568.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-02-02,534.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-02-09,586.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-02-16,595.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-02-23,524.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-03-02,386.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-03-09,386.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-03-16,254.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-03-23,147.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-03-30,102.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-04-06,63.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-04-13,37.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-04-20,27.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-04-27,29.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-05-04,28.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-05-11,18.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-05-18,7.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-05-25,4.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-06-01,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-06-08,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-06-15,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-06-22,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-06-29,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-07-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-07-13,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-07-20,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-07-27,4.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-08-03,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-08-10,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-08-17,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-08-24,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-08-31,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-09-07,15.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Bridge Near Escondida, NM",usgs,2026-09-14,169.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-09-22,44.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-09-29,129.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-10-06,64.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-10-13,237.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-10-20,765.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-10-27,506.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-11-03,665.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-11-10,786.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-11-17,783.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-11-24,867.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-12-01,1288.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-12-08,1567.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-12-15,1011.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-12-22,712.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2025-12-29,627.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-01-05,664.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-01-12,556.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-01-19,550.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-01-26,494.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-02-02,537.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-02-09,561.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-02-16,564.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-02-23,508.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-03-02,478.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-03-09,471.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-03-16,422.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-03-23,321.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-03-30,297.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-04-06,263.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-04-13,208.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-04-20,188.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-04-27,148.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-05-04,86.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-05-11,43.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-05-18,88.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-05-25,50.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-06-01,28.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-06-08,30.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-06-15,34.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-06-22,39.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-06-29,38.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-07-06,41.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-07-13,40.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-07-20,62.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-07-27,45.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-08-03,37.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-08-10,36.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-08-17,37.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-08-24,39.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-08-31,44.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-09-07,44.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At Isleta Lakes Nr Isleta, NM",usgs,2026-09-14,676.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-09-22,8.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-09-29,64.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-10-06,65.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-10-13,207.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-10-20,634.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-10-27,417.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-11-03,582.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-11-10,779.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-11-17,774.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-11-24,879.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-12-01,1293.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-12-08,1700.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-12-15,1113.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-12-22,725.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2025-12-29,669.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-01-05,714.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-01-12,579.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-01-19,590.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-01-26,512.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-02-02,506.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-02-09,566.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-02-16,567.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-02-23,467.4,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-03-02,401.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-03-09,370.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-03-16,200.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-03-23,92.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-03-30,74.9,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-04-06,61.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-04-13,26.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-04-20,15.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-04-27,14.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-05-04,15.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-05-11,12.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-05-18,10.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-05-25,14.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-06-01,12.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-06-08,8.7,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-06-15,4.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-06-22,3.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-06-29,1.3,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-07-06,1.2,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-07-13,2.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-07-20,1.8,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-07-27,2.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-08-03,0.5,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-08-10,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-08-17,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-08-24,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-08-31,0.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-09-07,0.1,7,True
+Rio Grande-Albuquerque,"Rio Grande At State Hwy 346 Near Bosque, NM",usgs,2026-09-14,132.6,7,True
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-08-10,55.5,4,False
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-08-17,56.2,7,False
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-08-24,57.7,7,False
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-08-31,61.0,7,False
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-09-07,59.5,7,False
+Rio Grande-Albuquerque,"Rio Grande At Valle De Oro, NM",usgs,2026-09-14,565.2,7,False
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-09-22,143.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-09-29,224.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-10-06,361.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-10-13,211.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-10-20,567.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-10-27,401.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-11-03,578.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-11-10,800.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-11-17,812.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-11-24,943.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usace_cwms,2025-12-01,1375.1,4,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-12-08,1665.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-12-15,1191.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-12-22,746.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2025-12-29,689.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-01-05,756.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-01-12,669.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-01-19,661.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-01-26,583.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-02-02,570.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-02-09,618.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-02-16,632.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-02-23,564.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-03-02,435.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-03-09,428.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-03-16,258.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-03-23,123.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-03-30,80.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-04-06,42.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-04-13,23.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-04-20,24.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-04-27,28.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-05-04,23.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-05-11,15.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-05-18,10.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-05-25,9.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-06-01,2.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-06-08,1.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-06-15,1.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-06-22,1.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-06-29,1.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-07-06,1.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-07-13,1.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-07-20,1.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-07-27,8.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-08-03,0.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-08-10,0.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-08-17,0.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-08-24,0.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-08-31,0.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-09-07,12.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway At San Acacia, NM",usgs,2026-09-14,327.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-09-22,50.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-09-29,66.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-10-06,76.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-10-13,169.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-10-20,625.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-10-27,373.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-11-03,587.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-11-10,783.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-11-17,793.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-11-24,896.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-12-01,1236.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-12-08,1651.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-12-15,1118.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-12-22,704.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2025-12-29,622.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-01-05,669.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-01-12,544.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-01-19,564.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-01-26,480.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-02-02,480.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-02-09,544.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-02-16,545.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-02-23,454.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-03-02,398.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-03-09,367.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-03-16,183.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-03-23,67.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-03-30,56.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-04-06,49.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-04-13,21.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-04-20,9.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-04-27,2.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-05-04,0.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-05-11,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-05-18,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-05-25,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-06-01,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-06-08,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-06-15,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-06-22,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-06-29,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-07-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-07-13,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-07-20,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-07-27,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-08-03,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-08-10,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-08-17,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-08-24,0.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-08-31,6.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-09-07,0.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Floodway Near Bernardo, NM",usgs,2026-09-14,154.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-09-22,32.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-09-29,150.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-10-06,69.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-10-13,280.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-10-20,625.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-10-27,422.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-11-03,539.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-11-10,701.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-11-17,754.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-11-24,858.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-12-01,1303.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-12-08,1704.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-12-15,1120.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-12-22,768.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2025-12-29,669.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-01-05,691.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-01-12,529.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-01-19,543.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-01-26,494.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-02-02,533.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-02-09,600.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-02-16,582.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-02-23,511.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-03-02,435.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-03-09,427.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-03-16,230.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-03-23,146.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-03-30,118.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-04-06,93.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-04-13,61.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-04-20,45.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-04-27,51.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-05-04,24.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-05-11,20.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-05-18,52.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-05-25,21.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-06-01,14.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-06-08,13.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-06-15,11.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-06-22,12.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-06-29,13.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-07-06,12.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-07-13,12.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-07-20,12.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-07-27,12.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-08-03,11.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-08-10,13.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-08-17,14.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-08-24,13.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-08-31,15.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-09-07,16.5,7,True
+Rio Grande-Albuquerque,"Rio Grande Near Bosque Farms, NM",usgs,2026-09-14,315.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-09-22,112.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-09-29,148.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-10-06,97.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-10-13,297.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-10-20,755.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-10-27,464.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-11-03,601.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-11-10,742.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-11-17,737.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-11-24,833.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-12-01,1326.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-12-08,1494.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-12-15,988.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-12-22,757.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2025-12-29,694.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-01-05,751.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-01-12,603.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-01-19,610.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-01-26,534.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-02-02,551.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-02-09,575.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-02-16,554.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-02-23,494.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-03-02,487.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-03-09,486.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-03-16,418.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-03-23,337.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-03-30,314.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-04-06,299.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-04-13,277.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-04-20,237.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-04-27,195.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-05-04,107.1,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-05-11,69.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-05-18,133.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-05-25,76.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-06-01,17.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-06-08,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-06-15,4.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-06-22,6.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-06-29,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-07-06,0.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-07-13,9.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-07-20,38.7,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-07-27,6.8,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-08-03,5.6,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-08-10,5.2,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-08-17,9.0,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-08-24,3.9,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-08-31,87.4,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-09-07,12.3,7,True
+Rio Grande-Albuquerque,"Rio Grande Nr Alameda, NM",usgs,2026-09-14,358.5,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-09-22,70.8,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-09-29,283.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-10-06,225.9,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-10-13,73.9,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-10-20,372.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-10-27,192.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-11-03,261.7,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-11-10,536.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-11-17,647.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-11-24,925.7,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-12-01,886.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-12-08,1091.4,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-12-15,758.3,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-12-22,522.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2025-12-29,556.3,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-01-05,632.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-01-12,581.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-01-19,491.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-01-26,499.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-02-02,408.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-02-09,511.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-02-16,601.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-02-23,521.4,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-03-02,422.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-03-09,362.3,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-03-16,223.3,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-03-23,100.9,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-03-30,85.2,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-04-06,118.7,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-04-13,105.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-04-20,89.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-04-27,81.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-05-04,73.7,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-05-11,63.2,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-05-18,47.9,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-05-25,46.9,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-06-01,45.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-06-08,32.5,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-06-15,24.7,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-06-22,16.2,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-06-29,8.6,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-07-06,1.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-07-13,0.0,5,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-07-20,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-07-27,0.0,6,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-08-03,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-08-10,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-08-17,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-08-24,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-08-31,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-09-07,0.1,7,True
+Elephant Butte Reservoir,"Rio Grande At Narrows In Elephant Butte Res., NM",usgs,2026-09-14,216.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-09-22,20.4,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-09-29,185.3,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-10-06,169.5,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-10-13,52.5,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-10-20,315.9,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-10-27,189.9,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-11-03,303.7,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-11-10,503.1,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-11-17,570.1,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-11-24,639.9,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-12-01,765.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-12-08,1222.9,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-12-15,774.3,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-12-22,443.4,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2025-12-29,476.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-01-05,514.4,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-01-12,452.1,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-01-19,408.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-01-26,392.1,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-02-02,352.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-02-09,397.4,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-02-16,432.4,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-02-23,350.6,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-03-02,248.7,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-03-09,264.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-03-16,135.9,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-03-23,10.1,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-03-30,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-04-06,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-04-13,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-04-20,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-04-27,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-05-04,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-05-11,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-05-18,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-05-25,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-06-01,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-06-08,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-06-15,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-06-22,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-06-29,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-07-06,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-07-13,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-07-20,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-07-27,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-08-03,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-08-10,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-08-17,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-08-24,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-08-31,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-09-07,0.0,7,True
+Elephant Butte Reservoir,"Rio Grande At San Marcial, NM",usgs,2026-09-14,135.2,7,True
+Elephant Butte Reservoir,Rio Grande At The Narrows In Elephant Butte Lake,nwps,2026-09-14,138.0,4,False
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-09-22,0.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-09-29,0.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-10-06,0.2,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-10-13,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-10-20,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-10-27,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-11-03,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-11-10,0.2,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-11-17,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-11-24,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-12-01,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-12-08,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-12-15,0.5,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-12-22,0.5,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2025-12-29,0.5,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-01-05,0.5,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-01-12,0.5,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-01-19,0.6,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-01-26,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-02-02,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-02-09,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-02-16,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-02-23,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-03-02,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-03-09,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-03-16,0.2,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-03-23,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-03-30,0.4,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-04-06,0.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-04-13,0.2,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-04-20,0.6,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-04-27,669.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-05-04,534.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-05-11,512.6,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-05-18,629.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-05-25,1639.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-06-01,2102.9,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-06-08,2005.7,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-06-15,2305.7,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-06-22,2334.3,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-06-29,1232.9,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-07-06,995.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-07-13,843.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-07-20,776.6,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-07-27,151.1,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-08-03,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-08-10,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-08-17,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-08-24,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-08-31,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-09-07,0.0,7,True
+Caballo,"Rio Grande Below Elephant Butte Dam, NM",usgs,2026-09-14,0.1,7,True
+El Paso-Las Cruces,Rio Grande At Hayners Bridge Near Rincon,nwps,2026-08-17,614.0,5,False
+El Paso-Las Cruces,Rio Grande At Hayners Bridge Near Rincon,nwps,2026-08-24,614.0,7,False
+El Paso-Las Cruces,Rio Grande At Hayners Bridge Near Rincon,nwps,2026-08-31,614.0,7,False
+El Paso-Las Cruces,Rio Grande At Hayners Bridge Near Rincon,nwps,2026-09-07,614.0,5,False
+El Paso-Las Cruces,Rio Grande At Hayners Bridge Near Rincon,nwps,2026-09-14,1146.7,7,False
+El Paso-Las Cruces,Rio Grande Below Caballo Dam,usbr_albuq,2026-09-07,1.0,4,False
+El Paso-Las Cruces,Rio Grande Below Caballo Dam,usbr_albuq,2026-09-14,1.0,5,False
+El Paso-Las Cruces,Rio Grande Below Leasburg Dam,nwps,2026-08-17,3185.2,6,False
+El Paso-Las Cruces,Rio Grande Below Leasburg Dam,nwps,2026-08-24,3200.0,7,False
+El Paso-Las Cruces,Rio Grande Below Leasburg Dam,nwps,2026-08-31,1871.7,7,False
+El Paso-Las Cruces,Rio Grande Below Leasburg Dam,nwps,2026-09-07,1366.4,7,False
+El Paso-Las Cruces,Rio Grande Below Leasburg Dam,nwps,2026-09-14,2050.1,7,False
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-09-22,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-09-29,0.3,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-10-06,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-10-13,1.5,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-10-20,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-10-27,1.4,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-11-03,0.4,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-11-10,0.7,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-11-17,0.7,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-11-24,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-12-01,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-12-08,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-12-15,0.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-12-22,0.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2025-12-29,0.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-01-05,0.2,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-01-12,0.2,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-01-19,0.2,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-01-26,0.3,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-02-02,0.3,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-02-09,0.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-02-16,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-02-23,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-03-02,0.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-03-09,0.5,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-03-16,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-03-23,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-03-30,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-04-06,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-04-13,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-04-20,1.0,5,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-05-11,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-05-18,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-05-25,1099.2,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-06-01,2773.7,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-06-08,2663.6,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-06-15,2458.1,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-06-22,2233.8,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-06-29,1210.4,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-07-06,1050.3,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-07-13,1010.6,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-07-20,774.9,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-07-27,268.2,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usace_cwms,2026-08-03,0.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-08-10,0.9,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-08-17,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-08-24,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-08-31,1.0,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-09-07,0.9,7,True
+El Paso-Las Cruces,"Rio Grande Blw Caballo Dam, NM",usbr_hydrodata,2026-09-14,1.0,7,True
+El Paso-Las Cruces,Rio Grande Near Mesilla,nwps,2026-08-17,119.9,5,False
+El Paso-Las Cruces,Rio Grande Near Mesilla,nwps,2026-08-24,116.7,7,False
+El Paso-Las Cruces,Rio Grande Near Mesilla,nwps,2026-08-31,115.5,7,False
+El Paso-Las Cruces,Rio Grande Near Mesilla,nwps,2026-09-07,114.0,7,False
+El Paso-Las Cruces,Rio Grande Near Mesilla,nwps,2026-09-14,318.3,7,False

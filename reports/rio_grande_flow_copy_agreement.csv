@@ -1,0 +1,45 @@
+gauge,source,overlap_days,median_abs_pct_diff,days_off
+"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usace_cwms,361,3.5,71
+"Rio Grande Above Us Hwy 380 Nr San Antonio, NM",usbr_hydrodata,357,0.0,0
+"Rio Grande At Albuquerque, NM",codwr,362,1.8,40
+"Rio Grande At Albuquerque, NM",nwps,36,4.0,2
+"Rio Grande At Albuquerque, NM",usace_cwms,361,7.1,88
+"Rio Grande At Albuquerque, NM",usbr_hydrodata,362,0.0,0
+"Rio Grande At Bridge Near Escondida, NM",usace_cwms,361,13.5,134
+"Rio Grande At Bridge Near Escondida, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande At Embudo, NM",codwr,364,0.5,6
+"Rio Grande At Embudo, NM",nwps,38,0.2,4
+"Rio Grande At Embudo, NM",usace_cwms,360,0.8,6
+"Rio Grande At Embudo, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande At Isleta Lakes Nr Isleta, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande At Otowi Bridge, NM",codwr,364,2.1,32
+"Rio Grande At Otowi Bridge, NM",nwps,38,13.5,21
+"Rio Grande At Otowi Bridge, NM",usace_cwms,360,2.6,33
+"Rio Grande At Otowi Bridge, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande At San Marcial, NM",codwr,364,1.1,65
+"Rio Grande At San Marcial, NM",usace_cwms,38,5.2,0
+"Rio Grande At San Marcial, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande At State Hwy 346 Near Bosque, NM",usace_cwms,361,3.9,51
+"Rio Grande At State Hwy 346 Near Bosque, NM",usbr_hydrodata,363,0.0,0
+"Rio Grande Below Cochiti Dam, NM",nwps,38,12.2,21
+"Rio Grande Below Cochiti Dam, NM",usace_cwms,361,0.7,5
+"Rio Grande Below Cochiti Dam, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande Below Elephant Butte Dam, NM",codwr,362,2.2,4
+"Rio Grande Below Elephant Butte Dam, NM",usace_cwms,361,2.4,5
+"Rio Grande Below Elephant Butte Dam, NM",usbr_hydrodata,362,0.0,0
+"Rio Grande Blw Caballo Dam, NM",usace_cwms,336,10.3,30
+"Rio Grande Blw Taos Junction Bridge Near Taos, NM",codwr,364,4.4,34
+"Rio Grande Blw Taos Junction Bridge Near Taos, NM",nwps,38,11.5,26
+"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usace_cwms,361,4.6,38
+"Rio Grande Blw Taos Junction Bridge Near Taos, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande Floodway At San Acacia, NM",codwr,354,2.3,40
+"Rio Grande Floodway At San Acacia, NM",usace_cwms,322,3.0,45
+"Rio Grande Floodway At San Acacia, NM",usbr_hydrodata,354,0.0,0
+"Rio Grande Floodway Near Bernardo, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande Near Bosque Farms, NM",usace_cwms,361,7.2,102
+"Rio Grande Near Bosque Farms, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande Near Cerro, NM",codwr,364,1.2,1
+"Rio Grande Near Cerro, NM",nwps,38,0.6,0
+"Rio Grande Near Cerro, NM",usace_cwms,361,2.4,0
+"Rio Grande Near Cerro, NM",usbr_hydrodata,364,0.0,0
+"Rio Grande Nr Alameda, NM",usace_cwms,364,3.3,90
