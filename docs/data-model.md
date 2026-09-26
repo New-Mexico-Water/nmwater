@@ -170,6 +170,21 @@ when marked surface water (`grnd_wtr_s = S`), so a well is never labelled with a
 | `huc8` | the watershed the reach belongs to |
 | `snap_distance_m` | how far the site's coordinates are from the reach; treat as a confidence signal |
 
+### River segments
+
+`river_segments` (a view over `site_reaches`) groups river sites by the watershed (HUC8) they sit
+in, with the HUC8's name. This is the archive's segmentation of a river: the Rio Grande's sites fall
+in Upper Rio Grande, Rio Grande-Santa Fe, Rio Grande-Albuquerque, Elephant Butte Reservoir, Caballo,
+El Paso-Las Cruces and Rio Grande-Fort Quitman, among others. HUC8s are watershed units, not river
+reaches, so they do not line up exactly with the Upper/Middle/Lower Rio Grande convention.
+Keep sites on the river itself with `river_method <> 'downstream'`.
+
+```sql
+SELECT huc8_name, count(*) FROM river_segments
+WHERE river_name = 'Rio Grande' AND river_method <> 'downstream' AND state = 'NM'
+GROUP BY 1 ORDER BY 2 DESC;
+```
+
 `flowlines` carries the network's own attributes per COMID (length, from/to node, hydrologic
 sequence, path length, divergence) without geometry; the reach geometry itself lives in
 `data/grids/nhdplus/flowlines.gpkg` for GIS tools.

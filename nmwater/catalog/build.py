@@ -161,6 +161,15 @@ def build(settings: Settings) -> Path:
     flow_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "flowline_attributes.parquet"
     if flow_pq.exists():
         con.execute(f"CREATE TABLE flowlines AS SELECT * FROM read_parquet('{flow_pq.as_posix()}')")
+    # River segments = the watershed (HUC8) each river site sits in. This is the segmentation to use
+    # for "the Middle Rio Grande" style questions: filter river_name and river_method <> 'downstream'
+    # (that keeps sites on the river itself), then group by huc8_name. Manual rows have no HUC8.
+    if flow_pq.exists():
+        con.execute("""CREATE VIEW river_segments AS
+                       SELECT r.site_uid, s.source, s.site_type, s.state, r.river_name, r.river_method,
+                              r.huc8, n.huc8_name, r.totdasqkm
+                       FROM site_reaches r JOIN sites s USING (site_uid)
+                       LEFT JOIN (SELECT DISTINCT huc8, huc8_name FROM flowlines) n ON n.huc8 = r.huc8""")
     wb_sites_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "site_waterbodies.parquet"
     if wb_sites_pq.exists():
         con.execute(f"CREATE TABLE site_waterbodies AS SELECT * FROM read_parquet('{wb_sites_pq.as_posix()}')")
