@@ -31,6 +31,56 @@ DISTRICTS = {"1": "Albuquerque", "2": "Roswell", "3": "Deming", "4": "Las Cruces
 MIN_DATE = date(2011, 1, 1)
 
 
+def _norm(name) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(name or "").lower())
+
+
+def _dms(v) -> float | None:
+    """'35° 49' 16.069" N' -> 35.8211; west/south negative."""
+    m = re.match(r"\s*(\d+)\D+(\d+)\D+([\d.]+)\D*([NSEW])", str(v or ""))
+    if not m:
+        return None
+    x = int(m.group(1)) + int(m.group(2)) / 60 + float(m.group(3)) / 3600
+    return -x if m.group(4) in "SW" else x
+
+
+def _rtm_coords(r: dict) -> tuple[float | None, float | None]:
+    """Decimal degrees, else the DMS strings, else UTM zone 13N (NAD83) northing/easting."""
+    lat, lon = r.get("lat_ddd"), r.get("long_ddd")
+    if pd.notna(lat) and pd.notna(lon):
+        return float(lat), float(lon)
+    lat, lon = _dms(r.get("Latitude")), _dms(r.get("Longitude"))
+    if lat is not None and lon is not None:
+        return lat, lon
+    n, e = r.get("Northing"), r.get("Easting")
+    if pd.notna(n) and pd.notna(e):
+        from pyproj import Transformer
+        lon, lat = Transformer.from_crs(26913, 4326, always_xy=True).transform(float(e), float(n))
+        return lat, lon
+    return None, None
+
+
+def _rtm_index(path) -> tuple[dict, dict]:
+    """OSE real-time meters keyed by Station_ID, plus by name for meters without one (unique names only)."""
+    by_id: dict = {}
+    names: dict = {}
+    if not path.exists():
+        return by_id, {}
+    for r in pd.read_parquet(path).to_dict("records"):
+        lat, lon = _rtm_coords(r)
+        if lat is None:
+            continue
+        val = (lat, lon, r.get("Ditch_Name"), r.get("River_src"))
+        sid = r.get("Station_ID")
+        if pd.notna(sid) and sid not in ("", 0):
+            by_id[str(int(sid))] = val
+        else:
+            for k in {_norm(r.get("Gauge_name")), _norm(r.get("Ditch_Name"))} - {""}:
+                names.setdefault(k, []).append(val)
+    by_name = {k: v[0] for k, v in names.items() if len(v) == 1}
+    return by_id, by_name
+
+
 @register
 class OSEMeas(Source):
     name = "ose_meas"
@@ -58,22 +108,21 @@ class OSEMeas(Source):
     def discover(self) -> pd.DataFrame:
         st = self._stations(refresh=True)
         self.store.write_table(st, "reference", self.name, "stations")
-        rtm_lat = {}
-        p = self.store.root / "reference" / "source=ose_arcgis" / "real_time_meters.parquet"
-        if p.exists():
-            rtm = pd.read_parquet(p)
-            for r in rtm.to_dict("records"):
-                if r.get("Station_ID") not in (None, "", 0):
-                    rtm_lat[str(int(r["Station_ID"]))] = (r.get("lat_ddd"), r.get("long_ddd"), r.get("Ditch_Name"), r.get("River_src"))
+        by_id, by_name = _rtm_index(self.store.root / "reference" / "source=ose_arcgis" / "real_time_meters.parquet")
         rows = []
         for r in st.to_dict("records"):
-            lat, lon, ditch, river = rtm_lat.get(r["id"], (None, None, None, None))
+            hit = by_id.get(str(r["id"]))
+            how = "rtm_station_id" if hit else None
+            if hit is None and _norm(r["name"]) in by_name:
+                hit, how = by_name[_norm(r["name"])], "rtm_unique_name"
+            lat, lon, ditch, river = hit or (None, None, None, None)
+            how = how if lat is not None else None
             rows.append({
                 "native_id": r["id"], "name": r["name"], "lat": lat, "lon": lon,
                 "site_type": "well" if r["type"] == "G" else "diversion" if any(k in r["name"].lower() for k in ("ditch", "acequia", "canal", "lateral", "flume", "drain")) else "stream",
                 "agency": "NM OSE", "state": "NM", "basin": r["basin"], "active": r["status"] == "Y",
                 "raw_metadata": json.dumps({"district": DISTRICTS.get(r["dist"], r["dist"]), "type": r["type"],
-                                            "rtm_ditch_name": ditch, "rtm_river_src": river,
+                                            "rtm_ditch_name": ditch, "rtm_river_src": river, "coord_source": how,
                                             "url": f"{self.base}/site.jsp?id={r['id']}&status={r['status']}&type={r['type']}&dist={r['dist']}"}),
             })
         return pd.DataFrame(rows)

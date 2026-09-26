@@ -28,3 +28,26 @@ def test_pod_sites_handle_missing_elevation_and_depth():
     out = _src()._pod_sites(df)
     assert out.native_id.tolist() == ["pod:RG-59185-POD1"]
     assert out.site_type.tolist() == ["diversion"] and out.lat.notna().all()
+
+
+def test_ose_meas_coordinates_fall_back_and_skip_missing_station_ids(tmp_path):
+    from nmwater.sources.ose_meas import _dms, _rtm_index
+
+    assert abs(_dms('35° 49\' 16.069" N') - 35.821130) < 1e-5
+    assert _dms('105° 53\' 30.437" W') < 0
+    rtm = pd.DataFrame({
+        "Station_ID": [140.0, np.nan, np.nan, np.nan, 7.0],
+        "Gauge_name": ["a", "Heredia", "Gonzales", "Gonzales", "b"],
+        "Ditch_Name": [None] * 5,
+        "River_src": [None] * 5,
+        "lat_ddd": [35.8, 32.1, 36.0, 36.1, np.nan],
+        "long_ddd": [-105.9, -107.7, -106.2, -106.3, np.nan],
+        "Latitude": [None] * 4 + ['35° 36\' 51.918" N'],
+        "Longitude": [None] * 4 + ['105° 14\' 39.529" W'],
+        "Northing": [np.nan] * 5, "Easting": [np.nan] * 5,
+    })
+    p = tmp_path / "rtm.parquet"
+    rtm.to_parquet(p)
+    by_id, by_name = _rtm_index(p)
+    assert set(by_id) == {"140", "7"} and abs(by_id["7"][0] - 35.6144) < 1e-3
+    assert "heredia" in by_name and "gonzales" not in by_name     # ambiguous names are not used

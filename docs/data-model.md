@@ -154,13 +154,17 @@ wrong answer from this archive. See [interpretation.md](interpretation.md).
 Where `site_regions` says which administrative area a site sits in, `site_reaches` says which
 reach of the actual river network it sits on. Built from NHDPlus v2 by `nmwater fetch nhdplus`,
 which fetches flowlines for every HUC8 in scope and snaps stream, canal, diversion and
-return-flow sites onto the nearest reach within 500 m.
+return-flow sites onto the nearest reach within 500 m. OSE points of diversion are snapped only
+when marked surface water (`grnd_wtr_s = S`), so a well is never labelled with a nearby river.
 
 | Column | Meaning |
 |---|---|
 | `site_uid` | the site |
 | `comid` | NHDPlus common identifier for the reach - the network's primary key |
-| `gnis_name` | the named stream, e.g. "Rio Grande", "Rio Chama", "Purgatoire River" |
+| `gnis_name` | the snapped reach's own name, e.g. "Rio Grande", "Rio Chama"; null on unnamed reaches |
+| `river_name` | the name to use for "which river is this on": `gnis_name`, else the first named reach downstream (an unnamed tributary or ditch is labelled with what it drains to), else, for sites with no coordinates, the hand-curated `catalog/site_rivers.csv` |
+| `river_steps` | reaches walked downstream to find `river_name`; 0 = the reach's own name, null for manual rows |
+| `river_method` | `snap`, `downstream` or `manual`. Manual rows carry no `comid`, and their evidence is in `site_rivers.csv` (BEMP's Rio Grande bosque sites are inferred from their names) |
 | `streamorde` | Strahler stream order |
 | `totdasqkm` | total drainage area upstream of this reach, km2 |
 | `huc8` | the watershed the reach belongs to |
