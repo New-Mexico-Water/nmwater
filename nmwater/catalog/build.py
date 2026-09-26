@@ -145,7 +145,19 @@ def build(settings: Settings) -> Path:
         con.execute(f"CREATE TABLE site_reaches AS SELECT * FROM read_parquet('{reaches_pq.as_posix()}')")
     else:
         con.execute("CREATE TABLE site_reaches (site_uid VARCHAR, comid BIGINT, gnis_name VARCHAR, "
-                    "streamorde BIGINT, totdasqkm DOUBLE, huc8 VARCHAR, snap_distance_m DOUBLE)")
+                    "river_name VARCHAR, river_steps BIGINT, streamorde BIGINT, totdasqkm DOUBLE, huc8 VARCHAR, "
+                    "snap_distance_m DOUBLE)")
+    # How each river name was found: snapped reach's own name, first named reach downstream, or the
+    # hand-curated catalog/site_rivers.csv (sites with no coordinates, e.g. BEMP and most IBWC gauges).
+    con.execute("ALTER TABLE site_reaches ADD COLUMN river_method VARCHAR")
+    con.execute("UPDATE site_reaches SET river_method = CASE WHEN river_name IS NULL THEN NULL "
+                "WHEN river_steps = 0 THEN 'snap' ELSE 'downstream' END")
+    manual = CATALOG_DIR / "site_rivers.csv"
+    if manual.exists():
+        con.execute(f"""INSERT INTO site_reaches (site_uid, river_name, river_method)
+                        SELECT m.site_uid, m.river_name, 'manual'
+                        FROM read_csv('{manual.as_posix()}', header=true, delim=',', quote='"', escape='"') m
+                        WHERE m.site_uid NOT IN (SELECT site_uid FROM site_reaches)""")
     flow_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "flowline_attributes.parquet"
     if flow_pq.exists():
         con.execute(f"CREATE TABLE flowlines AS SELECT * FROM read_parquet('{flow_pq.as_posix()}')")

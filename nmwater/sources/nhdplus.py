@@ -33,6 +33,7 @@ at boundaries than a HUC8 attribute would be.
 from __future__ import annotations
 
 import logging
+import re
 from datetime import date
 from pathlib import Path
 
@@ -56,6 +57,44 @@ WATERBODY_KEEP_COLS = ["comid", "gnis_id", "gnis_name", "areasqkm", "elevation",
 # fall inside - dam-crest and outlet gauges commonly sit just outside the digitized shoreline.
 WATERBODY_MAX_DISTANCE_M = 2000.0
 
+
+
+def _name(v) -> str | None:
+    """NHD leaves unnamed reaches as ' ' or NaN; normalise both to None. Some NHDPlus v2 names carry
+    '¿' where the GNIS name has 'ñ' (Ca¿ones Creek); inside a word '¿' can only be that corruption."""
+    if not isinstance(v, str) or not v.strip():
+        return None
+    return re.sub(r"(?<=\w)¿(?=\w)", "ñ", v.strip())
+
+
+def downstream_names(a: pd.DataFrame, max_steps: int = 2000) -> dict[int, tuple[str | None, int | None]]:
+    """For every unnamed reach, the GNIS name of the first named reach downstream and how many
+    reaches away it is. Follows tonode -> fromnode, taking the main path at divergences
+    (divergence 2 marks the minor branch). Closed basins and reaches that leave the extract
+    end without a name."""
+    a = a.sort_values("divergence", key=lambda d: (d == 2).astype(int))   # main path first
+    nxt = a.drop_duplicates("fromnode").set_index("fromnode")["comid"].to_dict()
+    # plain dict: assigning None back into a pandas string column turns it into NaN again
+    name = {c: _name(g) for c, g in zip(a["comid"], a["gnis_name"])}
+    to = dict(zip(a["comid"], a["tonode"]))
+    memo: dict[int, tuple[str | None, int | None]] = {}
+    for c in [c for c, g in name.items() if g is None]:
+        path, cur, hit = [], c, (None, None)
+        while len(path) < max_steps:
+            if cur in memo:
+                hit = memo[cur]
+                break
+            path.append(cur)
+            cur = nxt.get(to.get(cur))
+            if cur is None or cur in path:
+                break
+            if name.get(cur):
+                hit = (name[cur], 0)
+                break
+        # path[i] is len(path)-i reaches from the hit (plus the hit's own distance)
+        for i, p in enumerate(path):
+            memo[p] = (hit[0], None if hit[0] is None else len(path) - i + (hit[1] or 0))
+    return {int(k): v for k, v in memo.items()}
 
 @register
 class NHDPlus(Source):
@@ -193,6 +232,12 @@ class NHDPlus(Source):
         sites = self.store.read_sites()
         sites = sites[sites["site_type"].isin(["stream", "canal", "diversion", "return_flow"])
                       & sites["lat"].notna() & sites["lon"].notna()]
+        # OSE points of diversion are typed "diversion" unless known to be wells, but most carry no
+        # surface/ground-water code; snap only those marked surface water ("S") so a well is never
+        # labelled with the river it happens to be near.
+        pod = sites["site_uid"].str.startswith("ose_arcgis:pod:")
+        surface = sites["raw_metadata"].fillna("").str.contains('"grnd_wtr_s": "S"', regex=False)
+        sites = sites[~pod | surface]
         if sites.empty:
             return 0
         flo = gpd.read_file(gpkg, layer="flowlines", columns=["comid", "gnis_name", "streamorde",
@@ -205,10 +250,18 @@ class NHDPlus(Source):
         joined = gpd.sjoin_nearest(pts_p, flo_p, max_distance=max_distance_m, distance_col="snap_distance_m")
         if joined.empty:
             return 0
+        names = [_name(n) for n in joined["gnis_name"]]
+        down = self._downstream_names(gpkg)
+        river = [n if n else down.get(int(c), (None, None))[0] for n, c in zip(names, joined["comid"])]
+        steps = [0 if n else down.get(int(c), (None, None))[1] for n, c in zip(names, joined["comid"])]
         out = pd.DataFrame({
             "site_uid": joined["site_uid"].values,
             "comid": joined["comid"].values,
-            "gnis_name": joined["gnis_name"].values,
+            "gnis_name": names,
+            # the reach's own name, else the first named river downstream (an unnamed tributary or
+            # ditch is labelled with what it drains to); river_steps = reaches walked, 0 = own name
+            "river_name": river,
+            "river_steps": pd.array(steps, dtype="Int64"),
             "streamorde": joined["streamorde"].values,
             "totdasqkm": joined["totdasqkm"].values,
             "huc8": joined["huc8"].values,
@@ -216,6 +269,13 @@ class NHDPlus(Source):
         }).drop_duplicates("site_uid")
         self.store.write_table(out, "reference", self.name, "site_reaches")
         return len(out)
+
+    def _downstream_names(self, gpkg: Path) -> dict[int, tuple[str | None, int | None]]:
+        import geopandas as gpd
+
+        a = gpd.read_file(gpkg, layer="flowlines", columns=["comid", "gnis_name", "fromnode", "tonode", "divergence"],
+                          ignore_geometry=True)
+        return downstream_names(a)
 
     def _snap_waterbody_sites(self, gpkg: Path) -> int:
         """Match reservoir/lake sites to the waterbody polygon they fall inside, falling back to
