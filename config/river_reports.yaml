@@ -1,0 +1,18 @@
+# River flow reports (`nmwater report-rivers`, scripts/cron/river_reports.sh).
+# Which rivers get a page, and per-river settings. Output goes to dist/rivers/ (not in git).
+
+# Rivers with at least this many stream sites carrying daily discharge get a page.
+min_sites: 2
+
+# Rivers never reported (names as in site_reaches.river_name).
+exclude: []
+
+# Per-river overrides.
+#   states: only gauges in these states (null state counts as NM). Default: every gauge in the archive.
+#   notes:  extra lines for the page's "How to read this" and notes.md.
+rivers:
+  Rio Grande:
+    states: [NM]      # chosen 2026-09-26: New Mexico segments only (the full river has 10 segments, the chart shows 8)
+    notes:
+      - "Reservoirs changed the river over this record: Elephant Butte (1916), El Vado (1935), Caballo (1938), Abiquiu (1963), Cochiti (1975). Compare periods with that in mind."
+      - "Elephant Butte Reservoir's segment includes gauges at San Marcial and in the reservoir's Narrows, upstream of the dam. Flow below the dam is reported under Caballo."

@@ -72,6 +72,10 @@ report-elephant-butte:
 report-rio-grande-flow:
     uv run python scripts/rio_grande_weekly_flow.py
 
+# Streamflow pages for every river, into dist/rivers (not in git)
+report-rivers:
+    uv run nmwater report-rivers
+
 # All derived reports (Elephant Butte first; the general script folds it in)
 reports:
     uv run python scripts/elephant_butte_fill.py

@@ -174,6 +174,45 @@ inventories, landmark record checks (Embudo streamflow from 1889, Elephant Butte
 missing coordinates, sites without a HUC, unknown variables, and negative values in quantities
 that cannot be negative. Requires `catalog build` first.
 
+### report-rivers
+
+Builds a streamflow page for every river with gauges: weekly mean cfs per watershed (HUC8)
+segment for the whole record, with segment toggles, time-range presets and dates, and
+weekly/monthly/yearly averaging. Output goes to `dist/rivers/`, which is not in git (it becomes the
+website later):
+
+```
+dist/rivers/index.html                      list of rivers, searchable
+dist/rivers/manifest.json                   the same list, machine-readable
+dist/rivers/<river>/index.html              the interactive page
+dist/rivers/<river>/all_weeks_by_segment.csv
+dist/rivers/<river>/last_52_weeks_by_segment.csv, last_52_weeks_by_gauge.csv, copy_agreement.csv
+dist/rivers/<river>/notes.md                method, gauges, copy agreement, caveats
+```
+
+```
+nmwater report-rivers                       # every river (about 4 minutes)
+nmwater report-rivers --river "Pecos River" # one river; the other pages are kept
+```
+
+Which rivers, and per-river settings (for example, the Rio Grande is New Mexico segments only), are
+in `config/river_reports.yaml`. Rivers are identified by their NHD GNIS id, so two rivers with the
+same name get separate pages labelled by basin, such as "Rio Hondo (Upper Pecos)". The method is in
+the docstring of `nmwater/reports/river_flow.py`. The tree is built in a temporary folder and swapped
+in at the end, so a failed run leaves the previous pages in place.
+
+**Scheduling.** `scripts/cron/river_reports.sh` wraps the command for cron: it holds a lock so
+runs never overlap, appends to `data/logs/river_reports.log`, and exits non-zero if anything failed.
+With `--update` it runs `nmwater update` (which rebuilds the catalog) first, so one cron line keeps
+both the data and the pages current:
+
+```
+30 5 * * *  /home/vance/projects/water_newmexico/scripts/cron/river_reports.sh --update
+```
+
+Install with `crontab -e`. The same script works as the command of a Cloud Scheduler / Cloud Run
+job later.
+
 ### Querying by river
 
 `nmwater fetch nhdplus` (after `nmwater fetch wbd`) pulls the NHDPlus v2 stream network for every
