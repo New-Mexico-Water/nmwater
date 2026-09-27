@@ -464,6 +464,30 @@ def report(data_dir: Optional[Path] = typer.Option(None, "--data-dir")):
     console.print(f"[green]written to {p}[/green]")
 
 
+@app.command("report-rivers")
+def report_rivers(
+    river: Optional[list[str]] = typer.Option(None, "--river", help="Only these rivers (repeatable); others are kept"),
+    out: Optional[Path] = typer.Option(None, "--out", help="Output root; pages go to <out>/rivers (default: <repo>/dist)"),
+    config: Optional[Path] = typer.Option(None, "--config", help="default: <repo>/config/river_reports.yaml"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+):
+    """Weekly streamflow pages for every river with gauges (dist/rivers). Safe to run from cron."""
+    import yaml
+
+    from .core.config import PROJECT_ROOT
+    from .reports.river_flow import run as run_rivers
+
+    s = Settings.load(data_dir)
+    out = out or PROJECT_ROOT / "dist"
+    config = config or PROJECT_ROOT / "config" / "river_reports.yaml"
+    cfg = (yaml.safe_load(config.read_text()) or {}) if config.exists() else {}
+    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg)
+    console.print(f"[green]{len(entries)} river pages in {out / 'rivers'}[/green]"
+                  + (f"; [red]{len(failed)} failed: {', '.join(failed)}[/red]" if failed else ""))
+    if failed:
+        raise typer.Exit(1)
+
+
 @app.command()
 def query(sql: str, data_dir: Optional[Path] = typer.Option(None, "--data-dir")):
     """Run a SQL query against the DuckDB catalog."""
