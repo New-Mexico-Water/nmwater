@@ -1,0 +1,19 @@
+# Daily flow values removed from the river reports because they are known to be wrong.
+# Each entry removes every agency copy of that gauge for the dates given (inclusive), so another
+# copy of the same bad value cannot fill in. Removed values are listed on the river's page.
+#
+# Automatic rule (no entry needed): a daily mean higher than 1.05 x that water year's USGS annual
+# instantaneous peak is removed, because a day's mean cannot exceed its peak.
+#
+#   - site_uid: any agency copy of the gauge (as in the catalog's sites table)
+#     from: YYYY-MM-DD
+#     to: YYYY-MM-DD
+#     reason: what is wrong and how it was checked
+
+- site_uid: "usace_cwms:Ninemile"
+  from: 2007-01-22
+  to: 2007-01-24
+  reason: >-
+    Corps 15-minute readings jump to 49,000-61,000 cfs on these three winter days while the days before and
+    after hold at about 19-42 cfs; no other agency publishes this gauge. A sensor or transmission error.
+    Reviewed 2026-09-27.

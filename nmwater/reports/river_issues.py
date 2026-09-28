@@ -160,8 +160,9 @@ def unit_hint(ratio: float) -> str | None:
 # ---------------------------------------------------------------------------- all checks for one river
 def find_issues(daily: pd.DataFrame, chosen: pd.DataFrame, seg: pd.DataFrame, as_of: date,
                 elig: set[str], segment_of: dict[str, str], priority: list[str],
-                peak_of: dict | None = None) -> list[Finding]:
-    """peak_of: {(gauge, water_year): USGS annual peak cfs}, used to confirm spikes as real floods."""
+                peak_of: dict | None = None, conflicts: list[dict] | None = None) -> list[Finding]:
+    """peak_of: {(gauge, water_year): USGS annual peak cfs}, used to confirm spikes as real floods.
+    conflicts: approved USGS daily values above their own annual peak (kept, reported here)."""
     out: list[Finding] = []
     peak_of = peak_of or {}
     rank = {s: i for i, s in enumerate(priority)}
@@ -196,15 +197,8 @@ def find_issues(daily: pd.DataFrame, chosen: pd.DataFrame, seg: pd.DataFrame, as
         if sp:
             # a daily mean at or below that water year's USGS instantaneous peak is a real flood
             wy = lambda d: d.year + (d.month >= 10)  # noqa: E731
-            bad = [x for x in sp if (gname, wy(x[0])) in peak_of and x[1] > 1.05 * peak_of[(gname, wy(x[0]))]]
+            # values above the peak are removed or reported as peak_conflict elsewhere
             unchecked = [x for x in sp if (gname, wy(x[0])) not in peak_of]
-            if bad:
-                top = sorted(bad, key=lambda x: -x[1])[:3]
-                out.append(Finding("spike", "warn", gname,
-                                   f"{len(bad)} daily value{'s' if len(bad) > 1 else ''} higher than that year's USGS "
-                                   "annual peak, which a daily mean cannot be: "
-                                   + "; ".join(f"{v:,.0f} cfs on {_fmt(d)} (peak {peak_of[(gname, wy(d))]:,.0f})"
-                                               for d, v, _ in top) + ". Likely an error in that copy."))
             if unchecked:
                 top = sorted(unchecked, key=lambda x: -x[1])[:3]
                 out.append(Finding("spike", "info", gname,
@@ -240,6 +234,20 @@ def find_issues(daily: pd.DataFrame, chosen: pd.DataFrame, seg: pd.DataFrame, as
             out.append(Finding("fallback", "info", gname,
                                f"{mix[best]:.0%} of days come from {best}; {srcs} fill days {best} does not cover, "
                                "so the source changes within the record."))
+
+    by_gauge: dict[str, list[dict]] = {}
+    for c_ in conflicts or []:
+        by_gauge.setdefault(c_["gauge"], []).append(c_)
+    for gname, cs in by_gauge.items():
+        cs.sort(key=lambda x: -x["cfs"] / max(x["peak"], 1))
+        years = sorted({int(x["date"][:4]) + (int(x["date"][5:7]) >= 10) for x in cs})
+        out.append(Finding("peak_conflict", "warn", gname,
+                           f"{len(cs)} approved USGS daily value{'s' if len(cs) > 1 else ''} exceed that water year's USGS "
+                           f"annual peak, in water year{'s' if len(years) > 1 else ''} "
+                           + ", ".join(map(str, years[:8])) + (" and more" if len(years) > 8 else "")
+                           + f" (e.g. {cs[0]['cfs']:,.0f} cfs on {_fmt(cs[0]['date'])} against a peak of {cs[0]['peak']:,.0f}). "
+                           "A day's mean cannot exceed the year's peak, so one of the two USGS records is wrong for "
+                           "those years; the daily values are kept."))
 
     if ended:
         ended.sort(key=lambda x: x[1])

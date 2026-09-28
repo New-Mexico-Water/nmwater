@@ -1,13 +1,10 @@
-"""Unit tests for the weekly Rio Grande flow report's pure pieces (no catalog needed)."""
+"""The weekly-flow method's pure pieces (no catalog needed): weeks, copy merging, gauge and segment means."""
 
-import sys
 from datetime import date
-from pathlib import Path
 
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-import rio_grande_weekly_flow as rg
+from nmwater.reports import river_flow as rg
 
 
 def test_week_starts_are_complete_monday_to_sunday_weeks():
@@ -53,7 +50,8 @@ def test_gauge_weekly_needs_four_days_and_ignores_open_weeks():
 def test_segment_weekly_averages_gauges_and_counts_them():
     gw = pd.DataFrame({"gauge": ["A", "B", "C"], "week_start": [date(2026, 9, 7)] * 3,
                        "mean_cfs": [100.0, 300.0, 50.0], "n_days": 7, "source_used": "usgs"})
-    seg = rg.segment_weekly(gw, {"A": "Upper Rio Grande", "B": "Upper Rio Grande", "C": "Caballo"})
+    seg = rg.segment_weekly(gw, {"A": "Upper Rio Grande", "B": "Upper Rio Grande", "C": "Caballo"},
+                            ["Upper Rio Grande", "Caballo"])
     up = seg[seg["segment"] == "Upper Rio Grande"].iloc[0]
     assert (up["mean_cfs"], up["n_gauges"], up["min_cfs"], up["max_cfs"]) == (200.0, 2, 100.0, 300.0)
     assert seg["segment"].tolist() == ["Upper Rio Grande", "Caballo"]     # upstream to downstream

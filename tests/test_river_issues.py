@@ -70,7 +70,10 @@ def test_find_issues_confirms_floods_with_annual_peaks():
                                                                           ["usgs"], peaks)]
     assert ("spike", "info") in kinds({})                                        # no peak to check against
     assert not any(k == "spike" for k, _ in kinds({("G", 2020): 8000.0}))       # below the peak: a real flood
-    assert ("spike", "warn") in kinds({("G", 2020): 3000.0})                    # above the peak: impossible
+    assert not any(k == "spike" for k, _ in kinds({("G", 2020): 3000.0}))       # above the peak: handled as a conflict
+    f = ri.find_issues(ch, ch, seg, date(2020, 5, 1), {"G"}, {"G": "S"}, ["usgs"], {("G", 2020): 3000.0},
+                       [{"gauge": "G", "date": "2020-03-01", "cfs": 5000.0, "peak": 3000.0}])
+    assert [x.severity for x in f if x.kind == "peak_conflict"] == ["warn"]
 
 
 def test_find_issues_flags_a_biased_copy_only_as_a_warning_when_it_is_used():

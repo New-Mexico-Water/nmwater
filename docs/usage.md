@@ -201,6 +201,16 @@ same name get separate pages labelled by basin, such as "Rio Hondo (Upper Pecos)
 the docstring of `nmwater/reports/river_flow.py`. The tree is built in a temporary folder and swapped
 in at the end, so a failed run leaves the previous pages in place.
 
+**Data gaps, disparities and bad values.** Each page has a "Data gaps and disparities" section
+(also in `notes.md` and `data_issues.json`). It lists, in order:
+- **removed values**: daily values left out of every number because they are known to be wrong.
+  A daily mean above that water year's USGS instantaneous peak is removed automatically;
+  other known errors are listed by hand in `config/river_exclusions.yaml`, with a reason;
+- **reviewed notes** from `config/river_notes.yaml`, each marked verified or inferred;
+- **automatic findings** from `nmwater/reports/river_issues.py` (seasonal records, gaps,
+  discontinued gauges, agency copies that disagree, spikes, flat lines, zero-flow runs and more),
+  recomputed on every build.
+
 **Scheduling.** `scripts/cron/river_reports.sh` wraps the command for cron: it holds a lock so
 runs never overlap, appends to `data/logs/river_reports.log`, and exits non-zero if anything failed.
 With `--update` it runs `nmwater update` (which rebuilds the catalog) first, so one cron line keeps

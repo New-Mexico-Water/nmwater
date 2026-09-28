@@ -267,7 +267,7 @@ def read_daily(con, uids: list[str], start: date, end: date) -> pd.DataFrame:
     expected = " ".join(f"WHEN '{k}' THEN {v}" for k, v in SUBDAILY_PER_DAY.items())
     return con.sql(f"""
         WITH daily AS (
-          SELECT site_uid, datetime_utc::DATE AS date, avg(value) AS cfs
+          SELECT site_uid, datetime_utc::DATE AS date, avg(value) AS cfs, any_value(qualifier) AS qualifier
           FROM observations_clean
           WHERE variable = 'discharge' AND interval = 'daily' AND statistic = 'mean'
             AND site_uid IN ({ids}) AND datetime_utc >= '{start}' AND datetime_utc < '{end + timedelta(days=1)}'
@@ -281,12 +281,12 @@ def read_daily(con, uids: list[str], start: date, end: date) -> pd.DataFrame:
             AND datetime_utc < '{end + timedelta(days=2)}'
           GROUP BY 1, 2, 3),
         sub_ok AS (
-          SELECT site_uid, date, cfs FROM sub
+          SELECT site_uid, date, cfs, NULL::VARCHAR AS qualifier FROM sub
           WHERE date BETWEEN '{start}' AND '{end}'
             AND n >= {MIN_COVERAGE} * CASE interval {expected} END)
-        SELECT site_uid, date, cfs FROM daily
+        SELECT site_uid, date, cfs, qualifier FROM daily
         UNION ALL
-        SELECT site_uid, date, cfs FROM sub_ok
+        SELECT site_uid, date, cfs, qualifier FROM sub_ok
         WHERE (site_uid, date) NOT IN (SELECT site_uid, date FROM daily)""").df()
 
 
@@ -309,11 +309,55 @@ class RiverReport:
     dropped_segments: list[str] = field(default_factory=list)
     gnis_id: str = ""
     issues: list = field(default_factory=list)       # river_issues.Finding, found automatically
+    removed: list = field(default_factory=list)      # daily values removed as bad (dicts), automatic or listed
     data_notes: list = field(default_factory=list)   # hand-written explanations (config/river_notes.yaml)
 
 
+def remove_bad_values(daily: pd.DataFrame, peak_of: dict, exclusions: list[dict] | None,
+                      gauge_of_site: dict[str, str]) -> tuple[pd.DataFrame, list[dict], list[dict]]:
+    """Drop known-bad daily values. Returns (kept rows, removed records, conflicts kept for review).
+
+    - listed: every copy of the gauge on the listed dates (config/river_exclusions.yaml)
+    - automatic: a daily mean above 1.05 x that water year's USGS annual peak, when the value is a
+      non-USGS copy or a USGS value flagged estimated ("e"). An approved USGS daily value above the
+      peak is kept and returned as a conflict: the peak file is sometimes incomplete, so either record
+      could be the wrong one.
+    """
+    d = daily.copy()
+    if "qualifier" not in d.columns:
+        d["qualifier"] = None
+    drop = pd.Series(False, index=d.index)
+    why = pd.Series("", index=d.index, dtype=object)
+    for ex in exclusions or []:
+        gauge = gauge_of_site.get(str(ex.get("site_uid")))
+        if gauge is None:
+            continue
+        m = (d["gauge"] == gauge) & (d["date"] >= pd.Timestamp(str(ex["from"]))) & (d["date"] <= pd.Timestamp(str(ex["to"])))
+        drop |= m
+        why[m] = "listed: " + " ".join(str(ex.get("reason", "")).split())
+    conflicts: list[dict] = []
+    if peak_of:
+        wy = d["date"].dt.year + (d["date"].dt.month >= 10)
+        peak = pd.Series([peak_of.get((g, y)) for g, y in zip(d["gauge"], wy)], index=d.index, dtype=float)
+        over = peak.notna() & (d["cfs"] > 1.05 * peak) & ~drop
+        estimated = d["qualifier"].fillna("").astype(str).str.contains(r"(^|[:|,])e($|[:|,])", regex=True)
+        approved_usgs = (d["source"] == "usgs") & ~estimated
+        m = over & ~approved_usgs
+        drop |= m
+        why[m] = [f"automatic: daily mean above that water year's USGS peak of {p:,.0f} cfs"
+                  + (" (USGS flags the daily value as estimated)" if src == "usgs" else "")
+                  for p, src in zip(peak[m], d.loc[m, "source"])]
+        k = over & approved_usgs
+        conflicts = [{"gauge": r.gauge, "date": r.date.date().isoformat(), "cfs": round(float(r.cfs), 1),
+                      "peak": round(float(p), 1)} for r, p in zip(d[k].itertuples(), peak[k])]
+    removed = [{"gauge": r.gauge, "date": r.date.date().isoformat(), "source": r.source, "cfs": round(float(r.cfs), 1),
+                "reason": w} for r, w in zip(d[drop].itertuples(), why[drop])]
+    return d[~drop].reset_index(drop=True), removed, conflicts
+
+
 def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None = None,
-                notes: list[str] | None = None, as_of: date | None = None) -> RiverReport | None:
+                notes: list[str] | None = None, as_of: date | None = None,
+                exclusions: list[dict] | None = None) -> RiverReport | None:
     """as_of: the archive's newest data day; "last 52 weeks" counts back from it for every river, so a
     discontinued gauge does not look current. Defaults to this river's own newest day."""
     g = read_gauges(con, river, states)
@@ -340,8 +384,19 @@ def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None
     if not weeks_all:
         return None
     raw = read_daily(con, uids, weeks_all[0], weeks_all[-1] + timedelta(days=6))
-    daily = raw.merge(g[["site_uid", "source", "gauge"]], on="site_uid")[["gauge", "date", "source", "site_uid", "cfs"]]
+    daily = raw.merge(g[["site_uid", "source", "gauge"]], on="site_uid")[["gauge", "date", "source", "site_uid", "cfs",
+                                                                           "qualifier"]]
     daily["date"] = pd.to_datetime(daily["date"])
+    # USGS annual peak flows, as an upper bound on any daily mean that water year. Peaks USGS marks as
+    # estimated or "greater than" are not bounds, and are left out.
+    peaks = con.sql(f"""SELECT site_uid, datetime_utc, value FROM observations_clean
+        WHERE variable = 'discharge' AND interval = 'water_year' AND statistic = 'max' AND site_uid IN ({ids})
+          AND coalesce(qualifier, '') NOT LIKE '%ESTIMATED%' AND coalesce(qualifier, '') NOT LIKE '%GREATERTHAN%'""").df()
+    peaks = peaks.merge(g[["site_uid", "gauge"]], on="site_uid")
+    peaks["wy"] = pd.to_datetime(peaks["datetime_utc"]).dt.year + (pd.to_datetime(peaks["datetime_utc"]).dt.month >= 10)
+    peak_of = peaks.groupby(["gauge", "wy"])["value"].max().to_dict()
+    daily, removed, conflicts = remove_bad_values(daily, peak_of, exclusions, dict(zip(g["site_uid"], g["gauge"])))
+    daily = daily.drop(columns="qualifier")
     chosen = pick_copy(daily)
     gw_all = gauge_weekly(chosen, weeks_all)
     elig = eligible_gauges(gw_all)
@@ -366,16 +421,11 @@ def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None
     agree52 = copy_agreement(recent, pick_copy(recent))
     from .river_issues import find_issues
 
-    peaks = con.sql(f"""SELECT site_uid, datetime_utc, value FROM observations_clean
-        WHERE variable = 'discharge' AND interval = 'water_year' AND statistic = 'max' AND site_uid IN ({ids})""").df()
-    peaks = peaks.merge(g[["site_uid", "gauge"]], on="site_uid")
-    peaks["wy"] = pd.to_datetime(peaks["datetime_utc"]).dt.year + (pd.to_datetime(peaks["datetime_utc"]).dt.month >= 10)
-    peak_of = peaks.groupby(["gauge", "wy"])["value"].max().to_dict()
-    issues = find_issues(daily, chosen, seg_all, as_of or latest, elig, segment_of, PRIORITY, peak_of)
+    issues = find_issues(daily, chosen, seg_all, as_of or latest, elig, segment_of, PRIORITY, peak_of, conflicts)
     return RiverReport(river=river.label, slug=slugify(river.label), segments=segments, gauges=g, weeks_all=weeks_all,
                        seg_all=seg_all, gw_all=gw_all, elig=elig, weeks52=weeks52, seg52=seg52, gw52=gw52,
                        agree52=agree52, notes=list(notes or []), dropped_segments=dropped,
-                       gnis_id=river.gnis_id, issues=issues)
+                       gnis_id=river.gnis_id, issues=issues, removed=removed)
 
 
 # ---------------------------------------------------------------------------- writing
@@ -400,9 +450,20 @@ def issues_section(r: RiverReport) -> str:
     """HTML for the 'Data gaps and disparities' card: reviewed notes, then automatic findings."""
     warn = [f for f in r.issues if f.severity == "warn"]
     info = [f for f in r.issues if f.severity != "warn"]
-    parts = [f'<p class="hint">{len(r.data_notes)} reviewed note{"s" if len(r.data_notes) != 1 else ""}, '
+    parts = [f'<p class="hint">{len(r.removed)} removed value{"s" if len(r.removed) != 1 else ""}, '
+             f'{len(r.data_notes)} reviewed note{"s" if len(r.data_notes) != 1 else ""}, '
              f'{len(warn)} finding{"s" if len(warn) != 1 else ""} that can affect the numbers, '
              f'{len(info)} for context. Findings are recomputed on every build.</p>']
+    if r.removed:
+        parts.append(f'<h3>Removed values ({len(r.removed)})</h3><p class="hint">Known-bad daily values left out of every '
+                     'number on this page.</p><ul class="issues">')
+        for x in r.removed[:50]:
+            parts.append(f'<li><span class="chip warn">removed</span><b>{html.escape(x["gauge"])}</b> '
+                         f'{html.escape(x["date"])}, {x["cfs"]:,.1f} cfs ({html.escape(x["source"])}). '
+                         f'{html.escape(x["reason"])}</li>')
+        if len(r.removed) > 50:
+            parts.append(f"<li>{len(r.removed) - 50} more in data_issues.json.</li>")
+        parts.append("</ul>")
     if r.data_notes:
         parts.append('<h3>Reviewed notes</h3><ul class="issues">')
         for n in r.data_notes:
@@ -419,7 +480,7 @@ def issues_section(r: RiverReport) -> str:
             parts.append(f'<li><span class="chip {cls}">{html.escape(f.kind.replace("_", " "))}</span>'
                          f'<b>{html.escape(f.subject)}</b> {html.escape(f.text)}</li>')
         parts.append("</ul>")
-    if not r.issues and not r.data_notes:
+    if not r.issues and not r.data_notes and not r.removed:
         parts.append("<p>No gaps or disparities found.</p>")
     return "".join(parts)
 
@@ -476,6 +537,10 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
     L += ["", "## Data gaps and disparities", "",
           "Reviewed notes (config/river_notes.yaml) first, then findings from the automatic checks "
           "(nmwater/reports/river_issues.py), recomputed on every build.", ""]
+    if r.removed:
+        L += [f"### Removed values ({len(r.removed)})", ""]
+        L += [f"- **{x['gauge']}** {x['date']}, {x['cfs']:,.1f} cfs ({x['source']}): {x['reason']}" for x in r.removed]
+        L.append("")
     if r.data_notes:
         L += ["### Reviewed notes", ""]
         L += [f"- **{n.get('subject', '')}** ({n.get('basis', '')}, reviewed {n.get('reviewed', '')}): {n.get('text', '')}"
@@ -519,7 +584,8 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
                          ].to_csv(d / "last_52_weeks_by_gauge.csv", index=False)
     r.agree52.to_csv(d / "copy_agreement.csv", index=False)
     (d / "data_issues.json").write_text(json.dumps(
-        {"river": r.river, "reviewed_notes": r.data_notes, "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
+        {"river": r.river, "removed_values": r.removed, "reviewed_notes": r.data_notes,
+         "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
     write_explorer(d / "index.html", r, generated)
     write_notes(d / "notes.md", r, generated)
     with_data = r.seg_all.groupby("segment")["week_start"].agg(["min", "max"])
@@ -532,6 +598,7 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
             "issues_warn": sum(f.severity == "warn" for f in r.issues),
             "issues_info": sum(f.severity != "warn" for f in r.issues),
             "reviewed_notes": len(r.data_notes),
+            "removed_values": len(r.removed),
             "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
             "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4]))}
 
@@ -553,7 +620,7 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
 
 
 def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None,
-        river_notes: dict | None = None) -> tuple[list[dict], list[str]]:
+        river_notes: dict | None = None, exclusions: list[dict] | None = None) -> tuple[list[dict], list[str]]:
     """Build every river's report into out/rivers, atomically. Returns (written entries, failed rivers).
     river_notes: reviewed notes by river label (config/river_notes.yaml)."""
     river_notes = river_notes or {}
@@ -582,7 +649,8 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
         for name in names:
             o = overrides.get(name.label) or overrides.get(name.name) or {}
             try:
-                r = build_river(con, name, links, states=o.get("states"), notes=o.get("notes"), as_of=as_of)
+                r = build_river(con, name, links, states=o.get("states"), notes=o.get("notes"), as_of=as_of,
+                                exclusions=exclusions)
                 if r is not None:
                     r.data_notes = list(river_notes.get(r.river) or [])
                 if r is None:
