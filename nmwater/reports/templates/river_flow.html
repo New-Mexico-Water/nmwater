@@ -92,6 +92,15 @@
   a { color: var(--focus); }
   .crumb { margin: 0 0 6px; font-size: 0.84rem; }
   .gauges td:not(.n) { white-space: normal; }
+  #issues h3 { font-size: 0.82rem; margin: 14px 0 6px; color: var(--text-secondary); letter-spacing: .04em; text-transform: uppercase; }
+  ul.issues { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; max-width: 90ch; font-size: 0.86rem; }
+  ul.issues li { padding-left: 2px; }
+  ul.issues b { font-weight: 600; margin-right: 4px; }
+  .chip { display: inline-block; font-size: 0.7rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
+    border: 1px solid var(--axis); border-radius: 999px; padding: 0 7px; margin-right: 8px; color: var(--text-secondary); }
+  .chip.warn { border-color: #d03b3b; color: var(--text-primary); }
+  .chip.verified { border-color: var(--s1); }
+  .when { color: var(--text-muted); font-size: 0.78rem; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -145,6 +154,11 @@
       <button id="toggle-table" type="button" aria-expanded="false" aria-controls="datatable">Show the plotted values as a table</button>
     </div>
     <div class="scroll datatable" id="datatable" tabindex="0" hidden></div>
+  </section>
+
+  <section class="card" aria-labelledby="issues" id="issues">
+    <h2>Data gaps and disparities</h2>
+    __ISSUES__
   </section>
 
   <section class="card" aria-labelledby="mt">

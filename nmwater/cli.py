@@ -481,7 +481,9 @@ def report_rivers(
     out = out or PROJECT_ROOT / "dist"
     config = config or PROJECT_ROOT / "config" / "river_reports.yaml"
     cfg = (yaml.safe_load(config.read_text()) or {}) if config.exists() else {}
-    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg)
+    notes_path = PROJECT_ROOT / "config" / "river_notes.yaml"
+    notes = (yaml.safe_load(notes_path.read_text()) or {}) if notes_path.exists() else {}
+    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg, river_notes=notes)
     console.print(f"[green]{len(entries)} river pages in {out / 'rivers'}[/green]"
                   + (f"; [red]{len(failed)} failed: {', '.join(failed)}[/red]" if failed else ""))
     if failed:

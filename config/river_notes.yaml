@@ -1,0 +1,74 @@
+# Reviewed notes on missing data and disparities, shown on each river's page under
+# "Data gaps and disparities" and in its notes.md, above the automatic findings.
+#
+# The automatic checks (nmwater/reports/river_issues.py) say WHAT is odd; these notes say WHY, or
+# what was checked, when a person has looked. Keys are river labels as they appear on the index page.
+# Each note: subject (gauge or segment, or "River"), text, reviewed (date), and optionally basis
+# ("verified" = checked against the source data; "inferred" = a likely explanation not confirmed).
+
+Rio Brazos:
+  - subject: Rio Brazos At Fishtail Road Nr Tierra Amarilla, NM
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      USGS publishes no daily flow for this gauge in winter: asked directly, the USGS API returned no
+      values from November 2023 through March 2024, and the archive has almost none for December to
+      February in any year. The gauges on this high snowmelt stream are likely iced over in winter
+      (inferred, not stated by USGS). This is the only gauge on the page, so yearly means are empty.
+
+Rio Grande:
+  - subject: Corps of Engineers copies, Alameda to Caballo Dam
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      The Corps (CWMS) copies of the gauges from Alameda to San Marcial, and below Elephant Butte and
+      Caballo dams, differ from the USGS daily means by more than 10% on 23 to 64% of shared days, while
+      their medians agree. The report uses USGS and takes at most 9 days per gauge from the Corps, where
+      USGS has no value. The Corps daily values here are averages of its 15-minute readings, which is one
+      likely cause of the day-to-day differences (inferred).
+  - subject: Rio Grande At Narrows In Elephant Butte Res., NM
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      This gauge has two separate records: one that ends in September 1957 and one that starts in May 2012.
+      The 55-year gap is real (no data from any agency), not a loss in the archive.
+  - subject: National Weather Service copies
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      The NWS feed (last 30 days only) runs about 10 to 12% higher than USGS at Otowi, Cochiti and Taos
+      Junction Bridge. NWS computes flow from stage with its own rating; the report does not use these
+      values where USGS has the day.
+
+Pecos River:
+  - subject: Pecos River At Pierce Canyon Crossing, NM
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      The 65,000 cfs daily mean on August 23, 1966 is a USGS-approved record inside a normal flood
+      hydrograph (1,240 cfs the day before, 38,000 and 12,000 cfs the two days after), not a glitch.
+      It is flagged only because no annual peak for that year is in the archive to confirm it.
+  - subject: Pecos R Abv Canon Del Uta Nr Colonias, NM
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      The Corps copy of this gauge runs about 17% below USGS over 2005 to 2026. The report uses USGS on
+      all but one day.
+
+Rio Hondo (Upper Pecos):
+  - subject: Rio Hondo Near Roswell, NM
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      On May 24, 2014 USGS publishes an estimated daily mean of 3,340 cfs (flag "e") but an annual
+      instantaneous peak of 2,580 cfs for the same day. A daily mean cannot exceed the day's peak, so
+      one of the two USGS values is wrong; that week's mean is inflated if the daily value is the error.
+
+Purgatoire River:
+  - subject: Purgatoire River @ Ninemile Dam
+    basis: verified
+    reviewed: 2026-09-27
+    text: >-
+      On January 24, 2007 the Corps 15-minute readings climb to about 50,000 cfs within a day while the
+      days either side sit near 20 to 40 cfs of winter base flow. This is a data error in the Corps
+      series (no other agency publishes this gauge), and it inflates that week's and month's means.
