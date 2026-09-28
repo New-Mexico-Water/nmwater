@@ -142,7 +142,11 @@ class PRISM(Source):
                 else:
                     summ.n_cached += 1
                 with NC_LOCK, xr.open_dataset(clip_nc) as ds:
-                    arrays.append(ds[var].load())
+                    a = ds[var].load()
+                # early parts (Sept 2026 test pull) kept x/y; stacking them with lat/lon parts made 5-D files
+                if "x" in a.dims:
+                    a = a.rename({"x": "lon", "y": "lat"})
+                arrays.append(a)
                 times.append(pd.Timestamp(d))
         if not arrays:
             return 0
