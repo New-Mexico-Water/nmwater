@@ -68,10 +68,6 @@ test-live:
 report-elephant-butte:
     uv run python scripts/elephant_butte_fill.py
 
-# Weekly average streamflow (cfs) for each New Mexico segment of the Rio Grande, last 52 weeks
-report-rio-grande-flow:
-    uv run python scripts/rio_grande_weekly_flow.py
-
 # Streamflow pages for every river, into dist/rivers (not in git)
 report-rivers:
     uv run nmwater report-rivers
@@ -80,4 +76,4 @@ report-rivers:
 reports:
     uv run python scripts/elephant_butte_fill.py
     uv run python scripts/reservoir_fill.py
-    uv run python scripts/rio_grande_weekly_flow.py
+    uv run nmwater report-rivers

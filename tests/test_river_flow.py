@@ -80,3 +80,25 @@ def test_ditches_ponds_channels_and_reservoirs_are_not_river_gauges():
     assert not rf.is_river_gauge("BLANCO DIVERSION RESERVOIR", "Rio Blanco")
     assert rf.is_river_gauge("NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR", "North Clear Creek")
     assert rf.is_river_gauge("RIO GRANDE FLOODWAY AT SAN ACACIA, NM", "Rio Grande")
+
+
+def test_bad_values_are_removed_from_every_copy_and_recorded():
+    d = pd.DataFrame({
+        "gauge": ["G"] * 5, "source": ["usgs", "usbr_hydrodata", "usgs", "usace_cwms", "usgs"],
+        "site_uid": ["usgs:1", "usbr:1", "usgs:1", "cwms:1", "usgs:1"],
+        "date": pd.to_datetime(["2014-05-24", "2014-05-24", "2014-05-25", "2007-01-23", "2007-01-26"]),
+        "cfs": [3340.0, 3340.0, 18.0, 50000.0, 38.0], "qualifier": ["A:e", None, "A", None, "A"]})
+    peaks = {("G", 2014): 2580.0}
+    ex = [{"site_uid": "cwms:1", "from": "2007-01-22", "to": "2007-01-24", "reason": "glitch"}]
+    kept, removed, conflicts = rf.remove_bad_values(d, peaks, ex, {"usgs:1": "G", "usbr:1": "G", "cwms:1": "G"})
+    assert kept["cfs"].tolist() == [18.0, 38.0]
+    assert sorted((x["date"], x["source"]) for x in removed) == [
+        ("2007-01-23", "usace_cwms"), ("2014-05-24", "usbr_hydrodata"), ("2014-05-24", "usgs")]
+    assert all(x["reason"].startswith(("automatic", "listed")) for x in removed) and conflicts == []
+
+
+def test_approved_usgs_values_above_the_peak_are_kept_as_conflicts():
+    d = pd.DataFrame({"gauge": ["G"], "source": ["usgs"], "site_uid": ["usgs:1"],
+                      "date": pd.to_datetime(["2014-06-03"]), "cfs": [115.0], "qualifier": ["A"]})
+    kept, removed, conflicts = rf.remove_bad_values(d, {("G", 2014): 22.0}, [], {"usgs:1": "G"})
+    assert len(kept) == 1 and removed == [] and conflicts[0]["peak"] == 22.0
