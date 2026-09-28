@@ -71,3 +71,12 @@ def test_rivers_sharing_a_name_get_their_basin_in_the_label():
     assert (a.label, b.label) == ("Rio Hondo (Upper Pecos)", "Rio Hondo (Rio Grande-Elephant Butte)")
     assert (c.label, d.label) == ("Rocky Arroyo (Rio Hondo)", "Rocky Arroyo (Upper Pecos-Black)")   # same basin: use watershed
     assert e.label == "Pecos River"
+
+
+def test_ditches_ponds_channels_and_reservoirs_are_not_river_gauges():
+    assert not rf.is_river_gauge("ACEQUIA MADRE AT COSTILLA, NM", "Costilla Creek")
+    assert not rf.is_river_gauge("Chama Valley #3", "Rio Chama")
+    assert not rf.is_river_gauge("RIO GRANDE CONVEYANCE CHANNEL NEAR BERNARDO, NM", "Rio Grande")
+    assert not rf.is_river_gauge("BLANCO DIVERSION RESERVOIR", "Rio Blanco")
+    assert rf.is_river_gauge("NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR", "North Clear Creek")
+    assert rf.is_river_gauge("RIO GRANDE FLOODWAY AT SAN ACACIA, NM", "Rio Grande")

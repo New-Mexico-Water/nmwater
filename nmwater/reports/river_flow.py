@@ -150,10 +150,27 @@ def river_tokens(river: str) -> list[str]:
     return [w for w in words if w not in GENERIC_WORDS]
 
 
+# names of ditches, ponds and reservoirs themselves; "below Continental Reservoir" is a river gauge
+NON_RIVER = re.compile(r"^(acequia|ditch|canal|lateral)\b|#|\b(dump|pond)\b|\bconveyance channel\b"
+                       r"|^(?!.*\b(bl|below|blw|abv|above|nr|near|at|in)\b).*\breservoir$", re.I)
+
+
 def is_river_gauge(name: str, river: str) -> bool:
-    """A site on the river counts as a river gauge when its name carries the river's distinctive word."""
+    """A site on the river counts as a river gauge when its name carries the river's distinctive word
+    and does not name a ditch, pond or reservoir (those measure water taken out, not the river)."""
+    if NON_RIVER.search(_plain(name).strip()):
+        return False
     toks = river_tokens(river)
     return not toks or any(t in _plain(name) for t in toks)
+
+
+def _ose_ditch(meta: str | None) -> bool:
+    """OSE real-time stations that OSE's meter layer ties to a ditch (rtm_ditch_name) measure a diversion."""
+    try:
+        v = json.loads(meta or "{}").get("rtm_ditch_name")
+    except ValueError:
+        return False
+    return v not in (None, "", "nan") and str(v).strip() != ""
 
 
 def slugify(name: str) -> str:
@@ -231,14 +248,17 @@ def read_gauges(con, river: River, states: list[str] | None = None) -> pd.DataFr
     g = con.execute(f"""
         WITH fips AS (SELECT site_uid, CASE left(region_id, 2) {fips_case} END AS st
                       FROM site_regions WHERE region_type = 'county')
-        SELECT r.site_uid, r.huc8_name AS segment, s.source, s.name, coalesce(fips.st, s.state) AS state, r.totdasqkm
+        SELECT r.site_uid, r.huc8_name AS segment, s.source, s.name, coalesce(fips.st, s.state) AS state, r.totdasqkm,
+               s.raw_metadata
         FROM river_segments r JOIN sites s USING (site_uid) LEFT JOIN fips USING (site_uid)
         JOIN site_reaches sr USING (site_uid) JOIN flowlines f ON f.comid = sr.comid
         WHERE f.gnis_id = ? AND r.river_method = 'snap' AND r.site_type = 'stream'
           AND r.huc8_name IS NOT NULL {st}
           AND s.site_uid IN (SELECT site_uid FROM site_variables WHERE variable = 'discharge')""",
                     [river.gnis_id]).df()
-    return g[[is_river_gauge(n, river.name) for n in g["name"]]].reset_index(drop=True)
+    keep = [is_river_gauge(n, river.name) and not (src == "ose_meas" and _ose_ditch(m))
+            for n, src, m in zip(g["name"], g["source"], g["raw_metadata"])]
+    return g[keep].drop(columns="raw_metadata").reset_index(drop=True)
 
 
 def read_daily(con, uids: list[str], start: date, end: date) -> pd.DataFrame:
@@ -288,6 +308,8 @@ class RiverReport:
     notes: list[str] = field(default_factory=list)
     dropped_segments: list[str] = field(default_factory=list)
     gnis_id: str = ""
+    issues: list = field(default_factory=list)       # river_issues.Finding, found automatically
+    data_notes: list = field(default_factory=list)   # hand-written explanations (config/river_notes.yaml)
 
 
 def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None = None,
@@ -342,10 +364,18 @@ def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None
     seg52 = seg_all[pd.to_datetime(seg_all["week_start"]) >= w0].reset_index(drop=True)
     recent = daily[daily["date"] >= w0]
     agree52 = copy_agreement(recent, pick_copy(recent))
+    from .river_issues import find_issues
+
+    peaks = con.sql(f"""SELECT site_uid, datetime_utc, value FROM observations_clean
+        WHERE variable = 'discharge' AND interval = 'water_year' AND statistic = 'max' AND site_uid IN ({ids})""").df()
+    peaks = peaks.merge(g[["site_uid", "gauge"]], on="site_uid")
+    peaks["wy"] = pd.to_datetime(peaks["datetime_utc"]).dt.year + (pd.to_datetime(peaks["datetime_utc"]).dt.month >= 10)
+    peak_of = peaks.groupby(["gauge", "wy"])["value"].max().to_dict()
+    issues = find_issues(daily, chosen, seg_all, as_of or latest, elig, segment_of, PRIORITY, peak_of)
     return RiverReport(river=river.label, slug=slugify(river.label), segments=segments, gauges=g, weeks_all=weeks_all,
                        seg_all=seg_all, gw_all=gw_all, elig=elig, weeks52=weeks52, seg52=seg52, gw52=gw52,
                        agree52=agree52, notes=list(notes or []), dropped_segments=dropped,
-                       gnis_id=river.gnis_id)
+                       gnis_id=river.gnis_id, issues=issues)
 
 
 # ---------------------------------------------------------------------------- writing
@@ -364,6 +394,34 @@ def _gauge_rows(r: RiverReport) -> list[dict]:
                          "first": str(min(w["week_start"])), "last": str(max(w["week_start"])),
                          "weeks": len(w), "in_mean": gname in r.elig})
     return rows
+
+
+def issues_section(r: RiverReport) -> str:
+    """HTML for the 'Data gaps and disparities' card: reviewed notes, then automatic findings."""
+    warn = [f for f in r.issues if f.severity == "warn"]
+    info = [f for f in r.issues if f.severity != "warn"]
+    parts = [f'<p class="hint">{len(r.data_notes)} reviewed note{"s" if len(r.data_notes) != 1 else ""}, '
+             f'{len(warn)} finding{"s" if len(warn) != 1 else ""} that can affect the numbers, '
+             f'{len(info)} for context. Findings are recomputed on every build.</p>']
+    if r.data_notes:
+        parts.append('<h3>Reviewed notes</h3><ul class="issues">')
+        for n in r.data_notes:
+            basis = n.get("basis", "")
+            chip = f'<span class="chip {html.escape(basis)}">{html.escape(basis)}</span>' if basis else ""
+            parts.append(f'<li>{chip}<b>{html.escape(str(n.get("subject", "")))}</b> '
+                         f'{html.escape(str(n.get("text", "")))} <span class="when">Reviewed {html.escape(str(n.get("reviewed", "")))}</span></li>')
+        parts.append("</ul>")
+    for title, items, cls in (("Can affect the numbers", warn, "warn"), ("Context", info, "info")):
+        if not items:
+            continue
+        parts.append(f'<h3>{title}</h3><ul class="issues">')
+        for f in items:
+            parts.append(f'<li><span class="chip {cls}">{html.escape(f.kind.replace("_", " "))}</span>'
+                         f'<b>{html.escape(f.subject)}</b> {html.escape(f.text)}</li>')
+        parts.append("</ul>")
+    if not r.issues and not r.data_notes:
+        parts.append("<p>No gaps or disparities found.</p>")
+    return "".join(parts)
 
 
 def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
@@ -385,12 +443,13 @@ def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
         f"<td class=\"n\">{x['first'][:4]}</td><td class=\"n\">{x['last'][:4]}</td><td class=\"n\">{x['weeks']:,}</td>"
         f"<td>{'yes' if x['in_mean'] else 'no, fewer than ' + str(MIN_WEEKS) + ' weeks'}</td></tr>" for x in rows)
     extra = "".join(f"<li>{html.escape(t)}</li>" for t in r.notes)
+    issues_html = issues_section(r)
     if r.dropped_segments:
         extra += ("<li>" + html.escape("Segments left out because the chart shows at most eight: "
                                        + ", ".join(r.dropped_segments) + ".") + "</li>")
     page = (TEMPLATES / "river_flow.html").read_text()
     for k, v in {"__RIVER__": html.escape(r.river), "__FIRST_YEAR__": str((first + timedelta(days=6)).year), "__LAST__": _fmt_day(last),
-                 "__GAUGE_ROWS__": gt, "__EXTRA_NOTES__": extra, "__GENERATED__": html.escape(generated),
+                 "__GAUGE_ROWS__": gt, "__EXTRA_NOTES__": extra, "__ISSUES__": issues_html, "__GENERATED__": html.escape(generated),
                  "__MIN_WEEKS__": str(MIN_WEEKS), "__N_SEGMENTS__": str(len(r.segments)),
                  "__DATA__": json.dumps({"weeks": keys, "series": series}, separators=(",", ":"))}.items():
         page = page.replace(k, v)
@@ -414,7 +473,21 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
     for x in _gauge_rows(r):
         L.append(f"| {x['segment']} | {x['gauge']} | {x['copies']} | {x['first']} | {x['last']} | {x['weeks']} | "
                  f"{'yes' if x['in_mean'] else 'no'} |")
-    L += ["", "## How well the copies agree (last 52 weeks)", "",
+    L += ["", "## Data gaps and disparities", "",
+          "Reviewed notes (config/river_notes.yaml) first, then findings from the automatic checks "
+          "(nmwater/reports/river_issues.py), recomputed on every build.", ""]
+    if r.data_notes:
+        L += ["### Reviewed notes", ""]
+        L += [f"- **{n.get('subject', '')}** ({n.get('basis', '')}, reviewed {n.get('reviewed', '')}): {n.get('text', '')}"
+              for n in r.data_notes]
+        L.append("")
+    for title, sev in (("Can affect the numbers", "warn"), ("Context", "info")):
+        items = [f for f in r.issues if f.severity == sev]
+        if items:
+            L += [f"### {title}", ""] + [f"- **{f.subject}** ({f.kind}): {f.text}" for f in items] + [""]
+    if not r.issues and not r.data_notes:
+        L += ["No gaps or disparities found.", ""]
+    L += ["## How well the copies agree (last 52 weeks)", "",
           f"A day counts as different when a copy is off by more than {DISAGREE_PCT:.0f}% and 5 cfs from the value "
           f"used; percentages use only days of at least {PCT_MIN_CFS:.0f} cfs.", ""]
     if r.agree52.empty:
@@ -445,6 +518,8 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
         {"mean_cfs": 1})[["segment", "gauge", "source_used", "week_start", "mean_cfs", "n_days", "in_segment_mean"]
                          ].to_csv(d / "last_52_weeks_by_gauge.csv", index=False)
     r.agree52.to_csv(d / "copy_agreement.csv", index=False)
+    (d / "data_issues.json").write_text(json.dumps(
+        {"river": r.river, "reviewed_notes": r.data_notes, "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
     write_explorer(d / "index.html", r, generated)
     write_notes(d / "notes.md", r, generated)
     with_data = r.seg_all.groupby("segment")["week_start"].agg(["min", "max"])
@@ -454,6 +529,9 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
             "first_year": (min(with_data["min"]) + timedelta(days=6)).year if isinstance(min(with_data["min"]), date)
             else (pd.Timestamp(min(with_data["min"])) + pd.Timedelta(days=6)).year,
             "gnis_id": r.gnis_id,
+            "issues_warn": sum(f.severity == "warn" for f in r.issues),
+            "issues_info": sum(f.severity != "warn" for f in r.issues),
+            "reviewed_notes": len(r.data_notes),
             "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
             "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4]))}
 
@@ -464,7 +542,9 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
         f"<td class=\"n\">{len(e['segments'])}</td><td class=\"n\">{e['gauges']}</td>"
         f"<td class=\"n\">{e.get('first_year') or e['first_week'][:4]}</td><td class=\"n\">{e['last_week']}</td>"
         f"<td class=\"n\">{'' if e['last_52_mean_cfs'] is None else f'{e['last_52_mean_cfs']:,.0f}'}</td>"
-        f"<td>{'yes' if e['reporting'] else 'no'}</td></tr>" for e in entries)
+        f"<td>{'yes' if e['reporting'] else 'no'}</td>"
+        f"<td class=\"n\"><a href=\"{html.escape(e['slug'])}/index.html#issues\">{e.get('issues_warn', 0)}</a></td></tr>"
+        for e in entries)
     page = (TEMPLATES / "river_index.html").read_text()
     page = page.replace("__ROWS__", rows).replace("__GENERATED__", html.escape(generated)).replace(
         "__N_RIVERS__", str(len(entries)))
@@ -472,8 +552,11 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
     (d / "manifest.json").write_text(json.dumps({"generated": generated, "rivers": entries}, indent=2))
 
 
-def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None) -> tuple[list[dict], list[str]]:
-    """Build every river's report into out/rivers, atomically. Returns (written entries, failed rivers)."""
+def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None,
+        river_notes: dict | None = None) -> tuple[list[dict], list[str]]:
+    """Build every river's report into out/rivers, atomically. Returns (written entries, failed rivers).
+    river_notes: reviewed notes by river label (config/river_notes.yaml)."""
+    river_notes = river_notes or {}
     import duckdb
 
     cfg = config or {}
@@ -500,6 +583,8 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
             o = overrides.get(name.label) or overrides.get(name.name) or {}
             try:
                 r = build_river(con, name, links, states=o.get("states"), notes=o.get("notes"), as_of=as_of)
+                if r is not None:
+                    r.data_notes = list(river_notes.get(r.river) or [])
                 if r is None:
                     log.info("%s: no gauge with %d+ weeks of daily flow; skipped", name.label, MIN_WEEKS)
                     continue
