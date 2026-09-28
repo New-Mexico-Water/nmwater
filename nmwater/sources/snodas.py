@@ -110,6 +110,7 @@ class SNODAS(Source):
                 raise
             summ.n_requests += 1
             data_vars = {}
+            grid = None      # (lats, lons) of the first product; every product is put on this one grid
             with tarfile.open(tp) as tar:
                 members = {m.name: m for m in tar.getmembers()}
                 for name, m in members.items():
@@ -142,8 +143,15 @@ class SNODAS(Source):
                     ci = np.where((lons >= w) & (lons <= e))[0]
                     ri = np.where((lats >= s) & (lats <= n))[0]
                     sub = arr[ri[0]:ri[-1] + 1, ci[0]:ci[-1] + 1]
+                    # Products' header corners differ by ~1e-12 deg; with their own coordinates xarray would
+                    # outer-join them into a grid twice as fine with each product on alternate rows and
+                    # columns (the files written before 2026-09-28; see scripts/repair_snodas_grid.py).
+                    if grid is None:
+                        grid = (np.round(lats[ri], 8), np.round(lons[ci], 8))
+                    elif sub.shape != (len(grid[0]), len(grid[1])):
+                        raise RuntimeError(f"snodas {d}: product {code.group(1)} grid {sub.shape} differs")
                     da = xr.DataArray(sub[np.newaxis, :, :], dims=("time", "lat", "lon"),
-                                      coords={"time": [pd.Timestamp(d)], "lat": lats[ri], "lon": lons[ci]},
+                                      coords={"time": [pd.Timestamp(d)], "lat": grid[0], "lon": grid[1]},
                                       attrs={"units": units, "long_name": desc, "snodas_product": code.group(1)})
                     data_vars[var] = da
             if not data_vars:
