@@ -1,0 +1,55 @@
+river: Rio Bonito
+researched: 2026-09-28
+# Checked 2026-09-28: 14 statements checked; 0 removed, 8 reworded (dropped unsupported "Lincoln National
+# Forest" claim, fixed proposed-vs-completed tense on Salazar Tract habitat work, dropped WNS causation for
+# winter cave closure, dropped unsupported "Sheriff" title, dropped unsupported "ash" detail, matched Kit Carson
+# 1862 wording to the source, dropped Lincoln County War dates that two cited sources give differently).
+
+summary:
+  - text: "The Rio Bonito's upper reaches are followed by the Bureau of Land Management's Rio Bonito Petroglyph Trail, reached from NM 220 west of the Sierra Blanca Regional Airport."
+    sources: [1]
+  - text: "The river then flows east past the historic Fort Stanton army post, established in 1855 to help control the Mescalero Apache, and through the village of Lincoln, which Spanish families who settled it in the 1850s first called Las Placitas del Rio Bonito before it was renamed for Lincoln County's creation on January 16, 1869."
+    sources: [2, 3]
+  - text: "Today the Rio Bonito is known for trout fishing and ancient Jornada Mogollon rock art along its Petroglyph Trail, for BLM and state habitat-restoration work on the stream, and for Bonito Lake, the City of Alamogordo's upstream reservoir that reopened to anglers in 2024 after a wildfire-driven closure of more than a decade."
+    sources: [1, 5, 4, 6]
+summary_sources: [1, 2, 3, 4, 5, 6]
+
+habitats:
+  - text: "Along the BLM's Rio Bonito Petroglyph Trail, the river runs beneath cottonwood, walnut and oak trees and supports trout fishing in spring, though the creek dries up in summer; the surrounding land is habitat for mule deer, elk, great horned owls, foxes, coyotes, badgers and cottontails."
+    sources: [1]
+  - text: "The BLM has proposed working with the New Mexico Department of Game and Fish to restore fish and riparian habitat on about two miles of the Rio Bonito on the Salazar Tract, including installing boulder clusters, log jams, riffles and pools and replanting native riparian vegetation to benefit wildlife and fish."
+    sources: [4]
+  - text: "The Fort Stanton-Snowy River Cave National Conservation Area, 25,080 acres of BLM land established in 2009 along the Rio Bonito corridor, closes its cave each winter to protect hibernating bats."
+    sources: [5]
+  - text: "Bonito Lake, upstream on the Rio Bonito, was restocked with trout by the New Mexico Department of Game and Fish in May 2024 after the reservoir refilled in 2023 following a decade of restoration work."
+    sources: [6]
+
+culture:
+  - text: "Fort Stanton was established in 1855 as a U.S. military post to control the Mescalero Apache; the fort returned to the Union in 1862 under the command of Christopher (Kit) Carson."
+    sources: [2]
+  - text: "The village of Lincoln was originally called Las Placitas del Rio Bonito by the Spanish families who settled it in the 1850s, before it was renamed Lincoln when Lincoln County was created on January 16, 1869."
+    sources: [3]
+  - text: "The Lincoln Historic Site preserves adobe and stone buildings representing the factions of the Lincoln County War, where visitors can walk in the footsteps of Billy the Kid and Pat Garrett."
+    sources: [7]
+  - text: "Along the Rio Bonito, ancient Jornada Mogollon rock art survives at Petroglyph Rock within the Fort Stanton-Snowy River Cave National Conservation Area."
+    sources: [5]
+
+users:
+  - text: "The City of Alamogordo owns Bonito Lake and surrounding properties on the upper Rio Bonito, which it reopened for public fishing in August 2024 after more than a decade of closure and restoration."
+    sources: [6]
+  - text: "BLM's proposed habitat-restoration work on the Rio Bonito, planned in partnership with the New Mexico Department of Game and Fish, aims to provide recreation for anglers, birdwatchers and hikers along the stream."
+    sources: [4]
+
+reservoirs_notes:
+  - name: Bonito Lake
+    text: "Owned by the City of Alamogordo on the upper Rio Bonito, Bonito Lake was closed after the 2012 Little Bear Fire sent gravel and debris into the reservoir; after restoration work the lake refilled with water in 2023 and reopened for fishing only in August 2024, though surrounding City properties along the Rio Bonito remain closed to other recreation."
+    sources: [6]
+
+sources:
+  1: {title: "Rio Bonito Petroglyph National Recreation Trail", publisher: "Bureau of Land Management", url: "https://www.blm.gov/visit/rio-bonito-petroglyph-national-recreation-trail", accessed: 2026-09-28}
+  2: {title: "Fort Stanton", publisher: "New Mexico Historic Sites, NM Department of Cultural Affairs", url: "https://nmhistoricsites.dca.nm.gov/fort-stanton/", accessed: 2026-09-28}
+  3: {title: "Lincoln Town History & Location", publisher: "New Mexico Tourism Department", url: "https://www.newmexico.org/places-to-visit/ghost-towns/lincoln/", accessed: 2026-09-28}
+  4: {title: "BLM Plans Public Meeting on Proposed Rio Bonito Improvements", publisher: "Bureau of Land Management", url: "https://www.blm.gov/press-release/blm-plans-public-meeting-proposed-rio-bonito-improvements", accessed: 2026-09-28}
+  5: {title: "Fort Stanton-Snowy River Cave National Conservation Area: Recreation Opportunities", publisher: "Bureau of Land Management", url: "https://www.blm.gov/programs/national-conservation-lands/new-mexico/fort-stanton-snowy-river-cave-national-conservation-area-recreation-opportunities", accessed: 2026-09-28}
+  6: {title: "Bonito Lake", publisher: "City of Alamogordo", url: "https://www.ci.alamogordo.nm.us/229/Bonito-Lake", accessed: 2026-09-28}
+  7: {title: "Lincoln", publisher: "New Mexico Historic Sites, NM Department of Cultural Affairs", url: "https://nmhistoricsites.dca.nm.gov/lincoln/", accessed: 2026-09-28}

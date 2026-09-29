@@ -1,0 +1,51 @@
+river: San Juan River
+researched: 2026-09-28
+# Checked 2026-09-28: 16 statements checked against their sources; 4 removed (Wikipedia was the sole
+# source, or a specific baseflow/critical-habitat figure could not be confirmed), 2 reworded (a source
+# added to support "near Farmington" and "cold tailwater," and "revised" trimmed from a settlement
+# description).
+
+summary:
+  - text: "Below Navajo Dam near Farmington, New Mexico, the river's cold tailwater is promoted by New Mexico State Parks as a world-class fly-fishing destination."
+    sources: [2, 4]
+  - text: "The river is also the focus of the San Juan River Basin Recovery Implementation Program, a cooperative effort begun in 1992 among New Mexico, Colorado, several tribes and federal agencies to recover the endangered Colorado pikeminnow and razorback sucker while water development continues in the basin."
+    sources: [3]
+summary_sources: [2, 3, 4]
+
+habitats:
+  - text: "The Colorado pikeminnow, first listed as endangered in 1967 and given full Endangered Species Act protection in 1973, is a large Colorado River Basin minnow that can grow up to 6 feet long and is being reintroduced into the San Juan River."
+    sources: [3]
+  - text: "The razorback sucker was listed as endangered and given full Endangered Species Act protection in 1991; this Colorado River Basin sucker can reach 36 inches long and is part of the recovery program's reintroduction efforts across the river system."
+    sources: [3]
+  - text: "The San Juan River Basin Recovery Implementation Program was established through a 1992 cooperative agreement among Colorado, New Mexico, the U.S. Fish and Wildlife Service, the Bureau of Reclamation, the Bureau of Land Management, the Bureau of Indian Affairs, the Ute Mountain Ute Tribe, the Southern Ute Indian Tribe, the Jicarilla Apache Nation and the Navajo Nation, which guide recovery actions through Biology and Coordination committees."
+    sources: [3]
+culture:
+  - text: "In Farmington, Aztec, Bloomfield and Kirtland, water diverted through community acequias watered the fields that fed generations of families, according to New Mexico Magazine, which quotes a local museum director saying, \"It's all about the rivers. Early homesteaders were farming.\""
+    sources: [5]
+  - text: "New Mexico's Office of the State Engineer lists community-operated acequias — including the Hillside, Greenhorn and Highland Park ditches — on the La Plata River, a San Juan tributary within the basin."
+    sources: [6]
+
+users:
+  - text: "The Navajo Indian Irrigation Project, authorized by Congress in June 1962, diverts water at an average annual rate of 508,000 acre-feet from the San Juan River at Navajo Dam Reservoir, about 40 miles upstream of Farmington, to serve roughly 110,000 acres of Navajo tribal land on a plain south of the river."
+    sources: [7]
+  - text: "New Mexico's Office of the State Engineer tracks named diversions on the San Juan River itself — including the Citizens/BID, Turley, Hammond and Jewett Valley diversions — along with municipal water intakes for the cities of Farmington and Aztec."
+    sources: [6]
+  - text: "The Navajo Nation and the United States signed a water rights settlement for the San Juan River Basin in New Mexico on December 17, 2010, closing decades of litigation and providing a water supply meant to reduce water hauling and support future growth on the reservation."
+    sources: [8]
+  - text: "Under the Jicarilla Apache Tribe Water Rights Settlement Act of 1992, the Nation's settlement contract provides for diverting 33,500 acre-feet per year from Navajo Reservoir or the Navajo River, plus 6,500 acre-feet per year from the San Juan-Chama Project."
+    sources: [9]
+
+reservoirs_notes:
+  - name: Navajo Dam / Navajo Reservoir
+    text: "Built by the Bureau of Reclamation as a unit of the Colorado River Storage Project — authorized in 1956 and dedicated in 1962 — Navajo Dam stands 402 feet high on the San Juan River about 34 miles east of Farmington and provides irrigation and municipal water supply, flood control, recreation, hydropower, and fish and wildlife benefits; the tailwater fishery below it is promoted by New Mexico State Parks as a world-class fly-fishing destination."
+    sources: [4, 2]
+
+sources:
+  2: {title: "Navajo Lake State Park", publisher: "New Mexico Energy, Minerals and Natural Resources Department — State Parks Division", url: "https://www.emnrd.nm.gov/spd/find-a-park/navajo-lake-state-park/", accessed: 2026-09-28}
+  3: {title: "San Juan River Basin Recovery Implementation Program", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/office/new-mexico-ecological-services/san-juan-river-basin-recovery-implementation-program", accessed: 2026-09-28}
+  4: {title: "Navajo Dam", publisher: "U.S. Bureau of Reclamation, Upper Colorado Region", url: "https://www.usbr.gov/uc/rm/crsp/navajo/index.html", accessed: 2026-09-28}
+  5: {title: "Explore San Juan County in Northwest New Mexico", publisher: "New Mexico Magazine (New Mexico Department of Tourism)", url: "https://www.newmexicomagazine.org/blog/post/explore-san-juan-county/", accessed: 2026-09-28}
+  6: {title: "Water Measurement System — San Juan Basin (District 5, Aztec)", publisher: "New Mexico Office of the State Engineer", url: "https://meas.ose.state.nm.us/basin.jsp?id=San+Juan", accessed: 2026-09-28}
+  7: {title: "Bureau of Reclamation to Plan and Construct Navajo Indian Irrigation Project for Operation by BIA", publisher: "Bureau of Indian Affairs", url: "https://www.bia.gov/as-ia/opa/online-press-release/bureau-reclamation-plan-and-construct-navajo-indian-irrigation", accessed: 2026-09-28}
+  8: {title: "Salazar Signs San Juan Navajo Water Rights Settlement at Colorado River Water Users Association Conference", publisher: "U.S. Department of the Interior", url: "https://www.doi.gov/news/pressreleases/Salazar-Signs-San-Juan-Navajo-Water-Rights-Settlement-at-Colorado-River-Water-Users-Association-Conference", accessed: 2026-09-28}
+  9: {title: "Jicarilla Apache Tribe Water Rights Settlement Act of 1992", publisher: "University of New Mexico Digital Repository (Native American Water Rights Settlements collection)", url: "https://digitalrepository.unm.edu/nawrs/30/", accessed: 2026-09-28}

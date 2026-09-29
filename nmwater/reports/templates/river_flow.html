@@ -9,23 +9,23 @@
 <style>
   :root {
     color-scheme: light;
-    --page: #f3f4f2; --surface-1: #fcfcfb; --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #77766f;
+    --page: #f3f4f2; --surface-1: #fcfcfb; --text-primary: #0b0b0b; --text-secondary: #52514e; --text-muted: #6b6a64; --control: #77766f;
     --grid: #e6e5e1; --axis: #b9b8b0; --hair: #dcdbd5; --focus: #184f95; --brush: rgba(42, 120, 214, .12); --brush-edge: #2a78d6;
-    --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
+    --s1: #2a78d6; --s2: #c7521b; --s3: #16895f; --s4: #a36f00; --s5: #c4467a; --s6: #008300; --s7: #4a3aa7; --s8: #e34948;
     --font-body: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
     --font-num: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --page: #121211; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #9a998f;
+      --page: #121211; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #9a998f; --control: #8b8a80;
       --grid: #2c2c2a; --axis: #565650; --hair: #33332f; --focus: #86b6ef; --brush: rgba(57, 135, 229, .18); --brush-edge: #3987e5;
       --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --page: #121211; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #9a998f;
+    --page: #121211; --surface-1: #1a1a19; --text-primary: #ffffff; --text-secondary: #c3c2b7; --text-muted: #9a998f; --control: #8b8a80;
     --grid: #2c2c2a; --axis: #565650; --hair: #33332f; --focus: #86b6ef; --brush: rgba(57, 135, 229, .18); --brush-edge: #3987e5;
     --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s6: #008300; --s7: #9085e9; --s8: #e66767;
   }
@@ -40,19 +40,19 @@
   .controls { display: flex; flex-wrap: wrap; gap: 14px 22px; align-items: end; }
   .group { display: flex; flex-direction: column; gap: 5px; }
   .group > span { font-size: 0.72rem; color: var(--text-secondary); letter-spacing: .05em; text-transform: uppercase; font-weight: 600; }
-  .seg { display: inline-flex; border: 1px solid var(--axis); border-radius: 5px; overflow: hidden; }
-  .seg button { font: inherit; font-size: 0.82rem; color: var(--text-primary); background: transparent; border: 0; border-right: 1px solid var(--axis);
+  .seg { display: inline-flex; border: 1px solid var(--control); border-radius: 5px; overflow: hidden; }
+  .seg button { font: inherit; font-size: 0.82rem; color: var(--text-primary); background: transparent; border: 0; border-right: 1px solid var(--control);
     padding: 5px 11px; cursor: pointer; }
   .seg button:last-child { border-right: 0; }
   .seg button[aria-pressed="true"] { background: var(--text-primary); color: var(--surface-1); }
   .seg button:hover:not([aria-pressed="true"]) { background: var(--grid); }
   input[type="date"], select { font: inherit; font-size: 0.84rem; color: var(--text-primary); background: var(--surface-1);
-    border: 1px solid var(--axis); border-radius: 5px; padding: 4px 8px; }
+    border: 1px solid var(--control); border-radius: 5px; padding: 4px 8px; }
   .dates { display: flex; gap: 6px; align-items: center; color: var(--text-secondary); font-size: 0.82rem; }
   label.check { display: inline-flex; gap: 7px; align-items: center; font-size: 0.84rem; padding-block: 5px; cursor: pointer; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 0; padding: 0; list-style: none; align-items: center; }
   .legend button { display: inline-flex; align-items: center; gap: 8px; font: inherit; font-size: 0.82rem; color: var(--text-primary);
-    background: transparent; border: 1px solid var(--hair); border-radius: 4px; padding: 5px 10px; cursor: pointer; }
+    background: transparent; border: 1px solid var(--control); border-radius: 4px; padding: 5px 10px; cursor: pointer; }
   .legend button[aria-pressed="false"] { color: var(--text-muted); text-decoration: line-through; }
   .legend button[aria-pressed="false"] i { opacity: .3; }
   .legend button:hover { background: var(--grid); }
@@ -81,7 +81,7 @@
   td.n { font-family: var(--font-num); }
   td .key { display: inline-block; width: 14px; border-top: 2px solid var(--c); vertical-align: middle; margin-right: 8px; }
   .tools { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
-  .tools button { font: inherit; font-size: 0.82rem; color: var(--text-primary); background: transparent; border: 1px solid var(--axis);
+  .tools button { font: inherit; font-size: 0.82rem; color: var(--text-primary); background: transparent; border: 1px solid var(--control);
     border-radius: 4px; padding: 5px 12px; cursor: pointer; }
   .tools button:hover { background: var(--grid); }
   .datatable { max-height: 460px; overflow: auto; margin-top: 10px; }
@@ -97,7 +97,7 @@
   ul.issues li { padding-left: 2px; }
   ul.issues b { font-weight: 600; margin-right: 4px; }
   .chip { display: inline-block; font-size: 0.7rem; letter-spacing: .04em; text-transform: uppercase; font-weight: 600;
-    border: 1px solid var(--axis); border-radius: 999px; padding: 0 7px; margin-right: 8px; color: var(--text-secondary); }
+    border: 1px solid var(--control); border-radius: 999px; padding: 0 7px; margin-right: 8px; color: var(--text-secondary); }
   .chip.warn { border-color: #d03b3b; color: var(--text-primary); }
   .chip.verified { border-color: var(--s1); }
   .when { color: var(--text-muted); font-size: 0.78rem; margin-left: 4px; }

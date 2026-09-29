@@ -1,0 +1,35 @@
+river: Rio Tesuque
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements spot-checked; settlement date and Aamodt details reworded to match sources.
+
+summary:
+  - text: "The Rio Tesuque is a small stream flowing from the Sangre de Cristo Mountains north of Santa Fe down through the Pueblo of Tesuque and the Tesuque valley toward the Pojoaque River."
+    sources: [2]
+  - text: "A six-mile stretch of the river crosses Pueblo of Tesuque land and is considered of great cultural significance to the tribe, which has occupied the site since about 1200 A.D."
+    sources: [1]
+summary_sources: [2, 1]
+
+habitats:
+  - text: "The Rio Tesuque and the Pueblo-owned land it crosses support riparian forest that provides nesting habitat for migratory birds as well as year-round resident species."
+    sources: [1]
+
+culture:
+  - text: "The Pueblo of Tesuque, a Tewa-speaking community re-established at its present site along the Rio Tesuque in 1694 after the Pueblo Revolt, considers the river central to its cultural identity."
+    sources: [1]
+  - text: "Hispanic settlement of the Tesuque valley grew from El Rancho Benavides, after land there was sold to Juan de Benavides in 1732, and the acequia system built with that settlement still irrigates the valley."
+    sources: [2]
+  - text: "Acequia irrigation remains active in the valley today, with more than 150 registered water users belonging to five acequia associations."
+    sources: [2]
+
+users:
+  - text: "The Pueblo of Tesuque's water rights, along with those of the Pueblos of Nambé, Pojoaque and San Ildefonso, were settled in the Aamodt water rights settlement, finalized in 2013."
+    sources: [3]
+  - text: "Five acequia associations with more than 150 registered users still irrigate the Tesuque valley."
+    sources: [2]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "History", publisher: "Pueblo of Tesuque", url: "https://www.tesuquepueblo.org/history", accessed: 2026-09-28}
+  2: {title: "Tesuque (Protected Lands)", publisher: "Santa Fe Conservation Trust", url: "https://sfct.org/protected-lands/tesuque-viewshed/", accessed: 2026-09-28}
+  3: {title: "Secretary Salazar Finalizes Historic Aamodt Water Rights Settlement in New Mexico", publisher: "U.S. Department of the Interior", url: "https://www.doi.gov/news/pressreleases/secretary-salazar-finalizes-historic-aamodt-water-rights-settlement-in-new-mexico", accessed: 2026-09-28}

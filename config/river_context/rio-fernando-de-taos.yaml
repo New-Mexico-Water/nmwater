@@ -1,0 +1,42 @@
+river: Rio Fernando de Taos
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements checked against their sources; 2 removed (land-grant claim was Wikipedia-only),
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# 3 reworded (dropped a Wikipedia co-citation and its unsupported routing claim, added the causes source for E. coli
+# contamination, corrected the gauge's period of record).
+
+summary:
+  - text: "The Rio Fernando de Taos rises at the top of La Jara Canyon and flows through Cañon into the town of Taos, then joins the Rio Pueblo de Taos on its way to the Rio Grande."
+    sources: [1]
+  - text: "The river is known locally for a multi-year restoration effort — led by Amigos Bravos, the Taos Valley Acequia Association, the U.S. Forest Service, the Town of Taos and Taos County — to address E. coli contamination, channelization and habitat loss along the reach that runs through the heart of town."
+    sources: [3, 1]
+summary_sources: [1, 3]
+
+habitats:
+  - text: "The Rio Fernando historically supported Rio Grande cutthroat trout, and today resilient wildlife including North American beaver, Northern goshawk and native minnows persist along the river despite decades of degradation."
+    sources: [1]
+  - text: "Like many rivers straightened in the decades after 1930s campaigns promoted straightening banks and draining wetlands, the Rio Fernando lost much of its meander; aerial photographs from before it was straightened show its original channel, which restoration work aims to bring back."
+    sources: [1]
+  - text: "Restoration crews have removed invasive Siberian elm and Russian olive, replanted native coyote willow, and used 'induced meandering' with wood and rock structures to restore the river's original channel and reconnect it to its floodplain."
+    sources: [1]
+
+culture:
+  - text: "The Taos Valley Acequia Association is one of the lead partners restoring the river and its acequia systems, alongside the U.S. Forest Service, the Town of Taos and Taos County."
+    sources: [3]
+  - text: "Youth crews from the Youth Conservation Corps and Taos Pueblo take part in hands-on restoration labor and educational programming along the river."
+    sources: [1]
+
+users:
+  - text: "The Rio Fernando de Taos flows through the center of the Taos community, and a Watershed-Based Plan accepted by the EPA in March 2020 targets restoration of acequia systems and working land capacity along the river."
+    sources: [3]
+  - text: "Amigos Bravos collected more than 300 water-quality samples from over 50 locations in the watershed to trace E. coli contamination to aging septic systems, overgrazing at the headwaters, and development along the river."
+    sources: [3, 1]
+  - text: "A USGS stream gauge near Taos measured the Rio Fernando's peak flows from 1914 to 1980 and daily flow from 1963 to 1980, across a 60.5-square-mile watershed at an elevation of 7,140 feet."
+    sources: [5]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Rio Fernando River Restoration: Getting Down to the Details", publisher: "Taos Land Trust", url: "https://taoslandtrust.org/2018/02/19/rio-fernando-river-restoration-getting-down-to-the-details/", accessed: 2026-09-28}
+  3: {title: "Rio Fernando Watershed Revitalization", publisher: "Amigos Bravos", url: "https://www.amigosbravos.org/rio-fernando-watershed-based-plan/", accessed: 2026-09-28}
+  5: {title: "Rio Fernando DE Taos Near Taos, NM", publisher: "U.S. Geological Survey", url: "https://waterdata.usgs.gov/monitoring-location/USGS-08275000/", accessed: 2026-09-28}

@@ -1,0 +1,53 @@
+river: Jemez River
+researched: 2026-09-28
+# Checked 2026-09-28: 15 statements checked; 3 removed, 1 reworded (two statements sourced only to
+# Wikipedia — river-course summary line and the Jemez Canyon Dam note; an unsourced hot-springs
+# "healing and spiritual activities" claim; trimmed unsupported "mineral"/"travertine" wording).
+# Also corrected the title of source 11 (S. Rept. 118-131) and dropped unused sources 2 and 6.
+
+summary:
+  - text: "The Jemez River forms in the Jemez Mountains where the East Fork Jemez River, whose headwaters rise inside Valles Caldera National Preserve, meets San Antonio Creek at Battleship Rock in the Santa Fe National Forest."
+    sources: [1]
+  - text: "The river is known for the hot springs at Jemez Springs, including Soda Dam, and for the East Fork Jemez River, an 11-mile stretch running from the Valles Caldera boundary to Battleship Rock that was designated a National Wild and Scenic River in 1990."
+    sources: [3, 4]
+summary_sources: [1, 3, 4]
+
+habitats:
+  - text: "The East Fork Jemez River's Wild and Scenic corridor is home to Mexican spotted owls, Jemez Mountains salamanders, and New Mexico's only known colony of black swifts."
+    sources: [4]
+  - text: "Rio Grande cutthroat trout once lived in the East Fork Jemez River but have been absent since 1950; today the reach holds introduced brown, rainbow and Yellowstone cutthroat trout instead."
+    sources: [4]
+  - text: "Valles Caldera's headwater wetlands, including the East Fork Jemez River's meandering upper reaches, act as a natural filter and slow runoff into the Jemez River; the National Park Service has been restoring degraded sections of these wetlands since the preserve was acquired by the federal government in 2000."
+    sources: [1]
+
+culture:
+  - text: "The ancestors of the Jemez people migrated into the Cañón de San Diego area from the Four Corners region in the late 13th century, and Jemez Pueblo (Walatowa) still occupies the canyon today, about 50 miles northwest of Albuquerque, with more than 3,400 tribal members on roughly 89,000 acres."
+    sources: [5]
+  - text: "The original Santa Ana Pueblo (Tamaya) was built against a mesa wall on the north bank of the Jemez River for protection and seclusion; the Keresan-speaking community later resettled at its present site along the Rio Grande in 1693 after fleeing during the Pueblo Revolt."
+    sources: [7]
+  - text: "San Ysidro, the oldest existing Hispanic settlement in the Jemez Valley, was founded in 1699 and formalized by a 1786 land grant bordered by Jemez Pueblo land to the north and Zia Pueblo land to the south."
+    sources: [8]
+
+users:
+  - text: "Jemez Pueblo farms corn and chile with water from the Jemez River, and its leaders describe recurring water shortages from upstream development; formal efforts toward a settlement began in 1983, when the U.S. government sued on the pueblo's behalf over water rights along the river."
+    sources: [9]
+  - text: "A proposed settlement would resolve the Pueblo of Jemez's and Pueblo of Zia's water rights claims in the Jemez River Stream System, confirming 6,055 acre-feet a year for Jemez Pueblo and 3,699.4 acre-feet a year for Zia Pueblo from surface and groundwater sources."
+    sources: [10]
+  - text: "As of a December 2023 Senate report, the Senate Committee on Indian Affairs had approved the Jemez and Zia settlement bill (S. 595) and recommended passage without amendment, while its House companion bill, H.R. 1304, had seen no further action."
+    sources: [11]
+  - text: "Santa Ana Pueblo's Department of Natural Resources works on the adjudication of the Rio Jemez and on water resource planning to further develop the pueblo's water rights in the Jemez basin."
+    sources: [12]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Watersheds", publisher: "National Park Service — Valles Caldera National Preserve", url: "https://home.nps.gov/vall/learn/nature/watersheds.htm", accessed: 2026-09-28}
+  3: {title: "Jemez Mountain Trail National Scenic Byway", publisher: "New Mexico Tourism Department", url: "https://www.newmexico.org/places-to-visit/scenic-byways/jemez-mountain-trail-national/", accessed: 2026-09-28}
+  4: {title: "East Fork Jemez River", publisher: "National Wild and Scenic Rivers System (U.S. Fish & Wildlife Service)", url: "https://www.fws.gov/rivers/river/jemez-east-fork", accessed: 2026-09-28}
+  5: {title: "History and Culture", publisher: "Pueblo of Jemez", url: "https://www.jemezpueblo.org/about/history-and-culture/", accessed: 2026-09-28}
+  7: {title: "Santa Ana Pueblo (Tamaya)", publisher: "Pueblo of Santa Ana", url: "https://santaana-nsn.gov/", accessed: 2026-09-28}
+  8: {title: "San Ysidro", publisher: "Jemez Valley History", url: "https://jemezvalleyhistory.org/san-ysidro/", accessed: 2026-09-28}
+  9: {title: "New Mexico's Jemez Pueblo works to resolve water rights after decades of efforts", publisher: "KUNR Public Radio", url: "https://www.kunr.org/energy-and-environment/2023-04-10/upstream-battle-new-mexico-pueblo-resolve-water-rights-decades-of-negotiations", accessed: 2026-09-28}
+  10: {title: "Pending Legislation", publisher: "U.S. Department of the Interior", url: "https://www.doi.gov/ocl/pending-legislation-41", accessed: 2026-09-28}
+  11: {title: "S. Rept. 118-131 — Rio San Jose and Rio Jemez Water Settlement Act of 2023", publisher: "U.S. Senate Committee on Indian Affairs (GovInfo)", url: "https://www.govinfo.gov/content/pkg/CRPT-118srpt131/html/CRPT-118srpt131.htm", accessed: 2026-09-28}
+  12: {title: "DNR Water Resources", publisher: "Pueblo of Santa Ana", url: "https://santaana-nsn.gov/dnrwaterresources/", accessed: 2026-09-28}

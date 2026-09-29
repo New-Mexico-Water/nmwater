@@ -1,0 +1,24 @@
+river: Rio Hondo (Lincoln County)
+researched: 2026-09-28
+# Checked 2026-09-28: 7 statements checked against their sources; 5 removed (three cited Wikipedia only; a fourth's
+# river-fork claim wasn't stated by its non-Wikipedia source and conflicts with the Bonito Lake facts elsewhere), 2
+# reworded (dropped an unsupported fork attribution and an undated wildfire year).
+
+summary: []
+summary_sources: []
+
+habitats: []
+
+culture: []
+
+users:
+  - text: "Ruidoso's three mountain lakes — Grindstone closest to downtown, Alto to the north and Bonito in the Sierra Blanca mountains to the northwest — are regularly stocked with rainbow trout, with trails in the area running alongside the Rio Ruidoso."
+    sources: [2]
+  - text: "The Village of Ruidoso warns that burn scars from the South Fork and Salt fires have sharply increased flood risk along canyons, arroyos and low-water crossings near the Rio Ruidoso, where flash floods can now develop within minutes during monsoon season."
+    sources: [3]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Ruidoso Lakes", publisher: "Village of Ruidoso (Discover Ruidoso tourism site)", url: "https://www.discoverruidoso.com/info/ruidoso-lakes", accessed: 2026-09-28}
+  3: {title: "Monsoon Season Awareness", publisher: "Village of Ruidoso", url: "https://www.ruidoso-nm.gov/monsoon-season-awareness", accessed: 2026-09-28}

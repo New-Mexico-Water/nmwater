@@ -1,0 +1,55 @@
+river: Santa Fe River
+researched: 2026-09-28
+# Checked 2026-09-28: 15 statements checked against their sources; none removed, 1 reworded (added a
+# second source to support "below Nichols Reservoir").
+
+summary:
+  - text: "The Santa Fe River rises at Santa Fe Lake below 12,408-foot Lake Peak in the Sangre de Cristo Mountains, inside the city's protected municipal watershed in the Santa Fe National Forest, and runs 46 miles to its confluence with the Rio Grande."
+    sources: [1]
+  - text: "Before reaching the city the river is stored in the McClure and Nichols reservoirs, which together with the rest of the watershed supply about 37 percent of Santa Fe's drinking water."
+    sources: [2]
+  - text: "Since a 2012 city ordinance, Santa Fe has released 'Living River' bypass flows below Nichols Reservoir and continued sending some storable flows to traditional acequias downstream, aiming to keep water moving through the river's urban reach."
+    sources: [2, 3]
+summary_sources: [1, 2, 3]
+
+habitats:
+  - text: "Santa Fe Canyon Preserve, a 525-acre stretch of one of the last unspoiled riparian corridors on the river just below the reservoirs, protects a bosque of cottonwood and willow trees and is home to more than 140 bird species."
+    sources: [4]
+  - text: "Beavers have recolonized the preserve and transformed stretches of the historic river channel into ponds and wetlands, and the Nature Conservancy has worked since 2012 to re-establish the northern leopard frog there."
+    sources: [4]
+  - text: "The city dedicates 'Living River' flows below Nichols Reservoir to maintain a healthy plant community and wildlife habitat and to shade and cool the urban river corridor."
+    sources: [2, 3]
+  - text: "The river's 17,200-acre municipal watershed, largely within the Santa Fe National Forest and partly inside the Pecos Wilderness, has been closed to public access since 1932 to protect water quality at the river's source."
+    sources: [1]
+
+culture:
+  - text: "Santa Fe's Acequia Madre, the 'mother ditch' that carried Santa Fe River water to the city's homes and fields, was built more than 400 years ago using irrigation technology Spanish settlers adapted from Arabic practice, and it still runs today, though at a reduced rate."
+    sources: [5]
+  - text: "The city continues to bypass some of its storable Santa Fe River flows to support both the 'Living River' and traditional acequias downstream."
+    sources: [2]
+  - text: "Santa Fe's 2012 Living River ordinance targets bypass flows from Nichols Reservoir toward the Santa Fe Canyon Preserve reach, in part to sustain a biologically diverse stretch of river during the irrigation season when demand is highest."
+    sources: [3]
+
+users:
+  - text: "Stored in the McClure and Nichols reservoirs and treated at the Canyon Road Water Treatment Plant, the Santa Fe River supplies about 37 percent of the City of Santa Fe's drinking water."
+    sources: [2]
+  - text: "The city bypasses some of its storable river flows to traditional acequias below the reservoirs, in addition to flows dedicated to the 'Living River.'"
+    sources: [2]
+  - text: "Under the 2012 Living River ordinance, the city targets a weekly average bypass flow of 0.3 cubic feet per second through the Santa Fe Canyon Preserve reach, especially during the high-demand irrigation season."
+    sources: [3]
+
+reservoirs_notes:
+  - name: McClure Reservoir
+    text: "McClure Reservoir, the upper of the city's two Santa Fe River impoundments, collects runoff from the protected municipal watershed before it is released downstream to Nichols Reservoir."
+    sources: [6]
+  - name: Nichols Reservoir
+    text: "Nichols Reservoir, downstream of McClure, stores Santa Fe River water for conveyance to the Canyon Road Water Treatment Plant; the city has been replacing the reservoirs' aging original intake towers as part of ongoing infrastructure upgrades."
+    sources: [6]
+
+sources:
+  1: {title: "Municipal Watershed Management", publisher: "City of Santa Fe", url: "https://santafenm.gov/public-utilities/water/water-resources-1/santa-fe-river/upper-watershed", accessed: 2026-09-28}
+  2: {title: "Santa Fe River", publisher: "City of Santa Fe", url: "https://santafenm.gov/public-utilities/water/water-resources-1/santa-fe-river", accessed: 2026-09-28}
+  3: {title: "The Living River Ordinance", publisher: "Sierra Club Rio Grande Chapter", url: "https://www.riograndesierraclub.org/living-river-ordinance/", accessed: 2026-09-28}
+  4: {title: "Santa Fe Canyon Preserve", publisher: "The Nature Conservancy in New Mexico", url: "https://www.nature.org/en-us/get-involved/how-to-help/places-we-protect/santa-fe-canyon-preserve/", accessed: 2026-09-28}
+  5: {title: "Acequia Madre", publisher: "Historic Santa Fe Foundation", url: "https://www.historicsantafe.org/property-portfolio-1/acequia-madre", accessed: 2026-09-28}
+  6: {title: "EBTAG Annual Workshop and Field Trip: Abstract", publisher: "New Mexico Bureau of Geology and Mineral Resources, New Mexico Tech", url: "https://geoinfo.nmt.edu/ebtag/workshop/abstracts/view.cfm?aid=210", accessed: 2026-09-28}

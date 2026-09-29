@@ -1,0 +1,36 @@
+river: Rio Ruidoso
+researched: 2026-09-28
+# Checked 2026-09-28: 9 statements checked; 2 removed (Wikipedia-only geography claims), 4 reworded (dropped
+# an incorrect 1902 period-of-record claim not in USGS site data, trimmed two culture statements to only what
+# the tribe's own site supports, and dropped a disputed meeting-frequency detail).
+
+summary:
+  - text: "The U.S. Geological Survey measures the river at Hollywood in Lincoln County, where it drains about 120 square miles."
+    sources: [2]
+summary_sources: [2]
+
+habitats:
+  - text: "New Mexico's water quality standards designate the Rio Ruidoso downstream of the U.S. Highway 70 bridge near Seeping Springs lakes for coldwater aquatic life, fish culture and wildlife habitat."
+    sources: [3]
+
+culture:
+  - text: "The Mescalero people, named for the mescal plant they gathered and ate, were nomadic hunters and gatherers and highly skilled horsemen."
+    sources: [4]
+  - text: "The Ski Apache ski area is one of the Mescalero Apache Tribe's tribally owned enterprises."
+    sources: [4]
+
+users:
+  - text: "The same state water quality standards also designate this reach of the Rio Ruidoso for irrigation and livestock watering."
+    sources: [3]
+  - text: "The USGS operates the Rio Ruidoso gauge at Hollywood in cooperation with the New Mexico Interstate Stream Commission and the Village of Ruidoso."
+    sources: [2]
+  - text: "The Village of Ruidoso is developing an EPA-funded Rio Ruidoso Watershed-Based Plan to protect water quality and promote sustainable land use, with a Watershed Advisory Board that meets on a recurring schedule."
+    sources: [5]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Rio Ruidoso at Hollywood, NM (USGS-08387000)", publisher: "U.S. Geological Survey, Water Data for the Nation", url: "https://waterdata.usgs.gov/monitoring-location/USGS-08387000/", accessed: 2026-09-28}
+  3: {title: "Water Quality Survey Summary for the Rio Peñasco Watershed (quotes standard 20.6.4.208 NMAC, which also covers the Rio Ruidoso)", publisher: "Surface Water Quality Bureau, New Mexico Environment Department", url: "https://www.env.nm.gov/surface-water-quality/wp-content/uploads/sites/25/2019/10/RioPenascoSurvey-2003.pdf", accessed: 2026-09-28}
+  4: {title: "Mescalero Apache Tribe", publisher: "Mescalero Apache Tribe", url: "https://mescaleroapachetribe.com", accessed: 2026-09-28}
+  5: {title: "Watershed Advisory Board", publisher: "Village of Ruidoso", url: "https://www.ruidoso-nm.gov/watershed-advisory-board", accessed: 2026-09-28}

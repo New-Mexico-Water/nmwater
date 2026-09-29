@@ -1,0 +1,32 @@
+river: Rio Pueblo de Taos
+researched: 2026-09-28
+# Checked 2026-09-28: 7 statements checked; 2 removed (Wikipedia-only geography/hydrology claims with no
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# other source), 1 reworded (dropped an unsupported "entire upper course" claim, keeping only what the
+# Taos Pueblo site itself supports).
+
+summary:
+  - text: "Taos Pueblo's multi-story adobe homes beside the stream are estimated to be over a thousand years old and were named a UNESCO World Heritage Site in 1992 and a National Historic Landmark in 1960."
+    sources: [2]
+summary_sources: [2]
+
+habitats: []
+
+culture:
+  - text: "Taos Pueblo's multi-story adobe buildings beside the Rio Pueblo de Taos are estimated to be over a thousand years old; residents maintain them every year and pass them down through families, and the dwellings remain central to the pueblo's religious and cultural activities."
+    sources: [4, 2]
+  - text: "The Taos Pueblo/Abeyta Indian Water Rights Settlement, for which pueblo leadership announced local support in 2008 and which was finalized in 2012, resolved water-rights claims between Taos Pueblo and other Taos Valley water users, including the Town of Taos, the El Prado Water and Sanitation District, and the Taos Valley Acequia Association."
+    sources: [3]
+  - text: "Two acequias figure directly in the settlement's technical record: Acequia del Medio del Prado and Acequia Madre de la Loma, the latter fed by springs on Pueblo land."
+    sources: [3]
+
+users:
+  - text: "The Abeyta settlement apportions and protects Taos Pueblo's water rights alongside those of the Town of Taos, the El Prado Water and Sanitation District, the Taos Valley Acequia Association and area Mutual Domestic Water Consumers Associations, all of which draw on the same Taos Valley water sources the Rio Pueblo de Taos feeds."
+    sources: [3]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Taos Pueblo", publisher: "Taos Pueblo", url: "https://www.taospueblo.com/", accessed: 2026-09-28}
+  3: {title: "Water Rights", publisher: "Taos Pueblo", url: "https://www.taospueblo.com/water-rights", accessed: 2026-09-28}
+  4: {title: "History", publisher: "Taos Pueblo", url: "https://www.taospueblo.com/history", accessed: 2026-09-28}

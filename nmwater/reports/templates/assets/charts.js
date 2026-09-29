@@ -63,9 +63,35 @@
   function frame(box, spec) {
     box.classList.add("chart"); box.replaceChildren();
     if (spec.legendItems) legend(box, spec.legendItems);
-    const svg = el("svg", { role: "img", tabindex: "0", "aria-label": spec.label || "chart" }, box);
-    const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; box.appendChild(tip);
+    const svg = el("svg", { role: "img", tabindex: "0", "aria-label": (spec.label || "Chart") +
+      ". Use the left and right arrow keys to read values; the data is also available as a table below the chart." }, box);
+    const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; tip.setAttribute("aria-hidden", "true"); box.appendChild(tip);
+    // read out values to screen readers, only while the chart is driven from the keyboard
+    const live = document.createElement("p"); live.className = "vh"; live.setAttribute("aria-live", "polite"); box.appendChild(live);
+    box._live = live;
     return { svg, tip };
+  }
+  /* A "Show the data as a table" disclosure under the chart, built when first opened.
+     head: column names; rows: arrays of cell text (first cell is the row header). */
+  function dataTable(box, caption, head, rows) {
+    const d = document.createElement("details"); d.className = "data";
+    const s = document.createElement("summary"); s.textContent = "Show the data as a table"; d.appendChild(s);
+    d.addEventListener("toggle", () => {
+      if (!d.open || d.querySelector("table")) return;
+      const wrap = document.createElement("div"); wrap.className = "scroll"; wrap.tabIndex = 0;
+      wrap.setAttribute("role", "region"); wrap.setAttribute("aria-label", caption + " (table)");
+      const t = document.createElement("table"), cap = document.createElement("caption");
+      cap.className = "vh"; cap.textContent = caption; t.appendChild(cap);
+      const hr = document.createElement("tr");
+      head.forEach(h => { const th = document.createElement("th"); th.scope = "col"; th.textContent = h; hr.appendChild(th); });
+      const th = document.createElement("thead"); th.appendChild(hr); t.appendChild(th);
+      const tb = document.createElement("tbody");
+      rows.forEach(r => { const tr = document.createElement("tr");
+        r.forEach((c, i) => { const td = document.createElement(i ? "td" : "th"); if (!i) td.scope = "row"; td.textContent = c; tr.appendChild(td); });
+        tb.appendChild(tr); });
+      t.appendChild(tb); wrap.appendChild(t); d.appendChild(wrap);
+    });
+    box.appendChild(d);
   }
   function tipShow(box, tip, px, head, rows) {
     tip.hidden = false; tip.replaceChildren();
@@ -73,17 +99,20 @@
     rows.forEach(r => { const d = document.createElement("div"); d.className = "r"; d.style.setProperty("--c", r.color);
       const i = document.createElement("i"); if (r.box) i.className = "box"; const n = document.createElement("span"); n.textContent = r.name;
       const v = document.createElement("b"); v.textContent = r.value; d.append(i, n, v); tip.appendChild(d); });
+    if (box._kbd && box._live) box._live.textContent = head + ": " + rows.map(r => r.name + " " + r.value).join("; ") + ".";
     const w = tip.offsetWidth; tip.style.left = Math.max(0, px + 14 + w > box.clientWidth ? px - w - 14 : px + 14) + "px"; tip.style.top = "6px";
   }
   function wire(svg, box, tip, n, onSel) {
     let sel = null;
-    const pick = ev => { const r = svg.getBoundingClientRect(); onSel.pick((ev.clientX - r.left) * (svg.viewBox.baseVal.width / r.width)); };
+    const pick = ev => { box._kbd = false; const r = svg.getBoundingClientRect(); onSel.pick((ev.clientX - r.left) * (svg.viewBox.baseVal.width / r.width)); };
     svg.addEventListener("pointermove", pick); svg.addEventListener("pointerdown", pick);
     svg.addEventListener("pointerleave", ev => { if (ev.pointerType === "mouse") onSel.clear(); });
     svg.addEventListener("blur", () => onSel.clear());
     svg.addEventListener("keydown", ev => { const k = ev.key; let i = onSel.cur();
-      if (k === "ArrowLeft") i = Math.max(0, (i ?? n) - 1); else if (k === "ArrowRight") i = Math.min(n - 1, (i ?? -1) + 1); else return;
-      ev.preventDefault(); onSel.set(i); });
+      if (k === "Escape") { onSel.clear(); return; }
+      if (k === "ArrowLeft") i = Math.max(0, (i ?? n) - 1); else if (k === "ArrowRight") i = Math.min(n - 1, (i ?? -1) + 1);
+      else if (k === "Home") i = 0; else if (k === "End") i = n - 1; else return;
+      box._kbd = true; ev.preventDefault(); onSel.set(i); });
     return sel;
   }
 
@@ -137,6 +166,11 @@
       pick: px => { let best = 0, bd = Infinity; spec.x.forEach((xv, i) => { const d = Math.abs(draw.x(spec.xType === "cat" ? i : xv) - px); if (d < bd) { bd = d; best = i; } }); cur = best; active = true; draw(); },
       clear: () => { active = false; draw(); }, cur: () => cur, set: i => { cur = i; active = true; draw(); } });
     new ResizeObserver(draw).observe(box); draw();
+    dataTable(box, spec.label || "Chart data", [spec.xLabel || (spec.xType === "year" ? "Year" : spec.xType === "cat" ? "Category" : "Date")]
+      .concat(spec.series.map(s => s.name), (spec.bands || []).map(b => b.name)),
+      spec.x.map((xv, i) => [fmtX(spec.xType === "cat" ? i : xv, spec)].concat(spec.series.map(s => fmtVal(s.values[i], spec)),
+        (spec.bands || []).map(b => b.lo[i] == null ? "no data" : fmtVal(b.lo[i], { fmt: spec.fmt }) + " to " + fmtVal(b.hi[i], spec))))
+        .filter(r => r.slice(1).some(c => c !== "no data")));
     return { redraw: draw };
   }
 
@@ -175,6 +209,11 @@
     wire(svg, box, tip, spec.values.length, { pick: px => { cur = draw.pick(px); active = true; draw(); },
       clear: () => { active = false; draw(); }, cur: () => cur, set: i => { cur = i; active = true; draw(); } });
     new ResizeObserver(draw).observe(box); draw();
+    const lab = i => spec.xType === "cat" ? spec.labels[i] : (spec.tickFmt && spec.xRes !== "month" ? spec.tickFmt(spec.x[i]) : fmtX(spec.x[i], spec));
+    dataTable(box, spec.label || spec.name || "Chart data", [spec.xType === "year" ? "Year" : "Date", spec.name || "Value"]
+      .concat(spec.ref ? [spec.ref.name] : [], (spec.extra || []).map(e => e.name)),
+      spec.values.map((v, i) => [lab(i), fmtVal(v, spec)].concat(spec.ref ? [fmtVal(spec.ref.values[i], spec)] : [],
+        (spec.extra || []).map(e => e.values[i] == null ? "" : String(e.values[i])))).filter(r => r[1] !== "no data" || r.length > 2));
   }
 
   /* strip: {rows:[names], x:[ms], cls:[[class or null]], pct:[[number or null]], classes:{name: cssVar}, label} */
@@ -201,7 +240,20 @@
       const px = (ev.clientX - r.left) * s, py = (ev.clientY - r.top) * s, i = Math.floor((px - g.M.l) / g.cw), row = Math.floor((py - g.M.t) / g.rowH);
       if (i >= 0 && i < spec.x.length && row >= 0 && row < spec.rows.length) { cur = [row, i]; active = true; draw(); } });
     svg.addEventListener("pointerleave", () => { active = false; draw(); });
+    svg.addEventListener("pointermove", () => { box._kbd = false; });
+    svg.addEventListener("blur", () => { active = false; draw(); });
+    svg.addEventListener("keydown", ev => {
+      const k = ev.key, n = spec.x.length, m = spec.rows.length; let [r, i] = cur || [0, n - 1];
+      if (k === "Escape") { active = false; draw(); return; }
+      if (!active && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(k)) { /* start on the latest week of the first row */ }
+      else if (k === "ArrowLeft") i = Math.max(0, i - 1); else if (k === "ArrowRight") i = Math.min(n - 1, i + 1);
+      else if (k === "ArrowUp") r = Math.max(0, r - 1); else if (k === "ArrowDown") r = Math.min(m - 1, r + 1);
+      else if (k === "Home") i = 0; else if (k === "End") i = n - 1; else return;
+      ev.preventDefault(); box._kbd = true; cur = [r, i]; active = true; draw(); });
     new ResizeObserver(draw).observe(box); draw();
+    svg.setAttribute("aria-label", (spec.label || "Chart") + ". Use the arrow keys to move between weeks (left and right) and segments (up and down); the data is also available as a table below the chart.");
+    dataTable(box, spec.label || "Chart data", ["Week of"].concat(spec.rows),
+      spec.x.map((xv, i) => [fD.format(xv)].concat(spec.rows.map((_, r) => spec.cls[r][i] ? spec.cls[r][i] + (spec.pct[r][i] != null ? " (" + f0.format(spec.pct[r][i]) + "th percentile)" : "") : "no rating"))));
   }
 
   window.RiverCharts = { line, bars, strip, DAY };

@@ -1,0 +1,572 @@
+researched: 2026-09-28
+# Checked 2026-09-28: general statements checked against sources 2, 6, 9, 11, 12; the governance statement was
+# reworded ("three commissioners" and "in times of shortage" were not in the cited pages). Acequia entries: names and
+# counties matched in the DFA ICIP filings; officers' personal names removed from the evidence text.
+
+# =====================================================================
+# Task 3: short general statements about acequias, for the "Culture"
+# section. Each statement reflects only what its cited source(s)
+# state directly.
+# =====================================================================
+general:
+  - text: >
+      Acequias, or community ditches, are recognized under New Mexico law
+      as political subdivisions of the state; they were defined as
+      political subdivisions of the state in 1965. They are local
+      government entities in which owners of water rights govern the
+      neighborhood ditch, with the power of eminent domain and authority
+      to borrow money and enter into contracts for maintenance and
+      improvements, but they cannot levy taxes, so maintenance costs are
+      borne by the members served by the ditch.
+    sources: [2, 6, 11]
+  - text: >
+      Each acequia is run by a mayordomo, elected by the local community to
+      oversee the operation and maintenance of the ditch, together with
+      elected commissioners (comisionados). The mayordomo's work includes
+      the annual saca de la acequia (the spring ditch cleaning) and the
+      equitable distribution of water; commissioners hold membership
+      meetings and manage the acequia's governance and finances. The
+      individuals or families with rights to use water from an acequia are
+      called parciantes.
+    sources: [11, 9]
+  - text: >
+      Many of New Mexico's acequia associations have existed since the
+      Spanish colonial period of the 17th and 18th centuries, and
+      historically they were the principal local unit of government for
+      distributing and using surface water.
+    sources: [2]
+  - text: >
+      Acequias have centuries-old customs of sharing water between
+      acequias on the same stream system, known as "repartimiento."
+    sources: [11]
+  - text: >
+      New Mexico is home to roughly 700 acequias and community ditches
+      (the New Mexico Acequia Association's 2024 Congreso packet puts it
+      as "over 700"; a 2025 NMAA legislative presentation gives "~700"),
+      spanning stream systems that include the Rio Grande and its
+      tributaries, the San Juan River, the Rio Chama, the
+      Nambe/Pojoaque/Tesuque streams, the Pecos River and Gallinas, the
+      Canadian River/Mora, the Rio Pueblo/Rio Embudo, the Jemez River,
+      the Rio San Jose, the Hondo River, the Gila River and the Mimbres
+      River.
+    sources: [4, 11]
+  - text: >
+      In their respective river basins, acequias manage most of the
+      non-Indian surface water rights dedicated to agriculture, and they
+      are directly involved in water-right adjudication proceedings and
+      settlements in those basins; acequias also have the authority to
+      approve or deny applications to transfer or lease their water.
+    sources: [11]
+  - text: >
+      The New Mexico Acequia Commission, established in statute in 1993
+      and housed within the Department of Finance and Administration's
+      Local Government Division, advises the Governor and the
+      Legislature on policy matters affecting acequias; the New Mexico
+      Acequia Association, a statewide membership organization founded
+      in 1989, works to protect water and strengthen acequia agriculture
+      through education and advocacy.
+    sources: [11, 1]
+  - text: >
+      Acequias are classified by the state as "local public bodies"
+      (along with land grants, mutual domestic water consumer
+      associations and special districts) and are therefore subject to
+      the Audit Act's tiered system of financial reporting; acequias can
+      also qualify for state financial assistance to cover the cost of
+      completing their required audits or agreed-upon-procedures
+      engagements.
+    sources: [12]
+
+# =====================================================================
+# Task 1: sources checked for lists that identify individual acequias
+# as organized/active (commissioners, mayordomo, bylaws, annual
+# meetings, filings as a political subdivision, or membership in a
+# regional acequia association).
+# =====================================================================
+source_lists:
+  - source: 1
+    shows: >
+      New Mexico Acequia Association home site and staff/contact pages.
+      No public directory or member list of individual acequias was
+      found on the pages checked (home, contact, staff directory);
+      NMAA describes itself as a federation of regional, watershed-based
+      acequia associations and invites acequias to submit commissioner
+      contact info via an update form, but that form/database was not
+      publicly browsable in the pages checked.
+    names_individual_acequias: false
+    format: "HTML"
+    approx_count: null
+  - source: 2
+    shows: >
+      NM Office of the State Engineer / Interstate Stream Commission
+      "Acequias/Community Ditches" program overview page. States that
+      acequias are political subdivisions of the state and describes ISC
+      program support, with links to related resource pages, but the
+      page itself is not a browsable directory or list of individual
+      acequias.
+    names_individual_acequias: false
+    format: "HTML"
+    approx_count: null
+  - source: 3
+    shows: >
+      NM Department of Finance and Administration, Local Government
+      Division, "Infrastructure Capital Improvement Plan FY 2023-2027 -
+      Entity Profile for Special Districts" (a compiled PDF of ICIP
+      entity-profile filings). Contains 149 individual entity profiles
+      for local public bodies statewide (acequias, land grants, mutual
+      domestic water associations, soil and water conservation
+      districts, etc.); each acequia/community-ditch profile names the
+      acequia, its county, its ICIP officer (usually a commissioner),
+      and often describes commission/mayordomo activity and annual
+      membership meetings as evidence of active governance.
+    names_individual_acequias: true
+    format: "PDF (one structured entity profile per organization; text-extractable)"
+    approx_count: 33
+  - source: 4
+    shows: >
+      New Mexico Acequia Association "Congreso de las Acequias" 2024
+      delegate meeting packet (agenda, prior-year minutes, resolutions).
+      Lists the Congreso's Tier 1 regional acequia associations (about
+      16, e.g. Taos Valley Acequia Association, Rio Chama Acequia
+      Association, La Asociacion de las Acequias del Valle de Mora) and
+      Tier 2 delegate sub-regions (about 25 named places, e.g. Cerro,
+      Questa, Rio Pueblo, Rio Sapello, Rio Mimbres, Upper Rio Pecos,
+      Tesuque, Truchas, Tularosa) that send delegates; states New Mexico
+      has "over 700 acequias and community ditches." Mostly names
+      regional associations and delegate regions rather than individual
+      acequias (one exception named directly: "Las Nueve Acequias del
+      Rio Grande").
+    names_individual_acequias: false
+    format: "PDF (text)"
+    approx_count: null
+  - source: 5
+    shows: >
+      Taos Valley Acequia Association website. States TVAA supports 54
+      acequias (one page: "55 acequias on 6 streams") serving an
+      estimated 15,000 parciantes across the Rio Hondo, Rio Lucero, Rio
+      Fernando, Rio Pueblo, Rio Chiquito and Rio Grande del Rancho
+      systems, with per-stream acequia counts and irrigated acreage, but
+      the pages checked (board-members, tvaa, the-taos-valley) did not
+      itemize the individual acequia names.
+    names_individual_acequias: false
+    format: "HTML"
+    approx_count: 54
+  - source: 6
+    shows: >
+      Individual community website for Acequia del Cano, hosted by the
+      NM Office of the State Engineer under its Acequia Mapping Project
+      outreach (ose.nm.gov/NMAC/). Names the acequia's president,
+      secretary, treasurer and mayordomo on a Contacts page, and posts
+      bylaws and annual/special meeting minutes from 2009 through 2025.
+      Only one such OSE-hosted acequia site was found in the pages
+      checked; it is not known whether other acequias have sites in this
+      same OSE-hosted set.
+    names_individual_acequias: true
+    format: "HTML (one acequia)"
+    approx_count: 1
+  - source: 7
+    shows: >
+      Independent website for Acequia Madre del Rio Lucero y del Arroyo
+      Seco (Taos County), publishing current bylaws (with named
+      commissioners) and a log of meeting minutes.
+    names_individual_acequias: true
+    format: "HTML/WordPress (one acequia)"
+    approx_count: 1
+  - source: 8
+    shows: >
+      Village of Jemez Springs official government website, "Ditch
+      Association" page, naming the Jemez Springs Community Ditch
+      Association's mayordomo, president, secretary/treasurer and
+      commissioner-at-large as elected at its November 16, 2025 biannual
+      meeting.
+    names_individual_acequias: true
+    format: "HTML (one acequia)"
+    approx_count: 1
+  - source: 9
+    shows: >
+      Independent website for Acequia de Alcalde (Rio Arriba County),
+      describing governance by mayordomo and comisionados and the annual
+      limpieza, and stating the acequia diverts water from the Rio
+      Grande.
+    names_individual_acequias: true
+    format: "HTML (one acequia)"
+    approx_count: 1
+  - source: 10
+    shows: >
+      Independent website for Acequia de Santa Cruz, publishing bylaws
+      (dated 2018-06-14) and meeting minutes through September 2025, and
+      describing the Rio Santa Cruz watershed the acequia draws from.
+    names_individual_acequias: true
+    format: "HTML (one acequia)"
+    approx_count: 1
+  - source: 12
+    shows: >
+      NM Office of the State Auditor "Tier System of Financial
+      Reporting" presentation (via NMDFA). Confirms acequias are "local
+      public bodies" subject to the Audit Act's tiered financial
+      reporting system (12-6-1 through 12-6-15 NMSA 1978) and are
+      eligible, alongside land grants, mutual domestic water consumer
+      associations and special districts, for Small Political
+      Subdivision funding to cover audit/AUP costs. Does not include a
+      list of individual acequias or which ones filed reports for a
+      given fiscal year.
+    names_individual_acequias: false
+    format: "PDF (slide deck)"
+    approx_count: null
+
+# =====================================================================
+# Task 2: individual acequias with evidence of active self-governance.
+# Fields left null where the cited source does not state them.
+# =====================================================================
+acequias:
+  - name: "Abeyta-Trujillo Acequia"
+    community: "Abiquiu"
+    county: "Rio Arriba"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia (Entity Type: AC) with
+      NM DFA Local Government Division, FY2023-2027; the Commission has
+      resolved to act as fiscal agent for the Rio Chama Acequia
+      Association in support of the Rio Chama Irrigation Reserve in El
+      Vado Reservoir, and reports evaluating infrastructure needs at an
+      annual membership meeting.
+    sources: [3]
+  - name: "Acequia de Alcalde"
+    community: "Alcalde"
+    county: "Rio Arriba"
+    stream: "Rio Grande"
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA (county
+      given as Rio Arriba). Its own website states the acequia diverts
+      water from the Rio Grande and is governed by an elected mayordomo
+      and comisionados, with an annual limpieza (ditch cleaning).
+    sources: [3, 9]
+  - name: "Acequia de la Isla"
+    community: "Ledoux"
+    county: "Mora"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA. A 1925
+      court decree (quiet title suit) binds Acequia de la Isla (40%
+      interest) and Acequia de San Jose (60% interest) as joint owners
+      of Morphy Lake, which the two acequias built and have worked
+      together to maintain for irrigation.
+    sources: [3]
+  - name: "Acequia de San Jose"
+    community: "Ledoux"
+    county: "Mora"
+    stream: null
+    evidence: >
+      Named in Acequia de la Isla's ICIP filing with NM DFA as the 60%
+      owner (under a 1925 court decree) of Morphy Lake, which it built
+      and has jointly maintained with Acequia de la Isla for irrigation
+      purposes; no separate ICIP profile for this acequia was found.
+    sources: [3]
+  - name: "Acequia de La Mesa Prieta"
+    community: "Ojo Caliente"
+    county: "Rio Arriba"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia de la Otra Banda (Best)"
+    community: null
+    county: "Santa Fe"
+    stream: "Pojoaque River"
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA. Its
+      Commissioners have discussed the ditch's infrastructure needs at
+      annual meetings since 2003, consulted NRCS engineers, and approved
+      an ICIP resolution in September 2020; the acequia's stated goal is
+      to protect delivery of water to parciantes and nearby Pojoaque
+      Pueblo cultural resources as the Pojoaque River erodes its bank.
+    sources: [3]
+  - name: "Acequia de las Seguras"
+    community: "Rowe"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia de Los Ortizes"
+    community: null
+    county: "Santa Fe"
+    stream: "Nambe River"
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA. Parciantes
+      and Commissioners meet annually to plan infrastructure repairs and
+      cost-share funding; the Commission has approved an ICIP
+      resolution, and the acequia's project goals include increasing the
+      health of the Nambe River.
+    sources: [3]
+  - name: "Acequia de los Vecinos de los Vallecitos West"
+    community: "Pecos (officer's listed address)"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia de Pueblo Abiquiu"
+    community: "Abiquiu"
+    county: "Rio Arriba"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia del Monte de Rio Chiquito"
+    community: "Ranchos de Taos"
+    county: "Taos"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA. Eleven
+      parciantes, including three Commissioners and the Mayordomo, met
+      in 2005 to review the acequia's condition; Commission Chair Art
+      Coca signed the ICIP resolution, and the three Commissioners have
+      continued to meet annually to confirm projects and secure funding.
+    sources: [3]
+  - name: "Acequia del Ojo Del Gallo"
+    community: "San Rafael"
+    county: "Cibola"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia Madre de Las Vegas"
+    community: "Las Vegas (officer's listed address)"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia Madre de Los Romeros"
+    community: "Las Vegas (officer's listed address)"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequia Mesa del Medio"
+    community: "Mesa Poleo (per NMAA article)"
+    county: "Rio Arriba"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA (officer
+      address given as Coyote, NM). An NMAA search-results page ("Acequia
+      Mesa del Medio Seeks Legal Assistance," Dec 18, 2012) describes it
+      as located near the community of Mesa Poleo in the San Pedro Parks
+      area, with a subterranean diversion at Rito Resumidero.
+    sources: [3, 13]
+  - name: "Acequia San Rafael del Guique"
+    community: "El Guique"
+    county: "Rio Arriba"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Acequias Chamisal y Ojito"
+    community: "Chamisal"
+    county: "Taos"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Archibeque Community Ditch"
+    community: "Cuba"
+    county: "Sandoval"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Cebolletita Acequia"
+    community: null
+    county: "Cibola"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "Ferran Acequia"
+    community: "Abiquiu"
+    county: "Rio Arriba"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia with NM DFA."
+    sources: [3]
+  - name: "La Bajada Community Ditch"
+    community: "La Bajada"
+    county: "Santa Fe"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "La Joya Community Ditch"
+    community: "La Joya"
+    county: "Socorro"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Las Acequias de Placitas Water Cooperative"
+    community: "Placitas"
+    county: "Sandoval"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as an acequia/community ditch cooperative with NM DFA."
+    sources: [3]
+  - name: "Nacimiento Community Ditch Association"
+    community: "Cuba (officer's listed address)"
+    county: "Sandoval"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "NM New Model Community Ditch Association"
+    community: "Virden"
+    county: "Hidalgo"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Pleasanton Eastside Ditch Association"
+    community: "Pleasanton"
+    county: "Catron"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Ponderosa Community Ditch"
+    community: "Ponderosa"
+    county: "Sandoval"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Round House Ditch"
+    community: "Las Vegas (officer's listed address)"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "San Augustine Ditch"
+    community: "Las Vegas (officer's listed address)"
+    county: "San Miguel"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "San Mateo Ditch"
+    community: "San Mateo"
+    county: "Cibola"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "Storm Ditch"
+    community: null
+    county: "Lincoln"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as a community ditch ("Storm Ditch -
+      Lincoln Co.") with NM DFA.
+    sources: [3]
+  - name: "Tularosa Community Ditch"
+    community: "Tularosa"
+    county: "Otero"
+    stream: null
+    evidence: "Filed an ICIP Entity Profile as a community ditch with NM DFA."
+    sources: [3]
+  - name: "West Pecos Acequia Association"
+    community: "Pecos"
+    county: "San Miguel"
+    stream: null
+    evidence: >
+      Filed an ICIP Entity Profile as an acequia with NM DFA. Worked
+      with an NMAA infrastructure specialist on a diversion-dam cost
+      estimate after "reviewing areas of concern on the acequia with the
+      commission and Mayordomo"; members reviewed and affirmed the
+      rebuild project at a March 2021 membership meeting.
+    sources: [3]
+  - name: "Acequia del Cano"
+    community: "Nambe"
+    county: "Santa Fe"
+    stream: null
+    evidence: >
+      Community website (hosted by the NM Office of the State Engineer's
+      Acequia Mapping Project) lists its current officers, including a
+      mayordomo, and posts bylaws and annual and special meeting minutes
+      spanning 2009-2025.
+    sources: [6]
+  - name: "Acequia Madre del Rio Lucero y del Arroyo Seco"
+    community: null
+    county: "Taos"
+    stream: "Rio Lucero / Arroyo Seco"
+    evidence: >
+      Its published bylaws provide for three commissioners and a
+      mayordomo; the mayordomo manages water distribution under the
+      reparto system.
+    sources: [7]
+  - name: "Jemez Springs Community Ditch Association"
+    community: "Jemez Springs"
+    county: "Sandoval"
+    stream: null
+    evidence: >
+      The Village of Jemez Springs website lists the association's
+      mayordomo and officers, elected at its November 2025 meeting.
+    sources: [8]
+  - name: "Acequia de Santa Cruz"
+    community: "Santa Cruz"
+    county: null
+    stream: "Rio Santa Cruz"
+    evidence: >
+      Official website publishes bylaws dated 2018-06-14 and meeting
+      minutes through September 2025, and states the acequia's
+      watershed source is the Truchas Peaks, draining via the Rio
+      Quemado, Rio Medio and Rio Frijoles into the Rio Santa Cruz.
+    sources: [10]
+
+# =====================================================================
+# Source register
+# =====================================================================
+sources:
+  1:
+    title: "New Mexico Acequia Association"
+    publisher: "New Mexico Acequia Association"
+    url: "https://lasacequias.org/"
+    accessed: 2026-09-28
+  2:
+    title: "Acequias/Community Ditches"
+    publisher: "New Mexico Office of the State Engineer / Interstate Stream Commission"
+    url: "https://www.ose.nm.gov/Acequias/isc_acequias.php"
+    accessed: 2026-09-28
+  3:
+    title: "Infrastructure Capital Improvement Plan FY 2023-2027 - ICIP Entity Profile for Special Districts"
+    publisher: "New Mexico Department of Finance and Administration, Local Government Division"
+    url: "https://www.nmdfa.state.nm.us/wp-content/uploads/2021/12/FY2023-2027-Entity-Profile-Special-Districts.pdf"
+    accessed: 2026-09-28
+  4:
+    title: "Congreso de las Acequias - 2024 Delegate Meeting Packet"
+    publisher: "New Mexico Acequia Association"
+    url: "https://lasacequias.org/wp-content/uploads/2024/11/Congreso-Delegate-Packet-2024-Final.pdf"
+    accessed: 2026-09-28
+  5:
+    title: "Taos Valley Acequia Association (TVAA, board members, and Taos Valley pages)"
+    publisher: "Taos Valley Acequia Association"
+    url: "https://www.taosacequias.org/tvaa"
+    accessed: 2026-09-28
+  6:
+    title: "Acequia del Cano (About Acequias / Contacts)"
+    publisher: "New Mexico Office of the State Engineer, Acequia Mapping Project (hosted site)"
+    url: "https://www.ose.nm.gov/NMAC/Acequia-del-Cano/acequia.html"
+    accessed: 2026-09-28
+  7:
+    title: "Acequia Madre del Rio Lucero y del Arroyo Seco - Bylaws"
+    publisher: "Acequia Madre del Rio Lucero y del Arroyo Seco"
+    url: "https://amrlas.wordpress.com/bylaws/"
+    accessed: 2026-09-28
+  8:
+    title: "Ditch Association"
+    publisher: "Village of Jemez Springs, New Mexico"
+    url: "https://www.jemezsprings.gov/ditch-association/"
+    accessed: 2026-09-28
+  9:
+    title: "Acequia de Alcalde"
+    publisher: "Acequia de Alcalde"
+    url: "https://acequiadealcalde.org/"
+    accessed: 2026-09-28
+  10:
+    title: "Acequia de Santa Cruz"
+    publisher: "Acequia de Santa Cruz"
+    url: "https://www.acequiadesantacruz.org/"
+    accessed: 2026-09-28
+  11:
+    title: "Acequia Issue Overview (presentation to the Land Grant Legislative Interim Committee, May 30, 2025)"
+    publisher: "New Mexico Acequia Association (Paula Garcia)"
+    url: "https://www.nmlegis.gov/handouts/LGC%20053025%20Item%202%20%20Land%20Grant%20Committee%20Acequia%20Intro%20May%2030%202025%20Rev%20SLIDES.pdf"
+    accessed: 2026-09-28
+  12:
+    title: "The Audit Act's Tiered System of Financial Reporting (presentation)"
+    publisher: "New Mexico Office of the State Auditor, via NM Department of Finance and Administration"
+    url: "https://www.nmdfa.state.nm.us/wp-content/uploads/2022/12/OSA-Tier-System-of-Financial-Reporting-Presentation-Nov-2021-Budget-Conf.pdf"
+    accessed: 2026-09-28
+  13:
+    title: "Search results for \"Rio Puerco\" (Acequia Mesa del Medio Seeks Legal Assistance)"
+    publisher: "New Mexico Acequia Association"
+    url: "https://lasacequias.org/?s=Rio+Puerco"
+    accessed: 2026-09-28

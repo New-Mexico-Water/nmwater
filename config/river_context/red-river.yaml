@@ -1,0 +1,31 @@
+river: Red River
+researched: 2026-09-28
+# Checked 2026-09-28: 8 statements checked; 2 removed, 2 reworded (Wikipedia-only source rule; "Village" corrected to "Town of Red River" per source's own usage; La Junta Point access phrasing).
+
+summary:
+  - text: "The river ends in the Rio Grande Gorge, where it meets the Rio Grande within the Wild Rivers Recreation Area of the Rio Grande del Norte National Monument; both rivers there carry Wild and Scenic River designation."
+    sources: [2, 3]
+  - text: "The town of Red River, at 8,750 feet along the river's upper course, grew up as a mining camp and today calls itself an 'iconic New Mexico mountain town' built around skiing, rafting and trout fishing."
+    sources: [4]
+summary_sources: [2, 3, 4]
+
+habitats:
+  - text: "Where the Red River meets the Rio Grande, an 800-foot-deep canyon cut into volcanic flows shelters ancient piñon and juniper forest, including trees around 500 years old, and supports mule deer, bighorn sheep, elk and a range of bird species."
+    sources: [2]
+
+culture:
+  - text: "The town of Red River grew out of 19th-century mining activity in the upper valley and still trades on that 'small, mining town charm' today."
+    sources: [4]
+
+users:
+  - text: "The town of Red River draws visitors for skiing at the Red River Ski & Summer Area, along with rafting, hiking and trout fishing on the river, plus snowmobiling, tubing, snowshoeing and cross-country skiing in winter."
+    sources: [4]
+  - text: "Downstream, the Red River's confluence with the Rio Grande anchors the Wild Rivers Recreation Area, a developed site within the Rio Grande del Norte National Monument whose wheelchair-accessible La Junta Point overlooks the confluence."
+    sources: [2]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Wild Rivers Recreation Area", publisher: "Bureau of Land Management", url: "https://www.blm.gov/visit/wild-rivers-recreation-area", accessed: 2026-09-28}
+  3: {title: "Rio Grande del Norte National Monument", publisher: "Bureau of Land Management", url: "https://www.blm.gov/programs/national-conservation-lands/new-mexico/rio-grande-del-norte-national-monument", accessed: 2026-09-28}
+  4: {title: "Red River, New Mexico — Town of Red River", publisher: "Town of Red River (tourism site)", url: "https://www.redriver.org/", accessed: 2026-09-28}
