@@ -1,0 +1,26 @@
+# Hand-written background for river pages, shown on the Overview tab above the description the report
+# generates from the archive. Keep to well-established facts and name the sources; the page labels
+# this text as background from general references, not derived from the archive's data.
+#
+#   <river label>:
+#     text: one or two short paragraphs (blank line between paragraphs)
+#     sources: [short source names]
+
+Rio Grande:
+  text: >-
+    The Rio Grande rises in the San Juan Mountains of southern Colorado and runs about 1,900 miles to the
+    Gulf of Mexico, forming the border between Texas and Mexico below El Paso. In New Mexico it cuts
+    through the Rio Grande Gorge north of Española, then runs south through the Middle Rio Grande valley past
+    Albuquerque and Socorro, into Elephant Butte and Caballo reservoirs, and through the Mesilla Valley past
+    Las Cruces.
+
+
+    Its water is shared under the Rio Grande Compact of 1938 among Colorado, New Mexico and Texas. The
+    Middle Rio Grande Conservancy District diverts water to farms between Cochiti and Elephant Butte, and
+    Elephant Butte Dam (completed 1916) stores water for the Rio Grande Project in southern New Mexico and
+    west Texas. The Rio Chama is its largest tributary in New Mexico and carries San Juan-Chama Project water
+    imported from the Colorado River basin.
+  sources:
+    - Rio Grande Compact (1938)
+    - U.S. Bureau of Reclamation, Rio Grande Project and San Juan-Chama Project
+    - Middle Rio Grande Conservancy District

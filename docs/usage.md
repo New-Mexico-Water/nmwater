@@ -184,11 +184,33 @@ website later):
 ```
 dist/rivers/index.html                      list of rivers, searchable
 dist/rivers/manifest.json                   the same list, machine-readable
-dist/rivers/<river>/index.html              the interactive page
+dist/rivers/assets/                         shared styles and chart code for every page
+dist/rivers/<river>/index.html              the river page (tabs, below)
+dist/rivers/<river>/data.js                 the page's chart data
 dist/rivers/<river>/all_weeks_by_segment.csv
 dist/rivers/<river>/last_52_weeks_by_segment.csv, last_52_weeks_by_gauge.csv, copy_agreement.csv
-dist/rivers/<river>/notes.md                method, gauges, copy agreement, caveats
+dist/rivers/<river>/normal_last_52_weeks_by_segment.csv, drying_by_year.csv
+dist/rivers/<river>/data_issues.json, notes.md   data gaps and disparities; method, gauges, caveats
 ```
+
+Each river page has tabs (a tab can be linked as `index.html#watershed`):
+- **Overview**: a description (hand-written background from `config/river_descriptions.yaml` where
+  written, plus a paragraph generated from the archive), a map of the river, its segments, gauges,
+  reservoirs, tributaries and towns (drawn from NHDPlus, WBD, NHD and TIGER, no map service), and
+  where each segment stands last week.
+- **Flow**: weekly, monthly or yearly mean flow per segment for the whole record.
+- **Compared with normal**: each week of the last year rated against the same week in 1991-2020
+  (USGS WaterWatch classes), per segment and per gauge (`nmwater/reports/river_normal.py`).
+- **Drying**: days per year a gauge in the segment read below 0.1 cfs; gauges dry on 90% or more of
+  their days (just below a diversion) are left out and named.
+- **Temperature & salinity**: water temperature from sensors (this year against other years, the
+  hottest 7-day stretch each year) and specific conductance by segment and decade
+  (`river_quality.py`). Shown only where the river has such data.
+- **Watershed**: PRISM precipitation and temperature, SNODAS snowpack and the Drought Monitor index
+  for each segment's watershed (`river_watershed.py`; averages are cached in
+  `data/parquet/reference/source=river_reports/huc8_climate.parquet` and only new months and weeks
+  are computed on later runs).
+- **Data notes**: removed values, reviewed notes and automatic findings.
 
 ```
 nmwater report-rivers                       # every river (about 4 minutes)
