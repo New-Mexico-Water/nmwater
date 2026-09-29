@@ -84,3 +84,15 @@ def test_jsonld_cannot_close_the_script_tag():
     m = rs.head_meta(rs.site_config({}), title="T", desc="D", path="p/", image=None, image_alt="",
                      jsonld=[{"name": "</script><b>"}])
     assert "</script><b>" not in m
+
+
+def test_acequia_list_merges_the_map_and_the_research():
+    db = {"acequias": [{"name": "Acequia de Alcalde", "community": "Alcalde", "county": "Rio Arriba", "stream": "Rio Grande",
+                        "sources": [3]},
+                       {"name": "Acequia de Chamita", "community": "Chamita (officer's listed address)", "county": "Rio Arriba",
+                        "stream": None, "sources": [3]}]}
+    c = ctx(["Rio Arriba"], ["Acequia De Chamita", "Acequia De Atalaya"])
+    got = ro.acequia_list("Rio Grande", c, db)
+    assert [x["name"] for x in got] == ["Acequia de Alcalde", "Acequia De Atalaya", "Acequia de Chamita"]
+    assert got[0]["where"] == "Alcalde, Rio Arriba County"
+    assert got[2]["where"] == "Rio Arriba County"          # a guessed community is not shown
