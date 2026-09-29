@@ -7,9 +7,8 @@ Two kinds of content, always labelled as such:
 - cited background (config/river_context/<slug>.yaml, config/acequia_governance.yaml): researched
   statements, each with numbered sources that were checked by a reviewer before use.
 
-Acequias are presented under Culture: they are community-governed irrigation systems, political
-subdivisions of the state with elected commissioners and a mayordomo, and centuries-old institutions,
-not just ditches. They also appear, briefly, among the river's water users.
+Acequias appear twice: listed by name under Culture, and counted with the irrigation districts among
+the river's water users.
 """
 
 from __future__ import annotations
@@ -138,7 +137,7 @@ def about(b, facts: rm.MapFacts, res: dict, sources: dict, cites: Cites, backgro
     return f'<section class="card about" aria-labelledby="h-about"><h2 id="h-about">About the {E(b.r.river)}</h2>{"".join(out)}</section>'
 
 
-def journey(rows: list[dict], layers: rm.Layers, ctx: rc.Context) -> str:
+def journey(rows: list[dict], layers: rm.Layers, aqs: list[dict]) -> str:
     towns = layers.all_towns
     if len(towns) and layers.river is not None:          # towns beside the river, not anywhere in a large watershed
         import warnings
@@ -151,7 +150,7 @@ def journey(rows: list[dict], layers: rm.Layers, ctx: rc.Context) -> str:
         seg = x["segment"]
         poly = layers.hucs.loc[layers.hucs["segment"] == seg, "geometry"]
         tn = [] if poly.empty else [rm.town_name(n) for n in towns[towns.within(poly.iloc[0])]["NAME20"]][:4]
-        aq = ctx.acequias.get(seg)
+        aq = [x["name"] for x in aqs if x["segment"] == seg]
         chip = "" if not x["cls"] else f' <span class="st {x["cls"].replace(" ", "-")}">{E(x["cls"])}</span>'
         flow = "No data last week" if x["flow"] is None else f'{x["flow"]:,.0f} cfs last week'
         dry = "" if not x["dry"] else f', {x["dry"]} dry day{"s" if x["dry"] != 1 else ""} this year'
@@ -159,44 +158,42 @@ def journey(rows: list[dict], layers: rm.Layers, ctx: rc.Context) -> str:
             f'<li class="leg" style="--c:var(--s{i + 1})"><span class="num" aria-hidden="true">{i + 1}</span>'
             f'<h3><span class="vh">Segment {i + 1}: </span>{E(seg)}</h3><p>{flow}{chip}{dry}.</p>'
             + (f"<p>Towns: {E(', '.join(tn))}.</p>" if tn else "")
-            + (f'<p>Acequias: {aq["count"]} in the State Engineer\'s map along this reach'
-               + (f', including {E(", ".join(aq["names"][:4]))}' if aq["names"] else "") + '. <a href="#acequias">About acequias</a></p>'
-               if aq else "")
+            + (f'<p>{len(aq)} acequia{"s" if len(aq) != 1 else ""} along this reach, including {E(", ".join(aq[:4]))}.</p>'
+               if len(aq) > 4 else f'<p>Acequias: {E(", ".join(aq))}.</p>' if aq else "")
             + "</li>")
     return ('<section class="card" aria-labelledby="h-journey"><h2 id="h-journey">From the headwaters down</h2>'
             '<p class="hint">Each watershed segment in order, with last week\'s flow rated against the same week in 1991-2020.</p>'
             f'<ol class="journey">{"".join(legs)}</ol></section>')
 
 
+def acequia_list(label: str, ctx: rc.Context, aq_db: dict) -> list[dict]:
+    """Acequias along the river: those in the State Engineer's map within ACEQUIA_KM, plus those the
+    governance research places on it. One entry per name: {name, segment, where, sources}."""
+    out: dict[str, dict] = {}
+    for seg, v in ctx.acequias.items():
+        for n in v["names"]:
+            out.setdefault(_norm(n), {"name": n, "segment": seg, "where": "", "sources": []})
+    for a in governed_acequias(label, ctx, aq_db):
+        e = out.setdefault(_norm(a["name"]), {"name": a["name"], "segment": None, "where": "", "sources": []})
+        e["name"] = a["name"]                         # the acequia's own spelling
+        e["where"] = ", ".join(x for x in (a.get("community"), f'{a["county"]} County' if a.get("county") else None)
+                               if x and "(" not in str(x))
+        e["sources"] = a.get("sources") or []
+    return sorted(out.values(), key=lambda e: e["name"].lower())
+
+
 def culture(label: str, ctx: rc.Context, res: dict, sources: dict, aq_db: dict, cites: Cites) -> str:
     aq_sources = {str(k): v for k, v in (aq_db.get("sources") or {}).items()}
-    general = [x for x in res.get("culture") or [] if "acequia" not in x["text"].lower()]
-    river_aq = [x for x in res.get("culture") or [] if "acequia" in x["text"].lower()]
-    parts = [_items(general, sources, cites)] if general else []
-    gov = governed_acequias(label, ctx, aq_db)
-    if not (ctx.acequias or gov or river_aq):         # no acequias known on this river: no acequia section
-        return "" if not parts else f'<section class="card" aria-labelledby="h-culture"><h2 id="h-culture">Culture</h2>{"".join(parts)}</section>'
-    # acequias: what they are, then this river's
-    a = ['<h3 class="h3" id="acequias">Acequias</h3>']
-    if aq_db.get("general"):
-        a.append(_items(aq_db["general"][:4], aq_sources, cites))
-    if river_aq:
-        a.append(_items(river_aq, sources, cites))
-    if gov:
-        lis = "".join(f'<li><b>{E(x["name"])}</b>{", " + E(x["community"]) if x.get("community") else ""}'
-                      f'{", " + E(x["county"]) + " County" if x.get("county") else ""}: {E(x.get("evidence", ""))}'
-                      f'{cites.refs(x.get("sources"), aq_sources)}</li>' for x in gov)
-        a.append(f'<p>Acequias on this river with published evidence of their own governance (elected commissioners, a mayordomo, '
-                 f'filings as a political subdivision or membership of a regional association):</p><ul class="facts">{lis}</ul>')
-    if ctx.acequias:
-        rows = "".join(f'<li>{E(seg)}: {v["count"]}' + (f' ({E(", ".join(v["names"]))})' if v["names"] else "") + "</li>"
-                       for seg, v in ctx.acequias.items())
-        total = sum(v["count"] for v in ctx.acequias.values())
-        a.append(f'<details><summary>{total} acequia{"s" if total != 1 else ""} in the State Engineer\'s acequia map within '
-                 f'{rc.ACEQUIA_KM:g} km of the river</summary><ul class="facts">{rows}</ul></details>')
-    a.append('<p class="src">The State Engineer\'s acequia map covers mainly northern New Mexico, and not every acequia has '
-             'published records, so a river with none listed here may still have active acequias.</p>')
-    parts.append("".join(a))
+    parts = [_items(res["culture"], sources, cites)] if res.get("culture") else []
+    aqs = acequia_list(label, ctx, aq_db)
+    if aqs:
+        lis = "".join(f'<li>{E(x["name"])}{" <small>(" + E(x["where"]) + ")</small>" if x["where"] else ""}'
+                      f'{cites.refs(x["sources"], aq_sources)}</li>' for x in aqs)
+        parts.append(f'<h3 class="h3" id="acequias">Acequias</h3><ul class="facts cols">{lis}</ul>'
+                     f'<p class="src">From the State Engineer\'s acequia map (within {rc.ACEQUIA_KM:g} km of the river), which covers '
+                     'mainly northern New Mexico, and cited records of acequia governance.</p>')
+    if not parts:
+        return ""
     return f'<section class="card" aria-labelledby="h-culture"><h2 id="h-culture">Culture</h2>{"".join(parts)}</section>'
 
 
@@ -229,7 +226,7 @@ def reservoirs(ctx: rc.Context, res: dict, sources: dict, cites: Cites) -> str:
     return f'<section class="card" aria-labelledby="h-res"><h2 id="h-res">Reservoirs</h2>{body}</section>'
 
 
-def users(ctx: rc.Context, res: dict, sources: dict, cites: Cites) -> str:
+def users(label: str, ctx: rc.Context, res: dict, sources: dict, aq_db: dict, cites: Cites) -> str:
     wu = ctx.water_use
     parts = []
     if res.get("users"):
@@ -246,14 +243,14 @@ def users(ctx: rc.Context, res: dict, sources: dict, cites: Cites) -> str:
                      '<thead><tr><th scope="col">Use</th><th scope="col"><span class="vh">Share (bar)</span></th>'
                      f'<th scope="col">Share</th><th scope="col">Acre-ft</th></tr></thead><tbody>{rows}</tbody></table></div>'
                      '<p class="src">State Engineer, New Mexico Water Use by Categories 2020.</p>')
-    if ctx.districts:
-        parts.append('<h3 class="h3">Irrigation districts along the river</h3><ul class="facts">' + "".join(
-            f"<li>{E(d['name'])} <small>({d['acres']:,.0f} acres mapped)</small></li>" for d in ctx.districts[:5])
-            + "</ul><p class='src'>State Engineer's irrigation districts layer.</p>")
-    if ctx.acequias:
-        total = sum(v["count"] for v in ctx.acequias.values())
-        parts.append(f'<p>{total} acequia{"s" if total != 1 else ""} also take water from this river. '
-                     '<a href="#acequias">More under Culture</a>.</p>')
+    n_aq = len(acequia_list(label, ctx, aq_db))
+    if ctx.districts or n_aq:
+        lis = "".join(f"<li>{E(d['name'])} <small>({d['acres']:,.0f} acres mapped)</small></li>" for d in ctx.districts[:5])
+        if n_aq:
+            lis += (f'<li>{n_aq} acequia{"s" if n_aq != 1 else ""}, community-run irrigation ditches '
+                    '<small>(<a href="#acequias">listed under Culture</a>)</small></li>')
+        parts.append(f'<h3 class="h3">Irrigation districts and acequias</h3><ul class="facts">{lis}</ul>'
+                     "<p class='src'>State Engineer's irrigation districts and acequia layers.</p>")
     if ctx.water_systems:
         parts.append('<h3 class="h3">Public water systems beside the river</h3><p>' + E(", ".join(ctx.water_systems[:6]))
                      + "</p><p class='src'>State Engineer's public water systems layer (service areas within 2 km).</p>")
@@ -269,9 +266,10 @@ def panel(b, rows: list[dict], con, gauges: pd.DataFrame, grids: Path, root: Pat
     res = load_research(root, b.r.slug)
     sources = {str(k): v for k, v in (res.get("sources") or {}).items()}
     cites = Cites()
-    left = [about(b, facts, res, sources, cites, background), journey(rows, layers, ctx),
-            culture(b.r.river, ctx, res, sources, load_acequias(root), cites), habitat(res, sources, cites),
-            reservoirs(ctx, res, sources, cites), users(ctx, res, sources, cites)]
+    aq_db = load_acequias(root)
+    left = [about(b, facts, res, sources, cites, background), journey(rows, layers, acequia_list(b.r.river, ctx, aq_db)),
+            culture(b.r.river, ctx, res, sources, aq_db, cites), habitat(res, sources, cites),
+            reservoirs(ctx, res, sources, cites), users(b.r.river, ctx, res, sources, aq_db, cites)]
     zmap = rm.zoom_map(b.r.gnis_id, b.r.river, b.r.segments, layers, gauges, grids)
     # the map comes first in the source so the focus order matches phones, where it sits on top
     body = (f'<div class="two"><div class="stick"><section class="card" aria-labelledby="h-map"><h2 id="h-map">Where it is</h2>'
@@ -289,6 +287,7 @@ CSS = """
 @media (max-width: 860px) { .two { grid-template-columns: 1fr; } .two .col, .two .stick { grid-column: 1; grid-row: auto; } .two .stick { position: static; } }
 .cite { font: 600 0.7rem var(--font-num); vertical-align: super; margin-left: 2px; text-decoration: none; line-height: 1;
   border: 1px solid var(--control); border-radius: 3px; padding: 0 3px; }
+ul.facts.cols { display: block; columns: 2 16em; column-gap: 24px; } ul.facts.cols li { break-inside: avoid; margin-bottom: 4px; }
 ul.facts { margin: 0; padding-left: 1.1em; display: flex; flex-direction: column; gap: 6px; max-width: 72ch; }
 .card .h3 { font-size: 0.92rem; text-transform: none; letter-spacing: 0; color: var(--text-primary); margin: 16px 0 6px; }
 .src { color: var(--text-muted); font-size: 0.78rem; margin: 6px 0 0; }

@@ -205,8 +205,9 @@ Each river page has tabs (a tab can be linked as `index.html#watershed`):
     reservoir registry), irrigation districts, public water systems, 2020 county water use, and
     acequias in the State Engineer's acequia map within 1.5 km of the river;
   - cited background: `config/river_context/<river>.yaml` (summary, habitats, culture, users,
-    reservoir notes) and `config/acequia_governance.yaml` (what acequias are and how they govern
-    themselves, and acequias with published evidence of their governance). Each statement has
+    reservoir notes) and `config/acequia_governance.yaml` (acequias with published evidence of their
+    governance, which join the State Engineer's mapped acequias in the list under Culture; acequias are
+    also counted with the irrigation districts under Water users). Each statement has
     numbered sources listed at the bottom of the tab. A file that still has the line
     `# Not yet checked by a reviewer` is ignored until someone checks it against its sources and
     replaces that line with a `# Checked <date>: ...` note. Rivers without a checked file fall back to
