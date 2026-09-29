@@ -1,6 +1,15 @@
 # River flow reports (`nmwater report-rivers`, scripts/cron/river_reports.sh).
 # Which rivers get a page, and per-river settings. Output goes to dist/rivers/ (not in git).
 
+# The public website the pages are published on. base_url (e.g. https://rivers.example.org/) is needed for
+# canonical links, social-share images (og:image) and the sitemap, which must use absolute URLs; until it is
+# set those tags are left out. license: a URL for the data licence, added to the pages' Dataset metadata.
+site:
+  name: New Mexico River Conditions
+  base_url: null
+  twitter: null
+  license: null
+
 # Rivers with at least this many stream sites carrying daily discharge get a page.
 min_sites: 2
 

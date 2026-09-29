@@ -1,0 +1,24 @@
+river: Rio Hondo (Taos County)
+researched: 2026-09-28
+# Checked 2026-09-28: 5 statements checked against their sources; 2 removed (each cited Wikipedia only), 2 reworded
+# (Wikipedia co-citations dropped, leaving only what the non-Wikipedia Wilderness.net source supports).
+
+summary:
+  - text: "This Rio Hondo's headwaters rise in the Sangre de Cristo Mountains within the Columbine-Hondo Wilderness, alongside the headwaters of the Red River."
+    sources: [2]
+  - text: "The Rio Hondo and the Red River are both major tributaries of the upper Rio Grande in northern New Mexico, and their headwaters in the Columbine-Hondo Wilderness supply the downstream agricultural communities of Valdez, Arroyo Hondo, Arroyo Seco, San Cristobal and Questa."
+    sources: [2]
+summary_sources: [2]
+
+habitats:
+  - text: "The river's headwaters lie within the 45,000-acre Columbine-Hondo Wilderness, which ranges from forested slopes home to mule deer, elk, black bears and mountain lions to fragile alpine tundra above treeline that shelters bighorn sheep, marmots and pikas."
+    sources: [2]
+
+culture: []
+
+users: []
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Columbine-Hondo Wilderness", publisher: "Wilderness.net (University of Montana, in partnership with federal wilderness-managing agencies)", url: "https://wilderness.net/visit-wilderness/?ID=759", accessed: 2026-09-28}

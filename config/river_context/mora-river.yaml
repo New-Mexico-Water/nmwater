@@ -1,0 +1,46 @@
+river: Mora River
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements checked; 2 removed, 7 reworded (La Cueva Historic District facts were
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# Wikipedia-only; duplicate acequia/water-rights claim; trimmed unsupported county names, "elk", acequia
+# "cultural roots" framing, "technical whitewater", La Cueva Mill dates and Fort Union "near the Mora River at
+# Watrous"; bread-basket wording matched to the mills article). Source 4 repointed to the NPS park page that
+# states the Fort Union facts.
+
+summary:
+  - text: "The Mora River rises above 12,000 feet in the Sangre de Cristo Mountains and drains a 1,476-square-mile watershed as it flows east onto the plains of northeastern New Mexico toward the Canadian River."
+    sources: [1]
+  - text: "In a wet spring its lower stretch can be run by boat for about 30 miles, from just east of Watrous to the confluence with the Canadian River; the run begins lazily and gradually increases in whitewater intensity."
+    sources: [3]
+  - text: "A milling system along the river once nurtured a wheat-growing region known as \"the bread basket of New Mexico\"; today part of the river flows through the Rio Mora National Wildlife Refuge and Conservation Area."
+    sources: [5, 4, 2]
+summary_sources: [1, 2, 3, 4, 5]
+
+habitats:
+  - text: "The Rio Mora National Wildlife Refuge, created in 2012 from a land donation, protects shortgrass prairie, riparian wetlands, piñon-juniper, oak and coniferous forest along five miles of the river, providing habitat for the endangered New Mexico meadow jumping mouse and migrating birds such as the long-billed curlew."
+    sources: [2]
+  - text: "The refuge's associated conservation area spans the 952,000-acre Mora River watershed, including the Sapello River and Coyote Creek tributaries, where the refuge partners with others on restoration, research and education."
+    sources: [2]
+  - text: "A water-resources assessment of the Mora River found the river is nearly completely diverted for agricultural use as it crosses the Mora Valley, with water that returns to the channel farther downstream carrying higher nutrient concentrations."
+    sources: [1]
+
+culture:
+  - text: "Approximately 47 acequias, or irrigation ditches, intersect the Mora River and its tributaries throughout the watershed, according to a University of New Mexico water-resources assessment."
+    sources: [1]
+  - text: "Fort Union, the largest 19th-century military fort in the region, operated from 1851 to 1891; its adobe-walled ruins hold what the National Park Service calls the world's largest collection of Territorial-style adobe remnants."
+    sources: [4]
+  - text: "Ceran St. Vrain built the Mora Valley's oldest standing industrial mill in 1864 to supply a flour contract with Fort Union; the valley's local gristmills processed grain from the 1860s to the 1940s, and three historic flour mills remain along the river between La Cueva and Cleveland."
+    sources: [5]
+
+users:
+  - text: "Surface water is the main water supply in the Mora River watershed, and most of it goes to agriculture — irrigation and livestock watering — with the river nearly completely diverted as it crosses the Mora Valley."
+    sources: [1]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Water Resources Assessment of the Mora River", publisher: "University of New Mexico Digital Repository", url: "https://digitalrepository.unm.edu/wr_fmr/3/", accessed: 2026-09-28}
+  2: {title: "Rio Mora National Wildlife Refuge and Conservation Area — About Us", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/refuge/rio-mora/about-us", accessed: 2026-09-28}
+  3: {title: "The Pecos, Canadian, Cimarron, and Mora Rivers", publisher: "New Mexico Tourism Department (New Mexico True)", url: "https://www.newmexico.org/things-to-do/outdoor-adventures/rafting-kayaking/pecos-canadian-cimarron-mora/", accessed: 2026-09-28}
+  4: {title: "Fort Union National Monument", publisher: "National Park Service", url: "https://www.nps.gov/foun/index.htm", accessed: 2026-09-28}
+  5: {title: "See the Historic Wool and Wheat Mills of Mora Valley, New Mexico", publisher: "New Mexico Magazine (New Mexico Tourism Department)", url: "https://www.newmexicomagazine.org/blog/post/historic-mills-of-mora-valley/", accessed: 2026-09-28}

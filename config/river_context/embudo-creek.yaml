@@ -1,0 +1,27 @@
+river: Embudo Creek
+researched: 2026-09-28
+# Checked 2026-09-28: 8 statements checked; 4 removed (sourced only to Wikipedia, per policy), the
+# rest kept as supported by the Taos News and USGS sources.
+
+summary:
+  - text: "The valley is known for its centuries-old acequia agriculture and, more recently, for the orchards and vineyards irrigated from the same ditches."
+    sources: [3]
+summary_sources: [3]
+
+habitats: []
+
+culture:
+  - text: "Acequia irrigation remains central to the valley's agricultural heritage, still watering the orchards and vineyards, including La Chiripada Winery, founded in 1977 as New Mexico's oldest winery."
+    sources: [3]
+
+users:
+  - text: "Acequia water continues to irrigate orchards, farms and vineyards through the Embudo Valley, including La Chiripada and Vivác wineries near Dixon, supporting agriculture that has continued on the same community ditches for centuries."
+    sources: [3]
+  - text: "A USGS stream gauge at Dixon has tracked Embudo Creek's flow for parts of 93 water years since 1929."
+    sources: [4]
+
+reservoirs_notes: []
+
+sources:
+  3: {title: "Embudo Valley", publisher: "Taos News — Land Water People Time", url: "https://www.taosnews.com/magazines/land-water-people-time/embudo-valley/article_ccfb2e02-8177-5910-99e9-09b65638ebcf.html", accessed: 2026-09-28}
+  4: {title: "USGS 08279000 Embudo Creek at Dixon, NM", publisher: "U.S. Geological Survey", url: "https://waterdata.usgs.gov/nwis/uv?legacy=1&site_no=08279000", accessed: 2026-09-28}

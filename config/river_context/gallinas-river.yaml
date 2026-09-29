@@ -1,0 +1,58 @@
+river: Gallinas River
+researched: 2026-09-28
+# Checked 2026-09-28: 15 statements checked against their cited sources (WRAS report, congressional and
+# FEMA pages, Circle of Blue, Forest Service recovery numbers, OSE presentation, NMAA); all supported as
+# written, none removed or reworded.
+
+summary:
+  - text: "The Gallinas River rises in the Sangre de Cristo Mountains and is one of the most important tributaries of the Pecos River; it is the primary source of drinking water for the City of Las Vegas, New Mexico."
+    sources: [1]
+  - text: "The 2022 Hermit's Peak/Calf Canyon Fire, which began as U.S. Forest Service prescribed burns and became the largest wildfire in New Mexico history, devastated San Miguel and Mora counties."
+    sources: [2]
+  - text: "The fire burned about 341,735 acres and scorched the Gallinas River's upper watershed, and the ash and sediment that followed overwhelmed Las Vegas's water treatment plant."
+    sources: [3]
+summary_sources: [1, 2, 3]
+
+habitats:
+  - text: "The Gallinas watershed ranges from about 4,900 to 11,600 feet in elevation and supports piñon-juniper and ponderosa pine at lower elevations, oak brush and mountain mahogany on drier slopes, mixed conifer at mid-elevations, and a spruce-fir zone above roughly 9,000 feet, with the Forest Service managing more than half of the upper watershed to help protect this cold-water fishery."
+    sources: [1]
+  - text: "The 2022 fire and the post-fire flooding that followed struck the Gallinas Canyon stretch of the river; Forest Service recovery work across the burned area has since included more than 21,000 acres of erosion-control seeding and over 1,200 acres of erosion-control mulching aimed at stabilizing the watershed and protecting the river corridor."
+    sources: [4]
+  - text: "Following the fire, even moderate monsoon storms sent high-ash, sediment-laden flows down the Gallinas - measured at roughly 1,800 cubic feet per second at the Storrie Lake diversion in one event - raising fears the water would become too degraded to treat."
+    sources: [5]
+
+culture:
+  - text: "The Rio Gallinas Acequia Association and the Placita de Arriba Acequia Association are among the acequia groups active in the watershed, and together with the Las Vegas Land Grant and San Miguel County have taken part in Gallinas River watershed planning."
+    sources: [1]
+  - text: "Acequia elected officials and parciantes (member irrigators) govern their community ditches as local institutions of government, and the New Mexico Acequia Association provides governance assistance and advocacy to acequias statewide."
+    sources: [6]
+
+users:
+  - text: "The Gallinas River is the primary source of drinking water for the City of Las Vegas, and its watershed supplies drinking water to roughly 20,000 people altogether."
+    sources: [1]
+  - text: "The City of Las Vegas holds Gallinas River water rights of 1,200 acre-feet per year with an 1835 priority date and 2,400 acre-feet per year with an 1888 priority date, plus off-stream storage permits for Peterson Dam and Bradner Dam."
+    sources: [5]
+  - text: "After the 2022 fire, ash and sediment overwhelmed the city's water treatment plant, and by late August 2022 Las Vegas had only about 21 days of water left in storage; the city is now planning a roughly $140 million overhaul with a new treatment plant, pre-treatment sediment removal, and wastewater-reuse capability, described as its largest capital project ever."
+    sources: [3]
+  - text: "The Hermit's Peak/Calf Canyon Fire Assistance Act established a FEMA Claims Office, with locations in Santa Fe, Las Vegas and Mora, to compensate people for losses from the fire and the flooding that followed it."
+    sources: [7]
+
+reservoirs_notes:
+  - name: Peterson Dam
+    text: "The City of Las Vegas holds an off-stream storage permit for Peterson Dam of 211 acre-feet with an 1881 priority date; it was one of the reservoirs the Corps of Engineers helped protect with coffer dams and barrier nets during the 2022 post-fire flooding."
+    sources: [5]
+  - name: Bradner Dam
+    text: "The city also holds an off-stream storage permit for Bradner Dam of 294 acre-feet with a 1949 priority date."
+    sources: [5]
+  - name: Storrie Lake
+    text: "The City of Las Vegas has rights to up to 2,300 acre-feet of storage in Storrie Lake, currently capped at 800 acre-feet, through an agreement with the Storrie Project Water Users Association, whose own diversion and storage rights carry a 1909 priority date; after the 2022 fire the Association agreed to limit releases to preserve water for the city, and lost an estimated 7,000 acre-feet of storable water when ash-laden flows had to be bypassed around the more-than-century-old canal heading."
+    sources: [5]
+
+sources:
+  1: {title: "Gallinas River Watershed Restoration Action Strategy (WRAS) Introduction", publisher: "New Mexico Environment Department", url: "https://www.env.nm.gov/wp-content/uploads/sites/25/2019/10/Gallinas_River_13060001_WRAS_March_2005.pdf", accessed: 2026-09-28}
+  2: {title: "Hermit's Peak/Calf Canyon Fire Assistance", publisher: "Office of Congresswoman Teresa Leger Fernández, U.S. House of Representatives", url: "https://fernandez.house.gov/wildfires/", accessed: 2026-09-28}
+  3: {title: "New Mexico's Largest Fire Wrecked This City's Water Source", publisher: "Circle of Blue", url: "https://www.circleofblue.org/2023/supply/water-management/infrastructure/new-mexicos-largest-fire-wrecked-this-citys-water-source/", accessed: 2026-09-28}
+  4: {title: "Santa Fe National Forest: Hermit's Peak Calf Canyon Recovery", publisher: "USDA Forest Service", url: "https://www.fs.usda.gov/r03/santafe/projects/hermits-peak-calf-canyon-recovery", accessed: 2026-09-28}
+  5: {title: "State Engineer Presentation to the Water and Natural Resources Interim Committee", publisher: "New Mexico Office of the State Engineer / Interstate Stream Commission", url: "https://www.nmlegis.gov/handouts/WNR%20071023%20Item%2010%20OSE%20CLV%20Water%20Supply.pdf", accessed: 2026-09-28}
+  6: {title: "The Acequia Governance Project", publisher: "New Mexico Acequia Association", url: "https://lasacequias.org/acequia-governance/", accessed: 2026-09-28}
+  7: {title: "Hermit's Peak/Calf Canyon Claims Office", publisher: "Federal Emergency Management Agency", url: "https://www.fema.gov/hermits-peak", accessed: 2026-09-28}

@@ -1,0 +1,64 @@
+river: Rio Chama
+researched: 2026-09-28
+# Checked 2026-09-28: 16 statements checked; 2 removed, 5 reworded (dropped a Wikipedia-only origin/mouth claim;
+# dropped a fishing line whose BLM text describes the Rio Grande, not the Chama; reworded the O'Keeffe summary
+# to what Ghost Ranch and the museum state;
+# trimmed a Wild and Scenic summary line to what FWS/BLM sources support and added the source that actually backs
+# "between El Vado and Abiquiu"; dropped an unconfirmed acre-feet figure from the Abiquiu storage-agreement note;
+# attributed a Los Alamos Reporter acequia-rights claim to its speaker; trimmed the Abiquiu Dam note to facts
+# confirmed by non-Wikipedia sources).
+
+summary:
+  - text: "Between El Vado and Abiquiu reservoirs, the Rio Chama's 24.6-mile canyon stretch—21.6 miles wild and 3 miles scenic—was designated a Wild and Scenic River in 1988 for its geology, prehistoric sites, recreation, scenery and wildlife."
+    sources: [2, 6]
+  - text: "Georgia O'Keeffe first came to Ghost Ranch in 1934 and in 1945 bought a house in the village of Abiquiú, drawn partly by its acequia-watered garden; the area's red and gray hills and the flat-topped Pedernal were among her favorite subjects."
+    sources: [3, 4]
+summary_sources: [2, 3, 4, 6]
+
+habitats:
+  - text: "Congress designated 24.6 miles of the Rio Chama as Wild and Scenic in 1988—21.6 miles wild and 3 miles scenic—for its outstanding geology, prehistoric sites, recreation, scenery and wildlife; the canyon's sandstone walls rise as much as 1,500 feet above the river."
+    sources: [2, 5]
+  - text: "The Rio Chama Flow Project, begun in 2011, releases experimental floodplain- and sediment-moving flows below El Vado Dam to help restore the natural flow patterns that native fish—longnose dace, Rio Grande chub, flathead chub and white suckers—and riverside cottonwoods depend on."
+    sources: [6]
+  - text: "The Rio Chama Wilderness Study Area, adjoining the Chama River Canyon Wilderness, protects a 900-foot-deep canyon of siltstone and sandstone along with piñon woodlands and ponderosa pine-Douglas fir forest that support a variety of wildlife."
+    sources: [7]
+
+culture:
+  - text: "In 1754 the Spanish colonial government granted 16,000 acres near Abiquiú to genízaros—detribalized Native Americans, many descended from war captives—and Hopi families, founding the settlement of Santo Tomás de Abiquiú; their descendants are today reasserting Genízaro identity through ceremonies, feast days, ranching, farming and acequias."
+    sources: [8]
+  - text: "The Piedra Lumbre valley around Abiquiu Reservoir has been inhabited for some 10,000 years, from Paleoindian and Archaic hunter-gatherers through Ancestral Puebloans and later Ute, Navajo and Apache bands, before Spanish settlers arrived in the 1740s."
+    sources: [9]
+  - text: "The Rio de Chama Acequia Association represents about 22 acequias along the river, from the Trujillo-Abeyta ditch in the north to the Salazar Ditch; it is an all-volunteer nonprofit whose chair says its member ditches hold some of the oldest priority water rights in the country, dating in some cases to the 1600s."
+    sources: [10]
+  - text: "Georgia O'Keeffe's home in the village of Abiquiú, which she occupied from 1949 to 1984 and which was designated a National Historic Landmark in 1998, had a garden watered by a traditional acequia."
+    sources: [4]
+
+users:
+  - text: "Authorized by Congress in 1962, the Bureau of Reclamation's San Juan-Chama Project diverts water from three headwater streams of the San Juan River in southern Colorado through a tunnel beneath the Continental Divide into Heron Reservoir, supplying agricultural, municipal, domestic and industrial water to the middle Rio Grande valley."
+    sources: [11]
+  - text: "Albuquerque holds the largest San Juan-Chama Project contract at 48,200 acre-feet a year, followed by the Middle Rio Grande Conservancy District at 20,900 acre-feet and the Jicarilla Apache Nation at 6,500 acre-feet; Santa Fe has contracted for 5,605 acre-feet a year since a 1976 agreement that was restructured into two permanent contracts in 2006."
+    sources: [11]
+  - text: "Because of ongoing safety work at El Vado Dam, the Bureau of Reclamation, the Albuquerque Bernalillo County Water Utility Authority and the Middle Rio Grande Conservancy District have agreed to allow water to be stored in Abiquiu Reservoir for up to ten years so the Middle Rio Grande Project can keep operating."
+    sources: [12]
+
+reservoirs_notes:
+  - name: El Vado Dam
+    text: "Built by the Middle Rio Grande Conservancy District in 1934-1935 and rehabilitated by the Bureau of Reclamation in 1954-1955, the 230-foot steel-faced dam holds up to 196,500 acre-feet on the Rio Chama; a new outlet works added in 1965-1966 let it also pass water delivered by the San Juan-Chama Project."
+    sources: [13]
+  - name: Abiquiu Dam
+    text: "Abiquiu Dam, an earthen dam on the Rio Chama, impounds a roughly 12-mile, 5,200-acre lake in the Piedra Lumbre valley; under an agreement with the Bureau of Reclamation, it also stores water for Albuquerque and the Middle Rio Grande Conservancy District."
+    sources: [9, 12]
+
+sources:
+  2: {title: "Rio Chama", publisher: "National Wild and Scenic Rivers System, U.S. Fish & Wildlife Service", url: "https://www.fws.gov/rivers/river/rio-chama", accessed: 2026-09-28}
+  3: {title: "Georgia O'Keeffe", publisher: "Ghost Ranch", url: "https://www.ghostranch.org/georgia-okeeffe/", accessed: 2026-09-28}
+  4: {title: "Georgia O'Keeffe's Homes", publisher: "Georgia O'Keeffe Museum", url: "https://www.okeeffemuseum.org/homes/", accessed: 2026-09-28}
+  5: {title: "Rio Chama Wild and Scenic River", publisher: "Bureau of Land Management", url: "https://www.blm.gov/visit/rio-chama-wild-and-scenic-river", accessed: 2026-09-28}
+  6: {title: "Experimental Flow Releases El Vado Reservoir", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/project/experimental-flow-releases-el-vado-reservoir", accessed: 2026-09-28}
+  7: {title: "Rio Chama Wilderness Study Area", publisher: "Bureau of Land Management", url: "https://www.blm.gov/visit/rio-chama-wilderness-study-area", accessed: 2026-09-28}
+  8: {title: "The Genízaro Pueblo of Abiquiú", publisher: "American Indian Magazine, Smithsonian National Museum of the American Indian", url: "https://www.americanindianmagazine.org/story/genizaro-pueblo-abiquiu", accessed: 2026-09-28}
+  9: {title: "Piedra Lumbre (Shining Rock)", publisher: "Santa Fe Conservation Trust", url: "https://sfct.org/protected-lands/abiquiu-reservoir/", accessed: 2026-09-28}
+  10: {title: "Rio De Chama Acequia Association Seeks Fair Treatment, Opportunity To Store Water In Abiquiu Lake", publisher: "Los Alamos Reporter", url: "https://losalamosreporter.com/2021/09/18/rio-de-chama-acequia-association-seeks-fair-treatment-opportunity-to-store-water-in-abiquiu-lake/", accessed: 2026-09-28}
+  11: {title: "San Juan-Chama Project", publisher: "Buckman Direct Diversion (City/County of Santa Fe)", url: "https://bddproject.org/history/san-juan-chama-project/", accessed: 2026-09-28}
+  12: {title: "Reclamation to conduct first fill test at El Vado Dam", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/newsroom/news-release/4995", accessed: 2026-09-28}
+  13: {title: "El Vado Lake and Dam", publisher: "U.S. Bureau of Reclamation (RISE)", url: "https://data.usbr.gov/location/324", accessed: 2026-09-28}

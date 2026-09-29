@@ -1,0 +1,53 @@
+river: Canadian River
+researched: 2026-09-28
+# Checked 2026-09-28: 14 statements checked; 1 removed, 7 reworded (Wikipedia dropped as a source
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# throughout per policy; unsupported Raton/Springer canyon detail trimmed; a Texas-specific 1949 ranching
+# description wrongly applied to New Mexico; "recognized" ranches softened to match the source's wording;
+# a riparian-shrub habitat detail mixed up perennial and ephemeral streams; and three ENMWUA member
+# communities that withdrew from the pipeline project in 2020 per the same source).
+
+summary:
+  - text: "The Canadian River rises in the Sangre de Cristo Mountains of southern Las Animas County, Colorado, near Raton Pass and the Colfax County, New Mexico line, then flows south and southeast into New Mexico."
+    sources: [1]
+  - text: "In northeastern New Mexico the river is impounded first at Conchas Lake, where an Army Corps of Engineers dam holds back most of the Upper Canadian Basin's flow, and then, near Logan, at Ute Lake, before the Canadian continues into Texas."
+    sources: [1, 3]
+  - text: "The Canadian is the largest tributary of the Arkansas River, and it separates the Llano Estacado from the northern High Plains; below Ute Reservoir it is, according to the state's Game and Fish department, one of the best examples in New Mexico of a healthy, intact native fish assemblage, including the Arkansas River shiner and peppered chub."
+    sources: [1, 4]
+summary_sources: [1, 3, 4]
+
+habitats:
+  - text: "Cottonwood-willow riparian forest lines the Canadian River and its creeks in New Mexico, with Fremont cottonwood and peachleaf willow the most common trees, and New Mexico locust, chokecherry, hackberry and Apache plume along the ephemeral streams, though invasive tamarisk, Siberian elm and Russian olive have taken hold in some stretches."
+    sources: [3]
+  - text: "Below Ute Reservoir the Canadian provides critical habitat for the Arkansas River shiner and peppered chub, minnows of sandy Great Plains rivers whose eggs develop while drifting in the water column, so they need flowing water to complete their life cycle."
+    sources: [4]
+  - text: "The Arkansas River shiner is the only threatened or endangered species with critical habitat in the Canadian River drainage in New Mexico, though it does not occur upstream of Ute Dam; the watershed also provides habitat for sensitive species such as the bald eagle, lesser prairie-chicken, mountain plover, burrowing owl and black-tailed prairie dog, among others."
+    sources: [3]
+
+culture:
+  - text: "Ranching remains part of the Canadian's cultural fabric in New Mexico: several large ranches in the Ute Reservoir watershed have maintained sustainable range-management practices for generations, and local landowners and agencies started the Canadian River Riparian Restoration Project in 2004."
+    sources: [3]
+
+users:
+  - text: "The Arch Hurley Conservancy District's Tucumcari Project uses Conchas Reservoir water, carried through the 84-mile Conchas Canal and 26-mile Hudson Canal, to irrigate about 41,000 acres of farmland around Tucumcari."
+    sources: [5]
+  - text: "Ute Reservoir is the water source for the Eastern New Mexico Rural Water System, known informally as the Ute Pipeline Project, which the Eastern New Mexico Water Utility Authority is building to deliver drinking water to Clovis, Elida, Portales and Texico."
+    sources: [6]
+  - text: "Towns near the river largely rely on groundwater rather than the Canadian itself: Logan draws on wells in the Santa Rosa formation on the north side of Ute Reservoir, Tucumcari pumps the Entrada formation and local alluvial aquifers, and Mosquero uses the Dakota formation, while the thin, discontinuous Ogallala aquifer in this watershed is used only by the village of Roy."
+    sources: [3]
+
+reservoirs_notes:
+  - name: Conchas Lake
+    text: "Built by the U.S. Army Corps of Engineers primarily for flood control and irrigation water storage, with recreation added later, Conchas Dam stands 235 feet high and holds a reservoir of up to 528,951 acre-feet, with New Mexico State Parks managing its recreation areas. The dam impounds most of the Upper Canadian Basin's stream flow and very rarely releases water, so the river reach below it depends mainly on tributaries such as Ute Creek."
+    sources: [7, 5, 3]
+  - name: Ute Lake
+    text: "New Mexico's Interstate Stream Commission built Ute Dam, completed in 1963, and still owns the reservoir, which stores the state's share of Canadian River water for future municipal use by Eastern New Mexico communities through the Ute Pipeline Project. The reservoir can hold over 246,600 acre-feet, but a 1993 U.S. Supreme Court decree in Oklahoma and Texas v. New Mexico caps its conservation pool at 200,000 acre-feet."
+    sources: [6, 3]
+
+sources:
+  1: {title: "Canadian River", publisher: "Texas State Historical Association, Handbook of Texas", url: "https://www.tshaonline.org/handbook/entries/canadian-river", accessed: 2026-09-28}
+  3: {title: "Watershed-Based Water Quality Plan: Ute Reservoir Watershed", publisher: "New Mexico Environment Department, Surface Water Quality Bureau", url: "https://www.env.nm.gov/wp-content/uploads/sites/25/2017/07/Ute-Draft-Plan2.3.pdf", accessed: 2026-09-28}
+  4: {title: "Canadian River Native Fish Conservation", publisher: "New Mexico Department of Game and Fish", url: "https://wildlife.dgf.nm.gov/canadian-river-native-fish-conservation/", accessed: 2026-09-28}
+  5: {title: "Tucumcari Project", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=416", accessed: 2026-09-28}
+  6: {title: "Our Story", publisher: "Eastern New Mexico Water Utility Authority", url: "https://www.enmwua.com/project-scope-1", accessed: 2026-09-28}
+  7: {title: "Conchas Lake", publisher: "U.S. Army Corps of Engineers, Corps Lakes Gateway", url: "https://corpslakes.erdc.dren.mil/visitors/projects.cfm?Id=L403740", accessed: 2026-09-28}

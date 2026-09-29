@@ -28,7 +28,8 @@ log = logging.getLogger("nmwater.reports.river_samples")
 ASSETS = Path(__file__).parent / "templates" / "assets"
 CLASS_VARS = {"much below normal": "var(--c-much-below)", "below normal": "var(--c-below)", "normal": "var(--c-normal)",
               "above normal": "var(--c-above)", "much above normal": "var(--c-much-above)"}
-FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" '
+FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+         '<link rel="stylesheet" '
          'href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">')
 
 
@@ -196,47 +197,6 @@ def overview_rows(b: Bundle, data: dict) -> list[dict]:
     return rows
 
 
-def sparkline(vals: list) -> str:
-    v = [x for x in vals if x is not None]
-    if len(v) < 2:
-        return ""
-    lo, hi = min(v), max(v)
-    w, h = 120, 26
-    pts, pen, d = len(vals), False, ""
-    for i, x in enumerate(vals):
-        if x is None:
-            pen = False
-            continue
-        px = i / (pts - 1) * (w - 2) + 1
-        py = h - 2 - (0 if hi == lo else (x - lo) / (hi - lo)) * (h - 4)
-        d += f"{'L' if pen else 'M'}{px:.1f} {py:.1f}"
-        pen = True
-    return f'<svg class="spark" viewBox="0 0 {w} {h}" aria-hidden="true"><path d="{d}"/></svg>'
-
-
-def status_table(rows: list[dict], links: dict | None = None) -> str:
-    def st(c, p):
-        if not c:
-            return '<span class="st none">no rating</span>'
-        return f'<span class="st {c.replace(" ", "-")}">{esc(c)}</span> <small>{p:.0f}th</small>'
-    L = ['<div class="scroll"><table class="status"><thead><tr><th>Segment, upstream to downstream</th><th>Flow last week</th>'
-         '<th>Compared with normal</th><th>Last 52 weeks</th><th>Dry days this year</th><th>Water temp, latest</th>'
-         '<th>Salinity, latest decade</th><th>Precip, last 3 months</th></tr></thead><tbody>']
-    for x in rows:
-        L.append(
-            f'<tr><td><span class="key" style="--c:{x["color"]}"></span>{esc(x["segment"])}</td>'
-            f'<td class="n">{"" if x["flow"] is None else f"{x["flow"]:,.0f} cfs"}</td>'
-            f'<td>{st(x["cls"], x["pct"] if x["pct"] is not None else 0)}</td>'
-            f'<td>{sparkline(x["spark"])}</td>'
-            f'<td class="n">{"" if x["dry"] is None else x["dry"]}'
-            f'{"" if x["dry_median"] is None else f" <small>normal {x["dry_median"]:.0f}</small>"}</td>'
-            f'<td class="n">{"" if x["temp"] is None else f"{x["temp"]:.1f} °C"}</td>'
-            f'<td class="n">{"" if not x["sc"] else f"{x["sc"][0]:,.0f} <small>µS/cm, {x["sc"][1]}s</small>"}</td>'
-            f'<td class="n">{"" if x["precip3"] is None else f"{x["precip3"]:.0f}% <small>of normal</small>"}</td></tr>')
-    L.append("</tbody></table></div>")
-    return "".join(L)
-
-
 # ---------------------------------------------------------------------------- sections
 SECTION_JS = r"""
 (function () {
@@ -261,11 +221,12 @@ SECTION_JS = r"""
   if ($("dry-grid")) {
     const R = D.drying, box = $("dry-grid");
     R.segments.forEach(s => { const card = document.createElement("div"); card.className = "mini";
-      const h = document.createElement("h4"); h.textContent = s.name; const p = document.createElement("p");
+      const h = document.createElement("h3"); h.textContent = s.name; const p = document.createElement("p");
       p.textContent = s.median == null ? "No 1991-2020 normal." : "Normal (1991-2020 median): " + s.median + " days a year.";
       const c = document.createElement("div"); card.append(h, p, c); box.appendChild(card);
       if (!s.dry.some(v => v)) { c.className = "note"; c.textContent = "No dry days recorded since " + R.years[0] + "."; return; }
       C.bars(c, { x: R.years, xType: "year", values: s.dry, color: s.color, name: "Days any gauge was dry", unit: "days", height: 150,
+        label: "Days each year any gauge was dry, " + s.name,
         ref: s.median == null ? null : { name: "Normal", values: R.years.map(() => s.median) }, extra: [{ name: "Days with data", values: s.days }] }); });
   }
   // temperature
@@ -288,7 +249,7 @@ SECTION_JS = r"""
     if (!S.decades.length) $("s-profile").textContent = "No conductance data."; else {
       const pal = ["var(--c-much-above)", "var(--s1)", "var(--s3)", "var(--s4)", "var(--s2)", "var(--c-much-below)"];
       const keep = S.decades.slice(-5);
-      C.line($("s-profile"), { x: S.segments.map((_, i) => i), xType: "cat", labels: S.segments.map(s => s.replace(/^Rio Grande-/, "").replace(" Reservoir", "").replace("Upper Rio Grande", "Upper")), unit: "µS/cm",
+      C.line($("s-profile"), { x: S.segments.map((_, i) => i), xType: "cat", xLabel: "Segment", labels: S.segments.map(s => s.replace(/^Rio Grande-/, "").replace(" Reservoir", "").replace("Upper Rio Grande", "Upper")), unit: "µS/cm",
         label: "Median specific conductance by segment and decade",
         series: keep.map((d, k) => ({ name: d + "s", values: S.median[S.decades.indexOf(d)], color: pal[k % pal.length], points: true, joined: true, width: 1.5 })) });
     }
@@ -302,7 +263,7 @@ SECTION_JS = r"""
       C.bars($("w-temp"), { x: s.tmonths, xType: "time", xRes: "month", values: s.tanom, colorFn: v => v >= 0 ? "var(--neg)" : "var(--pos)", name: "Difference from normal", unit: "°C", height: 200,
         tickFmt: m => new Intl.DateTimeFormat("en-US", { month: "short", year: "2-digit", timeZone: "UTC" }).format(m) });
       const pal = ["var(--s3)", "var(--s4)", "var(--s2)"];
-      C.line($("w-swe"), { x: s.swe_weeks, xType: "cat", labels: s.swe_weeks.map(w => new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(Date.UTC(2021, 9, 1) + w * 7 * 864e5)),
+      C.line($("w-swe"), { x: s.swe_weeks, xType: "cat", xLabel: "Week of the water year", labels: s.swe_weeks.map(w => new Intl.DateTimeFormat("en-US", { month: "short", timeZone: "UTC" }).format(Date.UTC(2021, 9, 1) + w * 7 * 864e5)),
         unit: "in", yMin: 0, label: "Snow-water equivalent by week of the water year",
         series: [{ name: "Median 2004-2025", values: s.swe_median, color: "var(--text-muted)", dash: true, width: 1.5 }].concat(
           s.swe_winters.map((w, k) => ({ name: "Winter " + (w.wy - 1) + "-" + String(w.wy).slice(2), values: w.values, color: pal[k] }))) });
@@ -378,21 +339,28 @@ def explorer_parts(b: Bundle, tmp: Path) -> tuple[str, str, str, str]:
     return style, markup, script, issues
 
 
-def head(title: str, extra_style: str = "", css_href: str = "assets/site.css") -> str:
+def head(title: str, extra_style: str = "", css_href: str = "assets/site.css", meta: str = "", icon_href: str = "assets/icon.svg") -> str:
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" '
-            f'content="width=device-width, initial-scale=1"><title>{esc(title)}</title>{FONTS}'
+            f'content="width=device-width, initial-scale=1"><title>{esc(title)}</title>{meta}'
+            f'<link rel="icon" href="{icon_href}" type="image/svg+xml">{FONTS}'
             f'<link rel="stylesheet" href="{css_href}">' + (f"<style>{extra_style}</style>" if extra_style else "")
-            + "</head><body>")
+            + '</head><body><a class="skip" href="#main">Skip to content</a>')
 
 
 TABS_JS = r"""
 (function () {
   const tabs = Array.from(document.querySelectorAll('[role="tab"]'));
-  const show = (id, focus) => {
+  const show = (id, focus, keepHash) => {
     tabs.forEach(t => { const on = t.dataset.tab === id; t.setAttribute("aria-selected", String(on)); t.tabIndex = on ? 0 : -1;
       document.getElementById("panel-" + t.dataset.tab).hidden = !on; if (on && focus) t.focus(); });
-    if (location.hash.slice(1) !== id) history.replaceState(null, "", "#" + id);
+    if (!keepHash && location.hash.slice(1) !== id) history.replaceState(null, "", "#" + id);
   };
+  // a hash naming a tab opens it; a hash naming something inside a panel (e.g. #acequias) opens that panel and scrolls to it
+  const route = () => { const h = decodeURIComponent(location.hash.slice(1));
+    if (tabs.some(t => t.dataset.tab === h)) { show(h); return true; }
+    const el = h && document.getElementById(h), p = el && el.closest('[role="tabpanel"]');
+    if (p) { show(p.id.replace("panel-", ""), false, true); el.scrollIntoView(); return true; }
+    return false; };
   tabs.forEach((t, i) => {
     t.addEventListener("click", () => show(t.dataset.tab));
     t.addEventListener("keydown", ev => {
@@ -403,9 +371,8 @@ TABS_JS = r"""
     });
   });
   document.querySelectorAll("[data-goto]").forEach(a => a.addEventListener("click", ev => { ev.preventDefault(); show(a.dataset.goto); window.scrollTo(0, 0); }));
-  window.addEventListener("hashchange", () => { const h = location.hash.slice(1); if (tabs.some(t => t.dataset.tab === h)) show(h); });
-  const h = location.hash.slice(1);
-  show(tabs.some(t => t.dataset.tab === h) ? h : tabs[0].dataset.tab);
+  window.addEventListener("hashchange", route);
+  if (!route()) show(tabs[0].dataset.tab, false, !location.hash);
 })();
 """
 
@@ -419,53 +386,22 @@ def gauge_points(con, b: Bundle) -> pd.DataFrame:
     return g.rename(columns={"gauge": "name"})[["name", "segment", "lat", "lon"]]
 
 
-def overview_panel(b: Bundle, rows: list[dict], con, grids: Path, background: dict | None) -> str:
-    from . import river_map as rm
-
-    river_id = b.r.gnis_id
-    svg, facts = rm.build(river_id, b.r.segments, b.huc8_of, gauge_points(con, b), grids)
-    first = (pd.Timestamp(min(b.r.seg_all["week_start"])) + pd.Timedelta(days=6)).year   # the first week can start in late December
-    auto = rm.describe(b.r.river, facts, b.r.segments, len(b.r.elig), first, b.r.as_of.year)
-    about = []
-    if background and background.get("text"):
-        for para in str(background["text"]).split("\n\n"):
-            if para.strip():
-                about.append(f"<p>{esc(' '.join(para.split()))}</p>")
-        src = background.get("sources") or []
-        about.append(f'<p class="src">Background from general references{": " + esc("; ".join(src)) if src else ""}. '
-                     "Not derived from the archive's data.</p>")
-    about.append(f"<p>{esc(auto)}</p><p class=\"src\">Generated from the archive: NHDPlus river network, WBD watersheds, "
-                 "NHD waterbodies, TIGER urban areas and the report's gauges.</p>")
-    legend = ('<ul class="maplegend">' + "".join(
-        f'<li><span class="n" style="--c:var(--s{i + 1})">{i + 1}</span>{esc(sg)}</li>' for i, sg in enumerate(b.r.segments))
-        + '<li><i></i>river and reservoirs</li></ul>')
-    def chip(c, p):
-        return ('<span class="st none">no rating</span>' if not c else
-                f'<span class="st {c.replace(" ", "-")}">{esc(c)}</span> <small>{p:.0f}th percentile</small>')
-    now = ('<section class="card"><h2>Segments now</h2><p class="hint">Last week\'s mean flow, rated against the same week '
-           'in 1991-2020.</p><table class="status"><tbody>' + "".join(
-               f'<tr><td><span class="n" style="--c:var(--s{i + 1})">{i + 1}</span> {esc(x["segment"])}</td>'
-               f'<td class="n">{"" if x["flow"] is None else f"{x["flow"]:,.0f} cfs"}</td>'
-               f'<td>{chip(x["cls"], x["pct"] or 0)}</td></tr>' for i, x in enumerate(rows))
-           + '</tbody></table><p class="hint" style="margin:10px 0 0">More per segment below, and in the other tabs.</p></section>')
-    return (f'<div class="overview-grid"><div style="display:flex;flex-direction:column;gap:18px">'
-            f'<section class="card about"><h2>About the {esc(b.r.river)}</h2>{"".join(about)}</section>{now}</div>'
-            f'<section class="card"><h2>Map</h2><p class="hint">Segments are the HUC8 watersheds the gauges sit in, '
-            f'numbered upstream to downstream. Dots are gauges; hover for names. Dashed line: New Mexico.</p>{svg}{legend}</section></div>'
-            f'<section class="card"><h2>Where each segment stands, last week</h2><p class="hint">Upstream to downstream. '
-            f'Open a tab above for detail.</p>{status_table(rows)}</section>')
-
-
 def has_tabs(data: dict) -> dict[str, bool]:
     return {"normal": bool(data["normal"]["gauges"]),
             "quality": bool([t for t in data["temp"]["sites"] if t["season"]]) or bool(data["salinity"]["decades"]),
             "watershed": any(w["precip"] for w in data["watershed"]["segments"])}
 
 
-def render(con, b: Bundle, d: Path, grids: Path, background: dict | None, generated: str) -> dict:
-    """Write <d>/index.html and <d>/data.js for one river. Returns extra manifest fields."""
-    from .river_map import MAP_CSS
+def render(con, b: Bundle, d: Path, grids: Path, background: dict | None, generated: str,
+           site: dict | None = None, root: Path | None = None) -> dict:
+    """Write <d>/index.html, <d>/data.js and <d>/social.png for one river. Returns extra manifest fields."""
+    from ..core.config import PROJECT_ROOT
+    from . import river_map as rm
+    from . import river_overview as ro
+    from . import river_share as rs
 
+    site = site or rs.site_config({})
+    root = root or PROJECT_ROOT
     data = page_data(b)
     rows = overview_rows(b, data)
     show = has_tabs(data)
@@ -474,8 +410,9 @@ def render(con, b: Bundle, d: Path, grids: Path, background: dict | None, genera
     tmp.mkdir(parents=True, exist_ok=True)
     ex_style, ex_markup, ex_script, ex_issues = explorer_parts(b, tmp)
     shutil.rmtree(tmp)
-    tabs = [("overview", "Overview", overview_panel(b, rows, con, grids, background)),
-            ("flow", "Flow", ex_markup)]
+    gauges = gauge_points(con, b)
+    overview, ov = ro.panel(b, rows, con, gauges, grids, root, background)
+    tabs = [("overview", "Overview", overview), ("flow", "Flow", ex_markup)]
     if show["normal"]:
         tabs.append(("normal", "Compared with normal", f'<section class="card">{sec_normal(b)}</section>'))
     tabs.append(("drying", "Drying", f'<section class="card">{sec_drying(b)}</section>'))
@@ -490,23 +427,47 @@ def render(con, b: Bundle, d: Path, grids: Path, background: dict | None, genera
         for k, t, _ in tabs) + "</div>")
     panels = "".join(f'<div role="tabpanel" id="panel-{k}" aria-labelledby="tab-{k}" tabindex="0" hidden>{body}</div>'
                      for k, _, body in tabs)
+    # search and sharing
+    river = b.r.river
+    title = f"{river}: river conditions in New Mexico"
+    tab_keys = [k for k, _, _ in tabs]
+    desc = rs.description(river, rows, tab_keys, last)
+    has_card = rs.social_card(d / "social.png", river=river, site_name=site["name"], rows=rows, layers=ov["layers"],
+                              grids=grids, as_of=last)
+    first = (pd.Timestamp(min(b.r.seg_all["week_start"])) + pd.Timedelta(days=6)).year
+    csvs = sorted(p.name for p in d.glob("*.csv"))
+    variables = ["streamflow (discharge), cubic feet per second", "flow percentile against 1991-2020"]
+    if show["quality"]:
+        variables += ["water temperature", "specific conductance"]
+    if show["watershed"]:
+        variables += ["precipitation", "snow-water equivalent", "Drought Severity and Coverage Index"]
+    meta = rs.head_meta(site, title=title, desc=desc, path=f"rivers/{b.r.slug}/",
+                        image=f"rivers/{b.r.slug}/social.png" if has_card else None,
+                        image_alt=f"Map of New Mexico with the {river} and its watershed highlighted, and last week's flow status.",
+                        jsonld=rs.river_jsonld(site, river=river, slug=b.r.slug, title=title, desc=desc,
+                                               bounds=ov["facts"].bounds, first_year=first, as_of=last, csvs=csvs,
+                                               variables=variables))
     (d / "index.html").write_text("".join([
-        head(f"{b.r.river} River Report" if "river" not in b.r.river.lower() else f"{b.r.river} Report",
-             ex_style + MAP_CSS, css_href="../assets/site.css"),
-        '<div class="wrap"><header><p class="crumb"><a href="../index.html">All rivers</a></p>',
-        f"<h1>{esc(b.r.river)}</h1>",
-        f'<p class="sub">Streamflow, conditions and data notes by watershed segment. Data through {last:%b} {last.day}, '
+        head(f"{title} | {site['name']}", ex_style + rm.MAP_CSS + ro.CSS, css_href="../assets/site.css", meta=meta,
+             icon_href="../assets/icon.svg"),
+        '<div class="wrap"><header><nav aria-label="Breadcrumb"><p class="crumb"><a href="../index.html">All rivers</a></p></nav>',
+        f"<h1>{esc(river)}</h1>",
+        f'<p class="sub">Streamflow, conditions and background by watershed segment. Data through {last:%b} {last.day}, '
         f'{last.year}; generated {esc(generated)}.</p>',
-        "</header>", tablist, panels, "</div>",
+        f'</header><main id="main" tabindex="-1">{tablist}{panels}</main>',
+        f'<footer class="foot"><p>{esc(site["name"])}. Built from public data by the New Mexico water data archive; '
+        'each tab says where its numbers come from. Data files for this river are listed under Flow, How to read this.</p></footer>',
+        "</div>",
         '<script src="data.js"></script><script src="../assets/charts.js"></script>',
-        f"<script>{ex_script}</script><script>{SECTION_JS}</script><script>{TABS_JS}</script></body></html>"]))
+        f"<script>{ex_script}</script><script>{SECTION_JS}</script><script>{TABS_JS}</script>"
+        f"<script>{rm.ZOOM_JS}</script></body></html>"]))
     below = [x for x in rows if x["cls"] in ("much below normal", "below normal")]
     rated = [x for x in rows if x["cls"]]
-    return {"tabs": [k for k, _, _ in tabs], "segments_rated": len(rated), "segments_below_normal": len(below),
-            "dry_days_this_year": {x["segment"]: x["dry"] for x in rows}}
+    return {"tabs": tab_keys, "segments_rated": len(rated), "segments_below_normal": len(below),
+            "dry_days_this_year": {x["segment"]: x["dry"] for x in rows}, "description": desc}
 
 
 def copy_assets(root: Path) -> None:
     (root / "assets").mkdir(parents=True, exist_ok=True)
-    for f in ("site.css", "charts.js"):
+    for f in ("site.css", "charts.js", "icon.svg"):
         shutil.copy(ASSETS / f, root / "assets" / f)

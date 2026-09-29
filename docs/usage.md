@@ -191,13 +191,26 @@ dist/rivers/<river>/all_weeks_by_segment.csv
 dist/rivers/<river>/last_52_weeks_by_segment.csv, last_52_weeks_by_gauge.csv, copy_agreement.csv
 dist/rivers/<river>/normal_last_52_weeks_by_segment.csv, drying_by_year.csv
 dist/rivers/<river>/data_issues.json, notes.md   data gaps and disparities; method, gauges, caveats
+dist/rivers/<river>/social.png              1200x630 preview image for link sharing
+dist/rivers/sitemap.xml, dist/robots.txt    for search engines (the sitemap needs site.base_url)
 ```
 
 Each river page has tabs (a tab can be linked as `index.html#watershed`):
-- **Overview**: a description (hand-written background from `config/river_descriptions.yaml` where
-  written, plus a paragraph generated from the archive), a map of the river, its segments, gauges,
-  reservoirs, tributaries and towns (drawn from NHDPlus, WBD, NHD and TIGER, no map service), and
-  where each segment stands last week.
+- **Overview** (`river_overview.py`): the river from the headwaters down, one entry per segment with
+  last week's flow and rating, dry days, towns and acequias; then Culture, Habitat, Reservoirs and
+  Water users. Beside it, one map (`river_map.py`, drawn from NHDPlus, WBD, NHD and TIGER, no map
+  service) that opens on New Mexico and zooms to the river, with buttons for both views and a state
+  locator in the corner of the river view. Two kinds of content, always labelled:
+  - counted from the archive (`river_context.py`): reservoirs (National Inventory of Dams and the
+    reservoir registry), irrigation districts, public water systems, 2020 county water use, and
+    acequias in the State Engineer's acequia map within 1.5 km of the river;
+  - cited background: `config/river_context/<river>.yaml` (summary, habitats, culture, users,
+    reservoir notes) and `config/acequia_governance.yaml` (what acequias are and how they govern
+    themselves, and acequias with published evidence of their governance). Each statement has
+    numbered sources listed at the bottom of the tab. A file that still has the line
+    `# Not yet checked by a reviewer` is ignored until someone checks it against its sources and
+    replaces that line with a `# Checked <date>: ...` note. Rivers without a checked file fall back to
+    `config/river_descriptions.yaml`.
 - **Flow**: weekly, monthly or yearly mean flow per segment for the whole record.
 - **Compared with normal**: each week of the last year rated against the same week in 1991-2020
   (USGS WaterWatch classes), per segment and per gauge (`nmwater/reports/river_normal.py`).
@@ -218,7 +231,21 @@ nmwater report-rivers --river "Pecos River" # one river; the other pages are kep
 ```
 
 Which rivers, and per-river settings (for example, the Rio Grande is New Mexico segments only), are
-in `config/river_reports.yaml`. Rivers are identified by their NHD GNIS id, so two rivers with the
+in `config/river_reports.yaml`.
+
+**Search and sharing** (`river_share.py`). Every page gets a description written from its data
+(including last week's status), Open Graph and Twitter card tags, and JSON-LD: the page with its
+breadcrumb, and the river's data as a schema.org `Dataset` with its CSV files, so dataset search can
+find them. The preview image (`social.png`) is rendered with `rsvg-convert` (librsvg); without it
+the image is skipped with a warning. Set `site.base_url` in `config/river_reports.yaml` to the
+public address once the site has one: canonical links, `og:url`, `og:image` and the sitemap need
+absolute URLs and are left out until then.
+
+**Accessibility.** The pages aim at WCAG 2.1 AA: a skip link and landmarks, tabs with the ARIA tab
+pattern and arrow keys, colours checked for contrast in light and dark themes (text 4.5:1, chart
+lines and controls 3:1), every chart usable from the keyboard (arrow keys move through values,
+which are read out to screen readers; Escape closes the readout) with a "Show the data as a table"
+disclosure, labelled map views, reduced motion respected, and no sideways scrolling at 320 px. Rivers are identified by their NHD GNIS id, so two rivers with the
 same name get separate pages labelled by basin, such as "Rio Hondo (Upper Pecos)". The method is in
 the docstring of `nmwater/reports/river_flow.py`. The tree is built in a temporary folder and swapped
 in at the end, so a failed run leaves the previous pages in place.

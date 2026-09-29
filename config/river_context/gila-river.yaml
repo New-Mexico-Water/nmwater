@@ -1,0 +1,53 @@
+river: Gila River
+researched: 2026-09-28
+# Checked 2026-09-28: 13 statements checked; 0 removed, 5 reworded (cliff-dwelling "one or two generations",
+# unverified NMAA mapping and Grijalva Ditch location details, unconfirmed "Gila" community name,
+# "major"/"undammed" not in source, Gila trout range wording not in source).
+
+summary:
+  - text: "The Gila River rises in the Gila Wilderness within New Mexico's Gila National Forest, a roughly 558,000-acre wilderness that in 1924 became the world's first area of land ever designated as wilderness, 40 years before the 1964 Wilderness Act."
+    sources: [1]
+  - text: "From there the river flows roughly 500 miles west to meet the Colorado River near Yuma, Arizona, though large irrigation diversions below Phoenix typically drain it dry long before it gets that far."
+    sources: [2]
+  - text: "In New Mexico the Gila remains the state's last free-flowing river, known for hosting one of the highest concentrations of breeding birds in North America and for fishing, hunting, backpacking and horseback riding along its upper reaches."
+    sources: [3, 2]
+summary_sources: [1, 2, 3]
+
+habitats:
+  - text: "The Gila's riparian gallery woodland and its high concentration of breeding birds provide habitat for the federally threatened loach minnow and spikedace and the endangered southwestern willow flycatcher."
+    sources: [3]
+  - text: "The forested canyons of the Gila Wilderness support the world's largest population of the rare Mexican spotted owl, along with wild turkeys, elk and cougars."
+    sources: [2]
+  - text: "The spikedace and loach minnow, small fish listed as threatened in 1986 after habitat loss and non-native fish introductions, depend on perennial riffles of sand, gravel and rubble; their federally designated critical habitat covers stretches of the Gila and San Francisco rivers in Catron, Grant and Hidalgo counties."
+    sources: [4]
+  - text: "Gila trout, a rare and endemic fish, were listed as federally endangered in 1973 and under New Mexico law in 1974; decades of conservation and restocking work, now guided by the 2022 Revised Recovery Plan for Gila Trout, have allowed the species to be downlisted to threatened, though wildfire remains a major threat to populations such as those in Whitewater and Willow creeks."
+    sources: [5]
+
+culture:
+  - text: "Gila Cliff Dwellings National Monument, established by presidential proclamation on November 16, 1907, protects caves above the West Fork of the Gila River where people of the Mogollon culture built rooms and farmed corn, beans and squash, living there from the late 1270s to about 1300."
+    sources: [6]
+  - text: "The Gila Wilderness that surrounds the monument is considered homeland by the Chiricahua Apache people today, according to the National Park Service."
+    sources: [6]
+  - text: "The Gila and Mimbres valleys are part of New Mexico's roughly 700-acequia system, and acequias including the Grijalva Ditch were damaged by post-fire flooding following the 2022 Black Fire, according to the New Mexico Acequia Association."
+    sources: [7]
+
+users:
+  - text: "Silver City and the small community of Cliff, about 28 miles away via US 180, anchor human use of the upper river; The Nature Conservancy's Gila River Preserve near Silver City has enrolled water rights in an upper Gila ditch conservation plan to help keep water flowing in the river during low-flow periods."
+    sources: [3]
+  - text: "Under the 2004 Arizona Water Settlements Act, New Mexico held rights to develop up to 14,000 additional acre-feet a year from the Gila, and in November 2014 the state's Interstate Stream Commission voted to move forward with a diversion and storage project on the upper river, with one commissioner dissenting over its cost."
+    sources: [8]
+  - text: "That diversion project stalled: after New Mexico failed to complete required environmental studies and secure a Record of Decision, the Interior Department in December 2019 denied a deadline extension, cutting off up to $56 million in construction funding under the Arizona Water Settlements Act, while the state's CAP entity retained about $70 million in the settlement fund for other regional water projects."
+    sources: [9]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Gila Wilderness", publisher: "U.S. Forest Service", url: "https://www.fs.usda.gov/about-agency/features/gila-wilderness", accessed: 2026-09-28}
+  2: {title: "Gila River", publisher: "American Rivers", url: "https://www.americanrivers.org/river/gila-river/", accessed: 2026-09-28}
+  3: {title: "Gila River Preserve", publisher: "The Nature Conservancy in New Mexico", url: "https://www.nature.org/en-us/get-involved/how-to-help/places-we-protect/gila-river-preserve/", accessed: 2026-09-28}
+  4: {title: "Critical Habitat Designated for Two Threatened Fish", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/story/2000-04/critical-habitat-desginated-two-threatened-fish", accessed: 2026-09-28}
+  5: {title: "Gila Trout Conservation", publisher: "New Mexico Department of Game and Fish", url: "https://wildlife.dgf.nm.gov/gila-trout-conservation/", accessed: 2026-09-28}
+  6: {title: "New Mexico: Gila Cliff Dwellings National Monument", publisher: "National Park Service", url: "https://www.nps.gov/articles/gila.htm", accessed: 2026-09-28}
+  7: {title: "2025 Report on Acequia Disaster Recovery", publisher: "New Mexico Acequia Association, presented to the NM Legislature Water and Natural Resources Committee", url: "https://www.nmlegis.gov/handouts/WNR%20070125%20Item%202%20NMAA%20Acequia%20Disaster%20Recovery.pdf", accessed: 2026-09-28}
+  8: {title: "New Mexico commission votes to divert Gila River", publisher: "High Country News", url: "https://www.hcn.org/articles/new-mexico-commission-votes-to-divert-gila-river/", accessed: 2026-09-28}
+  9: {title: "DOI denies funding for Gila River diversion project", publisher: "New Mexico Political Report", url: "https://nmpoliticalreport.com/2020/01/03/doi-denies-funding-for-gila-river-diversion-project/", accessed: 2026-09-28}

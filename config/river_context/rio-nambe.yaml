@@ -1,0 +1,43 @@
+river: Rio Nambe
+researched: 2026-09-28
+# Checked 2026-09-28: 10 statements checked against their sources; 0 removed, 3 reworded (trimmed "supplemental" to
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# match the sources' plain "irrigation water" wording and added the Bureau of Reclamation source for a federal-project
+# claim).
+
+summary:
+  - text: "The Rio Nambé rises in the mountains about five miles east of Nambé Pueblo, in the Sangre de Cristo range, and flows through the Pueblo before eventually joining the Rio Grande."
+    sources: [1]
+  - text: "About 25 miles north of Santa Fe the river drops over Nambé Falls, where Nambé Falls Dam, built in 1976 as part of the federal San Juan-Chama Project, stores water for irrigation in the Pojoaque Valley."
+    sources: [2, 3]
+  - text: "The river and its falls hold ceremonial significance for Nambé Pueblo, whose people have lived at the site since the 14th century."
+    sources: [1]
+summary_sources: [1, 2, 3]
+
+habitats: []
+
+culture:
+  - text: "Nambé Pueblo has existed at its present site since the 14th century and was historically a major cultural and religious center; its people took part in the 1680 Pueblo Revolt against Spanish rule; afterwards the Spanish issued land grants to each Pueblo, and the Pueblos gained a measure of freedom from Spanish efforts to eradicate their culture and religion."
+    sources: [1]
+  - text: "The Rio Nambé's waters have held ceremonial significance for the Pueblo for centuries."
+    sources: [1]
+  - text: "Acequias historically carried Rio Nambé water to fields near the Pueblo's traditional plaza, but federal housing built in the 1960s and 1970s away from the plaza and the acequias led many of those ditches to fall out of use; strong agriculture remains part of Pueblo life today."
+    sources: [1]
+  - text: "The Pueblo of Nambé manages the Nambé Falls & Lake Recreation Area on the river, offering camping, hiking and fishing through its own ranger station."
+    sources: [2]
+
+users:
+  - text: "Nambé Falls Dam, built in 1976 as part of the federal San Juan-Chama Project, stores Rio Nambé water to provide irrigation for the Pojoaque Valley."
+    sources: [2, 3]
+  - text: "The Pueblo of Nambé sets fees and rules for camping, fishing and boating at the reservoir it manages above the falls."
+    sources: [2]
+
+reservoirs_notes:
+  - name: Nambé Falls Dam / Nambé Falls Lake
+    text: "Built in 1976 as a feature of the federal San Juan-Chama Project, Nambé Falls Dam on the Rio Nambé stores water for irrigation in the Pojoaque Valley; the Pueblo of Nambé now manages the recreation area at the reservoir, including camping, hiking and fishing."
+    sources: [2, 3]
+
+sources:
+  1: {title: "About Nambé Pueblo", publisher: "Pueblo of Nambé", url: "https://www.nambepueblo.org/about-nambe-pueblo/", accessed: 2026-09-28}
+  2: {title: "Nambé Falls & Lake Recreation Area", publisher: "Pueblo of Nambé", url: "https://www.nambepueblo.org/nambe-falls-lake/", accessed: 2026-09-28}
+  3: {title: "Nambe Falls Reservoir", publisher: "Recreation.gov (U.S. Bureau of Reclamation gateway)", url: "https://www.recreation.gov/camping/gateways/136", accessed: 2026-09-28}

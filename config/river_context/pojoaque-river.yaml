@@ -1,0 +1,36 @@
+river: Pojoaque River
+researched: 2026-09-28
+# Checked 2026-09-28: 9 statements checked; 1 removed, 2 reworded (Wikipedia-only origin statement dropped; unsupported "thousands" figure trimmed; Pueblo seniority reworded to the county's wording).
+
+summary:
+  - text: "The river's basin — home to the Pueblos of Nambé, Pojoaque, San Ildefonso and Tesuque — is the subject of the Aamodt case, filed in 1966 to adjudicate every water right in the Pojoaque Basin Stream System and described by Santa Fe County as the oldest federal court case in the United States; a final decree was issued in 2017."
+    sources: [2]
+  - text: "The 2013 Aamodt settlement, capping four decades of litigation, is now being carried out through the Bureau of Reclamation's Pojoaque Basin Regional Water System, which is being built to deliver Rio Grande water to the four Pueblos and Santa Fe County rather than relying on basin groundwater."
+    sources: [3, 4]
+summary_sources: [2, 3, 4]
+
+habitats: []
+
+culture:
+  - text: "The Pueblo of Pojoaque's Tewa name, P'o-suwae-geh Owingeh, means 'Water Drinking Place Village.'"
+    sources: [5]
+  - text: "The Poeh Cultural Center and Museum at Pueblo of Pojoaque preserves and shares Pueblo art, history and culture, alongside youth hoop-dancing and Tewa language programs."
+    sources: [5]
+  - text: "According to Santa Fe County, the Pueblos of Nambé, Pojoaque, San Ildefonso and Tesuque hold the most senior water rights in the Pojoaque Basin because their first use of its water came before recorded history; the Aamodt Settlement Agreement identifies, describes and limits those rights."
+    sources: [2]
+
+users:
+  - text: "The Aamodt case, filed in 1966 to adjudicate every water right in the Pojoaque Basin Stream System, produced a final decree in 2017 covering both the four Pueblos and non-Pueblo water users in the basin."
+    sources: [2]
+  - text: "The Bureau of Reclamation's Pojoaque Basin Regional Water System, authorized by the 2010 Aamodt Litigation Settlement Act, diverts Rio Grande water to serve about 10,000 people among the four Pueblos and Santa Fe County, delivering up to 4,000 acre-feet a year to reduce reliance on the basin's groundwater."
+    sources: [3]
+  - text: "Construction of the regional water system began in 2020, with completion now targeted for 2028 under a revised cost-sharing agreement the settlement parties reached in 2019."
+    sources: [3]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Aamodt Settlement Agreement and Pojoaque Basin Regional Water System", publisher: "Santa Fe County", url: "https://www.santafecountynm.gov/public-works/aamodt", accessed: 2026-09-28}
+  3: {title: "Pojoaque Basin Regional Water System", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/uc/progact/PojoaqueBasinRegionalWaterSystem/index.html", accessed: 2026-09-28}
+  4: {title: "Secretary Salazar Finalizes Historic Aamodt Water Rights Settlement in New Mexico", publisher: "U.S. Department of the Interior", url: "https://www.doi.gov/news/pressreleases/secretary-salazar-finalizes-historic-aamodt-water-rights-settlement-in-new-mexico", accessed: 2026-09-28}
+  5: {title: "Pueblo of Pojoaque", publisher: "Pueblo of Pojoaque", url: "https://www.pojoaque.org", accessed: 2026-09-28}

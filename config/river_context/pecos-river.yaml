@@ -1,0 +1,68 @@
+river: Pecos River
+researched: 2026-09-28
+# Checked 2026-09-28: 26 statements spot-checked; unsupported details removed (Bosque Redondo headcounts, Bitter
+# Lake rare species, shiner critical-habitat segments, "hydraulically connected", Santa Rosa and Roswell in the
+# summary) and the Bosque Redondo source replaced with the memorial's own page.
+
+summary:
+  - text: "The Pecos River rises in the Sangre de Cristo Mountains near the village of Pecos, where Glorieta Creek joins it within Pecos National Historical Park, before the river runs south across New Mexico's eastern plains toward Texas."
+    sources: [5]
+  - text: "Along its course Reclamation's Sumner, Brantley and Avalon dams store and divert Pecos water for farms around Fort Sumner and Carlsbad."
+    sources: [7, 11, 12, 13]
+  - text: "New Mexico's use of the Pecos is governed by the 1948 Pecos River Compact with Texas; around Roswell, farms and towns draw almost all their water from an artesian aquifer rather than from the river."
+    sources: [8, 9]
+summary_sources: [5, 11, 12, 13, 8, 9]
+
+habitats:
+  - text: "The Pecos bluntnose shiner, a small minnow proposed by the U.S. Fish and Wildlife Service for listing as threatened, now lives only in about 175 miles of the Pecos River from Fort Sumner to Artesia."
+    sources: [1, 2]
+  - text: "Bitter Lake National Wildlife Refuge, established in 1937 to give migratory birds winter habitat, protects some of the Pecos River watershed's most significant wetlands, where more than 26,000 sandhill cranes gather in fall migration."
+    sources: [3]
+  - text: "The Pecos sunflower, listed as a threatened species in 1999, grows only in saturated desert wetlands (cienegas) and has designated critical habitat in Chaves and Guadalupe counties in the Pecos valley."
+    sources: [4]
+  - text: "In the Roswell Artesian Basin, groundwater naturally discharges through karstic springs and sinkhole lakes that line both sides of the Pecos River at Bitter Lake National Wildlife Refuge."
+    sources: [9]
+
+culture:
+  - text: "Pecos National Historical Park preserves the ancestral Pecos Pueblo, once a major trading hub between Rio Grande and Plains peoples, along with a 17th-century Spanish mission and the Civil War Glorieta Pass battlefield, near the Pecos River's mountain headwaters."
+    sources: [5]
+  - text: "The Bosque Redondo Memorial at Fort Sumner tells how the U.S. Army forcibly removed Diné (Navajo) and Ndé (Mescalero Apache) people from their homelands to Bosque Redondo on the Pecos River."
+    sources: [6]
+  - text: "Apache and Navajo people held at Bosque Redondo cultivated close to 3,000 acres along the Pecos River in 1863, decades before the same area was redeveloped as the Fort Sumner Irrigation District."
+    sources: [7]
+
+users:
+  - text: "The Carlsbad Irrigation District holds water rights on about 25,000 acres near Carlsbad, drawing Pecos River water stored in the Santa Rosa, Sumner, Brantley and Avalon reservoirs (plus the Black River) to grow alfalfa, cotton and, increasingly, pecans."
+    sources: [10]
+  - text: "The Fort Sumner Irrigation District holds a senior water right of up to 100 cubic feet per second from the Pecos River's natural flow to irrigate about 6,500 acres near Fort Sumner, water that passes through Lake Sumner on its way to the district's diversion dam."
+    sources: [7]
+  - text: "The Roswell Artesian Basin gets virtually all of its irrigation and drinking water from a karstic artesian limestone aquifer, not from the Pecos River itself."
+    sources: [9]
+  - text: "The 1948 Pecos River Compact between New Mexico and Texas, approved by Congress in 1949, apportions the river's water between the two states and created the interstate Pecos River Commission to administer it."
+    sources: [8]
+
+reservoirs_notes:
+  - name: Sumner Dam / Lake Sumner
+    text: "Built by the Bureau of Reclamation in 1936-1937 (raised in 1956) northwest of Fort Sumner, the dam stores Pecos River water primarily for irrigation, with flood control as a secondary purpose."
+    sources: [11]
+  - name: Brantley Dam / Brantley Lake
+    text: "Built by the Bureau of Reclamation between 1984 and 1989 to replace the unsafe McMillan Dam, Brantley Dam on the Pecos River above Carlsbad provides irrigation storage, flood control, fish and wildlife benefits, and recreation."
+    sources: [12]
+  - name: Avalon Dam
+    text: "Originally built by private interests in 1888 and repeatedly destroyed by floods, Avalon Dam north of Carlsbad was rebuilt by the U.S. Reclamation Service in 1907 and now serves as a small storage reservoir and the diversion point into the Carlsbad Project's Main Canal."
+    sources: [13]
+
+sources:
+  1: {title: "Proposal to Determine Notropis simus pecosensis (Pecos Bluntnose Shiner) to be a Threatened Species and to Determine Critical Habitat", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/species-publication-action/proposal-determine-notropis-simus-pecosensis-pecos-bluntnose-shiner-be-0", accessed: 2026-09-28}
+  2: {title: "Pecos Bluntnose Shiner", publisher: "New Mexico Department of Game and Fish — State Wildlife Action Plan", url: "https://swap.dgf.nm.gov/species/pecos-bluntnose-shiner/", accessed: 2026-09-28}
+  3: {title: "Bitter Lake National Wildlife Refuge", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/refuge/bitter-lake", accessed: 2026-09-28}
+  4: {title: "Critical Habitat Designated for Pecos Sunflower", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/story/2008-04/critical-habitat-designated-pecos-sunflower-note-photograph-and-map-available-upon", accessed: 2026-09-28}
+  5: {title: "Pecos National Historical Park", publisher: "National Park Service", url: "https://home.nps.gov/peco/index.htm", accessed: 2026-09-28}
+  6: {title: "Bosque Redondo Memorial", publisher: "New Mexico Historic Sites, NM Department of Cultural Affairs", url: "https://nmhistoricsites.dca.nm.gov/bosque-redondo/", accessed: 2026-09-28}
+  7: {title: "Fort Sumner Project", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=451", accessed: 2026-09-28}
+  8: {title: "Pecos River Compact", publisher: "Texas Commission on Environmental Quality", url: "https://www.tceq.texas.gov/permitting/compacts/pecos.html", accessed: 2026-09-28}
+  9: {title: "Roswell Artesian Basin", publisher: "New Mexico Bureau of Geology and Mineral Resources, New Mexico Tech", url: "https://geoinfo.nmt.edu/resources/water/projects/bwa/roswell/home.html", accessed: 2026-09-28}
+  10: {title: "Maintaining Historic Carlsbad Irrigation District", publisher: "Irrigation Leader Magazine", url: "https://irrigationleadermagazine.com/maintaining-historic-carlsbad-irrigation-district/", accessed: 2026-09-28}
+  11: {title: "Sumner Dam", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=226", accessed: 2026-09-28}
+  12: {title: "Brantley Dam", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=28", accessed: 2026-09-28}
+  13: {title: "Avalon Dam", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=49", accessed: 2026-09-28}

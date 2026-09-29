@@ -1,0 +1,77 @@
+river: Rio Grande
+researched: 2026-09-28
+# Checked 2026-09-28: 17 statements spot-checked against their sources; three details not supported by the cited
+# page were removed or reworded (EBID crop list, a 57/43 reservoir split, BDD fish screens).
+
+summary:
+  - text: "In northern New Mexico the Rio Grande has cut an 800-foot-deep gorge across the Taos Plateau, a stretch now protected as the Rio Grande del Norte National Monument and Wild and Scenic River."
+    sources: [4]
+  - text: "Below Cochiti the river crosses the Middle Rio Grande valley, where the Middle Rio Grande Conservancy District has managed irrigation, drainage and flood control since the 1920s for farms, bosque and six Pueblo communities."
+    sources: [6, 7]
+  - text: "Farther south the river is stored at Elephant Butte and Caballo reservoirs and released under the Rio Grande Compact to irrigate the Mesilla Valley around Las Cruces before reaching Texas."
+    sources: [13, 10]
+summary_sources: [4, 6, 7, 13, 10]
+
+habitats:
+  - text: "The Rio Grande silvery minnow, listed endangered in 1994, now survives in less than 5% of its historic range; its federal critical habitat covers the 163 river miles from Cochiti Dam down to the headwaters of Elephant Butte Reservoir."
+    sources: [1]
+  - text: "The endangered southwestern willow flycatcher breeds in dense cottonwood-willow riparian thickets along southwestern rivers including stretches of the Rio Grande in New Mexico; it was federally listed in 1995."
+    sources: [3]
+  - text: "Bosque del Apache National Wildlife Refuge, established in 1939 along the Rio Grande floodplain near San Antonio, protects restored cottonwood and willow bosque, wetlands and marshes that host tens of thousands of wintering sandhill cranes, geese and ducks."
+    sources: [2]
+  - text: "The Middle Rio Grande Conservancy District manages roughly 30,000 acres of cottonwood bosque (riparian forest) along the river through the Albuquerque valley."
+    sources: [7]
+  - text: "The Rio Grande del Norte National Monument protects 74 miles of the river as it runs through the Rio Grande Gorge, providing a wildlife corridor and winter habitat within its roughly 242,500 protected acres."
+    sources: [4]
+
+culture:
+  - text: "Six Rio Grande pueblos in the Middle Valley — Cochiti, Santo Domingo (Kewa), San Felipe, Santa Ana, Sandia and Isleta — receive irrigation water through the Middle Rio Grande Conservancy District and vote as qualified electors in its elections."
+    sources: [6]
+  - text: "Pueblo farmers were irrigating the Rio Grande valley with acequia-style ditches for centuries before Spanish colonization, and the Middle Rio Grande Conservancy District later incorporated many of these existing pueblo and community acequias into its system."
+    sources: [7]
+  - text: "Cochiti Dam was built on Cochiti Pueblo land by the Army Corps of Engineers in partnership with the Bureau of Indian Affairs and the Pueblo; the Pueblo received settlement funds and rights to develop recreation and commercial sites around the resulting lake."
+    sources: [15]
+  - text: "El Camino Real de Tierra Adentro, the Spanish colonial trade road established after the 1598 Oñate expedition, followed the Rio Grande valley from Ohkay Owingeh through Santa Fe, Albuquerque, Socorro and Las Cruces on its way to Mexico City."
+    sources: [5]
+  - text: "Acequias — centuries-old, communally managed irrigation ditches that also function as local units of government — remain a defining feature of Hispanic farming communities in the Rio Grande valley, according to the New Mexico Acequia Association."
+    sources: [8]
+
+users:
+  - text: "The Middle Rio Grande Conservancy District, formed under the 1923 Conservancy Act, operates nearly 1,200 miles of canals, laterals and drains to irrigate and drain farmland and bosque through the Albuquerque valley while providing flood protection."
+    sources: [7]
+  - text: "The Elephant Butte Irrigation District delivers Rio Grande Project water to about 90,640 acres of farmland in the Mesilla and Rincon valleys around Las Cruces, where water orders are tallied for alfalfa, cotton, orchard and vegetable crops."
+    sources: [9]
+  - text: "The 1938 Rio Grande Compact among Colorado, New Mexico and Texas apportions the river's water and sets New Mexico's delivery obligation into Elephant Butte Reservoir, whose water irrigates southern New Mexico and supplies the El Paso area."
+    sources: [10]
+  - text: "Albuquerque's water utility draws its San Juan-Chama Project water (transbasin Colorado River water delivered into the Rio Grande watershed) from the river through a diversion and treatment plant that has supplied a large share of the city's drinking water since 2008."
+    sources: [11]
+  - text: "Santa Fe's Buckman Direct Diversion has drawn Rio Grande water for city and county drinking supplies since 2011, reducing reliance on groundwater pumping."
+    sources: [12]
+
+reservoirs_notes:
+  - name: Elephant Butte Reservoir
+    text: "Built by the Bureau of Reclamation and completed in 1916, Elephant Butte Dam stores Rio Grande water for irrigation in southern New Mexico, west Texas and Mexico, provides flood control and hydropower, and anchors New Mexico's largest state park."
+    sources: [13]
+  - name: Caballo Reservoir
+    text: "Built by the Bureau of Reclamation between 1936 and 1938 about 25 miles downstream of Elephant Butte, Caballo Dam re-regulates winter power releases from Elephant Butte into summer irrigation supply for the Rio Grande Project."
+    sources: [14]
+  - name: Cochiti Lake
+    text: "Built by the Army Corps of Engineers on Cochiti Pueblo land and authorized in 1965, Cochiti Dam operates solely for flood and sediment control on the Rio Grande, with a permanent lake added for recreation."
+    sources: [15]
+
+sources:
+  1: {title: "Critical Habitat Designated for Rio Grande Silvery Minnow", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/story/2000-06/critical-habitat-designated-rio-grande-silvery-minnow", accessed: 2026-09-28}
+  2: {title: "Bosque del Apache National Wildlife Refuge — About Us", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/refuge/bosque-del-apache/about-us", accessed: 2026-09-28}
+  3: {title: "Southwestern Willow Flycatcher", publisher: "National Park Service", url: "https://www.nps.gov/articles/southwestern-willow-flycatcher.htm", accessed: 2026-09-28}
+  4: {title: "Rio Grande del Norte National Monument", publisher: "Bureau of Land Management", url: "https://www.blm.gov/programs/national-conservation-lands/new-mexico/rio-grande-del-norte-national-monument", accessed: 2026-09-28}
+  5: {title: "El Camino Real de Tierra Adentro National Historic Trail — History & Culture", publisher: "National Park Service", url: "https://www.nps.gov/elca/learn/historyculture/index.htm", accessed: 2026-09-28}
+  6: {title: "Middle Rio Grande Project", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=508", accessed: 2026-09-28}
+  7: {title: "History", publisher: "Middle Rio Grande Conservancy District", url: "https://www.mrgcd.com/history/", accessed: 2026-09-28}
+  8: {title: "New Mexico Acequia Association", publisher: "New Mexico Acequia Association", url: "https://lasacequias.org/", accessed: 2026-09-28}
+  9: {title: "Interpreting the Elephant Butte Irrigation District for Water Users (Circular CR590)", publisher: "New Mexico State University Cooperative Extension", url: "https://pubs.nmsu.edu/_circulars/CR590/index.html", accessed: 2026-09-28}
+  10: {title: "Rio Grande and Elephant Butte", publisher: "El Paso Water", url: "https://www.epwater.org/our-water/water-resources/rio-grande-and-elephant-butte", accessed: 2026-09-28}
+  11: {title: "Your Drinking Water — San Juan-Chama Project", publisher: "Albuquerque Bernalillo County Water Utility Authority", url: "https://www.abcwua.org/your-drinking-water-san-juan-chama-project/", accessed: 2026-09-28}
+  12: {title: "Introduction", publisher: "Buckman Direct Diversion (City/County of Santa Fe)", url: "https://bddproject.org/introduction/", accessed: 2026-09-28}
+  13: {title: "Elephant Butte Dam Turns 100", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/newsroom/newsroomold/stories/detail.cfm?RecordID=58136", accessed: 2026-09-28}
+  14: {title: "Caballo Dam", publisher: "U.S. Bureau of Reclamation", url: "https://www.usbr.gov/projects/index.php?id=42", accessed: 2026-09-28}
+  15: {title: "Dam Project Authorized for Cochiti Pueblo", publisher: "Bureau of Indian Affairs", url: "https://www.bia.gov/as-ia/opa/online-press-release/dam-project-authorized-cochiti-pueblo", accessed: 2026-09-28}

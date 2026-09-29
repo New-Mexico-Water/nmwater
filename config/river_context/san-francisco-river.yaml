@@ -1,0 +1,48 @@
+river: San Francisco River
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements checked against their sources; 1 removed (Wikipedia was the sole
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# source), 4 reworded (trimmed or re-sourced details not supported by their cited page — Wikipedia
+# content dropped from two summary items, "Gila National Forest" dropped from a Forest Service land
+# figure, "Catron County seat" dropped where only Wikipedia supported it).
+
+summary:
+  - text: "The San Francisco River enters New Mexico from Arizona near Luna and leaves the state again downstream of Glenwood."
+    sources: [1]
+  - text: "In New Mexico the river flows past Reserve and past Glenwood before leaving the state just downstream of Glenwood."
+    sources: [1]
+  - text: "Senator Martin Heinrich has called the San Francisco, together with the Gila, 'among the last wild, free-flowing rivers in the Southwest,' and both rivers are included in the M.H. Dutch Salmon Greater Gila Wild and Scenic River Act that he and Rep. Gabe Vasquez introduced in Congress; the river also provides critical habitat for the federally threatened spikedace and loach minnow."
+    sources: [4, 5]
+summary_sources: [1, 4, 5]
+
+habitats:
+  - text: "The spikedace and loach minnow, two small native fish listed as threatened under the Endangered Species Act in 1986, have federally designated critical habitat spanning the Gila, San Francisco and other regional rivers across Catron, Grant and Hidalgo counties in New Mexico."
+    sources: [5]
+  - text: "The Gila trout, spikedace, loach minnow, Chiricahua leopard frog and southwestern willow flycatcher are all federally threatened or endangered species that depend on the aquatic and riparian habitat of the Gila and San Francisco watersheds, according to the New Mexico Environment Department."
+    sources: [1]
+  - text: "The Wild Gila River coalition describes the Gila headwaters, including the San Francisco River, as the largest network of natural streams in the Southwest and one of the largest undammed headwater watersheds remaining in temperate North America."
+    sources: [6]
+  - text: "The 2011 Wallow Fire crossed into New Mexico near the town of Luna and left fire debris at every San Francisco River monitoring site, affecting the river's water quality during that summer's monsoon flows, according to a New Mexico Environment Department survey."
+    sources: [1]
+
+culture:
+  - text: "The Glenwood area lies within the historic territory of Apache leaders Mangas Coloradas, Victorio and Geronimo, according to the New Mexico Tourism Department."
+    sources: [7]
+
+users:
+  - text: "The U.S. Forest Service manages about 92% of the San Francisco River watershed, with under 1% managed by the Bureau of Land Management and about 7% in private ownership."
+    sources: [1]
+  - text: "Reserve and Glenwood both sit along the San Francisco River in this sparsely populated part of southwestern New Mexico."
+    sources: [1, 7]
+  - text: "Under the 2004 Arizona Water Settlements Act, New Mexico had the option to fund new water projects in Catron, Grant, Hidalgo and Luna counties, including a proposed dam and reservoir on the San Francisco River in Weedy Canyon between Reserve and Alma; that dam was dropped from the project's 2019 redesign to cut costs."
+    sources: [8]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Sampling Summary: Gila and San Francisco Watersheds Water Quality Survey", publisher: "New Mexico Environment Department, Surface Water Quality Bureau", url: "https://www.env.nm.gov/wp-content/uploads/sites/25/2019/10/Gila-SFR_SurveyReport2014.pdf", accessed: 2026-09-28}
+  4: {title: "Heinrich, Rep. Vasquez Lead Introduction of Wild and Scenic Legislation to Protect Gila River", publisher: "Office of U.S. Senator Martin Heinrich", url: "https://www.heinrich.senate.gov/newsroom/press-releases/heinrich-repvasquez-lead-introduction-of-wild-and-scenic-legislation-to-protect-gila-river", accessed: 2026-09-28}
+  5: {title: "Critical Habitat Designated for Two Threatened Fish", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/story/2000-04/critical-habitat-desginated-two-threatened-fish", accessed: 2026-09-28}
+  6: {title: "Frequently Asked Questions", publisher: "Wild Gila River", url: "https://wildgilariver.org/frequently-asked-questions/", accessed: 2026-09-28}
+  7: {title: "Glenwood", publisher: "New Mexico Tourism Department", url: "https://www.newmexico.org/places-to-visit/regions/southwest/glenwood/", accessed: 2026-09-28}
+  8: {title: "Faced with costs, officials scale back Gila diversion plans", publisher: "New Mexico Political Report", url: "https://nmpoliticalreport.com/2019/07/08/faced-with-costs-officials-scale-back-gila-diversion-plans/", accessed: 2026-09-28}

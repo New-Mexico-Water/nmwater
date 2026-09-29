@@ -607,7 +607,7 @@ def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = Non
         if not b.normal.segments.empty:
             b.normal.segments.round({"pct": 1}).to_csv(d / "normal_last_52_weeks_by_segment.csv", index=False)
         b.dry.by_segment.to_csv(d / "drying_by_year.csv", index=False)
-        extra = rp.render(page["con"], b, d, page["grids"], page.get("background"), generated)
+        extra = rp.render(page["con"], b, d, page["grids"], page.get("background"), generated, site=page.get("site"))
     else:
         write_explorer(d / "index.html", r, generated)
     write_notes(d / "notes.md", r, generated)
@@ -627,7 +627,7 @@ def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = Non
             **extra}
 
 
-def write_index(d: Path, entries: list[dict], generated: str) -> None:
+def write_index(d: Path, entries: list[dict], generated: str, site: dict | None = None) -> None:
     rows = "".join(
         f"<tr><td><a href=\"{html.escape(e['path'])}\">{html.escape(e['river'])}</a></td>"
         f"<td class=\"n\">{len(e['segments'])}</td><td class=\"n\">{e['gauges']}</td>"
@@ -638,10 +638,24 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
         f"<td class=\"n\"><a href=\"{html.escape(e['slug'])}/index.html#issues\">{e.get('issues_warn', 0)}</a></td></tr>"
         for e in entries)
     page = (TEMPLATES / "river_index.html").read_text()
+    from . import river_share as rs
+
+    site = site or rs.site_config({})
+    title = "New Mexico rivers: streamflow and conditions"
+    desc = rs.trim(f"Weekly streamflow, flow compared with normal, drying, water temperature, snowpack and drought for "
+                   f"{len(entries)} New Mexico rivers and creeks, by watershed segment, from public gauge data.")
+    base = site["base_url"] or ""
+    meta = rs.head_meta(site, title=title, desc=desc, path="rivers/", image=None, image_alt="", jsonld=[
+        {"@type": "CollectionPage", "name": title, "description": desc, "inLanguage": "en-US", **({"url": base + "rivers/"} if base else {}),
+         "isPartOf": {"@type": "WebSite", "name": site["name"], **({"url": base} if base else {})},
+         "mainEntity": {"@type": "ItemList", "numberOfItems": len(entries), "itemListElement": [
+             {"@type": "ListItem", "position": i + 1, "name": e["river"], "url": f"{base}rivers/{e['slug']}/"}
+             for i, e in enumerate(entries)]}}])
     page = page.replace("__ROWS__", rows).replace("__GENERATED__", html.escape(generated)).replace(
-        "__N_RIVERS__", str(len(entries)))
+        "__N_RIVERS__", str(len(entries))).replace("__META__", meta).replace("__TITLE__", html.escape(f"{title} | {site['name']}"))
     (d / "index.html").write_text(page)
     (d / "manifest.json").write_text(json.dumps({"generated": generated, "rivers": entries}, indent=2))
+    rs.sitemap(d, site, entries, generated[:10])
 
 
 def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None,
@@ -668,6 +682,11 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
                     "AND interval = 'daily' AND statistic = 'mean' AND datetime_utc <= now()").fetchone()[0]
     generated = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     descriptions = descriptions or {}
+    from . import river_share as rs
+
+    site = rs.site_config(cfg)
+    if not site["base_url"]:
+        log.warning("site.base_url is not set in the report config: pages get no canonical link, og:url, og:image or sitemap")
     if grids is not None and cache is not None:
         # fill the watershed-climate cache once for every watershed in scope (per river it would re-read the grids)
         from .river_watershed import update_climate
@@ -696,7 +715,7 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
                     continue
                 page = None if grids is None or cache is None else {
                     "con": con, "river_name": name.name, "grids": grids, "cache": cache,
-                    "background": descriptions.get(r.river) or descriptions.get(name.name)}
+                    "background": descriptions.get(r.river) or descriptions.get(name.name), "site": site}
                 entries.append(write_river(tmp / r.slug, r, generated, page))
                 log.info("%s: %d segments, %d gauges, %s to %s", name.label, len(r.segments), len(r.elig),
                          entries[-1]["first_week"], entries[-1]["last_week"])
@@ -712,7 +731,8 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
             done = {e["slug"] for e in entries}
             entries += [e for e in old if e["slug"] not in done]
         entries.sort(key=lambda e: (-e["gauges"], e["river"]))
-        write_index(tmp, entries, generated)
+        write_index(tmp, entries, generated, site)
+        rs.robots(out, site)
         final, old = out / "rivers", out / ".rivers.old"
         if old.exists():
             shutil.rmtree(old)

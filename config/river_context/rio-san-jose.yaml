@@ -1,0 +1,48 @@
+river: Rio San Jose
+researched: 2026-09-28
+# Checked 2026-09-28: 14 statements checked against their sources; 2 removed (Wikipedia was the sole
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# source), 2 reworded (unsupported date/naming details fixed by adding or trimming sources).
+
+summary:
+  - text: "The river's roughly 6,300-square-mile watershed in west-central New Mexico also reaches the Navajo Nation and the communities of Bluewater and San Rafael, though perennial surface water is sparse and most water use in the basin relies on groundwater pumped from sedimentary and basalt aquifers."
+    sources: [2]
+  - text: "For the Pueblo of Acoma, the Rio San José stream system has been the primary water source for centuries, though its flows declined over the last 150 years."
+    sources: [3]
+summary_sources: [2, 3]
+
+habitats:
+  - text: "The river's hydrology is fed by snowmelt on Mount Taylor and the Zuni and San Mateo mountains, which recharges springs such as Ojo del Gallo and Horace Springs that historically sustained flow across Acoma and Laguna lands, though many upland aquifers no longer discharge appreciable water to the stream system."
+    sources: [3]
+  - text: "USGS modeling of the basin found that more than 98% of precipitation is lost to evapotranspiration, with only about 1.2% recharging groundwater and 0.47% becoming direct runoff, underscoring how little water reaches the river as streamflow in this arid basin."
+    sources: [2]
+
+culture:
+  - text: "Acoma Pueblo, one of the oldest continuously inhabited communities in the United States, has irrigated fields along the Rio San José for at least 1,000 years; the first written record of Pueblo irrigation on the river dates to 1583."
+    sources: [3]
+  - text: "Mount Taylor, whose snowmelt feeds the Rio San José's springs, is a cultural property of the Pueblos of Acoma and Laguna and of the Navajo Nation, and Acoma's spiritual traditions and songs remain tied to the river's springs, valleys, mountains and mesas."
+    sources: [3]
+  - text: "The present-day Pueblo of Laguna, whose main village was built into a sandstone slope on the west side of the Rio San José, was established after the Pueblo Revolt (1680-1696) by a group of Kawaik people joined by refugees from Cieneguilla, Santo Domingo, Cochiti and Zia."
+    sources: [4, 5]
+  - text: "The Spanish-era mission of San José de la Laguna was completed around July 4, 1699; the Pueblo of Laguna's six villages today hold about 500,000 acres of reservation land across Cibola, Valencia, Bernalillo and Sandoval counties."
+    sources: [5]
+
+users:
+  - text: "Before U.S. sovereignty in the region, Acoma farmers used walk-in wells to reach alluvial groundwater and directed ephemeral surface flows from the Rio San José to irrigate their fields; a 1918 Bureau of Indian Affairs planting report for Acomita recorded 1,625 acres under cultivation."
+    sources: [3]
+  - text: "Legislation introduced in Congress, the Rio San José and Rio Jemez Water Settlements Act, would ratify a water rights settlement for the Pueblos of Acoma and Laguna in the Rio San José Stream System and establish pueblo trust funds, including one for the Acomita Reservoir Works."
+    sources: [6]
+  - text: "The Acoma and Laguna Pueblos' water rights in the Rio San José system have been addressed through the basin-wide adjudication State ex rel. State Engineer v. Kerr-McGee, et al., which covers all surface and groundwater users in the stream system."
+    sources: [3]
+  - text: "A 1983 USGS study found that groundwater in the Rio San José valley fill near Paguate and Encinal on the Laguna reservation can yield 50 to 450 gallons per minute for public supply, and that winter river flows could be used to recharge groundwater storage in the valley."
+    sources: [7]
+
+reservoirs_notes: []
+
+sources:
+  2: {title: "Development of an integrated hydrologic flow model of the Rio San Jose Basin and surrounding areas, New Mexico", publisher: "U.S. Geological Survey", url: "https://pubs.usgs.gov/publication/sir20235028", accessed: 2026-09-28}
+  3: {title: "Written Testimony of Pueblo of Acoma Governor Randall Vicente in Support of H.R. 1304", publisher: "U.S. House of Representatives Committee on Natural Resources", url: "https://naturalresources.house.gov/uploadedfiles/testimony_vicente72324.pdf", accessed: 2026-09-28}
+  4: {title: "New Mexico: Pueblo of Laguna", publisher: "National Park Service", url: "https://home.nps.gov/places/pueblo-of-laguna.htm/index.htm", accessed: 2026-09-28}
+  5: {title: "Pueblo of Laguna", publisher: "Pueblo of Laguna", url: "https://www.lagunapueblo-nsn.gov/", accessed: 2026-09-28}
+  6: {title: "Rio San José and Rio Jemez Water Settlements Act of 2025 (H.R. 1322, 119th Congress) — Bill Summary", publisher: "U.S. Government Publishing Office (govinfo.gov)", url: "https://www.govinfo.gov/bulkdata/BILLSUM/119/hr/BILLSUM-119hr1322.xml", accessed: 2026-09-28}
+  7: {title: "Water Resources of the Pueblo of Laguna, West-Central New Mexico (Water-Resources Investigations Report 83-4038)", publisher: "U.S. Geological Survey", url: "https://www.usgs.gov/publications/water-resources-pueblo-laguna-west-central-new-mexico", accessed: 2026-09-28}

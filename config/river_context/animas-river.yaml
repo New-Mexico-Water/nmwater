@@ -1,0 +1,58 @@
+river: Animas River
+researched: 2026-09-28
+# Checked 2026-09-28: 14 statements checked; 4 reworded (an unsupported "great house" label and a claim
+# that Aztec Ruins still irrigates today, when the source says irrigation was discontinued; an unnamed
+# "Ute Mountain Ute Tribe" not in the cited Animas-La Plata source; and NNEPA/Shiprock-Hogback sampling
+# details not supported by the cited EPA update, which only covers the Fruitland canal reopening).
+
+summary:
+  - text: "The Animas River is born from snowmelt high in the San Juan Mountains of southwestern Colorado, descending nearly 6,000 feet as it passes through Silverton and Durango, Colorado, then Aztec, New Mexico, before joining the San Juan River at Farmington."
+    sources: [1]
+  - text: "On August 5, 2015, an EPA crew working at the Gold King Mine near Silverton breached a plug holding back contaminated water, releasing about three million gallons of acidic mine wastewater (by USGS stream-gauge calculation) that carried heavy metals down the Animas. The plume passed through Colorado, New Mexico and the Navajo Nation and into Utah."
+    sources: [2, 3]
+  - text: "In New Mexico the river runs past Aztec, where Aztec Ruins National Monument sits along its east bank on the site of an ancestral Puebloan community of multi-story structures, and where the Farmers Irrigation District draws Animas water for landowners between Aztec and Flora Vista."
+    sources: [4, 5]
+summary_sources: [1, 2, 3, 4, 5]
+
+habitats:
+  - text: "At Aztec Ruins National Monument, riparian vegetation of cottonwoods, willows and Russian olive lines the Animas River's lowest-elevation stretch and provides habitat for a variety of birds and other animals."
+    sources: [4]
+  - text: "A four-mile stretch of the Animas through Durango, Colorado gained the state's Gold Medal trout-fishery designation in 1996, but a Colorado Parks and Wildlife biologist says heavy metals leaching from abandoned mines near Silverton, high water temperatures and sediment loading now keep the river's trout from reproducing naturally, so the fishery depends on stocking."
+    sources: [6]
+  - text: "Five years after the Gold King Mine spill, the stretch of the Animas between Silverton and Bakers Bridge (about 15 miles above Durango) was virtually devoid of aquatic life, and fish in the river through Durango were still unable to reproduce because of ongoing heavy-metal contamination from inactive mines."
+    sources: [7]
+  - text: "In New Mexico, fish sampled from the Animas and San Juan rivers after the 2015 spill included both trout and catfish."
+    sources: [8]
+
+culture:
+  - text: "Aztec Ruins National Monument, bounded on the east by the Animas River, preserves an extensive community of multi-story structures built by 11th- to 13th-century ancestors of today's Pueblo peoples, who used irrigation ditches drawing river water for crop cultivation."
+    sources: [4]
+  - text: "The Lower Animas Ditch, a National Register-listed irrigation ditch put into service on the Animas River near Aztec in 1878, was built using earthen-ditch irrigation techniques that Anglo-American homesteaders learned from Hispanic-American settlers of southern Colorado, and its winding path helped shape Aztec's historic town plan."
+    sources: [9]
+
+users:
+  - text: "The Farmers Irrigation District draws water from the Animas River north of Aztec to serve landowners down to Farmington Lake in Flora Vista, New Mexico, through a ditch system begun in 1892 and extended in 1907; San Juan County made it a special irrigation district with taxing authority in 1954."
+    sources: [5]
+  - text: "The Bureau of Reclamation's Animas-La Plata Project, built to fulfill a 1986 Colorado Ute Indian water rights settlement, stores Animas River water at Lake Nighthorse behind Ridges Basin Dam and delivers it to the Colorado Ute Tribes (including the Southern Ute Indian Tribe), the Navajo Nation, the City of Farmington and other water users in southwestern Colorado and northwestern New Mexico, including through the Navajo Nation Municipal Pipeline."
+    sources: [10]
+  - text: "The 2015 Gold King Mine spill sent an EPA-estimated one-to-three-million-gallon plume of acidic, metal-laden mine wastewater down the Animas and into the San Juan River, with EPA and other responders sampling water and sediment across Colorado, the Southern Ute and Ute Mountain Ute reservations, New Mexico, the Navajo Nation and Utah; the New Mexico Environment Department lifted its ban on private domestic wells on August 14, 2015, and on San Juan County's drinking water system supplied by the Animas and San Juan rivers on August 15."
+    sources: [2, 3]
+  - text: "EPA sampled water and sediment from the San Juan River in the Navajo Nation, and Navajo Nation President Russell Begaye directed that the Fruitland Irrigation canal — which delivers San Juan River water to three Navajo chapters — be reopened once the data showed water quality had returned to pre-spill conditions."
+    sources: [11]
+  - text: "After the spill, New Mexico Game and Fish recommended catch-and-release fishing on the Animas and San Juan rivers, then lifted the recommendation after a Colorado lab tested tissue from 17 fish (5 catfish and 12 trout) and found metal levels within acceptable limits for human consumption, with the state committing to continued monitoring."
+    sources: [8]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Animas River", publisher: "San Juan Citizens Alliance", url: "https://www.sanjuancitizens.org/animas-river", accessed: 2026-09-28}
+  2: {title: "Roles of EPA and Other Responders After the 2015 Gold King Mine Release", publisher: "U.S. Environmental Protection Agency", url: "https://www.epa.gov/goldkingmine/roles-epa-and-other-responders-after-2015-gold-king-mine-release", accessed: 2026-09-28}
+  3: {title: "Frequent Questions Related to Gold King Mine Response", publisher: "U.S. Environmental Protection Agency", url: "https://www.epa.gov/goldkingmine/frequent-questions-related-gold-king-mine-response", accessed: 2026-09-28}
+  4: {title: "Nature", publisher: "National Park Service — Aztec Ruins National Monument", url: "https://www.nps.gov/azru/learn/nature/index.htm", accessed: 2026-09-28}
+  5: {title: "Farmers Irrigation District", publisher: "Farmers Irrigation District, Aztec, NM", url: "https://farmersirrigationdistrict.com/", accessed: 2026-09-28}
+  6: {title: "Is the Animas River still a Gold Medal fishery?", publisher: "The Durango Herald", url: "https://www.durangoherald.com/articles/is-the-animas-river-still-a-gold-medal-fishery/", accessed: 2026-09-28}
+  7: {title: "Five years after Gold King Mine spill, water quality remains a concern", publisher: "The Durango Herald", url: "https://www.durangoherald.com/articles/five-years-after-gold-king-mine-spill-water-quality-remains-a-concern/", accessed: 2026-09-28}
+  8: {title: "State Lifts Catch and Release Recommendation for Animas and San Juan Rivers", publisher: "New Mexico Department of Game and Fish", url: "https://wildlife.dgf.nm.gov/state-lifts-catch-and-release-recommendation-for-animas-and-san-juan-rivers/", accessed: 2026-09-28}
+  9: {title: "National Register of Historic Places Inventory/Nomination — Lower Animas Ditch (amendment)", publisher: "National Park Service", url: "https://npgallery.nps.gov/NRHP/GetAsset/NRHP/87001116_text", accessed: 2026-09-28}
+  10: {title: "Animas-La Plata Project", publisher: "U.S. Bureau of Reclamation, Upper Colorado Region", url: "https://www.usbr.gov/uc/progact/animas/index.html", accessed: 2026-09-28}
+  11: {title: "EPA Update on Gold King Mine Response: Navajo Nation, Additional Data, Public Records", publisher: "U.S. Environmental Protection Agency", url: "https://www.epa.gov/goldkingmine/epa-update-gold-king-mine-response-navajo-nation-additional-data-public-records", accessed: 2026-09-28}

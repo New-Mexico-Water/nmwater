@@ -1,0 +1,45 @@
+river: Mimbres River
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements checked; 1 removed, 7 reworded (NAN Ranch Ruin was Wikipedia-only;
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# trimmed unsupported Black Range, "near Deming" endpoint, "rather than reaching the sea", chub "nowhere else
+# in the US", "other crops" and OSE groundwater-monitoring details). Source 5's publisher corrected: it is a
+# 2013 Van Clothier course paper hosted by Stream Dynamics, Inc.
+
+summary:
+  - text: "The Mimbres River rises at about 10,000 feet in the Aldo Leopold Wilderness of the Gila National Forest and flows roughly 40 miles across southwestern New Mexico."
+    sources: [1]
+  - text: "It is a closed-basin desert stream: its surface water never leaves the Mimbres River basin, terminating in the Chihuahuan Desert grasslands near the Mexican border."
+    sources: [1]
+  - text: "The valley lends its name to the prehistoric Mimbres culture, whose Classic-period potters, working from about 1000 to 1130 CE, produced the distinctive Mimbres Black-on-white pottery the tradition is best known for."
+    sources: [2]
+summary_sources: [1, 2]
+
+habitats:
+  - text: "The Mimbres watershed, from its high-elevation headwaters to the Chihuahuan Desert grasslands near the Mexican border, includes forests of Douglas fir and ponderosa pine, piñon-juniper savanna, desert grasslands and Chihuahuan desert scrub, with riparian forest, cienegas (desert marshes) and springs along stream reaches that are perennial, intermittent or ephemeral."
+    sources: [1]
+  - text: "The Mimbres River Basin is home to two federally threatened species, the Chihuahua chub and the Chiricahua leopard frog, both of which prefer open-water pools and slow-moving water."
+    sources: [3]
+  - text: "Starting in 2012, the Nature Conservancy, U.S. Fish and Wildlife Service and New Mexico Department of Game and Fish restored Moreno Spring, a former Mimbres River channel, by digging 14 open-water pools; by August 2016 researchers were finding leopard frog egg masses and more than 100 adult frogs there, and the Chihuahua chub population in the Mimbres has increased since 2020."
+    sources: [3]
+  - text: "The river also supports cottonwood-willow forest and sacaton floodplain grassland among its riparian habitats, home to species such as the Rio Grande sucker and desert viceroy butterfly."
+    sources: [1]
+
+culture:
+  - text: "The Classic Mimbres period, from about 1000 to 1130 CE, is defined by Mimbres Black-on-white pottery; the tradition used a highly standardized design layout and symmetry that was unusual for the ancient Southwest, where neighboring groups more often exchanged decorated ceramics to display social ties."
+    sources: [2]
+
+users:
+  - text: "Irrigated agriculture in the Mimbres Valley diverts water from the river at several points, supporting small apple orchards and a few vineyards, according to a 2013 hydrological characterization of the basin."
+    sources: [5]
+  - text: "Groundwater pumping to irrigate crops in the desert has dropped the water table 20 to 80 feet near Deming over about 200 square miles, and 20 to 120 feet east of Columbus over about 80 square miles, the same report found."
+    sources: [5]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Mimbres River Preserve", publisher: "The Nature Conservancy", url: "https://www.nature.org/en-us/get-involved/how-to-help/places-we-protect/mimbres-river-preserve/", accessed: 2026-09-28}
+  2: {title: "Mimbres Architecture (and Tucson Neighborhoods)", publisher: "Archaeology Southwest", url: "https://www.archaeologysouthwest.org/what-we-do/explore/mimbres/", accessed: 2026-09-28}
+  3: {title: "Mimbres River Habitat Restoration for the Chihuahua Chub and Chiricahua Leopard Frog", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/sites/default/files/documents/2025-05/mimbres-river-habitat-restoration-for-the-chihuahua-chub-and-chiricahua-leopard-frog.pdf", accessed: 2026-09-28}
+  5: {title: "Mimbres Basin Hydrological Characterization Report", publisher: "Van Clothier (course paper, hosted by Stream Dynamics, Inc.)", url: "https://streamdynamics.us/sites/default/files/resource-docs/mimbres-basin-hydrological-characterization-report-clothier-2013_0.pdf", accessed: 2026-09-28}
+  6: {title: "District 3 (Deming): Mimbres Basin", publisher: "New Mexico Office of the State Engineer", url: "https://meas.ose.state.nm.us/basin.jsp?id=Mimbres", accessed: 2026-09-28}

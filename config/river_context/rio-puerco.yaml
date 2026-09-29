@@ -1,0 +1,51 @@
+river: Rio Puerco
+researched: 2026-09-28
+# Checked 2026-09-28: 12 statements checked; 0 removed, 1 reworded (the arroyo-incision statement conflated
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# two distinct findings from the source into one timeline; split them to match the abstract).
+
+summary:
+  - text: "The Rio Puerco rises along the eastern edge of the Continental Divide near the town of Cuba in west-central New Mexico and flows south through a watershed of roughly 7,350 square miles — the largest tributary basin of the Middle Rio Grande — before joining the Rio Grande at Bernardo."
+    sources: [1, 2]
+  - text: "In the lower Rio Puerco, arroyo incision had stopped by about 1936: USGS researchers found that in the narrow, already-incised channel, floods eroded the banks more than the streambed, widening the channel rather than deepening it further, while a later decline in flood peak size, frequency and duration after 1941 further limited additional incision."
+    sources: [3]
+  - text: "The Rio Puerco is best known today for its heavy sediment load: it is the largest suspended-sediment source entering the Rio Grande, and the U.S. Army Corps of Engineers has identified its erosion rates as the highest in the country."
+    sources: [4]
+summary_sources: [1, 2, 3, 4]
+
+habitats:
+  - text: "The Rio Puerco corridor holds BLM-verified habitat for two federally listed birds, the endangered southwestern willow flycatcher and the threatened western yellow-billed cuckoo, both with designated critical habitat there."
+    sources: [5]
+  - text: "The nonprofit Rio Grande Return is restoring roughly 2.4 miles of degraded stream in the watershed with low-tech, process-based structures meant to slow flows, trap sediment, raise water tables and restore about 90 acres of riparian wetland, with the eventual goal of drawing beavers back to help maintain the habitat."
+    sources: [4]
+
+culture:
+  - text: "Hispanic settlement of the upper valley began in 1736, when Pedro Barela, Jacinto Barela, Jose Sanchez and Juan Garcia founded Nacimiento — later renamed Cuba — on the banks of the Rio Puerco; a larger group of 36 settlers received the San Joaquin del Nacimiento land grant there in 1769."
+    sources: [6]
+  - text: "Centuries before Spanish settlement, the valley sheltered Ancestral Puebloan, Mesa Verde-refugee and Gallina communities; Hispanic villages later grew up along the river, including San Luis, Guadalupe, Cabezón and Casa Salazar."
+    sources: [7]
+  - text: "The village of Guadalupe was eventually abandoned as its water source failed, after 'the once verdant Río Puerco had withered into a deep arroyo.'"
+    sources: [7]
+
+users:
+  - text: "BLM's Rio Puerco Field Office, based near Albuquerque, manages nearly 1 million acres of public land and administers 3.6 million acres of federal mineral estate across the watershed's wilderness areas, national conservation lands and archaeological sites."
+    sources: [8]
+  - text: "In December 2024, BLM announced an updated resource management plan for the field office covering livestock grazing, recreation, renewable energy, transportation access and mineral development, along with continued cultural consultation with the region's Tribal Nations."
+    sources: [9]
+  - text: "The Rio Puerco Management Committee, a collaborative of state, federal, tribal and county agencies formed in 1997 under the Rio Puerco Watershed Act, grew out of a stakeholders group based in Cuba and works to reduce erosion and improve grazing-land condition; project cooperators have included the Navajo Nation and the Pueblo of Jemez."
+    sources: [1, 2]
+  - text: "Rio Grande Return manages a Rio Puerco restoration site under a Conservation Stewardship Lease with the New Mexico State Land Office, as part of a long-term plan to monitor water quality, groundwater and wildlife habitat there."
+    sources: [4]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Rio Puerco Watershed-Based Plan", publisher: "New Mexico Environment Department", url: "https://www.env.nm.gov/wp-content/uploads/sites/25/2017/06/RioPuercoPlan_FINALVERSION.pdf", accessed: 2026-09-28}
+  2: {title: "EPA Awards $700,000 to Work in the Rio Puerco Watershed (Clearing the Waters, Summer 2003)", publisher: "New Mexico Environment Department", url: "https://www.env.nm.gov/wp-content/uploads/sites/25/2019/10/ClearingTheWaters-Summer2003.pdf", accessed: 2026-09-28}
+  3: {title: "Processes Limiting Depth of Arroyo Incision: Examples From the Rio Puerco, New Mexico", publisher: "U.S. Geological Survey", url: "https://www.usgs.gov/publications/processes-limiting-depth-arroyo-incision-examples-rio-puerco-new-mexico", accessed: 2026-09-28}
+  4: {title: "Rio Puerco", publisher: "Rio Grande Return", url: "https://riograndereturn.org/rio-puerco/", accessed: 2026-09-28}
+  5: {title: "New Mexico Special Status Species — ESA Listed (Type 1)", publisher: "Bureau of Land Management", url: "https://www.blm.gov/sites/blm.gov/files/documents/files/Programs_FishandWildlife_BLMNM%20Special%20Status%20Species.pdf", accessed: 2026-09-28}
+  6: {title: "Land Grants", publisher: "Jemez Valley History", url: "https://jemezvalleyhistory.org/land-grants/", accessed: 2026-09-28}
+  7: {title: "Ancestral Puebloans, Ranches, and Farms Once Thrived in the Río Puerco Valley", publisher: "New Mexico Magazine", url: "https://www.newmexicomagazine.org/blog/post/ghost-towns-of-rio-puerco-valley-new-mexico/", accessed: 2026-09-28}
+  8: {title: "Rio Puerco Field Office", publisher: "Bureau of Land Management", url: "https://www.blm.gov/office/rio-puerco-field-office", accessed: 2026-09-28}
+  9: {title: "BLM Updates Management Plan for the Rio Puerco Field Office", publisher: "Bureau of Land Management", url: "https://www.blm.gov/press-release/blm-updates-management-plan-rio-puerco-field-office", accessed: 2026-09-28}

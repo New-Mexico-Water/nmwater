@@ -1,0 +1,43 @@
+river: Rio Peñasco
+researched: 2026-09-28
+# Checked 2026-09-28: 10 statements checked; 0 removed, 3 reworded (dropped a length/county detail and a
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
+# Wikipedia-only source not supported by the cited survey; tightened the thistle recovery and wetland
+# restoration statements to match their sources exactly).
+
+summary:
+  - text: "The Rio Peñasco rises east of Cloudcroft near the crest of the Sacramento Mountains, at an elevation of about 8,372 feet, and flows generally southeast across a roughly 675-square-mile watershed in Otero and Chaves counties to its confluence with the Pecos River south of Artesia."
+    sources: [1]
+  - text: "Limestone in the valley walls feeds the river with numerous springs, and its upper canyons are documented habitat for the Sacramento Mountains thistle, a wetland plant found only in the Sacramento Mountains of Otero County and listed as threatened in 1987."
+    sources: [1, 3, 4]
+  - text: "Small farming and ranching communities, including Mayhill, Duncan and Weed, grew up along the river after Hispanic settlers arrived in the mid-19th century and a second wave of American settlers followed around 1880."
+    sources: [1]
+summary_sources: [1, 3, 4]
+
+habitats:
+  - text: "The Sacramento Mountains thistle, a wetland-obligate plant confined to travertine springs and seeps between about 7,500 and 9,200 feet, was listed as a threatened species in 1987; the Rio Peñasco canyon is one of its documented sites, where a 2001-2002 riparian improvement project restored enough water flow for the plant to reoccupy previously vacated habitat, and livestock exclusion has helped some other populations recover."
+    sources: [3, 4]
+  - text: "A 2003 state watershed survey found heavy, nuisance-level algal growth in the Rio Peñasco channel, and determined that both the Rio Peñasco and its tributary Agua Chiquita fail to support their aquatic-life designated use because of fine-sediment buildup linked to burned-area runoff, streambank erosion and road runoff."
+    sources: [1]
+  - text: "State water-quality standards designate the perennial reaches of the Rio Peñasco above NM Highway 24 near Dunken, along with Agua Chiquita, for coldwater aquatic life and fish culture, while the lower river from Highway 24 down to the Pecos is designated for warmwater aquatic life."
+    sources: [1]
+  - text: "The Lincoln National Forest has worked to restore a modified, non-functioning wetland along the Rio Peñasco and stabilize a road crossing to improve water quality and habitat for wildlife and rare plants, including federally listed species."
+    sources: [5]
+
+culture:
+  - text: "The Rio Peñasco valley was first settled by Hispanic families in the mid-19th century; a second wave of American settlers arrived around 1880 and, together with the earlier Hispanic settlers, established the small farming and ranching communities of Mayhill, Duncan and Weed."
+    sources: [1]
+
+users:
+  - text: "State water-quality standards list irrigation and livestock watering among the designated uses of the Rio Peñasco and Agua Chiquita, and the small farms and ranches of Mayhill, Duncan and Weed remain agricultural today."
+    sources: [1]
+  - text: "A 2003 state survey found that, to supply flood irrigation, water users have moved stretches of the Rio Peñasco out of its natural channel and into an artificial conveyance channel along the valley floor."
+    sources: [1]
+
+reservoirs_notes: []
+
+sources:
+  1: {title: "Water Quality Survey Summary for the Rio Peñasco Watershed (From Hope, NM to Headwaters), 2003", publisher: "Surface Water Quality Bureau, New Mexico Environment Department", url: "https://www.env.nm.gov/surface-water-quality/wp-content/uploads/sites/25/2019/10/RioPenascoSurvey-2003.pdf", accessed: 2026-09-28}
+  3: {title: "Sacramento Mountains Thistle (Cirsium vinaceum)", publisher: "U.S. Fish & Wildlife Service", url: "https://www.fws.gov/species/sacramento-mountains-thistle-cirsium-vinaceum", accessed: 2026-09-28}
+  4: {title: "Endangered and Threatened Wildlife and Plants; 12-Month Finding on a Petition To Delist Cirsium vinaceum (Sacramento Mountains Thistle)", publisher: "Federal Register / U.S. Fish and Wildlife Service", url: "https://www.govinfo.gov/content/pkg/FR-2010-06-02/html/2010-12909.htm", accessed: 2026-09-28}
+  5: {title: "Rio Penasco Wetland Restoration and Road Stabilization", publisher: "Lincoln National Forest, USDA Forest Service", url: "https://www.fs.usda.gov/r03/lincoln/projects/archive/50504", accessed: 2026-09-28}
