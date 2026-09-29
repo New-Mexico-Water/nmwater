@@ -183,6 +183,14 @@ def order_segments(g: pd.DataFrame) -> list[str]:
     return list(med.index)
 
 
+def nice_name(name: str) -> str:
+    """Agency names are often all capitals: 'RIO GRANDE AT OTOWI BRIDGE, NM' -> 'Rio Grande At Otowi Bridge, NM'."""
+    n = str(name).strip().rstrip(".")
+    if n.upper() != n:
+        return n
+    return re.sub(r", (Nm|Co|Tx|Az|Ok|Ut)\b", lambda m: m.group(0).upper(), n.title())
+
+
 def _plain(s: str) -> str:
     return unicodedata.normalize("NFKD", str(s)).encode("ascii", "ignore").decode().lower()
 
@@ -256,8 +264,8 @@ def read_gauges(con, river: River, states: list[str] | None = None) -> pd.DataFr
           AND r.huc8_name IS NOT NULL {st}
           AND s.site_uid IN (SELECT site_uid FROM site_variables WHERE variable = 'discharge')""",
                     [river.gnis_id]).df()
-    keep = [is_river_gauge(n, river.name) and not (src == "ose_meas" and _ose_ditch(m))
-            for n, src, m in zip(g["name"], g["source"], g["raw_metadata"])]
+    keep = pd.Series([is_river_gauge(n, river.name) and not (src == "ose_meas" and _ose_ditch(m))
+                      for n, src, m in zip(g["name"], g["source"], g["raw_metadata"])], index=g.index, dtype=bool)
     return g[keep].drop(columns="raw_metadata").reset_index(drop=True)
 
 
@@ -310,6 +318,8 @@ class RiverReport:
     gnis_id: str = ""
     issues: list = field(default_factory=list)       # river_issues.Finding, found automatically
     removed: list = field(default_factory=list)      # daily values removed as bad (dicts), automatic or listed
+    chosen: pd.DataFrame | None = None               # one daily value per gauge and day: gauge, date, source, cfs
+    as_of: date | None = None                        # the archive's newest data day
     data_notes: list = field(default_factory=list)   # hand-written explanations (config/river_notes.yaml)
 
 
@@ -340,7 +350,7 @@ def remove_bad_values(daily: pd.DataFrame, peak_of: dict, exclusions: list[dict]
         wy = d["date"].dt.year + (d["date"].dt.month >= 10)
         peak = pd.Series([peak_of.get((g, y)) for g, y in zip(d["gauge"], wy)], index=d.index, dtype=float)
         over = peak.notna() & (d["cfs"] > 1.05 * peak) & ~drop
-        estimated = d["qualifier"].fillna("").astype(str).str.contains(r"(^|[:|,])e($|[:|,])", regex=True)
+        estimated = d["qualifier"].fillna("").astype(str).str.contains(r"(?:^|[:|,])e(?:$|[:|,])", regex=True)
         approved_usgs = (d["source"] == "usgs") & ~estimated
         m = over & ~approved_usgs
         drop |= m
@@ -425,7 +435,8 @@ def build_river(con, river: River, links: pd.DataFrame, states: list[str] | None
     return RiverReport(river=river.label, slug=slugify(river.label), segments=segments, gauges=g, weeks_all=weeks_all,
                        seg_all=seg_all, gw_all=gw_all, elig=elig, weeks52=weeks52, seg52=seg52, gw52=gw52,
                        agree52=agree52, notes=list(notes or []), dropped_segments=dropped,
-                       gnis_id=river.gnis_id, issues=issues, removed=removed)
+                       gnis_id=river.gnis_id, issues=issues, removed=removed,
+                       chosen=chosen[["gauge", "date", "source", "cfs"]].reset_index(drop=True), as_of=as_of or latest)
 
 
 # ---------------------------------------------------------------------------- writing
@@ -573,7 +584,9 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
     path.write_text("\n".join(L) + "\n")
 
 
-def write_river(d: Path, r: RiverReport, generated: str) -> dict:
+def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = None) -> dict:
+    """page: {con, river_name, grids, cache, background} to render the tabbed river page (river_page.py);
+    without it the plain flow explorer is written as index.html."""
     d.mkdir(parents=True, exist_ok=True)
     rnd = {"mean_cfs": 1, "min_cfs": 1, "max_cfs": 1}
     r.seg_all.round(rnd).to_csv(d / "all_weeks_by_segment.csv", index=False)
@@ -586,7 +599,17 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
     (d / "data_issues.json").write_text(json.dumps(
         {"river": r.river, "removed_values": r.removed, "reviewed_notes": r.data_notes,
          "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
-    write_explorer(d / "index.html", r, generated)
+    extra: dict = {}
+    if page:
+        from . import river_page as rp
+
+        b = rp.extend(page["con"], r, page["river_name"], page["grids"], page["cache"])
+        if not b.normal.segments.empty:
+            b.normal.segments.round({"pct": 1}).to_csv(d / "normal_last_52_weeks_by_segment.csv", index=False)
+        b.dry.by_segment.to_csv(d / "drying_by_year.csv", index=False)
+        extra = rp.render(page["con"], b, d, page["grids"], page.get("background"), generated)
+    else:
+        write_explorer(d / "index.html", r, generated)
     write_notes(d / "notes.md", r, generated)
     with_data = r.seg_all.groupby("segment")["week_start"].agg(["min", "max"])
     return {"river": r.river, "slug": r.slug, "path": f"{r.slug}/index.html",
@@ -600,7 +623,8 @@ def write_river(d: Path, r: RiverReport, generated: str) -> dict:
             "reviewed_notes": len(r.data_notes),
             "removed_values": len(r.removed),
             "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
-            "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4]))}
+            "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4])),
+            **extra}
 
 
 def write_index(d: Path, entries: list[dict], generated: str) -> None:
@@ -610,6 +634,7 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
         f"<td class=\"n\">{e.get('first_year') or e['first_week'][:4]}</td><td class=\"n\">{e['last_week']}</td>"
         f"<td class=\"n\">{'' if e['last_52_mean_cfs'] is None else f'{e['last_52_mean_cfs']:,.0f}'}</td>"
         f"<td>{'yes' if e['reporting'] else 'no'}</td>"
+        f"<td class=\"n\">{'' if not e.get('segments_rated') else f'{e['segments_below_normal']} of {e['segments_rated']}'}</td>"
         f"<td class=\"n\"><a href=\"{html.escape(e['slug'])}/index.html#issues\">{e.get('issues_warn', 0)}</a></td></tr>"
         for e in entries)
     page = (TEMPLATES / "river_index.html").read_text()
@@ -620,9 +645,11 @@ def write_index(d: Path, entries: list[dict], generated: str) -> None:
 
 
 def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None,
-        river_notes: dict | None = None, exclusions: list[dict] | None = None) -> tuple[list[dict], list[str]]:
+        river_notes: dict | None = None, exclusions: list[dict] | None = None, grids: Path | None = None,
+        cache: Path | None = None, descriptions: dict | None = None) -> tuple[list[dict], list[str]]:
     """Build every river's report into out/rivers, atomically. Returns (written entries, failed rivers).
-    river_notes: reviewed notes by river label (config/river_notes.yaml)."""
+    river_notes: reviewed notes by river label (config/river_notes.yaml). With grids and cache the tabbed
+    river page is written (river_page.py); descriptions: hand-written background by river label."""
     river_notes = river_notes or {}
     import duckdb
 
@@ -640,10 +667,21 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
     as_of = con.sql("SELECT max(datetime_utc)::DATE FROM observations_clean WHERE variable = 'discharge' "
                     "AND interval = 'daily' AND statistic = 'mean' AND datetime_utc <= now()").fetchone()[0]
     generated = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
+    descriptions = descriptions or {}
+    if grids is not None and cache is not None:
+        # fill the watershed-climate cache once for every watershed in scope (per river it would re-read the grids)
+        from .river_watershed import update_climate
+
+        codes = [c for (c,) in con.sql("SELECT DISTINCT huc8 FROM river_segments WHERE huc8 IS NOT NULL").fetchall()]
+        update_climate(grids, grids / "wbd", cache, sorted(codes))
 
     out.mkdir(parents=True, exist_ok=True)
     tmp = out / f".rivers.tmp-{datetime.now(UTC):%Y%m%d%H%M%S}"
     tmp.mkdir()
+    if grids is not None:
+        from .river_page import copy_assets
+
+        copy_assets(tmp)
     entries, failed = [], []
     try:
         for name in names:
@@ -656,7 +694,10 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
                 if r is None:
                     log.info("%s: no gauge with %d+ weeks of daily flow; skipped", name.label, MIN_WEEKS)
                     continue
-                entries.append(write_river(tmp / r.slug, r, generated))
+                page = None if grids is None or cache is None else {
+                    "con": con, "river_name": name.name, "grids": grids, "cache": cache,
+                    "background": descriptions.get(r.river) or descriptions.get(name.name)}
+                entries.append(write_river(tmp / r.slug, r, generated, page))
                 log.info("%s: %d segments, %d gauges, %s to %s", name.label, len(r.segments), len(r.elig),
                          entries[-1]["first_week"], entries[-1]["last_week"])
             except Exception as e:                      # one bad river must not stop the rest

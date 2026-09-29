@@ -485,7 +485,12 @@ def report_rivers(
     notes = (yaml.safe_load(notes_path.read_text()) or {}) if notes_path.exists() else {}
     ex_path = PROJECT_ROOT / "config" / "river_exclusions.yaml"
     exclusions = (yaml.safe_load(ex_path.read_text()) or []) if ex_path.exists() else []
-    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg, river_notes=notes, exclusions=exclusions)
+    desc_path = PROJECT_ROOT / "config" / "river_descriptions.yaml"
+    descriptions = (yaml.safe_load(desc_path.read_text()) or {}) if desc_path.exists() else {}
+    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg, river_notes=notes, exclusions=exclusions,
+                                 grids=s.data_dir / "grids",
+                                 cache=s.parquet_dir / "reference" / "source=river_reports" / "huc8_climate.parquet",
+                                 descriptions=descriptions)
     console.print(f"[green]{len(entries)} river pages in {out / 'rivers'}[/green]"
                   + (f"; [red]{len(failed)} failed: {', '.join(failed)}[/red]" if failed else ""))
     if failed:
