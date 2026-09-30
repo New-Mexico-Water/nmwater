@@ -19,7 +19,10 @@ interrupted run never leaves a half-written site.
 Method
   1. Gauges: stream sites snapped to the river's own reaches (river_method = 'snap'), whose
      name contains the river's distinctive word (drains and ditches that sit on the river are
-     not river gauges), with daily discharge. Optional per-river state filter (config).
+     not river gauges), with daily discharge. NHD leaves some main-stem reaches unnamed, so a site
+     on an unnamed reach also counts when the first named reach downstream is this river, it lies
+     in a watershed the river runs through, and its name starts with the river's name followed by
+     a place (names_the_river). Optional per-river state filter (config).
   2. Copies of one gauge are merged with site_links (same sensor or colocated within 250 m).
   3. Daily mean per copy: the source's own daily mean, else the mean of its sub-daily readings
      over the America/Denver day (at least half the expected readings). Daily and sub-daily rows
@@ -164,6 +167,26 @@ def is_river_gauge(name: str, river: str) -> bool:
     return not toks or any(t in _plain(name) for t in toks)
 
 
+STREAM_TYPE = {"river", "r", "rvr", "rv", "creek", "cr", "ck", "c", "arroyo", "arr", "wash", "canyon"}
+PLACE_WORD = {"at", "near", "nr", "n", "above", "abv", "ab", "below", "bl", "blw", "bel", "in", "from", "to"}
+
+
+def names_the_river(name: str, river: str) -> bool:
+    """Stricter test for gauges on unnamed reaches: the gauge's name must start with the river's name
+    (creek and river are interchangeable, abbreviations allowed) followed by a place ("at", "near",
+    "abv", a distance) or nothing. "Rio Ruidoso at Hollywood" names the Rio Ruidoso; "Little Tesuque Cr",
+    "Pecos River Trib" and "San Antonio Arroyo at Rio Grande confluence" do not."""
+    g = re.findall(r"[a-z0-9]+", re.sub(r"\(.*?\)", " ", _plain(name)).replace("@", " at "))
+    r = re.findall(r"[a-z0-9]+", _plain(river.split(" (")[0]))
+    core = r[:-1] if len(r) > 1 and r[-1] in STREAM_TYPE else r
+    if not core or g[:len(core)] != core:
+        return False
+    rest = g[len(core):]
+    if rest and rest[0] in STREAM_TYPE:
+        rest = rest[1:]
+    return not rest or rest[0] in PLACE_WORD or rest[0].isdigit()
+
+
 def _ose_ditch(meta: str | None) -> bool:
     """OSE real-time stations that OSE's meter layer ties to a ditch (rtm_ditch_name) measure a diversion."""
     try:
@@ -257,16 +280,22 @@ def read_gauges(con, river: River, states: list[str] | None = None) -> pd.DataFr
         WITH fips AS (SELECT site_uid, CASE left(region_id, 2) {fips_case} END AS st
                       FROM site_regions WHERE region_type = 'county')
         SELECT r.site_uid, r.huc8_name AS segment, s.source, s.name, coalesce(fips.st, s.state) AS state, r.totdasqkm,
-               s.raw_metadata
+               s.raw_metadata, r.river_method
         FROM river_segments r JOIN sites s USING (site_uid) LEFT JOIN fips USING (site_uid)
         JOIN site_reaches sr USING (site_uid) JOIN flowlines f ON f.comid = sr.comid
-        WHERE f.gnis_id = ? AND r.river_method = 'snap' AND r.site_type = 'stream'
-          AND r.huc8_name IS NOT NULL {st}
-          AND s.site_uid IN (SELECT site_uid FROM site_variables WHERE variable = 'discharge')""",
-                    [river.gnis_id]).df()
-    keep = pd.Series([is_river_gauge(n, river.name) and not (src == "ose_meas" and _ose_ditch(m))
-                      for n, src, m in zip(g["name"], g["source"], g["raw_metadata"])], index=g.index, dtype=bool)
-    return g[keep].drop(columns="raw_metadata").reset_index(drop=True)
+        WHERE r.site_type = 'stream' AND r.huc8_name IS NOT NULL {st}
+          AND s.site_uid IN (SELECT site_uid FROM site_variables WHERE variable = 'discharge')
+          AND ((f.gnis_id = ? AND r.river_method = 'snap')
+               -- a gauge on an unnamed reach (NHD leaves some main-stem reaches unnamed) whose first named
+               -- reach downstream is this river, in a watershed the river runs through; its name is checked below
+               OR (r.river_method = 'downstream' AND sr.river_name = ?
+                   AND sr.huc8 IN (SELECT DISTINCT huc8 FROM flowlines WHERE gnis_id = ?)))""",
+                    [river.gnis_id, river.name, river.gnis_id]).df()
+    keep = pd.Series([(is_river_gauge(n, river.name) if meth == "snap" else names_the_river(n, river.name))
+                      and not (src == "ose_meas" and _ose_ditch(m))
+                      for n, src, m, meth in zip(g["name"], g["source"], g["raw_metadata"], g["river_method"])],
+                     index=g.index, dtype=bool)
+    return g[keep].drop(columns=["raw_metadata", "river_method"]).reset_index(drop=True)
 
 
 def read_daily(con, uids: list[str], start: date, end: date) -> pd.DataFrame:
