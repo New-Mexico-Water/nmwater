@@ -102,3 +102,21 @@ def test_approved_usgs_values_above_the_peak_are_kept_as_conflicts():
                       "date": pd.to_datetime(["2014-06-03"]), "cfs": [115.0], "qualifier": ["A"]})
     kept, removed, conflicts = rf.remove_bad_values(d, {("G", 2014): 22.0}, [], {"usgs:1": "G"})
     assert len(kept) == 1 and removed == [] and conflicts[0]["peak"] == 22.0
+
+
+def test_names_the_river_for_gauges_on_unnamed_reaches():
+    from nmwater.reports.river_flow import names_the_river as n
+
+    assert n("RIO RUIDOSO AT HOLLYWOOD, NM", "Rio Ruidoso")
+    assert n("GALLINAS CREEK AT MONTEZUMA, NM", "Gallinas River")          # creek and river interchangeable
+    assert n("PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM", "Pecos River")
+    assert n("Pecos River 6 miles NE of Lakewood", "Pecos River")
+    assert n("SAN JUAN RVR @ BOLACK RANCH BRDG", "San Juan River")
+    assert n("MIMBRES R BL WAMEL CA NR DEMING, NM", "Mimbres River")
+    assert n("ZUNI RIVER ABV BLACK ROCK RESERVOIR, NM", "Zuñi River")
+    assert n("RIO HONDO AT DAMSI AT VALDEZ, NM", "Rio Hondo (Rio Grande-Elephant Butte)")
+    assert not n("LITTLE TESUQUE CR AT BISHOPS LODGE NR SANTA FE, NM", "Rio Tesuque")
+    assert not n("LITTLE NAVAJO RIVER AT CHROMO, CO.", "Navajo River")
+    assert not n("PECOS RIVER TRIB NR PUERTO DE LUNA, NM", "Pecos River")
+    assert not n("SAN ANTONIO ARROYO AT RIO GRANDE CONFLUENCE IN ABQ", "Rio Grande")
+    assert not n("Rio Grande Nature Center High-Flow Channel at Albq", "Rio Grande")
