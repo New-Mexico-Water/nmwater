@@ -72,3 +72,15 @@ Purgatoire River:
       On January 24, 2007 the Corps 15-minute readings climb to about 50,000 cfs within a day while the
       days either side sit near 20 to 40 cfs of winter base flow. This is a data error in the Corps
       series (no other agency publishes this gauge), and it inflates that week's and month's means.
+
+Rio Ruidoso:
+  - subject: Rio Ruidoso At Ruidoso, NM
+    basis: verified
+    reviewed: 2026-09-29
+    text: >-
+      USGS publishes no daily flow for this gauge from May 8, 2024 to May 12, 2026. Asked directly, the
+      USGS daily-values service marks every day from mid-May 2024 to June 2025 "Rat" (rating being
+      developed) and a few days in June and July 2025 "Eqp" (equipment malfunction), with no value, and
+      returns nothing at all from mid-July 2025 until May 2026. The segment rests on the Hollywood gauge
+      downstream for those two years. The gap began in the season of the June 2024 South Fork and Salt
+      fires above Ruidoso, which may have changed the channel at the gauge (inferred, not stated by USGS).
