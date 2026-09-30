@@ -1,9 +1,9 @@
 river: Rio Fernando de Taos
 researched: 2026-09-28
 # Checked 2026-09-28: 12 statements checked against their sources; 2 removed (land-grant claim was Wikipedia-only),
-# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 # 3 reworded (dropped a Wikipedia co-citation and its unsupported routing claim, added the causes source for E. coli
 # contamination, corrected the gauge's period of record).
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 
 summary:
   - text: "The Rio Fernando de Taos rises at the top of La Jara Canyon and flows through Cañon into the town of Taos, then joins the Rio Pueblo de Taos on its way to the Rio Grande."
