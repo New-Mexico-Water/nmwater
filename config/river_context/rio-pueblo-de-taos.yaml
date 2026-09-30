@@ -1,9 +1,11 @@
 river: Rio Pueblo de Taos
 researched: 2026-09-28
+# Moved 2026-09-29 from rio-pueblo.yaml: the report's "Rio Pueblo" page is the Rio Pueblo near Penasco (Embudo
+# Creek), not the Rio Pueblo de Taos this file describes. Used once the Rio Pueblo de Taos has a page.
 # Checked 2026-09-28: 7 statements checked; 2 removed (Wikipedia-only geography/hydrology claims with no
-# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 # other source), 1 reworded (dropped an unsupported "entire upper course" claim, keeping only what the
 # Taos Pueblo site itself supports).
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 
 summary:
   - text: "Taos Pueblo's multi-story adobe homes beside the stream are estimated to be over a thousand years old and were named a UNESCO World Heritage Site in 1992 and a National Historic Landmark in 1960."

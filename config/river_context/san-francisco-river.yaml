@@ -1,10 +1,10 @@
 river: San Francisco River
 researched: 2026-09-28
 # Checked 2026-09-28: 12 statements checked against their sources; 1 removed (Wikipedia was the sole
-# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 # source), 4 reworded (trimmed or re-sourced details not supported by their cited page — Wikipedia
 # content dropped from two summary items, "Gila National Forest" dropped from a Forest Service land
 # figure, "Catron County seat" dropped where only Wikipedia supported it).
+# Second review 2026-09-28: statements flagged as paraphrase or inference reworded to the source's wording or removed.
 
 summary:
   - text: "The San Francisco River enters New Mexico from Arizona near Luna and leaves the state again downstream of Glenwood."
