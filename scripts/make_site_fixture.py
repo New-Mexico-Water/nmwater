@@ -14,6 +14,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from nmwater.site.bundle import write_files_index
 from nmwater.site.schema import validate_bundle
 
 
@@ -51,6 +52,7 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
     man["headlines"] = {"rivers": {"total": len(keep), "rated": len(rated),
                                    "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}
     (dst / "manifest.json").write_text(json.dumps(man, separators=(",", ":"), ensure_ascii=False))
+    write_files_index(dst)
     problems = validate_bundle(dst)
     for p in problems:
         print("problem:", p)

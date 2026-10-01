@@ -121,6 +121,29 @@ def precip_problems(root: Path, man: dict) -> list[str]:
     return out
 
 
+def files_problems(root: Path) -> list[str]:
+    """files.json (optional): every listed file exists with the recorded size and SHA-256, and nothing in the bundle is unlisted."""
+    f = root / "files.json"
+    if not f.exists():
+        return []
+    import hashlib
+
+    idx = json.loads(f.read_text())
+    out = _validate(idx, "files", "files.json")
+    if out:
+        return out
+    listed = {e["path"] for e in idx["files"]}
+    for e in idx["files"]:
+        p = root / e["path"]
+        if not p.is_file():
+            out.append(f"files.json lists {e['path']}, which is missing")
+        elif p.stat().st_size != e["bytes"] or hashlib.sha256(p.read_bytes()).hexdigest() != e["sha256"]:
+            out.append(f"files.json: {e['path']} does not match its recorded size or hash")
+    out += [f"{p.relative_to(root).as_posix()} is in the bundle but not in files.json" for p in sorted(root.rglob("*"))
+            if p.is_file() and p.name != "files.json" and p.relative_to(root).as_posix() not in listed][:10]
+    return out
+
+
 def validate_bundle(root: Path) -> list[str]:
     """Problems found in the bundle at root (an empty list means it conforms)."""
     try:
@@ -134,6 +157,7 @@ def validate_bundle(root: Path) -> list[str]:
     man = json.loads(man_path.read_text())
     problems += _validate(man, "manifest", "manifest.json")
     problems += precip_problems(root, man)
+    problems += files_problems(root)
     for e in man.get("rivers", []):
         d = root / e["path"]
         if not d.is_dir():

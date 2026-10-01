@@ -1,0 +1,41 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Bundle file index",
+ "description": "files.json: every file in the bundle with its size and SHA-256 (written last, so a reader can fetch the bundle over HTTP and check it).",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "files": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "path": {
+      "type": "string"
+     },
+     "bytes": {
+      "type": "integer",
+      "minimum": 0
+     },
+     "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+     }
+    },
+    "required": [
+     "path",
+     "bytes",
+     "sha256"
+    ],
+    "additionalProperties": false
+   }
+  }
+ },
+ "required": [
+  "schema_version",
+  "files"
+ ],
+ "additionalProperties": true
+}

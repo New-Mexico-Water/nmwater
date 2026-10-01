@@ -11,6 +11,7 @@ previous bundle in place. With --river, only those rivers are rebuilt and the ot
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import shutil
@@ -26,6 +27,17 @@ from .precip import export_precip
 from .river import clean, export_river
 
 log = logging.getLogger("nmwater.site")
+
+
+def write_files_index(root: Path) -> int:
+    """<root>/files.json: every file of the bundle with its size and SHA-256, so a reader can fetch it over plain HTTP (a bucket
+    has no directory listing) and check what it got. Written last; returns the number of files listed."""
+    files = []
+    for p in sorted(root.rglob("*")):
+        if p.is_file() and p.name != "files.json":
+            files.append({"path": p.relative_to(root).as_posix(), "bytes": p.stat().st_size, "sha256": hashlib.sha256(p.read_bytes()).hexdigest()})
+    (root / "files.json").write_text(json.dumps({"schema_version": SCHEMA_VERSION, "files": files}, separators=(",", ":")), encoding="utf-8")
+    return len(files)
 
 
 def producer(root: Path) -> dict:
@@ -100,6 +112,7 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
                     "headlines": {"rivers": {"total": len(entries), "rated": len(rated),
                                              "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}}
         (tmp / "manifest.json").write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        write_files_index(tmp)
         old_dir = out.parent / f".{out.name}.old"
         if old_dir.exists():
             shutil.rmtree(old_dir)

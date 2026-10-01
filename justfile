@@ -68,6 +68,10 @@ test-live:
 report-elephant-butte:
     uv run python scripts/elephant_butte_fill.py
 
+# Copy the data contract (schemas, VERSION, optionally fixtures) into the website repo: just sync-contract ../nmwater-web [--fixtures]
+sync-contract *ARGS:
+    uv run python scripts/sync_contract.py {{ARGS}}
+
 # All derived reports (Elephant Butte first; the general script folds it in)
 reports:
     uv run python scripts/elephant_butte_fill.py
