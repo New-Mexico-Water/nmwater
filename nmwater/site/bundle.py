@@ -22,6 +22,7 @@ from ..reports import river_flow as rf
 from ..reports import river_share as rs
 from ..reports import river_watershed as rw
 from . import SCHEMA_VERSION
+from .precip import export_precip
 from .river import clean, export_river
 
 log = logging.getLogger("nmwater.site")
@@ -90,11 +91,12 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
             old = json.loads((out / "manifest.json").read_text()).get("rivers", []) if (out / "manifest.json").exists() else []
             done = {e["slug"] for e in entries}
             entries += [e for e in old if e["slug"] not in done]
+        precipitation = export_precip(con, tmp, tmp / "rivers", grids, grids / "wbd", generated, csv)
         entries.sort(key=lambda e: (-e["gauges"], e["name"]))
         rated = [e for e in entries if e["segments_rated"]]
         manifest = {"schema_version": SCHEMA_VERSION, "producer": producer(root), "generated": generated,
                     "data_through": as_of, "site": {"name": site["name"]}, "license": rs.license_block(site),
-                    "rivers": entries,
+                    "rivers": entries, **({"precipitation": precipitation} if precipitation else {}),
                     "headlines": {"rivers": {"total": len(entries), "rated": len(rated),
                                              "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}}
         (tmp / "manifest.json").write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")

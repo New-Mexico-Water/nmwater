@@ -1,4 +1,4 @@
-"""Cut a small fixture bundle (a few rivers, no CSVs) out of a full site data bundle.
+"""Cut a small fixture bundle (a few rivers and all the precipitation watersheds, no CSVs) out of a full site data bundle.
 
     uv run python scripts/make_site_fixture.py dist/site-data ../nmwater-web/fixtures/site-data rio-grande rio-tesuque pecos-river
 
@@ -32,6 +32,20 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
         s = json.loads((d / "summary.json").read_text())
         s["files"]["csv"] = []
         (d / "summary.json").write_text(json.dumps(s, separators=(",", ":"), ensure_ascii=False))
+    if man.get("precipitation"):                       # every watershed, no CSVs; river links are cut down to the rivers kept
+        pre = man["precipitation"]
+        shutil.copytree(src / pre["path"], dst / pre["path"], ignore=shutil.ignore_patterns("*.csv"))
+        have = {e["slug"] for e in keep}
+        for f in sorted((dst / pre["path"]).rglob("*.json")):
+            o = json.loads(f.read_text())
+            if f.name == "index.json":
+                for w in o["watersheds"]:
+                    w["rivers"] = [r for r in w["rivers"] if r["slug"] in have]
+                o["files"]["csv"] = []
+            else:
+                o["rivers"] = [r for r in o["rivers"] if r["slug"] in have]
+            f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
+        pre["files"]["csv"] = []
     man["rivers"] = keep
     rated = [e for e in keep if e["segments_rated"]]
     man["headlines"] = {"rivers": {"total": len(keep), "rated": len(rated),

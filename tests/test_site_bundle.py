@@ -160,3 +160,55 @@ def test_licence_block_is_optional_but_checked_when_present(tmp_path):
     m["license"] = {k: v for k, v in block.items() if k != "url"}
     p.write_text(json.dumps(m))
     assert any("license" in x for x in sch.validate_bundle(tmp_path))
+
+
+# ---------------------------------------------------------------------------- precipitation
+from nmwater.site import precip as sp                     # noqa: E402
+
+
+def test_window_stats_rates_the_last_days_against_the_same_dates_in_other_years():
+    idx = pd.date_range("1981-01-01", "2026-09-26", freq="D")
+    s = pd.Series(0.1, index=idx)
+    s[(s.index >= "2026-09-20")] = 0.5                              # the last 7 days are far wetter than any year's same week
+    st = sp.window_stats(s, 7)
+    assert st["total_in"] == pytest.approx(3.5) and st["normal_in"] == pytest.approx(0.7)
+    assert st["class"] == "much above normal" and st["percentile"] == 100.0
+    assert st["window_end"] == pd.Timestamp("2026-09-26") and st["window_start"] == pd.Timestamp("2026-09-20")
+    assert sp.window_stats(s.iloc[:3], 7) is None
+    short = s[s.index >= "2015-01-01"]                               # fewer than 20 baseline years: no "normal"
+    assert sp.window_stats(short, 7)["normal_in"] is None and sp.window_stats(short, 7)["class"] is None
+
+
+def make_precip(root, man):
+    base = root / "precipitation"
+    (base / "13020101").mkdir(parents=True)
+    stat = {"window_start": "2026-09-20", "window_end": "2026-09-26", "total_in": 1.0, "normal_in": 0.5, "percent_of_normal": 200.0, "percentile": 95.0,
+            "class": "much above normal", "wettest_date": "2026-09-24", "wettest_in": 0.6}
+    stats = {"7": stat, "30": stat, "90": None}
+    head = {"huc8": "13020101", "name": "Upper Rio Grande", "states": ["CO", "NM"], "area_km2": 100.0, "nm_fraction": 0.8, "grid_fraction": 1.0, "partial": False,
+            "coverage_note": None, "stats": stats}
+    one = {**head, "schema_version": 1, "as_of": "2026-09-26", "baseline": "1991-2020", "months": ["2026-08-01", "2026-09-01"], "total_in": [1.0, 2.0], "normal_in": [1.5, 1.1],
+           "days_counted": [31, 26], "complete": [True, False], "daily": {"dates": ["2026-09-25"], "inches": [0.2], "note": "n"}, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}
+    (base / "13020101" / "precip.json").write_text(json.dumps(one))
+    index = {"schema_version": 1, "generated": "2026-10-01T00:00:00+00:00", "as_of": "2026-09-26", "windows": [7, 30, 90], "baseline": "1991-2020",
+             "classes": ["normal"], "note": "n", "watersheds": [{**head, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}],
+             "files": {"index": "index.json", "map": "map.svg", "csv": []}}
+    (base / "index.json").write_text(json.dumps(index))
+    (base / "map.svg").write_text('<svg><path data-huc8="13020101"/></svg>')
+    man["precipitation"] = {"path": "precipitation/", "watersheds": 1, "as_of": "2026-09-26", "windows": [7, 30, 90], "files": index["files"]}
+    (root / "manifest.json").write_text(json.dumps(man))
+    return base
+
+
+def test_precipitation_section_is_validated(tmp_path):
+    make_bundle(tmp_path)
+    man = json.loads((tmp_path / "manifest.json").read_text())
+    base = make_precip(tmp_path, man)
+    assert sch.validate_bundle(tmp_path) == []
+    edit(base / "13020101", "precip.json", lambda o: o.update(total_in=[1.0]))
+    assert any("monthly arrays differ" in p for p in sch.validate_bundle(tmp_path))
+    edit(base / "13020101", "precip.json", lambda o: o.update(total_in=[1.0, 2.0], rivers=[{"slug": "nope", "name": "Nope"}], stats={}))
+    assert any("stats" in p for p in sch.validate_bundle(tmp_path))
+    (base / "map.svg").write_text("<svg/>")
+    edit(base / "13020101", "precip.json", lambda o: None)
+    assert any("not in map.svg" in p for p in sch.validate_bundle(tmp_path))

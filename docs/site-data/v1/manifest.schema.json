@@ -227,6 +227,58 @@
      "additionalProperties": true
     }
    ]
+  },
+  "precipitation": {
+   "type": "object",
+   "properties": {
+    "path": {
+     "type": "string"
+    },
+    "watersheds": {
+     "type": "integer"
+    },
+    "as_of": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "windows": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     }
+    },
+    "files": {
+     "type": "object",
+     "properties": {
+      "index": {
+       "type": "string"
+      },
+      "map": {
+       "type": "string"
+      },
+      "csv": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      }
+     },
+     "required": [
+      "index",
+      "map",
+      "csv"
+     ],
+     "additionalProperties": true
+    }
+   },
+   "required": [
+    "path",
+    "watersheds",
+    "as_of",
+    "windows",
+    "files"
+   ],
+   "additionalProperties": true
   }
  },
  "required": [
