@@ -62,10 +62,10 @@ and one Corps site across the candidate rivers; 993,118 temperature and conducta
 | NM Environment Department | 1.2% |
 | Colorado Dept. of Public Health and Environment | 0.6% |
 | Arizona DEQ | 0.2% |
-| **Tribal nations** (Southern Ute 1.3%, Taos Pueblo 0.9%, Sandia, Tesuque, Santa Clara, Nambe, Ohkay Owingeh and Ute Mountain Ute about 0.2% or less each, plus one unidentified "PUEBLO" code) | **about 3.4%** |
+| **Tribal nations** (Southern Ute Tribe 1.3%, Pueblo of Taos 0.9%; Pueblo of Tesuque, Pueblo of Santa Clara, Ohkay Owingeh Pueblo and Ute Mountain Utes Tribe about 0.2% or less each; plus codes `SANDIAWQ`, `NAMBEPBLO` and `PUEBLO` that the Portal's organisation list does not name: the first two are presumably Sandia and Nambe, the last is unidentified) | **about 3.4%** |
 | Other small providers | about 0.6% |
 
-The Water Quality Portal states no licence: its front page and user guide say only that it integrates "publicly
+Provider names are from the Portal's own organisation list (checked 2026-10-01) except the three codes noted. The Water Quality Portal states no licence: its front page and user guide say only that it integrates "publicly
 available" data from USGS, EPA and "over 400 state, federal, tribal, and local agencies" (checked 2026-10-01).
 
 ### Watershed
