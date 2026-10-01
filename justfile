@@ -68,12 +68,7 @@ test-live:
 report-elephant-butte:
     uv run python scripts/elephant_butte_fill.py
 
-# Streamflow pages for every river, into dist/rivers (not in git)
-report-rivers:
-    uv run nmwater report-rivers
-
 # All derived reports (Elephant Butte first; the general script folds it in)
 reports:
     uv run python scripts/elephant_butte_fill.py
     uv run python scripts/reservoir_fill.py
-    uv run nmwater report-rivers

@@ -19,7 +19,7 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from ..derived import river_flow as rf
-from ..reports import river_share as rs
+from . import meta as rs
 from ..derived import river_watershed as rw
 from . import SCHEMA_VERSION
 from .precip import export_precip

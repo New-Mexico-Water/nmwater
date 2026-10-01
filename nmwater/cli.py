@@ -499,39 +499,6 @@ def watershed_precip(
                   f"{r['years']} years computed, {r['rows']:,} rows")
 
 
-@app.command("report-rivers")
-def report_rivers(
-    river: Optional[list[str]] = typer.Option(None, "--river", help="Only these rivers (repeatable); others are kept"),
-    out: Optional[Path] = typer.Option(None, "--out", help="Output root; pages go to <out>/rivers (default: <repo>/dist)"),
-    config: Optional[Path] = typer.Option(None, "--config", help="default: <repo>/config/river_reports.yaml"),
-    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
-):
-    """Weekly streamflow pages for every river with gauges (dist/rivers). Safe to run from cron."""
-    import yaml
-
-    from .core.config import PROJECT_ROOT
-    from .derived.river_flow import run as run_rivers
-
-    s = Settings.load(data_dir)
-    out = out or PROJECT_ROOT / "dist"
-    config = config or PROJECT_ROOT / "config" / "river_reports.yaml"
-    cfg = (yaml.safe_load(config.read_text()) or {}) if config.exists() else {}
-    notes_path = PROJECT_ROOT / "config" / "river_notes.yaml"
-    notes = (yaml.safe_load(notes_path.read_text()) or {}) if notes_path.exists() else {}
-    ex_path = PROJECT_ROOT / "config" / "river_exclusions.yaml"
-    exclusions = (yaml.safe_load(ex_path.read_text()) or []) if ex_path.exists() else []
-    desc_path = PROJECT_ROOT / "config" / "river_descriptions.yaml"
-    descriptions = (yaml.safe_load(desc_path.read_text()) or {}) if desc_path.exists() else {}
-    entries, failed = run_rivers(s.duckdb_path, out, rivers=river, config=cfg, river_notes=notes, exclusions=exclusions,
-                                 grids=s.data_dir / "grids",
-                                 cache=s.parquet_dir / "reference" / "source=river_reports" / "huc8_climate.parquet",
-                                 descriptions=descriptions)
-    console.print(f"[green]{len(entries)} river pages in {out / 'rivers'}[/green]"
-                  + (f"; [red]{len(failed)} failed: {', '.join(failed)}[/red]" if failed else ""))
-    if failed:
-        raise typer.Exit(1)
-
-
 @app.command("export-site-data")
 def export_site_data(
     river: Optional[list[str]] = typer.Option(None, "--river", help="Only these rivers (repeatable); the others are kept"),

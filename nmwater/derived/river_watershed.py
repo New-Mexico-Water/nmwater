@@ -21,7 +21,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-log = logging.getLogger("nmwater.reports.river_watershed")
+log = logging.getLogger("nmwater.derived.river_watershed")
 
 M_TO_IN = 39.3700787
 MM_TO_IN = 0.0393700787

@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 
 from nmwater.derived import river_watershed as rw
-from nmwater.reports.river_page import coverage_note
+from nmwater.derived.river_table import coverage_note
 
 
 def catalog(daily: pd.Series, huc8="13020101"):

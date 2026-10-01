@@ -1,64 +1,57 @@
-"""River streamflow reports: weekly mean cfs per river segment, for every river with gauges.
+"""River streamflow data: weekly mean cfs per river segment for every river with gauges.
 
-A segment is the HUC8 watershed a river gauge sits in (the catalog's `river_segments` view). The
-same gauge is often published by several agencies; copies are merged and counted once. For each
-river this writes, under <out>/rivers/<slug>/:
-
-    index.html                      interactive explorer over the whole record (segment toggles,
-                                    time-range presets and dates, weekly/monthly/yearly means)
-    all_weeks_by_segment.csv        every segment-week on record
-    last_52_weeks_by_segment.csv    the most recent 52 complete weeks
-    last_52_weeks_by_gauge.csv      the gauge-weeks behind them
-    copy_agreement.csv              lower-priority copies of each gauge compared with the one used
-    notes.md                        method, gauges, agreement, caveats
-
-and <out>/rivers/index.html plus <out>/rivers/manifest.json listing every river. The whole
-<out>/rivers tree is built in a temporary directory and swapped in at the end, so a failed or
-interrupted run never leaves a half-written site.
+A segment is the HUC8 watershed a river gauge sits in (the catalog's `river_segments` view). The same gauge is often published by several agencies; copies are merged and counted once. This module builds the data (nmwater/site/river.py writes the bundle files from it) and the CSV and notes downloads.
 
 Method
-  1. Gauges: stream sites snapped to the river's own reaches (river_method = 'snap'), whose
-     name contains the river's distinctive word (drains and ditches that sit on the river are
-     not river gauges), with daily discharge. NHD leaves some main-stem reaches unnamed, so a site
-     on an unnamed reach also counts when the first named reach downstream is this river, it lies
-     in a watershed the river runs through, and its name starts with the river's name followed by
-     a place (names_the_river). Optional per-river state filter (config).
+  1. Gauges: stream sites snapped to the river's own reaches (river_method = 'snap'), whose name contains the river's distinctive word (drains and ditches that sit on the river are not river gauges), with daily discharge. NHD leaves some main-stem reaches unnamed, so a site on an unnamed reach also counts when the first named reach downstream is this river, it lies in a watershed the river runs through, and its name starts with the river's name followed by a place (names_the_river). Optional per-river state filter (config).
   2. Copies of one gauge are merged with site_links (same sensor or colocated within 250 m).
-  3. Daily mean per copy: the source's own daily mean, else the mean of its sub-daily readings
-     over the America/Denver day (at least half the expected readings). Daily and sub-daily rows
-     are never averaged together.
+  3. Daily mean per copy: the source's own daily mean, else the mean of its sub-daily readings over the America/Denver day (at least half the expected readings). Daily and sub-daily rows are never averaged together.
   4. One value per gauge and day from the first copy in PRIORITY.
-  5. Weeks run Monday to Sunday; a gauge-week needs MIN_DAYS of 7. A gauge counts in its
-     segment when it has MIN_WEEKS reported weeks. A segment-week is the mean of its gauges.
+  5. Weeks run Monday to Sunday; a gauge-week needs MIN_DAYS of 7. A gauge counts in its segment when it has MIN_WEEKS reported weeks. A segment-week is the mean of its gauges.
   6. Segments are ordered upstream to downstream by the median drainage area of their gauges.
 """
 
 from __future__ import annotations
-
-import html
 import json
 import logging
 import re
-import shutil
 import unicodedata
 from dataclasses import dataclass, field
-from datetime import UTC, date, datetime, timedelta
+from datetime import date, timedelta
 from pathlib import Path
-
 import pandas as pd
 
-log = logging.getLogger("nmwater.reports.river_flow")
 
-TEMPLATES = Path(__file__).parents[1] / "reports" / "templates"          # legacy HTML, removed with the legacy pages
+log = logging.getLogger("nmwater.derived.river_flow")
+
+
 PRIORITY = ["usgs", "usbr_hydrodata", "usace_cwms", "codwr", "ose_meas", "nwps", "usbr_albuq"]
+
+
 MIN_DAYS = 4                 # days of 7 needed for a gauge-week
+
+
 MIN_WEEKS = 26               # weeks a gauge needs to count in segment means (short records jitter n_gauges)
+
+
 MIN_COVERAGE = 0.5           # share of expected sub-daily readings needed for a day
+
+
 DISAGREE_PCT = 10.0          # a copy "differs" on a day when it is off by more than this and 5 cfs
+
+
 PCT_MIN_CFS = 10.0           # percent differences are computed only on days the flow used is at least this
+
+
 SUBDAILY_PER_DAY = {"5min": 288, "15min": 96, "hourly": 24}
+
+
 STATE_FIPS = {"35": "NM", "08": "CO", "48": "TX", "04": "AZ", "40": "OK", "49": "UT"}
+
+
 MAX_SEGMENTS = 8             # the chart palette has eight validated colors
+
+
 GENERIC_WORDS = {"river", "creek", "rio", "arroyo", "fork", "north", "south", "east", "west", "middle", "branch",
                  "wash", "de", "del", "los", "las", "la", "el", "the", "canyon", "draw", "little", "rito", "canada"}
 
@@ -168,6 +161,8 @@ def is_river_gauge(name: str, river: str) -> bool:
 
 
 STREAM_TYPE = {"river", "r", "rvr", "rv", "creek", "cr", "ck", "c", "arroyo", "arr", "wash", "canyon"}
+
+
 PLACE_WORD = {"at", "near", "nr", "n", "above", "abv", "ab", "below", "bl", "blw", "bel", "in", "from", "to"}
 
 
@@ -393,6 +388,7 @@ def remove_bad_values(daily: pd.DataFrame, peak_of: dict, exclusions: list[dict]
                       "peak": round(float(p), 1)} for r, p in zip(d[k].itertuples(), peak[k])]
     removed = [{"gauge": r.gauge, "date": r.date.date().isoformat(), "source": r.source, "cfs": round(float(r.cfs), 1),
                 "reason": w} for r, w in zip(d[drop].itertuples(), why[drop])]
+    removed.sort(key=lambda x: (x["gauge"], x["date"], x["source"]))          # the database's scan order is not stable
     return d[~drop].reset_index(drop=True), removed, conflicts
 
 
@@ -488,45 +484,6 @@ def _gauge_rows(r: RiverReport) -> list[dict]:
     return rows
 
 
-def issues_section(r: RiverReport) -> str:
-    """HTML for the 'Data gaps and disparities' card: reviewed notes, then automatic findings."""
-    warn = [f for f in r.issues if f.severity == "warn"]
-    info = [f for f in r.issues if f.severity != "warn"]
-    parts = [f'<p class="hint">{len(r.removed)} removed value{"s" if len(r.removed) != 1 else ""}, '
-             f'{len(r.data_notes)} reviewed note{"s" if len(r.data_notes) != 1 else ""}, '
-             f'{len(warn)} finding{"s" if len(warn) != 1 else ""} that can affect the numbers, '
-             f'{len(info)} for context. Findings are recomputed on every build.</p>']
-    if r.removed:
-        parts.append(f'<h3>Removed values ({len(r.removed)})</h3><p class="hint">Known-bad daily values left out of every '
-                     'number on this page.</p><ul class="issues">')
-        for x in r.removed[:50]:
-            parts.append(f'<li><span class="chip warn">removed</span><b>{html.escape(x["gauge"])}</b> '
-                         f'{html.escape(x["date"])}, {x["cfs"]:,.1f} cfs ({html.escape(x["source"])}). '
-                         f'{html.escape(x["reason"])}</li>')
-        if len(r.removed) > 50:
-            parts.append(f"<li>{len(r.removed) - 50} more in data_issues.json.</li>")
-        parts.append("</ul>")
-    if r.data_notes:
-        parts.append('<h3>Reviewed notes</h3><ul class="issues">')
-        for n in r.data_notes:
-            basis = n.get("basis", "")
-            chip = f'<span class="chip {html.escape(basis)}">{html.escape(basis)}</span>' if basis else ""
-            parts.append(f'<li>{chip}<b>{html.escape(str(n.get("subject", "")))}</b> '
-                         f'{html.escape(str(n.get("text", "")))} <span class="when">Reviewed {html.escape(str(n.get("reviewed", "")))}</span></li>')
-        parts.append("</ul>")
-    for title, items, cls in (("Can affect the numbers", warn, "warn"), ("Context", info, "info")):
-        if not items:
-            continue
-        parts.append(f'<h3>{title}</h3><ul class="issues">')
-        for f in items:
-            parts.append(f'<li><span class="chip {cls}">{html.escape(f.kind.replace("_", " "))}</span>'
-                         f'<b>{html.escape(f.subject)}</b> {html.escape(f.text)}</li>')
-        parts.append("</ul>")
-    if not r.issues and not r.data_notes and not r.removed:
-        parts.append("<p>No gaps or disparities found.</p>")
-    return "".join(parts)
-
-
 def explorer_data(r: RiverReport) -> dict:
     """Weekly mean cfs per segment for the whole record: {keys, series: [{name, v, n}], first, last}."""
     keys = [w.isoformat() for w in r.weeks_all]
@@ -543,33 +500,11 @@ def explorer_data(r: RiverReport) -> dict:
     return {"keys": keys, "series": series, "first": first, "last": r.weeks_all[-1] + timedelta(days=6)}
 
 
-def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
-    ex = explorer_data(r)
-    keys, series, first, last = ex["keys"], ex["series"], ex["first"], ex["last"]
-    rows = _gauge_rows(r)
-    gt = "".join(
-        f"<tr><td>{html.escape(x['segment'])}</td><td>{html.escape(x['gauge'])}</td><td>{html.escape(x['copies'])}</td>"
-        f"<td class=\"n\">{x['first'][:4]}</td><td class=\"n\">{x['last'][:4]}</td><td class=\"n\">{x['weeks']:,}</td>"
-        f"<td>{'yes' if x['in_mean'] else 'no, fewer than ' + str(MIN_WEEKS) + ' weeks'}</td></tr>" for x in rows)
-    extra = "".join(f"<li>{html.escape(t)}</li>" for t in r.notes)
-    issues_html = issues_section(r)
-    if r.dropped_segments:
-        extra += ("<li>" + html.escape("Segments left out because the chart shows at most eight: "
-                                       + ", ".join(r.dropped_segments) + ".") + "</li>")
-    page = (TEMPLATES / "river_flow.html").read_text()
-    for k, v in {"__RIVER__": html.escape(r.river), "__FIRST_YEAR__": str((first + timedelta(days=6)).year), "__LAST__": _fmt_day(last),
-                 "__GAUGE_ROWS__": gt, "__EXTRA_NOTES__": extra, "__ISSUES__": issues_html, "__GENERATED__": html.escape(generated),
-                 "__MIN_WEEKS__": str(MIN_WEEKS), "__N_SEGMENTS__": str(len(r.segments)),
-                 "__DATA__": json.dumps({"weeks": keys, "series": series}, separators=(",", ":"))}.items():
-        page = page.replace(k, v)
-    path.write_text(page)
-
-
 def write_notes(path: Path, r: RiverReport, generated: str) -> None:
     last = r.weeks_all[-1] + timedelta(days=6)
     L = [f"# {r.river} weekly streamflow by segment", "",
-         f"Generated {generated} by `nmwater report-rivers`. Weekly mean discharge (cfs) per segment for the whole "
-         f"record, through {_fmt_day(last)}. Open `index.html` for the interactive view.", "",
+         f"Generated {generated} by `nmwater export-site-data`. Weekly mean discharge (cfs) per segment for the whole "
+         f"record, through {_fmt_day(last)}.", "",
          "## Segments, upstream to downstream", ""]
     for s in r.segments:
         d = r.seg52[r.seg52["segment"] == s]
@@ -584,7 +519,7 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
                  f"{'yes' if x['in_mean'] else 'no'} |")
     L += ["", "## Data gaps and disparities", "",
           "Reviewed notes (config/river_notes.yaml) first, then findings from the automatic checks "
-          "(nmwater/reports/river_issues.py), recomputed on every build.", ""]
+          "(nmwater/derived/river_issues.py), recomputed on every build.", ""]
     if r.removed:
         L += [f"### Removed values ({len(r.removed)})", ""]
         L += [f"- **{x['gauge']}** {x['date']}, {x['cfs']:,.1f} cfs ({x['source']}): {x['reason']}" for x in r.removed]
@@ -612,7 +547,7 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
               "| Gauge | Copy | Overlap days | Median % difference | Days different |", "|---|---|---|---|---|"]
         for x in r.agree52.sort_values("days_off", ascending=False).head(10).itertuples():
             L.append(f"| {x.gauge} | {x.source} | {x.overlap_days} | {x.median_abs_pct_diff} | {int(x.days_off)} |")
-    L += ["", "## Method", "", "See the module docstring of `nmwater/reports/river_flow.py`. Copy priority: "
+    L += ["", "## Method", "", "See the module docstring of `nmwater/derived/river_flow.py`. Copy priority: "
           + " > ".join(PRIORITY) + ".", "", "## Caveats", "",
           "- A segment value averages gauges at different points on the river; diversions and inflow between them move it.",
           "- The gauges behind a segment change over time; see `n_gauges` in the CSVs.",
@@ -631,160 +566,3 @@ def write_csvs(d: Path, r: RiverReport) -> None:
         {"mean_cfs": 1})[["segment", "gauge", "source_used", "week_start", "mean_cfs", "n_days", "in_segment_mean"]
                          ].to_csv(d / "last_52_weeks_by_gauge.csv", index=False)
     r.agree52.to_csv(d / "copy_agreement.csv", index=False)
-
-
-def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = None) -> dict:
-    """page: {con, river_name, grids, cache, background} to render the tabbed river page (river_page.py);
-    without it the plain flow explorer is written as index.html."""
-    d.mkdir(parents=True, exist_ok=True)
-    write_csvs(d, r)
-    (d / "data_issues.json").write_text(json.dumps(
-        {"river": r.river, "removed_values": r.removed, "reviewed_notes": r.data_notes,
-         "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
-    extra: dict = {}
-    if page:
-        from ..reports import river_page as rp
-
-        b = rp.extend(page["con"], r, page["river_name"], page["grids"], page["cache"])
-        if not b.normal.segments.empty:
-            b.normal.segments.round({"pct": 1}).to_csv(d / "normal_last_52_weeks_by_segment.csv", index=False)
-        b.dry.by_segment.to_csv(d / "drying_by_year.csv", index=False)
-        extra = rp.render(page["con"], b, d, page["grids"], page.get("background"), generated, site=page.get("site"))
-    else:
-        write_explorer(d / "index.html", r, generated)
-    write_notes(d / "notes.md", r, generated)
-    with_data = r.seg_all.groupby("segment")["week_start"].agg(["min", "max"])
-    return {"river": r.river, "slug": r.slug, "path": f"{r.slug}/index.html",
-            "segments": r.segments, "gauges": len(r.elig),
-            "first_week": str(min(with_data["min"])), "last_week": str(max(with_data["max"])),
-            "first_year": (min(with_data["min"]) + timedelta(days=6)).year if isinstance(min(with_data["min"]), date)
-            else (pd.Timestamp(min(with_data["min"])) + pd.Timedelta(days=6)).year,
-            "gnis_id": r.gnis_id,
-            "issues_warn": sum(f.severity == "warn" for f in r.issues),
-            "issues_info": sum(f.severity != "warn" for f in r.issues),
-            "reviewed_notes": len(r.data_notes),
-            "removed_values": len(r.removed),
-            "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
-            "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4])),
-            **extra}
-
-
-def write_index(d: Path, entries: list[dict], generated: str, site: dict | None = None) -> None:
-    rows = "".join(
-        f"<tr><td><a href=\"{html.escape(e['path'])}\">{html.escape(e['river'])}</a></td>"
-        f"<td class=\"n\">{len(e['segments'])}</td><td class=\"n\">{e['gauges']}</td>"
-        f"<td class=\"n\">{e.get('first_year') or e['first_week'][:4]}</td><td class=\"n\">{e['last_week']}</td>"
-        f"<td class=\"n\">{'' if e['last_52_mean_cfs'] is None else f'{e['last_52_mean_cfs']:,.0f}'}</td>"
-        f"<td>{'yes' if e['reporting'] else 'no'}</td>"
-        f"<td class=\"n\">{'' if not e.get('segments_rated') else f'{e['segments_below_normal']} of {e['segments_rated']}'}</td>"
-        f"<td class=\"n\"><a href=\"{html.escape(e['slug'])}/index.html#issues\">{e.get('issues_warn', 0)}</a></td></tr>"
-        for e in entries)
-    page = (TEMPLATES / "river_index.html").read_text()
-    from ..reports import river_share as rs
-
-    site = site or rs.site_config({})
-    title = "New Mexico rivers: streamflow and conditions"
-    desc = rs.trim(f"Weekly streamflow, flow compared with normal, drying, water temperature, snowpack and drought for "
-                   f"{len(entries)} New Mexico rivers and creeks, by watershed segment, from public gauge data.")
-    base = site["base_url"] or ""
-    meta = rs.head_meta(site, title=title, desc=desc, path="rivers/", image=None, image_alt="", jsonld=[
-        {"@type": "CollectionPage", "name": title, "description": desc, "inLanguage": "en-US", **({"url": base + "rivers/"} if base else {}),
-         "isPartOf": {"@type": "WebSite", "name": site["name"], **({"url": base} if base else {})},
-         "mainEntity": {"@type": "ItemList", "numberOfItems": len(entries), "itemListElement": [
-             {"@type": "ListItem", "position": i + 1, "name": e["river"], "url": f"{base}rivers/{e['slug']}/"}
-             for i, e in enumerate(entries)]}}])
-    page = page.replace("__ROWS__", rows).replace("__GENERATED__", html.escape(generated)).replace(
-        "__N_RIVERS__", str(len(entries))).replace("__META__", meta).replace("__TITLE__", html.escape(f"{title} | {site['name']}"))
-    (d / "index.html").write_text(page)
-    (d / "manifest.json").write_text(json.dumps({"generated": generated, "rivers": entries}, indent=2))
-    rs.sitemap(d, site, entries, generated[:10])
-
-
-def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | None = None,
-        river_notes: dict | None = None, exclusions: list[dict] | None = None, grids: Path | None = None,
-        cache: Path | None = None, descriptions: dict | None = None) -> tuple[list[dict], list[str]]:
-    """Build every river's report into out/rivers, atomically. Returns (written entries, failed rivers).
-    river_notes: reviewed notes by river label (config/river_notes.yaml). With grids and cache the tabbed
-    river page is written (river_page.py); descriptions: hand-written background by river label."""
-    river_notes = river_notes or {}
-    import duckdb
-
-    cfg = config or {}
-    overrides = cfg.get("rivers") or {}
-    con = duckdb.connect(str(db), read_only=True)
-    con.execute("SET TimeZone = 'UTC'")
-    found = list_rivers(con, 1 if rivers else int(cfg.get("min_sites", 2)), cfg.get("min_years_single_gauge"))
-    if rivers:
-        want = set(rivers)
-        found = [r for r in found if r.name in want or r.label in want]
-    excl = set(cfg.get("exclude") or [])
-    names = [r for r in found if r.name not in excl and r.label not in excl]
-    links = con.sql("SELECT site_uid_a, site_uid_b FROM site_links").df()
-    as_of = con.sql("SELECT max(datetime_utc)::DATE FROM observations_clean WHERE variable = 'discharge' "
-                    "AND interval = 'daily' AND statistic = 'mean' AND datetime_utc <= now()").fetchone()[0]
-    generated = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
-    descriptions = descriptions or {}
-    from ..reports import river_share as rs
-
-    site = rs.site_config(cfg)
-    if not site["base_url"]:
-        log.warning("site.base_url is not set in the report config: pages get no canonical link, og:url, og:image or sitemap")
-    if grids is not None and cache is not None:
-        # fill the watershed-climate cache once for every watershed in scope (per river it would re-read the grids)
-        from .river_watershed import update_climate
-
-        codes = [c for (c,) in con.sql("SELECT DISTINCT huc8 FROM river_segments WHERE huc8 IS NOT NULL").fetchall()]
-        update_climate(grids, grids / "wbd", cache, sorted(codes))
-
-    out.mkdir(parents=True, exist_ok=True)
-    tmp = out / f".rivers.tmp-{datetime.now(UTC):%Y%m%d%H%M%S}"
-    tmp.mkdir()
-    if grids is not None:
-        from ..reports.river_page import copy_assets
-
-        copy_assets(tmp)
-    entries, failed = [], []
-    try:
-        for name in names:
-            o = overrides.get(name.label) or overrides.get(name.name) or {}
-            try:
-                r = build_river(con, name, links, states=o.get("states"), notes=o.get("notes"), as_of=as_of,
-                                exclusions=exclusions)
-                if r is not None:
-                    r.data_notes = list(river_notes.get(r.river) or [])
-                if r is None:
-                    log.info("%s: no gauge with %d+ weeks of daily flow; skipped", name.label, MIN_WEEKS)
-                    continue
-                page = None if grids is None or cache is None else {
-                    "con": con, "river_name": name.name, "grids": grids, "cache": cache,
-                    "background": descriptions.get(r.river) or descriptions.get(name.name), "site": site}
-                entries.append(write_river(tmp / r.slug, r, generated, page))
-                log.info("%s: %d segments, %d gauges, %s to %s", name.label, len(r.segments), len(r.elig),
-                         entries[-1]["first_week"], entries[-1]["last_week"])
-            except Exception as e:                      # one bad river must not stop the rest
-                log.exception("%s failed: %s", name.label, e)
-                failed.append(name.label)
-        if rivers and (out / "rivers").exists():        # partial run: keep the other rivers' pages
-            for p in (out / "rivers").iterdir():
-                if p.is_dir() and not (tmp / p.name).exists():
-                    shutil.copytree(p, tmp / p.name)
-            old = json.loads((out / "rivers" / "manifest.json").read_text()).get("rivers", []) \
-                if (out / "rivers" / "manifest.json").exists() else []
-            done = {e["slug"] for e in entries}
-            entries += [e for e in old if e["slug"] not in done]
-        entries.sort(key=lambda e: (-e["gauges"], e["river"]))
-        write_index(tmp, entries, generated, site)
-        rs.robots(out, site)
-        final, old = out / "rivers", out / ".rivers.old"
-        if old.exists():
-            shutil.rmtree(old)
-        if final.exists():
-            final.rename(old)
-        tmp.rename(final)
-        if old.exists():
-            shutil.rmtree(old)
-    finally:
-        if tmp.exists():
-            shutil.rmtree(tmp)
-        con.close()
-    return entries, failed

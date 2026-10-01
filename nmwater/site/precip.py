@@ -23,9 +23,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from ..reports import river_map as rm
+from ..derived import river_geo as rm
 from ..derived import river_normal as rn
-from ..reports import river_page as rp
+from ..derived import river_table as rp
 from ..derived import river_watershed as rw
 from . import SCHEMA_VERSION
 from .river import clean
