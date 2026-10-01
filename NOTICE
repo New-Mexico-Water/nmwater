@@ -14,6 +14,18 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+REPORTS, CHARTS AND PUBLISHED DATA FILES
+----------------------------------------
+
+The reports, charts, maps, text and derived data files that nmwater produces and the New Mexico Water website
+publishes (including the site data bundle) are licensed under the Creative Commons Attribution-ShareAlike 4.0
+International Public License, the text of which is in LICENSE-CONTENT, to the extent they are copyrightable. The
+licence covers only what the project contributes (selection and arrangement, computations, text, charts, maps); it
+does not relicense the source data below. Credit: "New Mexico Water" with a link (https://github.com/New-Mexico-Water),
+indicating changes, and keeping the upstream credits each page lists. The documentation in docs/ may be used under
+this licence or the GPL, at your option. The logo and icon are not licensed for reuse.
+
+
 DATA IS NOT COVERED BY THIS LICENSE
 -----------------------------------
 

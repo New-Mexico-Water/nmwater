@@ -145,3 +145,18 @@ def test_every_schema_is_valid_json_schema():
     for name in ("manifest", "summary", "flow", "normal", "drying", "quality", "watershed", "notes"):
         Draft202012Validator.check_schema(sch.load_schema(name))
     assert math.isfinite(1.0)
+
+
+def test_licence_block_is_optional_but_checked_when_present(tmp_path):
+    d = make_bundle(tmp_path)
+    block = {"spdx": "CC-BY-SA-4.0", "url": "https://creativecommons.org/licenses/by-sa/4.0/", "attribution": "New Mexico Water",
+             "attribution_url": None, "scope": "Our contribution.", "not_covered": ["The logo and icon"]}
+    p = tmp_path / "manifest.json"
+    m = json.loads(p.read_text())
+    m["license"] = block
+    p.write_text(json.dumps(m))
+    edit(d, "summary.json", lambda o: o["meta"]["dataset"].update(license=block["url"]))
+    assert sch.validate_bundle(tmp_path) == []
+    m["license"] = {k: v for k, v in block.items() if k != "url"}
+    p.write_text(json.dumps(m))
+    assert any("license" in x for x in sch.validate_bundle(tmp_path))
