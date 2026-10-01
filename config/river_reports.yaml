@@ -12,6 +12,9 @@ site:
 
 # Rivers with at least this many stream sites carrying daily discharge get a page.
 min_sites: 2
+# ...and so does a river with fewer, when one of its gauges holds at least this many years of daily values
+# (added 2026-09-29: Delaware River, Ponil Creek, Rio Lucero and others have 60-110 year single-gauge records).
+min_years_single_gauge: 20
 
 # Rivers never reported (names as in site_reaches.river_name).
 exclude: []

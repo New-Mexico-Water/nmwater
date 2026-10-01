@@ -227,8 +227,9 @@ class River:
     n_sites: int = 0
 
 
-def list_rivers(con, min_sites: int = 2) -> list[River]:
-    """Rivers (by GNIS id) with at least min_sites stream sites that carry daily discharge."""
+def list_rivers(con, min_sites: int = 2, min_years: float | None = None) -> list[River]:
+    """Rivers (by GNIS id) with at least min_sites stream sites that carry daily discharge, or, with
+    min_years, fewer sites but one whose daily record holds at least that many years of days."""
     rows = con.sql(f"""
         SELECT f.gnis_name, f.gnis_id, count(DISTINCT r.site_uid) AS n,
                mode(s.basin) AS basin, mode(r.huc8_name) AS huc8
@@ -237,6 +238,7 @@ def list_rivers(con, min_sites: int = 2) -> list[River]:
         WHERE r.river_method = 'snap' AND r.site_type = 'stream' AND f.gnis_id IS NOT NULL AND trim(f.gnis_id) <> ''
           AND sv.variable = 'discharge' AND sv.interval = 'daily'
         GROUP BY 1, 2 HAVING count(DISTINCT r.site_uid) >= {int(min_sites)}
+            {"" if not min_years else f"OR max(sv.n_obs) >= {float(min_years) * 365.25}"}
         ORDER BY n DESC, 1""").fetchall()
     out: list[River] = []
     for name, gid, n, basin, huc8 in rows:
@@ -700,7 +702,7 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
     overrides = cfg.get("rivers") or {}
     con = duckdb.connect(str(db), read_only=True)
     con.execute("SET TimeZone = 'UTC'")
-    found = list_rivers(con, 1 if rivers else int(cfg.get("min_sites", 2)))
+    found = list_rivers(con, 1 if rivers else int(cfg.get("min_sites", 2)), cfg.get("min_years_single_gauge"))
     if rivers:
         want = set(rivers)
         found = [r for r in found if r.name in want or r.label in want]

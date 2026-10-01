@@ -1,0 +1,9 @@
+source,site_uid,source_param,qualifier,variable,evidence
+iem_dcp,iem_dcp:BONN5,HP,,stage,"Bonito Lake: SHEF HP (pool elevation) but values 0 to 15 ft (median 6.8), a gauge height, not feet above sea level (the lake is near 7,300 ft). Checked 2026-09-29."
+iem_dcp,iem_dcp:COTN5,HP,,stage,"Costilla Reservoir: HP values median 67 ft; the reservoir is near 9,400 ft, so this is a gauge height. Checked 2026-09-29."
+iem_dcp,iem_dcp:LKMN5,HP,,stage,"Lake Maloya: HP values median 10 ft; the lake is near 7,400 ft, so this is a gauge height. Checked 2026-09-29."
+iem_dcp,iem_dcp:SFNN5,HP,,stage,"Nichols Reservoir: HP values median 74 ft; the reservoir is near 7,500 ft, so this is a gauge height. Checked 2026-09-29."
+iem_dcp,iem_dcp:TRDN5,HP,,stage,"Two Rivers Dam (Roswell): HP values 0 to 15 ft (median 6.8), while the Corps reports the pool near 3,957 ft; a gauge height. Checked 2026-09-29."
+usace_cwms,usace_cwms:Continental,Elev,,stage,"Continental Reservoir: Elev values median 64 ft; the reservoir is near 10,500 ft, so this is a gauge height. Checked 2026-09-29."
+usace_cwms,usace_cwms:Rio Grande Res,Elev,,stage,"Rio Grande Reservoir: Elev values median 63.5 ft; the reservoir is near 9,400 ft, so this is a gauge height. Checked 2026-09-29."
+iem_dcp,*,HP,HPIRZZZ,stage,"SHEF code HPIRZZZ is a second pool series at 10 reservoirs since 2022-10-27 (Abiquiu, Cochiti, Lake Sumner, Galisteo, Jemez Canyon, Santa Rosa, Conchas, Rio Hondo, Two Rivers, Avalon): 1.33 million readings with median 53 ft (1.5 to 199 by site), a gauge height, alongside the real elevations (4,000 to 6,200 ft) under HPIRGZ and HPIRGZZ. Checked 2026-09-30."

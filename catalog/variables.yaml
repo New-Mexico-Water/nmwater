@@ -57,6 +57,7 @@ variables:
     medium: surface_water
     intervals: [instant, 15min, hourly, daily, monthly]
     comparability: USGS 00060 daily mean, USBR HydroData flow, USACE Flow, CO DWR DISCHRG, and OSE daily average flow are the same quantity. Provisional vs approved values can differ; check qualifier.
+    valid_max: 1000000   # cfs; a 4.87 million cfs Corps reading is a transmission error. No lower bound, see above.
   discharge_volume:
     label: Flow volume over the interval
     definition: Total volume of water passing a gauge during the interval (usually one day).
@@ -73,6 +74,8 @@ variables:
     kind: state
     medium: surface_water
     missing_codes: [-99.99]
+    valid_min: -100         # ft; gauge height. -997 to -1,310 are no-data/transmission values
+    valid_max: 20000        # ft; +/-10 million from a DCP feed is garbage (stage can carry an elevation datum, so the cap is high)
   water_temp:
     label: Water temperature
     definition: Temperature of surface or ground water at the sensor.
@@ -80,6 +83,8 @@ variables:
     quantity: temperature
     kind: state
     medium: surface_water
+    valid_min: -5          # degC; -2,327, -27 and -9.9 seen
+    valid_max: 60          # degC; 123, 2,760 and 22,100 seen (hot springs top out near 55)
   diversion:
     label: Diversion flow
     definition: Flow rate diverted from a river into a canal, ditch, or acequia at the point of diversion.
@@ -136,6 +141,9 @@ variables:
     quantity: length
     kind: state
     medium: reservoir
+    valid_min: 1500        # ft above sea level; zeros, negatives and 0-86 ft gauge heights seen. Lowest pool in scope is ~2,800 ft
+    valid_max: 12000       # ft; a 7.79 million ft Reclamation value seen. Highest pool in scope is ~10,500 ft
+    # A wrong value inside this range (a 9,500 ft reading at a 4,700 ft lake) is not caught here; the dam reports despike per site.
   reservoir_release:
     label: Reservoir release / outflow
     definition: Total flow released from a dam (outlet works, spillway, power).
@@ -202,6 +210,7 @@ variables:
     comparability: NOT the same as precip_accumulated_wy. GHCN PRCP and USGS 00045 are daily totals; NRCS PRCP is the daily increment of the accumulation gauge.
     valid_min: 0
     missing_codes: [-99.9]   # NWS feed no-data marker
+    valid_max: 150          # in; any interval incl. annual totals (mountain sites ~60 in/yr). 2,100, 2,300 and 128,737 seen
   precip_accumulated_wy:
     label: Water-year accumulated precipitation
     definition: Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.
@@ -229,6 +238,7 @@ variables:
     valid_min: 0
     noise_floor: -1      # pillow zero drift: 98% of negative SWE from the NWS feed is within 1 in of zero
     missing_codes: []
+    valid_max: 200          # in; NM pillows peak near 50 in. 347 to 1,583 at 12 NRCS sites look like millimetres
   snow_depth:
     label: Snow depth
     definition: Total depth of snow on the ground.
@@ -264,6 +274,9 @@ variables:
     quantity: ratio
     kind: state
     medium: atmosphere
+    valid_min: 0
+    noise_floor: -5      # sensor drift just below zero
+    valid_max: 105          # percent; readings slightly over 100 occur. -3,451 to 96,548 seen
   wind_speed:
     label: Wind speed
     definition: Wind speed at the station's anemometer height.
@@ -338,6 +351,8 @@ variables:
     medium: groundwater
     sign: positive = below land surface
     comparability: USGS 72019, NMBGMR/NMWDI depth-to-water, OSE well levels, and CO DWR water levels are the same quantity. Manual tape vs transducer readings are equivalent_method.
+    valid_min: -500        # ft; artesian head above land surface. -957 seen
+    valid_max: 3500        # ft; 3,807 to 8,495 (OSE) are deeper than any New Mexico well
   gw_level_elevation:
     label: Groundwater level elevation
     definition: Elevation of the water level in a well above the vertical datum named in the caveat (NGVD29 or NAVD88).
@@ -346,6 +361,8 @@ variables:
     kind: state
     medium: groundwater
     comparability: Derived from depth to water and a surveyed measuring-point elevation; datum differences of ~1 m between NGVD29 and NAVD88 must be reconciled before comparison.
+    valid_min: 1000        # ft above sea level; 0.04-994 (USGS) are not elevations. Lowest ground in scope is ~2,800 ft
+    valid_max: 14000       # ft; 1,007,500 (CO DWR) is a unit error
 
   # ---- Water quality (core parameters; full WQP results live in the waterquality table) ----
   specific_conductance:
@@ -355,6 +372,8 @@ variables:
     quantity: conductance
     kind: concentration
     medium: quality
+    valid_min: 0
+    noise_floor: -1
   tds:
     label: Total dissolved solids
     definition: Mass of dissolved solids per litre.
@@ -369,6 +388,8 @@ variables:
     quantity: ph
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 14        # -4,954 and 8,035 seen
   dissolved_oxygen:
     label: Dissolved oxygen
     definition: Concentration of dissolved oxygen.
@@ -376,6 +397,9 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    noise_floor: -1
+    valid_max: 25      # mg/L; -99.99, 9,029 and 36.45 seen
   turbidity:
     label: Turbidity
     definition: Optical turbidity.
@@ -383,6 +407,9 @@ variables:
     quantity: turbidity
     kind: concentration
     medium: quality
+    valid_min: 0
+    noise_floor: -20     # FNU; USGS sensors drift to about -17
+    valid_max: 100000   # -113,700 and 985,800 seen
   nitrate:
     label: Nitrate as N
     definition: Nitrate concentration expressed as nitrogen.

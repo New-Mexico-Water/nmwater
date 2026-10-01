@@ -23,6 +23,8 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
+from ..catalog import reach_fixes
+
 ACEQUIA_KM = 1.5        # acequias run beside their river; wider picks up the next valley's
 DISTRICT_KM = 3.0
 PWS_KM = 2.0
@@ -72,7 +74,7 @@ def build(river_label: str, gnis_id: str, segments: list[str], huc8_of: dict[str
     hucs = huc8_polygons(grids / "wbd", [huc8_of[s] for s in segments if s in huc8_of])
     hucs["segment"] = hucs["huc8"].map({v: k for k, v in huc8_of.items()})
     area = hucs.union_all()
-    flo = gpd.read_file(grids / "nhdplus" / "flowlines.gpkg", bbox=area.bounds)
+    flo = reach_fixes.apply(gpd.read_file(grids / "nhdplus" / "flowlines.gpkg", bbox=area.bounds))
     river = flo[(flo["gnis_id"].astype(str) == str(gnis_id))]
     river = river[river.intersects(area)]
     ctx = Context()
