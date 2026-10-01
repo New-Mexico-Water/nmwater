@@ -212,3 +212,18 @@ def test_precipitation_section_is_validated(tmp_path):
     (base / "map.svg").write_text("<svg/>")
     edit(base / "13020101", "precip.json", lambda o: None)
     assert any("not in map.svg" in p for p in sch.validate_bundle(tmp_path))
+
+
+def test_files_index_lists_every_file_and_catches_changes(tmp_path):
+    from nmwater.site.bundle import write_files_index
+
+    make_bundle(tmp_path)
+    n = write_files_index(tmp_path)
+    idx = json.loads((tmp_path / "files.json").read_text())
+    assert n == len(idx["files"]) and "manifest.json" in {e["path"] for e in idx["files"]} and "files.json" not in {e["path"] for e in idx["files"]}
+    assert sch.validate_bundle(tmp_path) == []
+    (tmp_path / "rivers" / "rio-x" / "map.svg").write_text('<svg class="zmap" data-state="0 0 1 1" data-river="0 0 1 1" ></svg>')
+    assert any("does not match" in p for p in sch.validate_bundle(tmp_path))
+    write_files_index(tmp_path)
+    (tmp_path / "extra.txt").write_text("x")
+    assert any("not in files.json" in p for p in sch.validate_bundle(tmp_path))
