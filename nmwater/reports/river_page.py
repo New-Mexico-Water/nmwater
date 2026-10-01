@@ -19,10 +19,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from . import river_flow as rf
-from . import river_normal as rn
-from . import river_quality as rq
-from . import river_watershed as rw
+from ..derived import river_flow as rf
+from ..derived import river_normal as rn
+from ..derived import river_quality as rq
+from ..derived import river_watershed as rw
 
 log = logging.getLogger("nmwater.reports.river_samples")
 ASSETS = Path(__file__).parent / "templates" / "assets"

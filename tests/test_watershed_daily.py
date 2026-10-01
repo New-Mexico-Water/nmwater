@@ -4,7 +4,7 @@ import duckdb
 import pandas as pd
 import pytest
 
-from nmwater.reports import river_watershed as rw
+from nmwater.derived import river_watershed as rw
 from nmwater.reports.river_page import coverage_note
 
 
