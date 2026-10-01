@@ -46,7 +46,7 @@ Report: `reports/reservoirs/el_vado_annual_fill.csv`. Regenerate with `just repo
 | inflow | `usbr_hydrodata:2685` | 9,397 | 2001-01-01 | 2026-09-23 |
 | release | `usbr_hydrodata:2685` | 18,895 | 1975-01-01 | 2026-09-24 |
 | storage | `usbr_hydrodata:2685` | 17,074 | 1974-12-31 | 2026-09-23 |
-| release (gauge below dam) | `usgs:08285500` | 33,210 | 1914-05-09 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08285500` | 33,214 | 1914-05-09 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2685` 17,074, `usace_cwms:El Vado` 1.
 

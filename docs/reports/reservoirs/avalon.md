@@ -46,7 +46,7 @@ Report: `reports/reservoirs/avalon_annual_fill.csv`. Regenerate with `just repor
 | release | `usbr_hydrodata:2684` | 9,764 | 2000-01-01 | 2026-09-24 |
 | storage | `usbr_hydrodata:2684` | 21,746 | 1965-10-01 | 2026-09-23 |
 | storage | `usgs:08403800` | 18,347 | 1965-10-01 | 2017-03-31 |
-| release (gauge below dam) | `usgs:08404000` | 27,510 | 1951-06-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08404000` | 27,514 | 1951-06-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2684` 21,746, `usace_cwms:Avalon` 66.
 

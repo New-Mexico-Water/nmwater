@@ -43,7 +43,7 @@ Report: `reports/reservoirs/diamond_a_annual_fill.csv`. Regenerate with `just re
 | inflow | `usace_cwms:Diamond A` | 3,187 | 2018-01-02 | 2026-09-24 |
 | storage | `usace_cwms:Diamond A` | 3,189 | 2018-01-01 | 2026-09-24 |
 | storage | `usgs:08390610` | 7,090 | 1990-10-01 | 2017-02-28 |
-| release (gauge below dam) | `usgs:08390800` | 22,956 | 1963-10-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08390800` | 22,960 | 1963-10-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08390610` 7,090, `usace_cwms:Diamond A` 3,189.
 

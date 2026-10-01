@@ -49,7 +49,7 @@ Report: `reports/reservoirs/abiquiu_annual_fill.csv`. Regenerate with `just repo
 | release | `usbr_hydrodata:2729` | 6,110 | 2010-01-01 | 2026-09-23 |
 | storage | `usbr_hydrodata:2729` | 19,258 | 1974-01-02 | 2026-09-23 |
 | storage | `usgs:08286900` | 7,509 | 1969-10-01 | 2008-11-30 |
-| release (gauge below dam) | `usgs:08287000` | 23,703 | 1961-11-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08287000` | 23,707 | 1961-11-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2729` 19,258, `usgs:08286900` 1,554, `usace_cwms:Abiquiu` 1.
 

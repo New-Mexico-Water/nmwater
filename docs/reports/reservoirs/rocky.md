@@ -43,7 +43,7 @@ Report: `reports/reservoirs/rocky_annual_fill.csv`. Regenerate with `just report
 | storage | `usace_cwms:Rocky` | 3,396 | 1999-03-01 | 2026-09-24 |
 | elevation | `usgs:08390620` | 1 | 2022-08-23 | 2022-08-23 |
 | storage | `usgs:08390620` | 6,725 | 1995-10-01 | 2017-02-28 |
-| release (gauge below dam) | `usgs:08393300` | 7,056 | 1963-05-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08393300` | 7,361 | 1963-05-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08390620` 6,516, `usace_cwms:Rocky` 3,396.
 
@@ -94,6 +94,6 @@ Years with any flood storage: 9 of 31.
 
 Annual inflow, complete years: median 0 af, largest 10,426 af in 2021, smallest 0 af in 2018.
 
-Highest daily releases, measured below the dam: 41 cfs on 2025-07-03; 1 cfs on 2024-11-02; 0 cfs on 2026-07-18.
+Highest daily releases, measured below the dam: 236 cfs on 2024-10-20; 140 cfs on 2026-09-28; 41 cfs on 2025-07-03.
 
 2026 so far (267 days): peak 0 af, 0.0% of full pool; latest low 0 af.

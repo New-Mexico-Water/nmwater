@@ -48,7 +48,7 @@ The curated, hand-reviewed treatment of this reservoir, with its full capacity h
 | inflow | `usbr_hydrodata:1119` | 9,397 | 2001-01-01 | 2026-09-23 |
 | release | `usbr_hydrodata:1119` | 40,171 | 1916-10-01 | 2026-09-24 |
 | storage | `usbr_hydrodata:1119` | 40,637 | 1915-03-21 | 2026-09-23 |
-| release (gauge below dam) | `usgs:08361000` | 40,171 | 1915-06-15 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08361000` | 40,175 | 1915-06-15 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:1119` 40,637, `usace_cwms:E Butte` 1.
 
