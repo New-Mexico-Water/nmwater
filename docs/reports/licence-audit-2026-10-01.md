@@ -131,7 +131,7 @@ lists its sources.
 - Quality sources: for every published river, `river_quality.read_quality_sites` gives the candidate sensors; readings
   of `water_temp` and `specific_conductance` from `observations_clean` were counted by site owner (the organisation
   code in a Water Quality Portal site id, or the source).
-- Overview sources: read from `river_context.py`, `river_overview.py` and `river_map.py`.
+- Overview sources: read from `river_context.py`, `river_facts.py` and `river_geo.py` (then `river_context.py`, `river_overview.py` and `river_map.py`, now moved to nmwater/derived and nmwater/site/mapsvg.py).
 - Terms: PRISM (prism.oregonstate.edu/terms) and USGS (usgs.gov/information-policies-and-instructions/copyrights-and-credits)
   read 2026-10-01; State Engineer ArcGIS service metadata (`copyrightText`, `licenseInfo`) read 2026-10-01 from
   services2.arcgis.com/qXZbWTdPDbTjl7Dy; Water Quality Portal user guide read 2026-10-01; Colorado and the Drought

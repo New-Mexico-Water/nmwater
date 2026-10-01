@@ -1,6 +1,5 @@
 """River report helpers that decide which gauges and segments a river page shows."""
 
-import json
 
 import pandas as pd
 
@@ -29,31 +28,6 @@ def test_segments_run_upstream_to_downstream_by_drainage_area():
     g = pd.DataFrame({"segment": ["Lower", "Upper", "Middle", "Upper"], "totdasqkm": [900.0, 50.0, 400.0, 80.0]})
     assert rf.order_segments(g) == ["Upper", "Middle", "Lower"]
 
-
-def test_run_swaps_in_a_complete_tree_and_keeps_other_rivers_on_a_partial_run(tmp_path, monkeypatch):
-    out = tmp_path / "dist"
-    old = out / "rivers" / "pecos-river"
-    old.mkdir(parents=True)
-    (old / "index.html").write_text("old pecos")
-    (out / "rivers" / "manifest.json").write_text(json.dumps({"rivers": [
-        {"river": "Pecos River", "slug": "pecos-river", "path": "pecos-river/index.html", "segments": ["A"],
-         "gauges": 3, "first_week": "1903-01-05", "last_week": "2026-09-14", "last_52_mean_cfs": 88.0, "reporting": True}]}))
-
-    class FakeCon:
-        def execute(self, *a, **k): return self
-        def sql(self, *a, **k): return self
-        def df(self): return pd.DataFrame(columns=["site_uid_a", "site_uid_b"])
-        def fetchone(self): return (None,)
-        def fetchall(self): return [("Gila River", "1", 3, "Upper Gila", "Upper Gila")]
-        def close(self): pass
-
-    import duckdb
-    monkeypatch.setattr(duckdb, "connect", lambda *a, **k: FakeCon())
-    monkeypatch.setattr(rf, "build_river", lambda *a, **k: None)          # the requested river has no data
-    entries, failed = rf.run(tmp_path / "x.duckdb", out, rivers=["Gila River"])
-    assert failed == [] and [e["slug"] for e in entries] == ["pecos-river"]
-    assert (out / "rivers" / "pecos-river" / "index.html").read_text() == "old pecos"
-    assert (out / "rivers" / "index.html").exists() and not list(out.glob(".rivers*"))
 
 
 def test_rivers_sharing_a_name_get_their_basin_in_the_label():

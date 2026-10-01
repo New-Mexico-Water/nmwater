@@ -28,11 +28,12 @@ import pandas as pd
 
 from ..derived import river_context as rc
 from ..derived import river_flow as rf
-from ..reports import river_map as rm
+from ..derived import river_geo as rm
 from ..derived import river_normal as rn
-from ..reports import river_overview as ro
-from ..reports import river_page as rp
-from ..reports import river_share as rs
+from ..derived import river_facts as ro
+from ..derived import river_table as rp
+from . import mapsvg, meta as rs
+from . import social as social_card_mod
 from . import SCHEMA_VERSION
 from .sources import Sources
 
@@ -150,7 +151,7 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
                  background: dict | None, tabs: list[str], generated: str, site_name: str, files: dict) -> tuple[dict, rm.MapParts, rm.Layers]:
     r = b.r
     layers, facts = rm.collect(r.gnis_id, r.segments, b.huc8_of, gauges, grids)
-    mp = rm.zoom_map_parts(r.gnis_id, r.river, r.segments, layers, gauges, grids)
+    mp = mapsvg.zoom_map_parts(r.gnis_id, r.river, r.segments, layers, gauges, grids)
     ctx = rc.build(r.river, r.gnis_id, r.segments, b.huc8_of, con, root)
     res = ro.load_research(root, r.slug)
     aq_db = ro.load_acequias(root)
@@ -158,7 +159,7 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
     aq_table = aq_db.get("sources") or {}
     src = Sources()
     first = (pd.Timestamp(min(r.seg_all["week_start"])) + pd.Timedelta(days=6)).year
-    auto = rm.describe(r.river, facts, r.segments, len(r.elig), first, r.as_of.year)
+    auto = mapsvg.describe(r.river, facts, r.segments, len(r.elig), first, r.as_of.year)
     background_refs: list[str] = []
     if res.get("summary"):
         summary_items = src.statements(res["summary"], table)
@@ -260,7 +261,7 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     if license_url:
         summary["meta"]["dataset"]["license"] = license_url
     if social:
-        ok = rs.social_card(d / "social.png", river=r.river, site_name=site_name, rows=rows, layers=layers, grids=grids,
+        ok = social_card_mod.social_card(d / "social.png", river=r.river, site_name=site_name, rows=rows, layers=layers, grids=grids,
                             as_of=r.weeks52[-1] + timedelta(days=6))
         if not ok:
             summary["meta"]["social_image"] = None

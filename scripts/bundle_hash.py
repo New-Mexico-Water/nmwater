@@ -23,9 +23,25 @@ def norm(o):
     return o
 
 
+SORTED_LISTS = {"removed_values"}          # row order of these used to depend on the database's scan order
+
+
+def sort_lists(o):
+    if isinstance(o, dict):
+        return {k: (sorted(sort_lists(v), key=lambda x: json.dumps(x, sort_keys=True)) if k in SORTED_LISTS and isinstance(v, list) else sort_lists(v)) for k, v in o.items()}
+    if isinstance(o, list):
+        return [sort_lists(v) for v in o]
+    return o
+
+
 def file_hash(p: Path) -> str:
     if p.suffix == ".json":
-        data = json.dumps(norm(json.loads(p.read_text())), sort_keys=True, separators=(",", ":")).encode()
+        data = json.dumps(sort_lists(norm(json.loads(p.read_text()))), sort_keys=True, separators=(",", ":")).encode()
+    elif p.suffix == ".md":                  # notes.md: the generated-at stamp changes every run; compare the lines as a set of lines
+        import re
+
+        lines = [re.sub(r"^Generated \S+ by", "Generated X by", l) for l in p.read_text().split("\n")]
+        data = "\n".join(sorted(lines)).encode()
     else:
         data = p.read_bytes()
     return hashlib.sha256(data).hexdigest()[:16]

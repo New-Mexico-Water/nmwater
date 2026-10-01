@@ -1,7 +1,7 @@
 # Reviewed notes on missing data and disparities, shown on each river's page under
 # "Data gaps and disparities" and in its notes.md, above the automatic findings.
 #
-# The automatic checks (nmwater/reports/river_issues.py) say WHAT is odd; these notes say WHY, or
+# The automatic checks (nmwater/derived/river_issues.py) say WHAT is odd; these notes say WHY, or
 # what was checked, when a person has looked. Keys are river labels as they appear on the index page.
 # Each note: subject (gauge or segment, or "River"), text, reviewed (date), and optionally basis
 # ("verified" = checked against the source data; "inferred" = a likely explanation not confirmed).

@@ -1,4 +1,4 @@
-# River flow reports (`nmwater report-rivers`, scripts/cron/river_reports.sh).
+# River settings for the site data bundle (`nmwater export-site-data`).
 # Which rivers get a page, and per-river settings. Output goes to dist/rivers/ (not in git).
 
 # The public website the pages are published on. base_url (e.g. https://rivers.example.org/) is needed for

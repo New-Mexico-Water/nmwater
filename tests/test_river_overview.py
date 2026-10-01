@@ -3,8 +3,8 @@
 from datetime import date
 
 from nmwater.derived import river_context as rc
-from nmwater.reports import river_overview as ro
-from nmwater.reports import river_share as rs
+from nmwater.derived import river_facts as ro
+from nmwater.site import meta as rs
 
 
 def ctx(counties, mapped):
@@ -40,16 +40,6 @@ def test_base_name_does_not_match_a_longer_river():
     assert len(ro.governed_acequias("Rio Hondo (Rio Grande-Elephant Butte)", ctx(["Taos"], []), db)) == 1
 
 
-def test_citations_are_numbered_once_per_url_across_files():
-    c = ro.Cites()
-    a = {"1": {"url": "https://a", "title": "A"}, "2": {"url": "https://b", "title": "B"}}
-    b = {"7": {"url": "https://b", "title": "B"}}
-    first = c.refs([2, 1], a)
-    again = c.refs([7], b)
-    assert ">1<" in first and ">2<" in first and ">1<" in again
-    assert [s["url"] for s in c.items] == ["https://b", "https://a"]
-    assert "opens in a new tab" in first
-
 
 def test_unreviewed_research_is_not_used(tmp_path):
     d = tmp_path / "config" / "river_context"
@@ -70,20 +60,6 @@ def test_description_keeps_the_status_within_160_characters():
     assert "Last week's flow: much above normal." in one
 
 
-def test_absolute_urls_only_with_a_base_url():
-    bare = rs.head_meta(rs.site_config({}), title="T", desc="D", path="rivers/x/", image="rivers/x/social.png",
-                        image_alt="alt", jsonld=[])
-    assert "og:image" not in bare and "canonical" not in bare and 'content="summary"' in bare
-    site = rs.site_config({"site": {"base_url": "https://example.org"}})
-    full = rs.head_meta(site, title="T", desc="D", path="rivers/x/", image="rivers/x/social.png", image_alt="alt", jsonld=[])
-    assert 'href="https://example.org/rivers/x/"' in full and 'content="https://example.org/rivers/x/social.png"' in full
-    assert "summary_large_image" in full
-
-
-def test_jsonld_cannot_close_the_script_tag():
-    m = rs.head_meta(rs.site_config({}), title="T", desc="D", path="p/", image=None, image_alt="",
-                     jsonld=[{"name": "</script><b>"}])
-    assert "</script><b>" not in m
 
 
 def test_acequia_list_merges_the_map_and_the_research():

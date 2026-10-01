@@ -193,7 +193,7 @@ watersheds are covered and how it was checked are in
 
 ### export-site-data
 
-Writes the data bundle the website renders: JSON, SVG and CSV files with a versioned contract. Output goes to
+Writes the data bundle the website renders: JSON, CSV and (for now) SVG and PNG files with a versioned contract. Output goes to
 `dist/site-data/` (not in git). The site is a separate repository that builds every page from the bundle; the files
 and conventions are in [site-data/README.md](site-data/README.md), with JSON Schemas in `docs/site-data/v1/`.
 
@@ -207,8 +207,7 @@ python -m nmwater.site.schema dist/site-data     # check a bundle against the sc
 Every run checks the whole bundle against the schemas and a set of consistency rules a schema cannot state
 (parallel arrays the same length, every listed file present, every cited source defined, the map key matching the
 segments) and exits non-zero if anything is wrong. The tree is built in a temporary directory and swapped in at the
-end, so a failed run leaves the previous bundle in place. The legacy `report-rivers` pages are unchanged and keep
-working until the site replaces them.
+end, so a failed run leaves the previous bundle in place. 
 
 **Scheduling and publishing.** `scripts/cron/site_data.sh [--update] [--publish]` wraps the export for cron (lock,
 log in `data/logs/site_data.log`). `--publish` runs `scripts/cron/publish_site_data.sh` after a good export: it
@@ -217,111 +216,56 @@ sees one complete snapshot), keeps the newest seven bundles, and, if `WEB_REPO` 
 `data-updated` event so it rebuilds. R2 and GitHub settings go in `.env` (see `.env.example`). Try it with
 `scripts/cron/publish_site_data.sh --dry-run` first: it checks the bundle and prints what it would do.
 
-### report-rivers
+### What the river data contains
 
-Builds a streamflow page for every river with gauges: weekly mean cfs per watershed (HUC8)
-segment for the whole record, with segment toggles, time-range presets and dates, and
-weekly/monthly/yearly averaging. Output goes to `dist/rivers/`, which is not in git (it becomes the
-website later):
+`export-site-data` writes, for every river with gauges, the data the website's river pages present (the website, in the
+separate `nmwater-web` repository, owns every pixel: layout, charts, text, accessibility, search and sharing tags). The files and
+their fields are described in [site-data/README.md](site-data/README.md); this is what each one means.
 
-```
-dist/rivers/index.html                      list of rivers, searchable
-dist/rivers/manifest.json                   the same list, machine-readable
-dist/rivers/assets/                         shared styles and chart code for every page
-dist/rivers/<river>/index.html              the river page (tabs, below)
-dist/rivers/<river>/data.js                 the page's chart data
-dist/rivers/<river>/all_weeks_by_segment.csv
-dist/rivers/<river>/last_52_weeks_by_segment.csv, last_52_weeks_by_gauge.csv, copy_agreement.csv
-dist/rivers/<river>/normal_last_52_weeks_by_segment.csv, drying_by_year.csv
-dist/rivers/<river>/data_issues.json, notes.md   data gaps and disparities; method, gauges, caveats
-dist/rivers/<river>/social.png              1200x630 preview image for link sharing
-dist/rivers/sitemap.xml, dist/robots.txt    for search engines (the sitemap needs site.base_url)
-```
+- **Overview** (`summary.json`): the river from the headwaters down, one entry per segment (a segment is the HUC8
+  watershed a gauge sits in) with last week's flow, its rating, dry days, towns and acequias; reservoirs, irrigation
+  districts, public water systems, 2020 county water use, and the cited background. Two kinds of content, always labelled:
+  - counted from the archive (`nmwater/derived/river_context.py`): reservoirs (National Inventory of Dams and the
+    reservoir registry), irrigation districts, public water systems, 2020 county water use, and acequias in the State
+    Engineer's acequia map within 1.5 km of the river;
+  - cited background: `config/river_context/<river>.yaml` (summary, habitats, culture, users, reservoir notes) and
+    `config/acequia_governance.yaml` (acequias with published evidence of their governance, which join the mapped acequias).
+    Each statement has numbered sources. A file that still has the line `# Not yet checked by a reviewer` is ignored until
+    someone checks it against its sources and replaces that line with a `# Checked <date>: ...` note. Rivers without a checked
+    file fall back to `config/river_descriptions.yaml`.
+  - Geometry for the river map is drawn today by `nmwater/site/mapsvg.py` from NHDPlus, WBD, NHD and TIGER; it is being
+    replaced by GeoJSON the website draws.
+- **Flow** (`flow.json`): weekly mean flow per segment for the whole record, and the gauges behind it.
+- **Compared with normal** (`normal.json`): each week of the last year rated against the same week in 1991-2020 (USGS
+  WaterWatch classes), per segment and per gauge (`nmwater/derived/river_normal.py`).
+- **Drying** (`drying.json`): days per year a gauge in the segment read below 0.1 cfs; gauges dry on 90% or more of their days
+  (just below a diversion) are left out and named.
+- **Temperature and salinity** (`quality.json`): water temperature from sensors (this year against other years, the hottest
+  7-day stretch each year) and specific conductance by segment and decade (`nmwater/derived/river_quality.py`). Only where
+  the river has such data.
+- **Watershed** (`watershed.json`): daily precipitation for the last 90 days with the last-30-days total against the 1991-2020
+  normal for the same dates, monthly precipitation for 36 months against normal, PRISM air temperature, SNODAS snowpack and
+  the Drought Monitor index for each segment's watershed. Precipitation comes from the catalog's `watershed_precip` view
+  (`nmwater watershed-precip`; see [reports/watershed-precipitation.md](reports/watershed-precipitation.md)); a watershed the grid
+  covers only partly says so, and one it barely covers has no precipitation. Temperature and snow come from
+  `nmwater/derived/river_watershed.py` (averages cached in
+  `data/parquet/reference/source=river_reports/huc8_climate.parquet`; only new months and weeks, and watersheds not yet filled,
+  are computed on later runs).
+- **Data notes** (`notes.json`, `notes.md`): removed values, reviewed notes and automatic findings.
 
-Each river page has tabs (a tab can be linked as `index.html#watershed`):
-- **Overview** (`river_overview.py`): the river from the headwaters down, one entry per segment with
-  last week's flow and rating, dry days, towns and acequias; then Culture, Habitat, Reservoirs and
-  Water users. Beside it, one map (`river_map.py`, drawn from NHDPlus, WBD, NHD and TIGER, no map
-  service) that opens on New Mexico and zooms to the river, with buttons for both views and a state
-  locator in the corner of the river view. Two kinds of content, always labelled:
-  - counted from the archive (`river_context.py`): reservoirs (National Inventory of Dams and the
-    reservoir registry), irrigation districts, public water systems, 2020 county water use, and
-    acequias in the State Engineer's acequia map within 1.5 km of the river;
-  - cited background: `config/river_context/<river>.yaml` (summary, habitats, culture, users,
-    reservoir notes) and `config/acequia_governance.yaml` (acequias with published evidence of their
-    governance, which join the State Engineer's mapped acequias in the list under Culture; acequias are
-    also counted with the irrigation districts under Water users). Each statement has
-    numbered sources listed at the bottom of the tab. A file that still has the line
-    `# Not yet checked by a reviewer` is ignored until someone checks it against its sources and
-    replaces that line with a `# Checked <date>: ...` note. Rivers without a checked file fall back to
-    `config/river_descriptions.yaml`.
-- **Flow**: weekly, monthly or yearly mean flow per segment for the whole record.
-- **Compared with normal**: each week of the last year rated against the same week in 1991-2020
-  (USGS WaterWatch classes), per segment and per gauge (`nmwater/reports/river_normal.py`).
-- **Drying**: days per year a gauge in the segment read below 0.1 cfs; gauges dry on 90% or more of
-  their days (just below a diversion) are left out and named.
-- **Temperature & salinity**: water temperature from sensors (this year against other years, the
-  hottest 7-day stretch each year) and specific conductance by segment and decade
-  (`river_quality.py`). Shown only where the river has such data.
-- **Watershed**: **recent rain** (daily precipitation for the last 90 days with the last-30-days total
-  against the 1991-2020 normal for the same dates, wetter-than percentile and wettest day, plus a CSV of
-  the last 365 days), monthly precipitation for 36 months against normal (the month in progress is
-  grey and compared with the same days of other years), PRISM air temperature, SNODAS snowpack and the
-  Drought Monitor index for each segment's watershed. Precipitation comes from the catalog's
-  `watershed_precip` view (`nmwater watershed-precip`; see
-  [reports/watershed-precipitation.md](reports/watershed-precipitation.md)); a watershed the grid covers
-  only partly says so, and one it barely covers shows no precipitation. Temperature and snow come from
-  `river_watershed.py` (averages cached in
-  `data/parquet/reference/source=river_reports/huc8_climate.parquet`; only new months and weeks, and
-  watersheds not yet filled, are computed on later runs).
-- **Data notes**: removed values, reviewed notes and automatic findings.
+Which rivers, and per-river settings (for example, the Rio Grande is New Mexico segments only), are in
+`config/river_reports.yaml`. Rivers are identified by their NHD GNIS id, so two rivers with the same name get separate entries
+labelled by basin, such as "Rio Hondo (Upper Pecos)". The method is in the docstring of `nmwater/derived/river_flow.py`.
 
-```
-nmwater report-rivers                       # every river (about 4 minutes)
-nmwater report-rivers --river "Pecos River" # one river; the other pages are kept
-```
-
-Which rivers, and per-river settings (for example, the Rio Grande is New Mexico segments only), are
-in `config/river_reports.yaml`.
-
-**Search and sharing** (`river_share.py`). Every page gets a description written from its data
-(including last week's status), Open Graph and Twitter card tags, and JSON-LD: the page with its
-breadcrumb, and the river's data as a schema.org `Dataset` with its CSV files, so dataset search can
-find them. The preview image (`social.png`) is rendered with `rsvg-convert` (librsvg); without it
-the image is skipped with a warning. Set `site.base_url` in `config/river_reports.yaml` to the
-public address once the site has one: canonical links, `og:url`, `og:image` and the sitemap need
-absolute URLs and are left out until then.
-
-**Accessibility.** The pages aim at WCAG 2.1 AA: a skip link and landmarks, tabs with the ARIA tab
-pattern and arrow keys, colours checked for contrast in light and dark themes (text 4.5:1, chart
-lines and controls 3:1), every chart usable from the keyboard (arrow keys move through values,
-which are read out to screen readers; Escape closes the readout) with a "Show the data as a table"
-disclosure, labelled map views, reduced motion respected, and no sideways scrolling at 320 px. Rivers are identified by their NHD GNIS id, so two rivers with the
-same name get separate pages labelled by basin, such as "Rio Hondo (Upper Pecos)". The method is in
-the docstring of `nmwater/reports/river_flow.py`. The tree is built in a temporary folder and swapped
-in at the end, so a failed run leaves the previous pages in place.
-
-**Data gaps, disparities and bad values.** Each page has a "Data gaps and disparities" section
-(also in `notes.md` and `data_issues.json`). It lists, in order:
-- **removed values**: daily values left out of every number because they are known to be wrong.
-  A daily mean above that water year's USGS instantaneous peak is removed automatically;
-  other known errors are listed by hand in `config/river_exclusions.yaml`, with a reason;
+**Data gaps, disparities and bad values.** The notes list, in order:
+- **removed values**: daily values left out of every number because they are known to be wrong. A daily mean above that
+  water year's USGS instantaneous peak is removed automatically; other known errors are listed by hand in
+  `config/river_exclusions.yaml`, with a reason;
 - **reviewed notes** from `config/river_notes.yaml`, each marked verified or inferred;
-- **automatic findings** from `nmwater/reports/river_issues.py` (seasonal records, gaps,
-  discontinued gauges, agency copies that disagree, spikes, flat lines, zero-flow runs and more),
-  recomputed on every build.
+- **automatic findings** from `nmwater/derived/river_issues.py` (seasonal records, gaps, discontinued gauges, agency copies that
+  disagree, spikes, flat lines, zero-flow runs and more), recomputed on every export.
 
-**Scheduling.** `scripts/cron/river_reports.sh` wraps the command for cron: it holds a lock so
-runs never overlap, appends to `data/logs/river_reports.log`, and exits non-zero if anything failed.
-With `--update` it runs `nmwater update` (which rebuilds the catalog) first, so one cron line keeps
-both the data and the pages current:
-
-```
-30 5 * * *  /home/vance/projects/water_newmexico/scripts/cron/river_reports.sh --update
-```
-
-Install with `crontab -e`. The same script works as the command of a Cloud Scheduler / Cloud Run
-job later.
+The old standalone HTML pages (`nmwater report-rivers`, `dist/rivers/`) were removed on 2026-10-01: the website replaced them.
 
 ### Querying by river
 

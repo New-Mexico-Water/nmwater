@@ -4,7 +4,7 @@ Every check works on a river's daily values and returns plain findings, so the s
 page, notes.md and manifest.json. Hand-written explanations live in config/river_notes.yaml; these
 checks say *what* is odd, the notes say *why* when we know.
 
-Inputs (from nmwater.reports.river_flow.build_river)
+Inputs (from nmwater.derived.river_flow.build_river)
     daily   every agency copy: gauge, date, source, site_uid, cfs
     chosen  one value per gauge and day (the copy used)
     seg     segment-weeks: segment, week_start, mean_cfs, n_gauges

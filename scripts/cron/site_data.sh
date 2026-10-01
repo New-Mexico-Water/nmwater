@@ -6,10 +6,10 @@
 #   scripts/cron/site_data.sh --publish            after a good export, upload it and tell the site to rebuild
 #                                                  (scripts/cron/publish_site_data.sh; needs R2 settings in .env)
 #
-# Example crontab (daily at 05:30; the river pages script can keep running beside it until the site replaces it):
+# Example crontab (daily at 05:30):
 #   30 5 * * *  /home/vance/projects/water_newmexico/scripts/cron/site_data.sh --update --publish
 #
-# - One run at a time (shares the lock with river_reports.sh); a second run exits 0.
+# - One run at a time (the lock is shared with other cron jobs); a second run exits 0.
 # - Log: data/logs/site_data.log. Exit: 0 success, 1 a river, the update, validation or the upload failed, 2 bad arguments.
 # - The bundle is swapped in only when complete and checked against docs/site-data/v1, so a failed run leaves the
 #   previous bundle in place, and nothing is published unless the export and the check passed.
