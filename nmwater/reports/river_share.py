@@ -56,7 +56,7 @@ def description(river: str, rows: list[dict], tabs: list[str], as_of) -> str:
     if "quality" in tabs:
         what.append("water temperature")
     if "watershed" in tabs:
-        what.append("snowpack and drought")
+        what.append("rainfall, snowpack and drought")
     status = status_line(rows)
     when = f"Data through {as_of:%b} {as_of.day}, {as_of.year}."
     for n in range(len(what), 0, -1):                  # drop topics before dropping the status
