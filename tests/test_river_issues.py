@@ -4,7 +4,7 @@ from datetime import date
 
 import pandas as pd
 
-from nmwater.reports import river_issues as ri
+from nmwater.derived import river_issues as ri
 
 
 def _days(start, end, months=None):

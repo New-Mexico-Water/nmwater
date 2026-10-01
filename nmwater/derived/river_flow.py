@@ -49,7 +49,7 @@ import pandas as pd
 
 log = logging.getLogger("nmwater.reports.river_flow")
 
-TEMPLATES = Path(__file__).parent / "templates"
+TEMPLATES = Path(__file__).parents[1] / "reports" / "templates"          # legacy HTML, removed with the legacy pages
 PRIORITY = ["usgs", "usbr_hydrodata", "usace_cwms", "codwr", "ose_meas", "nwps", "usbr_albuq"]
 MIN_DAYS = 4                 # days of 7 needed for a gauge-week
 MIN_WEEKS = 26               # weeks a gauge needs to count in segment means (short records jitter n_gauges)
@@ -643,7 +643,7 @@ def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = Non
          "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))
     extra: dict = {}
     if page:
-        from . import river_page as rp
+        from ..reports import river_page as rp
 
         b = rp.extend(page["con"], r, page["river_name"], page["grids"], page["cache"])
         if not b.normal.segments.empty:
@@ -680,7 +680,7 @@ def write_index(d: Path, entries: list[dict], generated: str, site: dict | None 
         f"<td class=\"n\"><a href=\"{html.escape(e['slug'])}/index.html#issues\">{e.get('issues_warn', 0)}</a></td></tr>"
         for e in entries)
     page = (TEMPLATES / "river_index.html").read_text()
-    from . import river_share as rs
+    from ..reports import river_share as rs
 
     site = site or rs.site_config({})
     title = "New Mexico rivers: streamflow and conditions"
@@ -724,7 +724,7 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
                     "AND interval = 'daily' AND statistic = 'mean' AND datetime_utc <= now()").fetchone()[0]
     generated = datetime.now(UTC).strftime("%Y-%m-%d %H:%M UTC")
     descriptions = descriptions or {}
-    from . import river_share as rs
+    from ..reports import river_share as rs
 
     site = rs.site_config(cfg)
     if not site["base_url"]:
@@ -740,7 +740,7 @@ def run(db: Path, out: Path, rivers: list[str] | None = None, config: dict | Non
     tmp = out / f".rivers.tmp-{datetime.now(UTC):%Y%m%d%H%M%S}"
     tmp.mkdir()
     if grids is not None:
-        from .river_page import copy_assets
+        from ..reports.river_page import copy_assets
 
         copy_assets(tmp)
     entries, failed = [], []

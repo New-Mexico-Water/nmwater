@@ -510,7 +510,7 @@ def report_rivers(
     import yaml
 
     from .core.config import PROJECT_ROOT
-    from .reports.river_flow import run as run_rivers
+    from .derived.river_flow import run as run_rivers
 
     s = Settings.load(data_dir)
     out = out or PROJECT_ROOT / "dist"

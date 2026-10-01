@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from nmwater.reports import river_context as rc
+from nmwater.derived import river_context as rc
 from nmwater.reports import river_overview as ro
 from nmwater.reports import river_share as rs
 

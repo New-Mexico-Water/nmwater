@@ -22,7 +22,7 @@ from pathlib import Path
 import pandas as pd
 import yaml
 
-from . import river_context as rc
+from ..derived import river_context as rc
 from . import river_map as rm
 
 E = html.escape

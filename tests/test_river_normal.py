@@ -5,7 +5,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from nmwater.reports import river_normal as rn
+from nmwater.derived import river_normal as rn
 
 
 def test_percentile_rank_counts_ties_as_half():

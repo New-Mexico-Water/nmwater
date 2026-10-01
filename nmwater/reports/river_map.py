@@ -139,7 +139,7 @@ def collect(gnis_id: str, segments: list[str], huc8_of: dict[str, str], gauges: 
     from shapely.geometry import box
     from shapely.ops import unary_union
 
-    from .river_watershed import huc8_polygons
+    from ..derived.river_watershed import huc8_polygons
 
     codes = [huc8_of[s] for s in segments if s in huc8_of]
     hucs = huc8_polygons(grids / "wbd", codes)

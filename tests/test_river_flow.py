@@ -4,7 +4,7 @@ import json
 
 import pandas as pd
 
-from nmwater.reports import river_flow as rf
+from nmwater.derived import river_flow as rf
 
 
 def test_river_tokens_drop_generic_words_and_accents():
@@ -105,7 +105,7 @@ def test_approved_usgs_values_above_the_peak_are_kept_as_conflicts():
 
 
 def test_names_the_river_for_gauges_on_unnamed_reaches():
-    from nmwater.reports.river_flow import names_the_river as n
+    from nmwater.derived.river_flow import names_the_river as n
 
     assert n("RIO RUIDOSO AT HOLLYWOOD, NM", "Rio Ruidoso")
     assert n("GALLINAS CREEK AT MONTEZUMA, NM", "Gallinas River")          # creek and river interchangeable

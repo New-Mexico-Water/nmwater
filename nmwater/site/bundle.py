@@ -18,9 +18,9 @@ import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
-from ..reports import river_flow as rf
+from ..derived import river_flow as rf
 from ..reports import river_share as rs
-from ..reports import river_watershed as rw
+from ..derived import river_watershed as rw
 from . import SCHEMA_VERSION
 from .precip import export_precip
 from .river import clean, export_river

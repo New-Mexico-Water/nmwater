@@ -4,7 +4,7 @@ from datetime import date
 
 import pandas as pd
 
-from nmwater.reports import river_flow as rg
+from nmwater.derived import river_flow as rg
 
 
 def test_week_starts_are_complete_monday_to_sunday_weeks():
