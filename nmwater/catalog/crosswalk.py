@@ -3,6 +3,11 @@
 Columns: source, source_param, source_name, source_unit, variable, factor, offset,
 statistic, interval, equivalence, caveat.
   value_canonical = value_source * factor + offset
+
+catalog/crosswalk_sites.csv overrides the variable for one site's parameter (site_uid "*" = every site of
+the source), optionally only for one provider qualifier such as a SHEF code, with evidence: some agencies
+send a reservoir's gauge height under the pool-elevation code (source, site_uid, source_param, qualifier,
+variable, evidence). scripts/relabel_series.py moves rows already stored.
 """
 
 from __future__ import annotations
@@ -53,6 +58,15 @@ class Crosswalk:
         files = [self.path] + sorted((self.path.parent / "crosswalk.d").glob("*.csv"))
         for fp in files:
             self._load_file(fp)
+        # (site_uid or "*", source_param, qualifier or "") -> variable; see catalog/crosswalk_sites.csv
+        self.site_overrides: dict[tuple[str, str, str], str] = {}
+        so = self.path.parent / "crosswalk_sites.csv"
+        if so.exists():
+            with so.open(newline="") as f:
+                for row in csv.DictReader(f):
+                    if row.get("site_uid") and not row["source"].startswith("#"):
+                        self.site_overrides[(row["site_uid"].strip(), row["source_param"].strip(),
+                                             (row.get("qualifier") or "").strip())] = row["variable"].strip()
 
     def _load_file(self, fp: Path) -> None:
         with fp.open(newline="") as f:
@@ -121,6 +135,20 @@ class Crosswalk:
             out["interval"] = xi
         if "source_unit" not in out.columns:
             out["source_unit"] = params.map(lambda p: maps[p].source_unit if maps[p] else None)
+        if self.site_overrides and "site_uid" in out.columns:
+            sites = out["site_uid"].astype(str)
+            quals = out["qualifier"].astype(str) if "qualifier" in out.columns else None
+            for (site, param, qual), variable in self.site_overrides.items():
+                hit = (params == param) & out["variable"].notna()
+                if site != "*":
+                    hit &= sites == site
+                if qual:
+                    if quals is None:
+                        continue
+                    hit &= quals == qual
+                if hit.any():
+                    out.loc[hit, "variable"] = variable
+                    out.loc[hit, "unit"] = self.registry.unit_of(variable)
         if not keep_unmapped:
             out = out[out["variable"].notna()]
         return out

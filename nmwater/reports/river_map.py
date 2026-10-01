@@ -27,6 +27,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from ..catalog import reach_fixes
+
 KM_PER_MI = 1.609344
 E = html.escape
 CITIES = (("Albuquerque", -106.65, 35.08), ("Santa Fe", -105.94, 35.69), ("Las Cruces", -106.76, 32.32),
@@ -69,7 +71,8 @@ def state_layers(grids: Path):
         c = c[c["STATEFP"] == "35"]
         _cache["nm"] = c.union_all()
         _cache["counties"] = c
-        f = _read(grids / "nhdplus" / "flowlines.gpkg", where="streamorde >= 6", columns=["gnis_id", "gnis_name", "streamorde"])
+        f = reach_fixes.apply(_read(grids / "nhdplus" / "flowlines.gpkg", where="streamorde >= 6",
+                                    columns=["comid", "gnis_id", "gnis_name", "streamorde"]))
         f = f[f["gnis_name"].fillna("").str.strip().ne("")]
         _cache["main_rivers"] = f[f.intersects(_cache["nm"].buffer(0.05))]
     return _cache["nm"], _cache["counties"], _cache["main_rivers"]
@@ -129,7 +132,7 @@ def collect(gnis_id: str, segments: list[str], huc8_of: dict[str, str], gauges: 
     hucs = huc8_polygons(grids / "wbd", codes)
     hucs["segment"] = hucs["huc8"].map({v: k for k, v in huc8_of.items()})
     area = hucs.union_all()
-    flo = _read(grids / "nhdplus" / "flowlines.gpkg", bbox=area.bounds)
+    flo = reach_fixes.apply(_read(grids / "nhdplus" / "flowlines.gpkg", bbox=area.bounds))
     river = flo[flo["gnis_id"].astype(str) == str(gnis_id)]
     in_seg = river[river["huc8"].astype(str).isin(codes)]
     # the river view: the river inside its segments and its gauges (a short creek would be lost in a whole

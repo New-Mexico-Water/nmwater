@@ -81,6 +81,22 @@ Bounds set today, and why:
 | `snow_depth` | 0 in | -5 in | ultrasonic sensors drift; below -5 in is junk (some readings reach -739) |
 | `precip` | 0 in | none | any negative value is impossible |
 | `reservoir_storage` | 0 af | -5 af | rounding at an empty reservoir |
+| `reservoir_elevation` | 1,500 ft (max 12,000) | none | zeros, negatives and 0-86 ft gauge heights; a 7.79 million ft value |
+| `stage` | -100 ft (max 20,000) | none | -997 to -1,310 and ±10 million values from DCP feeds; stage can carry an elevation datum, so the cap is high |
+| `water_temp` | -5 °C (max 60) | none | -2,327, -27, 123, 2,760 and 22,100 seen |
+| `relative_humidity` | 0 % (max 105) | -5 % | -3,451 to 96,548 seen |
+| `precip` (also) | | | max 150 in at any interval, annual totals included: 2,100, 2,300 and 128,737 seen |
+| `swe` (also) | | | max 200 in: 347 to 1,583 at 12 NRCS sites look like millimetres |
+| `gw_depth_to_water` | -500 ft (max 3,500) | none | 3,807 to 8,495 ft (OSE) are deeper than any New Mexico well |
+| `gw_level_elevation` | 1,000 ft (max 14,000) | none | 0-994 ft (USGS) are not elevations; 1,007,500 (CO DWR) is a unit error |
+| `ph` | 0 (max 14) | none | -4,954 and 8,035 seen |
+| `dissolved_oxygen` | 0 mg/L (max 25) | -1 | -99.99, 9,029 and 36.45 seen |
+| `turbidity` | 0 FNU (max 100,000) | -20 | USGS sensors drift to about -17; -113,700 and 985,800 seen |
+| `specific_conductance` | 0 | -1 | brines make a high cap unsafe |
+| `discharge` (max only) | none | none | max 1,000,000 cfs: a 4.87 million cfs Corps reading is a transmission error |
+
+A static bound cannot catch a wrong value that is inside it: a 9,500 ft reading at a 4,700 ft lake
+passes. The reservoir fill reports despike each reservoir's elevation separately for that reason.
 
 `discharge` has **no lower bound on purpose**. 3,826 negative readings at 36 state ditch and canal
 gauges may be real reverse flow or backwater rather than error, and only the operator can say.
@@ -368,6 +384,27 @@ Mixing conventions inside a column is what this avoids.
 
 `kind` is what makes a water balance possible: you may sum fluxes over time, you may difference
 stocks, and you may not add the two.
+
+### Corrections that move data: `reach_name_fixes.csv` and `crosswalk_sites.csv`
+
+Two small reviewed files, each row with its evidence, correct what a bulk source gets wrong:
+
+- `catalog/reach_name_fixes.csv` renames NHDPlus reaches. NHDPlus leaves some main stems unnamed
+  (so a gauge on the Rio Mora is labelled the Pecos) and misnames a few (the lower Rio Pueblo de Taos
+  is "Rio Fernando de Taos"). The rules (`nmwater/catalog/reach_fixes.py`) are applied when the catalog
+  is built, to `flowlines` and `site_reaches`, and to the maps; the `reach_name_fixes` table lists the
+  reaches changed. Ids that start `fix:` are ours, for rivers NHDPlus has no GNIS id for.
+- `catalog/crosswalk_sites.csv` overrides the variable for one site's parameter (or `*` for every site
+  of a source), optionally only for one provider qualifier. Ten reservoirs (Abiquiu, Cochiti, Lake Sumner and others) send a second pool series
+  under SHEF code `HPIRZZZ` since October 2022 that is gauge height, not elevation, and seven reservoirs send only gauge
+  height under the elevation code; those rows are `stage`. `scripts/relabel_series.py` moves rows
+  already stored (safe to re-run).
+
+## Derived tables
+
+`watershed_precip` and `watersheds` are computed from the PRISM grids by `nmwater watershed-precip`,
+not observed; see [reports/watershed-precipitation.md](reports/watershed-precipitation.md) for the
+columns, the time convention and the caveats.
 
 ## The crosswalk
 

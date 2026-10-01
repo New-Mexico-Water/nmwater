@@ -135,6 +135,15 @@ def build(settings: Settings) -> Path:
                     hive_partitioning=true, union_by_name=true)"""
             )
 
+    # Derived watershed precipitation (nmwater watershed-precip): a daily/monthly series per HUC8 and the
+    # watersheds it covers. Derived from PRISM grids, not observations, so it has its own views.
+    ws_pq = settings.parquet_dir / "derived" / "watersheds.parquet"
+    wp_dir = settings.parquet_dir / "derived" / "watershed_precip"
+    if ws_pq.exists() and any(wp_dir.rglob("*.parquet")):
+        con.execute(f"CREATE TABLE watersheds AS SELECT * FROM read_parquet('{ws_pq.as_posix()}')")
+        con.execute(f"""CREATE VIEW watershed_precip AS SELECT * EXCLUDE (year) FROM
+                        read_parquet('{wp_dir.as_posix()}/year=*/*.parquet', hive_partitioning=true)""")
+
     # NHDPlus stream network: which reach a site sits on, and the network's own attributes.
     # Written by nmwater fetch nhdplus into the reference group under source=nhdplus; promoted
     # to first-class tables here (same treatment as site_regions and site_links) because they
@@ -161,6 +170,20 @@ def build(settings: Settings) -> Path:
     flow_pq = settings.parquet_dir / "reference" / "source=nhdplus" / "flowline_attributes.parquet"
     if flow_pq.exists():
         con.execute(f"CREATE TABLE flowlines AS SELECT * FROM read_parquet('{flow_pq.as_posix()}')")
+        # reviewed corrections to NHDPlus river names (catalog/reach_name_fixes.csv, reach_fixes.py):
+        # renamed or newly named reaches, and the sites on them, which are then on that river
+        from .reach_fixes import resolve
+
+        fx = resolve(str(settings.parquet_dir))
+        con.register("reach_fix_df", fx)
+        con.execute("CREATE TABLE reach_name_fixes AS SELECT * FROM reach_fix_df")
+        con.unregister("reach_fix_df")
+        if len(fx):
+            con.execute("UPDATE flowlines f SET gnis_name = x.gnis_name, gnis_id = x.gnis_id "
+                        "FROM reach_name_fixes x WHERE f.comid = x.comid")
+            con.execute("UPDATE site_reaches r SET gnis_name = x.gnis_name, river_name = x.gnis_name, river_steps = 0, "
+                        "river_method = 'snap' FROM reach_name_fixes x WHERE r.comid = x.comid")
+            log.info("catalog: %d NHDPlus reaches renamed by catalog/reach_name_fixes.csv", len(fx))
     # River segments = the watershed (HUC8) each river site sits in. This is the segmentation to use
     # for "the Middle Rio Grande" style questions: filter river_name and river_method <> 'downstream'
     # (that keeps sites on the river itself), then group by huc8_name. Manual rows have no HUC8.
