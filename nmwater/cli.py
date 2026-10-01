@@ -348,6 +348,20 @@ def update(
 
     extra = []
     if catalog:
+        # derived series first, so the catalog rebuild below includes them (PRISM years whose grid file
+        # changed are recomputed, which picks up PRISM's revisions of the latest months)
+        console.rule("watershed precipitation")
+        t0 = time.monotonic()
+        wstat = "ok"
+        try:
+            from .derived import watershed_precip as wp
+
+            r_ = wp.update(st)
+            console.print(f"  {r_['years']} year(s) recomputed, {r_['rows']:,} rows")
+        except Exception as e:
+            wstat = f"error: {e}"[:200]
+        extra.append(UpdateRow(update_id=uid, source="_watershed_precip", policy="summary", status=wstat,
+                               fetch_seconds=round(time.monotonic() - t0, 1)))
         console.rule("catalog build")
         t0 = time.monotonic()
         cstat = "ok"
@@ -462,6 +476,27 @@ def report(data_dir: Optional[Path] = typer.Option(None, "--data-dir")):
     p = qa_run(Settings.load(data_dir))
     console.print(p.read_text())
     console.print(f"[green]written to {p}[/green]")
+
+
+@app.command("watershed-precip")
+def watershed_precip(
+    rebuild: bool = typer.Option(False, "--rebuild", help="recompute every year, not only changed grid files"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+    verbose: bool = typer.Option(False, "-v"),
+):
+    """Precipitation averaged over each watershed (HUC8) in New Mexico: daily 1981 on, monthly before.
+
+    Computed from the PRISM grids already in data/grids/prism (run `nmwater fetch prism` first) and written
+    to data/parquet/derived/. Rebuild the catalog afterwards for the `watershed_precip` and `watersheds`
+    views. Method, time convention and caveats are in nmwater/derived/watershed_precip.py and
+    docs/reports/watershed-precipitation.md."""
+    from .derived import watershed_precip as wp
+
+    _setup_logging(verbose)
+    st = Settings.load(data_dir)
+    r = wp.update(st, rebuild=rebuild)
+    console.print(f"{r['watersheds']} watersheds ({r['with_precip']} with enough of the grid), "
+                  f"{r['years']} years computed, {r['rows']:,} rows")
 
 
 @app.command("report-rivers")

@@ -1,0 +1,103 @@
+huc8,name,states,area_km2,nm_fraction,grid_fraction,has_precip,in_river_reports
+11020006,Huerfano,CO,4817.55,0.0,0.0611,False,True
+11020007,Apishapa,CO,2788.23,0.0,0.2308,False,True
+11020010,Purgatoire,"CO,NM",8933.44,0.0369,0.723,True,True
+11040001,Cimarron Headwaters,"CO,NM,OK",4345.44,0.5873,1.0,True,True
+11040002,Upper Cimarron,"CO,KS,NM,OK",4272.92,0.0036,0.37,False,True
+11040005,Bear,"CO,KS",4932.48,0.0,0.064,False,True
+11080001,Canadian Headwaters,"CO,NM",4468.32,0.9689,0.9996,True,True
+11080002,Cimarron,NM,2718.19,1.0,0.9999,True,True
+11080003,Upper Canadian,NM,5320.31,1.0,1.0001,True,True
+11080004,Mora,NM,3773.97,1.0,1.0001,True,True
+11080005,Conchas,NM,2634.5,1.0,0.9992,True,True
+11080006,Upper Canadian-Ute Reservoir,"NM,TX",5797.86,0.9976,1.0007,True,True
+11080007,Ute,NM,5506.54,1.0,1.0,True,True
+11080008,Revuelto,NM,2087.39,1.0,0.9995,True,True
+11090101,Middle Canadian-Trujillo,"NM,TX",4791.08,0.3787,0.9498,True,True
+11090102,Punta de Agua,"NM,TX",3886.19,0.6118,0.9231,True,True
+11090103,Rita Blanca,"NM,OK,TX",2834.72,0.3926,0.818,True,True
+11090104,Carrizo,"NM,TX",2366.76,0.6883,0.9994,True,True
+11090105,Lake Meredith,TX,5238.65,0.0,0.0002,False,True
+11100101,Upper Beaver,"NM,OK,TX",7075.79,0.275,0.3873,False,True
+11100103,Coldwater,"NM,OK,TX",5081.83,0.0004,0.1735,False,True
+11120101,Tierra Blanca,"NM,TX",4964.29,0.3303,0.6633,True,True
+11120102,Palo Duro,"NM,TX",2590.87,0.0415,0.46,False,False
+12050001,Yellow House Draw,"NM,TX",9509.1,0.5105,0.7541,True,False
+12050002,Blackwater Draw,"NM,TX",4372.11,0.3221,0.684,True,False
+12050005,Running Water Draw,"NM,TX",3921.35,0.1963,0.3843,False,False
+12080001,Lost Draw,"NM,TX",4636.99,0.2911,0.65,True,False
+12080003,Monument-Seminole Draws,"NM,TX",6239.16,0.5257,0.8745,True,False
+12080004,Mustang Draw,"NM,TX",8044.57,0.183,0.4071,False,False
+12080006,Sulphur Springs Draw,"NM,TX",4879.1,0.2027,0.3769,False,False
+13010001,Rio Grande Headwaters,CO,3575.77,0.0,0.0033,False,True
+13010002,Alamosa-Trinchera,"CO,NM",6575.68,0.0284,0.6949,True,True
+13010005,Conejos,"CO,NM",1986.82,0.3012,1.0015,True,True
+13020101,Upper Rio Grande,"CO,NM",8429.25,0.9497,0.9996,True,True
+13020102,Rio Chama,"CO,NM",8179.26,0.9738,0.9999,True,True
+13020201,Rio Grande-Santa Fe,NM,4847.54,1.0,1.0002,True,True
+13020202,Jemez,NM,2690.91,1.0,1.0002,True,True
+13020203,Rio Grande-Albuquerque,NM,8328.17,1.0,0.9998,True,True
+13020204,Rio Puerco,NM,5469.01,1.0,1.0012,True,True
+13020205,Arroyo Chico,NM,3562.16,1.0,0.9993,True,True
+13020206,North Plains,NM,3126.78,1.0,1.0003,True,True
+13020207,Rio San Jose,NM,6727.3,1.0,0.9995,True,True
+13020208,Plains of San Agustin,NM,5155.6,1.0,1.0008,True,False
+13020209,Rio Salado,NM,3615.34,1.0,0.9995,True,True
+13020210,Jornada Del Muerto,NM,4431.2,1.0,0.9995,True,True
+13020211,Elephant Butte Reservoir,NM,5684.91,1.0,1.0009,True,True
+13030101,Caballo,NM,3194.92,1.0,0.999,True,True
+13030102,El Paso-Las Cruces,"MX,NM,TX",14293.93,0.428,0.4614,False,True
+13030103,Jornada Draw,NM,3236.33,1.0,0.9992,True,False
+13030201,Playas Lake,"MX,NM",18286.54,0.2396,0.2763,False,False
+13030202,Mimbres,"MX,NM",17304.5,0.6793,0.7041,True,True
+13040100,Rio Grande-Fort Quitman,"MX,NM,TX",8041.36,0.0,0.6449,True,True
+13040201,Cibolo-Red Light,"MX,TX",9522.33,0.0,0.1792,False,True
+13050001,Western Estancia,NM,6279.92,1.0,1.0,True,True
+13050002,Eastern Estancia,NM,1333.11,1.0,0.9997,True,False
+13050003,Tularosa Valley,"NM,TX",17382.02,0.9824,1.0003,True,True
+13050004,Salt Basin,"NM,TX",20518.16,0.3005,0.8186,True,True
+13060001,Pecos Headwaters,NM,9016.33,1.0,1.0005,True,True
+13060002,Pintada Arroyo,NM,2667.85,1.0,0.9986,True,False
+13060003,Upper Pecos,NM,10897.58,1.0,1.0002,True,True
+13060004,Taiban,NM,2086.7,1.0,1.0009,True,False
+13060005,Arroyo Del Macho,NM,4847.73,1.0,0.9996,True,True
+13060006,Gallo Arroyo,NM,2258.16,1.0,1.0,True,False
+13060007,Upper Pecos-Long Arroyo,NM,8291.35,1.0,0.9997,True,True
+13060008,Rio Hondo,NM,4307.51,1.0,1.0005,True,True
+13060009,Rio Felix,NM,2446.1,1.0,1.0001,True,True
+13060010,Rio Penasco,NM,2777.76,1.0,0.9994,True,True
+13060011,Upper Pecos-Black,"NM,TX",11343.16,0.9839,1.0002,True,True
+13070001,Lower Pecos-Red Bluff Reservoir,"NM,TX",6454.59,0.1061,0.9831,True,True
+13070002,Delaware,"NM,TX",2046.82,0.0607,1.0006,True,True
+13070003,Toyah,TX,2913.23,0.0,0.6645,True,True
+13070004,Salt Draw,TX,5071.34,0.0,0.9447,True,True
+13070007,Landreth-Monument Draws,"NM,TX",16414.38,0.2457,0.7668,True,True
+14030002,Upper Dolores,"CO,UT",5587.79,0.0,0.003,False,True
+14080101,Upper San Juan,"CO,NM",8886.23,0.5245,0.9068,True,True
+14080102,Piedra,CO,1751.83,0.0,0.6779,True,True
+14080103,Blanco Canyon,NM,4438.87,1.0,1.0003,True,True
+14080104,Animas,"CO,NM",3547.44,0.1633,0.5235,True,True
+14080105,Middle San Juan,"AZ,CO,NM",5037.47,0.6331,0.9985,True,True
+14080106,Chaco,"AZ,NM",11845.71,0.998,0.9998,True,True
+14080107,Mancos,"CO,NM",2077.04,0.0725,0.9552,True,True
+14080201,Lower San Juan-Four Corners,"AZ,CO,NM,UT",5165.45,0.0036,0.4973,False,True
+14080202,McElmo,"CO,UT",1856.91,0.0,0.7096,True,True
+14080203,Montezuma,"CO,UT",3027.68,0.0,0.1035,False,True
+14080204,Chinle,"AZ,NM,UT",10616.74,0.0352,0.3989,False,True
+15020001,Little Colorado Headwaters,"AZ,NM",2085.52,0.0622,0.9565,True,True
+15020002,Upper Little Colorado,"AZ,NM",4199.52,0.0026,0.249,False,True
+15020003,Carrizo Wash,"AZ,NM",5852.07,0.8533,0.9997,True,True
+15020004,Zuni,"AZ,NM",6909.41,0.7395,0.981,True,True
+15020006,Upper Puerco,"AZ,NM",4951.24,0.711,1.0001,True,True
+15020007,Lower Puerco,AZ,2889.7,0.0,0.4106,False,True
+15020011,Cottonwood Wash,AZ,4342.5,0.0,0.1585,False,True
+15040001,Upper Gila,NM,5133.27,1.0,1.0,True,True
+15040002,Upper Gila-Mangas,"AZ,NM",5305.34,0.7399,0.9997,True,True
+15040003,Animas Valley,"AZ,NM",5863.93,0.9924,0.9996,True,True
+15040004,San Francisco,"AZ,NM",7257.38,0.6657,1.0001,True,True
+15040005,Upper Gila-San Carlos Reservoir,AZ,7171.81,0.0,0.1843,False,True
+15040006,San Simon,"AZ,NM",5828.89,0.1039,0.809,True,True
+15060101,Black,AZ,3241.21,0.0,0.3147,False,True
+15080301,Whitewater Draw,"AZ,MX",6893.6,0.0,0.1239,False,True
+15080302,San Bernardino Valley,"AZ,MX,NM",3580.8,0.0268,0.3417,False,False
+15080303,Cloverdale,"MX,NM",474.4,0.8067,0.89,True,False

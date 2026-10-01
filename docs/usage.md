@@ -174,6 +174,23 @@ inventories, landmark record checks (Embudo streamflow from 1889, Elephant Butte
 missing coordinates, sites without a HUC, unknown variables, and negative values in quantities
 that cannot be negative. Requires `catalog build` first.
 
+### watershed-precip
+
+Precipitation averaged over every watershed (HUC8) in New Mexico: daily from 1981, monthly before.
+Computed from the PRISM grids already in `data/grids/prism` and written to `data/parquet/derived/`;
+`nmwater update` runs it before the catalog rebuild, and PRISM's revisions of the latest months are
+picked up because a year is recomputed whenever its grid file changes. Rebuild the catalog afterwards
+for the `watershed_precip` and `watersheds` views.
+
+```
+nmwater watershed-precip             # incremental
+nmwater watershed-precip --rebuild   # everything (about 12 seconds)
+```
+
+What the columns mean, how the days line up (a PRISM day ends at 12:00 UTC on its date), which
+watersheds are covered and how it was checked are in
+[reports/watershed-precipitation.md](reports/watershed-precipitation.md).
+
 ### report-rivers
 
 Builds a streamflow page for every river with gauges: weekly mean cfs per watershed (HUC8)
