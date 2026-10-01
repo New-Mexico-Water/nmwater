@@ -652,6 +652,9 @@
         "north"
        ],
        "additionalProperties": true
+      },
+      "license": {
+       "type": "string"
       }
      },
      "required": [

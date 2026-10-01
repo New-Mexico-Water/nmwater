@@ -181,6 +181,52 @@
     "rivers"
    ],
    "additionalProperties": true
+  },
+  "license": {
+   "anyOf": [
+    {
+     "type": "null"
+    },
+    {
+     "type": "object",
+     "properties": {
+      "spdx": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "url": {
+       "type": "string"
+      },
+      "attribution": {
+       "type": "string"
+      },
+      "attribution_url": {
+       "type": [
+        "string",
+        "null"
+       ]
+      },
+      "scope": {
+       "type": "string"
+      },
+      "not_covered": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      }
+     },
+     "required": [
+      "url",
+      "attribution",
+      "scope",
+      "not_covered"
+     ],
+     "additionalProperties": true
+    }
+   ]
   }
  },
  "required": [

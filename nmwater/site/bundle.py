@@ -77,7 +77,7 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
                     continue
                 r.data_notes = list(river_notes.get(r.river) or [])
                 entry = export_river(con, r, name.name, grids, cache, root, tmp / "rivers" / r.slug,
-                                     descriptions.get(r.river) or descriptions.get(name.name), generated, site["name"], social, csv)
+                                     descriptions.get(r.river) or descriptions.get(name.name), generated, site["name"], social, csv, site.get("license"))
                 entries.append(entry)
                 log.info("%s: %d segments, %d gauges", name.label, entry["segments"], entry["gauges"])
             except Exception as e:                          # one bad river must not stop the rest
@@ -93,7 +93,8 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
         entries.sort(key=lambda e: (-e["gauges"], e["name"]))
         rated = [e for e in entries if e["segments_rated"]]
         manifest = {"schema_version": SCHEMA_VERSION, "producer": producer(root), "generated": generated,
-                    "data_through": as_of, "site": {"name": site["name"]}, "rivers": entries,
+                    "data_through": as_of, "site": {"name": site["name"]}, "license": rs.license_block(site),
+                    "rivers": entries,
                     "headlines": {"rivers": {"total": len(entries), "rated": len(rated),
                                              "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}}
         (tmp / "manifest.json").write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")

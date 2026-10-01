@@ -229,7 +229,7 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
 
 # ---------------------------------------------------------------------------- one river
 def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Path, root: Path, d: Path, background: dict | None,
-                 generated: str, site_name: str, social: bool = True, csv: bool = True) -> dict:
+                 generated: str, site_name: str, social: bool = True, csv: bool = True, license_url: str | None = None) -> dict:
     """Write one river's files into d and return its manifest entry. csv=False leaves out the CSV downloads."""
     d.mkdir(parents=True, exist_ok=True)
     b = rp.extend(con, r, river_name, grids, cache)
@@ -257,6 +257,8 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     files["notes_md"] = "notes.md"
     gauges = rp.gauge_points(con, b)
     summary, mp, layers = summary_file(b, data, rows, con, gauges, grids, root, background, tabs, generated, site_name, files)
+    if license_url:
+        summary["meta"]["dataset"]["license"] = license_url
     if social:
         ok = rs.social_card(d / "social.png", river=r.river, site_name=site_name, rows=rows, layers=layers, grids=grids,
                             as_of=r.weeks52[-1] + timedelta(days=6))

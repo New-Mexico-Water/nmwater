@@ -103,9 +103,16 @@ short enough to copy.
 The code is licensed under the **GNU General Public License, version 3 or later**. See
 [LICENSE](LICENSE) for the full text and [NOTICE](NOTICE) for the copyright statement.
 
-The data are a separate matter, and the GPL does not cover them. Most federal sources are public
-domain, PRISM is copyright Oregon State University and requires attribution to the PRISM Climate
-Group, Synoptic restricts redistribution of some member networks, and several state and research
-datasets carry their own citation requests. Every source's terms, citation, and caveats are
-recorded in `catalog/sources.yaml` and `catalog/sources.d/` and exported into
-`docs/data_dictionary.md`. Read them before republishing data obtained with these tools.
+**Reports, charts and published data files** (what `nmwater` produces for the New Mexico Water website: the data bundle
+from `nmwater export-site-data`, the generated reports, and our text) are licensed under **Creative Commons
+Attribution-ShareAlike 4.0** ([LICENSE-CONTENT](LICENSE-CONTENT)). That licence covers what we contribute: our selection
+and arrangement, computations, text, charts and maps. Credit "New Mexico Water" with a link, say if you changed
+anything, and share adaptations under the same licence. The logo and icon are not licensed for reuse.
+
+**The source data are a separate matter**, and neither licence covers them. Most federal sources are public domain,
+PRISM is copyright Oregon State University and requires its name, URL and the date of access to be stated prominently,
+and several state, tribal and research datasets carry their own terms or none. Every source's terms, citation, and
+caveats are recorded in `catalog/sources.yaml` and `catalog/sources.d/` and exported into `docs/data_dictionary.md`.
+Which of them feed what we publish, and what is still unconfirmed, is in
+[docs/reports/licence-audit-2026-10-01.md](docs/reports/licence-audit-2026-10-01.md). Read the terms before republishing
+data obtained with these tools.
