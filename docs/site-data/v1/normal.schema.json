@@ -1,0 +1,168 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Flow compared with normal",
+ "description": "rivers/<slug>/normal.json: the last 52 weeks rated against the baseline; arrays are parallel to `weeks`.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "baseline": {
+   "type": "string"
+  },
+  "classes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "weeks": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+   }
+  },
+  "segments": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "color_index": {
+      "type": "integer"
+     },
+     "cls": {
+      "type": "array",
+      "items": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     },
+     "pct": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "required": [
+     "name",
+     "color_index",
+     "cls",
+     "pct"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "gauges": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "segment": {
+      "type": "string"
+     },
+     "basis": {
+      "type": "string"
+     },
+     "mean_cfs": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "p10": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "p25": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "p50": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "p75": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "p90": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "cls": {
+      "type": "array",
+      "items": {
+       "type": [
+        "string",
+        "null"
+       ]
+      }
+     }
+    },
+    "required": [
+     "name",
+     "segment",
+     "basis",
+     "mean_cfs",
+     "p10",
+     "p25",
+     "p50",
+     "p75",
+     "p90",
+     "cls"
+    ],
+    "additionalProperties": true
+   }
+  }
+ },
+ "required": [
+  "schema_version",
+  "baseline",
+  "classes",
+  "weeks",
+  "segments",
+  "gauges"
+ ],
+ "additionalProperties": true
+}

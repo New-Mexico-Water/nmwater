@@ -71,11 +71,19 @@ def state_layers(grids: Path):
         c = c[c["STATEFP"] == "35"]
         _cache["nm"] = c.union_all()
         _cache["counties"] = c
+        import shapely
+
+        _cache["county_lines"] = shapely.line_merge(c.boundary.union_all())    # long lines simplify; thousands of pieces do not
         f = reach_fixes.apply(_read(grids / "nhdplus" / "flowlines.gpkg", where="streamorde >= 6",
                                     columns=["comid", "gnis_id", "gnis_name", "streamorde"]))
         f = f[f["gnis_name"].fillna("").str.strip().ne("")]
         _cache["main_rivers"] = f[f.intersects(_cache["nm"].buffer(0.05))]
     return _cache["nm"], _cache["counties"], _cache["main_rivers"]
+
+
+def county_lines(grids: Path):
+    state_layers(grids)
+    return _cache["county_lines"]
 
 
 class Proj:
@@ -90,11 +98,16 @@ class Proj:
     def xy(self, x, y):
         return (x - self.x0) * self.k * self.s, (self.y1 - y) * self.s
 
-    def path(self, geom, tol_px: float = 0.6, nd: int = 1) -> str:
-        """SVG path data; tol_px is the simplification tolerance in map units, nd the decimals."""
+    def inv(self, px, py):
+        """Map units back to (lon, lat)."""
+        return px / (self.k * self.s) + self.x0, self.y1 - py / self.s
+
+    def path(self, geom, tol_px: float = 0.6, nd: int = 1, topology: bool = True) -> str:
+        """SVG path data; tol_px is the simplification tolerance in map units, nd the decimals. topology=False
+        uses plain Douglas-Peucker, which may self-intersect: fine for faint lines, not for filled shapes."""
         if geom is None or geom.is_empty:
             return ""
-        g = geom.simplify(tol_px / self.s, preserve_topology=True)
+        g = geom.simplify(tol_px / self.s, preserve_topology=topology)
         out = []
 
         def ring(coords, close):
@@ -194,9 +207,37 @@ def _pin(x: float, y: float, body: str, cls: str, k: float, title: str = "") -> 
     return f'<g class="{cls}" data-pin="{x:.3f} {y:.3f}" transform="translate({x:.3f} {y:.3f}) scale({k:.4f})">{t}{body}</g>'
 
 
-def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gauges: pd.DataFrame,
-             grids: Path, width: int = 600) -> str:
-    """The map card's contents: view buttons, the zoomable SVG with its state inset, scale bar and key."""
+@dataclass
+class MapParts:
+    """The zoomable map as separate pieces, so a page can lay out its own buttons, key and scale."""
+    svg: str                      # <svg class="zmap" ...>: both views, drawn in two levels of detail
+    inset: str                    # corner locator for the river view (state outline, watershed, river, box)
+    scale: dict | None            # {"km", "miles", "width_pct"}: a scale bar for the river view, or None
+    title: str
+    desc: str
+    view_state: str               # viewBox of the whole-state view
+    view_river: str               # viewBox of the river view
+    segments: list[str]           # segment names, in numbering order
+
+
+def _lonlat_box(p: Proj, view: tuple, margin: float):
+    """A lon/lat box covering a viewBox (map units) plus margin (a fraction of its size)."""
+    from shapely.geometry import box
+
+    x0, y0, w, h = view
+    mx, my = w * margin, h * margin
+    lon0, lat1 = p.inv(x0 - mx, y0 - my)
+    lon1, lat0 = p.inv(x0 + w + mx, y0 + h + my)
+    return box(min(lon0, lon1), min(lat0, lat1), max(lon0, lon1), max(lat0, lat1))
+
+
+def zoom_map_parts(gnis_id: str, label: str, segments: list[str], layers: Layers, gauges: pd.DataFrame,
+                   grids: Path, width: int = 600) -> MapParts:
+    """One SVG in state coordinates with two views (state, river) and two levels of detail.
+
+    The state view uses coarse shapes (about 0.6 px at state scale); the river view uses fine shapes clipped to
+    the frame plus a margin, so detail far from the river is never drawn. Each level sits in its own group
+    (v-state, v-river) and the stylesheet shows the one that matches the current view."""
     from shapely.geometry import box
 
     nm, counties, mains = state_layers(grids)
@@ -206,7 +247,6 @@ def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gaug
     p = Proj(full, width)
     W, H = width, p.height
     aspect = H / W
-    # the river view, padded to the frame's shape
     x0, y1 = p.xy(ext[0], ext[1])
     x1, y0 = p.xy(ext[2], ext[3])
     w, h = x1 - x0, y1 - y0
@@ -215,32 +255,65 @@ def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gaug
     zoom = rv[2] / W                                   # map units per screen pixel in the river view
     nd = max(1, math.ceil(-math.log10(zoom)) + 1) if zoom < 1 else 1
     fine = {"tol_px": 0.6 * zoom, "nd": nd}
+    coarse = {"tol_px": 0.6, "nd": 1}
+    clip = _lonlat_box(p, rv, 0.15)
     color = {s: f"var(--s{i + 1})" for i, s in enumerate(segments)}
     area = layers.hucs.union_all()
     towns = ", ".join(town_name(n) for n in layers.towns["NAME20"])
+    title = f"Map of the {label} in New Mexico"
     desc = (f"New Mexico, with the {label}'s {len(segments)} watershed segment{'s' if len(segments) != 1 else ''} shaded "
             "and numbered upstream to downstream, the river and its gauges" + (f", and towns near it ({towns})" if towns else "") + ".")
     sv = f"0 0 {W} {H:.1f}"
     rvs = " ".join(f"{v:.3f}" for v in rv)
+    others = mains[mains["gnis_id"].astype(str) != str(gnis_id)]
+    cl = county_lines(grids)
     L = [f'<svg class="zmap" viewBox="{rvs}" data-state="{sv}" data-river="{rvs}" data-view="river" '
          f'style="aspect-ratio:{W}/{H:.1f}" role="img" aria-labelledby="map-t map-d">'
-         f'<title id="map-t">Map of the {E(label)} in New Mexico</title><desc id="map-d">{E(desc)}</desc>',
-         f'<path class="z-county" d="{p.path(counties.boundary.union_all())}"/>',
-         f'<path class="z-state" d="{p.path(nm.boundary, **fine)}"/>']
-    for n, g in mains[mains["gnis_id"].astype(str) != str(gnis_id)].groupby("gnis_name"):
-        L.append(f'<path class="z-main" d="{p.path(g.union_all())}"><title>{E(n)}</title></path>')
+         f'<title id="map-t">{E(title)}</title><desc id="map-d">{E(desc)}</desc>']
+    # ---- state view: coarse shapes
+    L.append('<g class="v-state">')
+    L.append(f'<path class="z-county" d="{p.path(cl, topology=False, **coarse)}"/>')
+    L.append(f'<path class="z-state" d="{p.path(nm.boundary, **coarse)}"/>')
+    for n, g in others.groupby("gnis_name"):
+        L.append(f'<path class="z-main" d="{p.path(g.union_all(), **coarse)}"><title>{E(n)}</title></path>')
     for r in layers.hucs.itertuples():
         idx = segments.index(r.segment) + 1 if r.segment in segments else ""
-        L.append(f'<path class="z-seg" style="--c:{color.get(r.segment, "var(--axis)")}" d="{p.path(r.geometry, **fine)}">'
+        L.append(f'<path class="z-seg" style="--c:{color.get(r.segment, "var(--axis)")}" d="{p.path(r.geometry, **coarse)}">'
                  f'<title>{idx}. {E(str(r.segment))} (HUC {E(r.huc8)})</title></path>')
-    L.append('<g class="v-river">')
-    for r in layers.trib.itertuples():
-        L.append(f'<path class="z-trib" d="{p.path(r.geometry, **fine)}"><title>{E(r.gnis_name)}</title></path>')
-    L.append("</g>")
     if layers.river is not None:
-        d = p.path(layers.river, **fine)
+        d = p.path(layers.river, **coarse)
         L.append(f'<path class="z-halo" d="{d}"/><path class="z-river" d="{d}"><title>{E(label)}</title></path>')
+    for name, lon, lat in CITIES:
+        x, y = p.xy(lon, lat)
+        L.append(_pin(x, y, f'<circle r="2.2"/><text x="5" y="3.5">{name}</text>', "z-city", zoom))
+    shape = layers.river if layers.river is not None else area          # a ring and a label when the river is small
+    rb = shape.bounds
+    span = max((rb[2] - rb[0]) * p.k, rb[3] - rb[1]) * p.s
+    if span < W * 0.18:
+        c = shape.centroid
+        cx, cy = p.xy(c.x, c.y)
+        right = cx < W * 0.6
+        ring = max(9.0, span / 2 + 5)
+        sx = 1 if right else -1
+        L.append(_pin(cx, cy, f'<circle r="{ring:.1f}"/><path d="M{sx * ring * 0.7:.1f} {-ring * 0.7:.1f}L{sx * 56} -34"/>'
+                              f'<text x="{sx * 60}" y="-30" text-anchor="{"start" if right else "end"}">{E(label)}</text>',
+                      "z-callout", zoom))
+    L.append("</g>")
+    # ---- river view: fine shapes, clipped to the frame plus a margin
     L.append('<g class="v-river">')
+    L.append(f'<path class="z-county" d="{p.path(cl.intersection(clip), topology=False, **fine)}"/>')
+    L.append(f'<path class="z-state" d="{p.path(nm.boundary.intersection(clip), **fine)}"/>')
+    for n, g in others[others.intersects(clip)].groupby("gnis_name"):
+        L.append(f'<path class="z-main" d="{p.path(g.union_all().intersection(clip), **fine)}"><title>{E(n)}</title></path>')
+    for r in layers.hucs.itertuples():
+        idx = segments.index(r.segment) + 1 if r.segment in segments else ""
+        L.append(f'<path class="z-seg" style="--c:{color.get(r.segment, "var(--axis)")}" d="{p.path(r.geometry.intersection(clip), **fine)}">'
+                 f'<title>{idx}. {E(str(r.segment))} (HUC {E(r.huc8)})</title></path>')
+    for r in layers.trib.itertuples():
+        L.append(f'<path class="z-trib" d="{p.path(r.geometry.intersection(clip), **fine)}"><title>{E(r.gnis_name)}</title></path>')
+    if layers.river is not None:
+        d = p.path(layers.river.intersection(clip), **fine)
+        L.append(f'<path class="z-halo" d="{d}"/><path class="z-river" d="{d}"><title>{E(label)}</title></path>')
     for r in layers.res.itertuples():
         nm_ = str(r.gnis_name).strip() if isinstance(r.gnis_name, str) and r.gnis_name.strip() else "Unnamed reservoir"
         L.append(f'<path class="z-res" d="{p.path(r.geometry, **fine)}"><title>{E(nm_)}</title></path>')
@@ -263,25 +336,7 @@ def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gaug
         x, y = p.xy(c.x, c.y)
         L.append(_pin(x, y, f'<circle r="10" style="--c:{color[r.segment]}"/><text y="4" text-anchor="middle">'
                             f"{segments.index(r.segment) + 1}</text>", "z-num", zoom))
-    L.append('</g><g class="v-state">')
-    for name, lon, lat in CITIES:
-        x, y = p.xy(lon, lat)
-        L.append(_pin(x, y, f'<circle r="2.2"/><text x="5" y="3.5">{name}</text>', "z-city", zoom))
-    # a ring and a label when the river is small at state scale
-    shape = layers.river if layers.river is not None else area
-    rb = shape.bounds
-    span = max((rb[2] - rb[0]) * p.k, rb[3] - rb[1]) * p.s
-    if span < W * 0.18:
-        c = shape.centroid
-        cx, cy = p.xy(c.x, c.y)
-        right = cx < W * 0.6
-        ring = max(9.0, span / 2 + 5)
-        sx = 1 if right else -1
-        L.append(_pin(cx, cy, f'<circle r="{ring:.1f}"/><path d="M{sx * ring * 0.7:.1f} {-ring * 0.7:.1f}L{sx * 56} -34"/>'
-                              f'<text x="{sx * 60}" y="-30" text-anchor="{"start" if right else "end"}">{E(label)}</text>',
-                      "z-callout", zoom))
     L.append("</g></svg>")
-    # corner locator for the river view, scale bar, buttons, key
     loc_w = 84
     lp = Proj((b[0] - 0.1, b[1] - 0.1, b[2] + 0.1, b[3] + 0.1), loc_w)
     lx0, ly1 = lp.xy(ext[0], ext[1])
@@ -292,15 +347,23 @@ def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gaug
              f'<rect class="i-box" x="{lx0:.1f}" y="{ly0:.1f}" width="{max(3, lx1 - lx0):.1f}" height="{max(3, ly1 - ly0):.1f}"/></svg>')
     km_view = rv[2] / (p.s / 111.32)
     km = next((v for v in (1, 2, 5, 10, 20, 50, 100, 200) if v / km_view >= 0.12), 200)
-    scale = (f'<div class="zscale" aria-hidden="true"><span style="width:{km / km_view * 100:.1f}%"></span>'
-             f'{km} km ({km / KM_PER_MI:.0f} mi)</div>' if km / km_view < 0.5 else "")
+    scale = {"km": km, "miles": round(km / KM_PER_MI), "width_pct": round(km / km_view * 100, 1)} if km / km_view < 0.5 else None
+    return MapParts("".join(L), inset, scale, title, desc, sv, rvs, list(segments))
+
+
+def zoom_map(gnis_id: str, label: str, segments: list[str], layers: Layers, gauges: pd.DataFrame,
+             grids: Path, width: int = 600) -> str:
+    """The map card's contents: view buttons, the zoomable SVG with its state inset, scale bar and key."""
+    m = zoom_map_parts(gnis_id, label, segments, layers, gauges, grids, width)
+    scale = (f'<div class="zscale" aria-hidden="true"><span style="width:{m.scale["width_pct"]}%"></span>'
+             f'{m.scale["km"]} km ({m.scale["miles"]} mi)</div>' if m.scale else "")
     key = ('<ul class="maplegend" aria-label="Map key">' + "".join(
         f'<li><span class="n" style="--c:var(--s{i + 1})">{i + 1}</span>{E(sg)}</li>' for i, sg in enumerate(segments))
         + '<li><i></i>river and reservoirs</li><li><b class="g"></b>gauge</li></ul>')
     buttons = ('<div class="zbar" role="group" aria-label="Map view">'
                '<button type="button" data-view="state" aria-pressed="false">New Mexico</button>'
                '<button type="button" data-view="river" aria-pressed="true">The river</button></div>')
-    return f'<div class="zwrap" data-view="river">{buttons}<div class="zframe">{"".join(L)}{inset}{scale}</div>{key}</div>'
+    return f'<div class="zwrap" data-view="river">{buttons}<div class="zframe">{m.svg}{m.inset}{scale}</div>{key}</div>'
 
 
 ZOOM_JS = r"""

@@ -532,6 +532,49 @@ def report_rivers(
         raise typer.Exit(1)
 
 
+@app.command("export-site-data")
+def export_site_data(
+    river: Optional[list[str]] = typer.Option(None, "--river", help="Only these rivers (repeatable); the others are kept"),
+    out: Optional[Path] = typer.Option(None, "--out", help="Bundle directory (default: <repo>/dist/site-data)"),
+    no_social: bool = typer.Option(False, "--no-social", help="skip the 1200x630 share images"),
+    no_csv: bool = typer.Option(False, "--no-csv", help="skip the CSV downloads (small test bundles)"),
+    validate: bool = typer.Option(True, "--validate/--no-validate", help="check every file against docs/site-data/v1 schemas"),
+    config: Optional[Path] = typer.Option(None, "--config", help="default: <repo>/config/river_reports.yaml"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+):
+    """Write the website's data bundle (JSON, SVG and CSV files, schema in docs/site-data). Safe to run from cron."""
+    import yaml
+
+    from .core.config import PROJECT_ROOT
+    from .site.bundle import export
+
+    s = Settings.load(data_dir)
+    out = out or PROJECT_ROOT / "dist" / "site-data"
+    config = config or PROJECT_ROOT / "config" / "river_reports.yaml"
+
+    def load(name, default):
+        p = PROJECT_ROOT / "config" / name
+        return (yaml.safe_load(p.read_text()) or default) if p.exists() else default
+
+    cfg = (yaml.safe_load(config.read_text()) or {}) if config.exists() else {}
+    entries, failed = export(s.duckdb_path, out, PROJECT_ROOT, s.data_dir / "grids",
+                             s.parquet_dir / "reference" / "source=river_reports" / "huc8_climate.parquet", rivers=river, config=cfg,
+                             river_notes=load("river_notes.yaml", {}), exclusions=load("river_exclusions.yaml", []),
+                             descriptions=load("river_descriptions.yaml", {}), social=not no_social, csv=not no_csv)
+    console.print(f"[green]{len(entries)} rivers in {out}[/green]" + (f"; [red]{len(failed)} failed: {', '.join(failed)}[/red]" if failed else ""))
+    if validate:
+        from .site.schema import validate_bundle
+
+        problems = validate_bundle(out)
+        if problems:
+            for p in problems[:20]:
+                console.print(f"[red]schema: {p}[/red]")
+            raise typer.Exit(1)
+        console.print("[green]bundle matches the schema[/green]")
+    if failed:
+        raise typer.Exit(1)
+
+
 @app.command()
 def query(sql: str, data_dir: Optional[Path] = typer.Option(None, "--data-dir")):
     """Run a SQL query against the DuckDB catalog."""

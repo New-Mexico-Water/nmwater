@@ -527,7 +527,8 @@ def issues_section(r: RiverReport) -> str:
     return "".join(parts)
 
 
-def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
+def explorer_data(r: RiverReport) -> dict:
+    """Weekly mean cfs per segment for the whole record: {keys, series: [{name, v, n}], first, last}."""
     keys = [w.isoformat() for w in r.weeks_all]
     pos = {k: i for i, k in enumerate(keys)}
     series = []
@@ -539,7 +540,12 @@ def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
             n[pos[k]] = int(c)
         series.append({"name": s, "v": v, "n": n})
     first = next((r.weeks_all[i] for i in range(len(keys)) if any(sr["v"][i] is not None for sr in series)), r.weeks_all[0])
-    last = r.weeks_all[-1] + timedelta(days=6)
+    return {"keys": keys, "series": series, "first": first, "last": r.weeks_all[-1] + timedelta(days=6)}
+
+
+def write_explorer(path: Path, r: RiverReport, generated: str) -> None:
+    ex = explorer_data(r)
+    keys, series, first, last = ex["keys"], ex["series"], ex["first"], ex["last"]
     rows = _gauge_rows(r)
     gt = "".join(
         f"<tr><td>{html.escape(x['segment'])}</td><td>{html.escape(x['gauge'])}</td><td>{html.escape(x['copies'])}</td>"
@@ -615,10 +621,8 @@ def write_notes(path: Path, r: RiverReport, generated: str) -> None:
     path.write_text("\n".join(L) + "\n")
 
 
-def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = None) -> dict:
-    """page: {con, river_name, grids, cache, background} to render the tabbed river page (river_page.py);
-    without it the plain flow explorer is written as index.html."""
-    d.mkdir(parents=True, exist_ok=True)
+def write_csvs(d: Path, r: RiverReport) -> None:
+    """The river's CSV files: weekly means by segment (all time, last 52 weeks), by gauge, and copy agreement."""
     rnd = {"mean_cfs": 1, "min_cfs": 1, "max_cfs": 1}
     r.seg_all.round(rnd).to_csv(d / "all_weeks_by_segment.csv", index=False)
     r.seg52.round(rnd).to_csv(d / "last_52_weeks_by_segment.csv", index=False)
@@ -627,6 +631,13 @@ def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = Non
         {"mean_cfs": 1})[["segment", "gauge", "source_used", "week_start", "mean_cfs", "n_days", "in_segment_mean"]
                          ].to_csv(d / "last_52_weeks_by_gauge.csv", index=False)
     r.agree52.to_csv(d / "copy_agreement.csv", index=False)
+
+
+def write_river(d: Path, r: RiverReport, generated: str, page: dict | None = None) -> dict:
+    """page: {con, river_name, grids, cache, background} to render the tabbed river page (river_page.py);
+    without it the plain flow explorer is written as index.html."""
+    d.mkdir(parents=True, exist_ok=True)
+    write_csvs(d, r)
     (d / "data_issues.json").write_text(json.dumps(
         {"river": r.river, "removed_values": r.removed, "reviewed_notes": r.data_notes,
          "findings": [f.as_dict() for f in r.issues]}, indent=1, default=str))

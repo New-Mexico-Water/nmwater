@@ -1,0 +1,137 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Weekly flow",
+ "description": "rivers/<slug>/flow.json: weekly mean cfs per segment for the whole record. Series are parallel to `weeks`.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "river": {
+   "type": "string"
+  },
+  "weeks": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+   }
+  },
+  "first_year": {
+   "type": "integer"
+  },
+  "last_week_end": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "min_weeks": {
+   "type": "integer"
+  },
+  "series": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "color_index": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "v": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "n": {
+      "type": "array",
+      "items": {
+       "type": [
+        "integer",
+        "null"
+       ]
+      }
+     }
+    },
+    "required": [
+     "name",
+     "color_index",
+     "v",
+     "n"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "gauges": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "segment": {
+      "type": "string"
+     },
+     "gauge": {
+      "type": "string"
+     },
+     "copies": {
+      "type": "string"
+     },
+     "first": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "last": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "weeks": {
+      "type": "integer"
+     },
+     "in_mean": {
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "segment",
+     "gauge",
+     "copies",
+     "first",
+     "last",
+     "weeks",
+     "in_mean"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "dropped_segments": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ },
+ "required": [
+  "schema_version",
+  "river",
+  "weeks",
+  "first_year",
+  "last_week_end",
+  "min_weeks",
+  "series",
+  "gauges",
+  "notes",
+  "dropped_segments"
+ ],
+ "additionalProperties": true
+}
