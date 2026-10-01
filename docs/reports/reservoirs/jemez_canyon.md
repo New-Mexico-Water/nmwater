@@ -47,7 +47,7 @@ Report: `reports/reservoirs/jemez_canyon_annual_fill.csv`. Regenerate with `just
 | release | `usbr_hydrodata:2744` | 6,110 | 2010-01-01 | 2026-09-23 |
 | storage | `usbr_hydrodata:2744` | 19,258 | 1974-01-02 | 2026-09-23 |
 | storage | `usgs:08328500` | 18,232 | 1965-10-01 | 2015-08-31 |
-| release (gauge below dam) | `usgs:08328950` | 6,148 | 2009-09-30 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08328950` | 6,152 | 2009-09-30 | 2026-09-28 |
 | release (gauge below dam) | `usgs:08329000` | 24,836 | 1936-04-01 | 2009-09-29 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2744` 19,257, `usgs:08328500` 3,015, `usace_cwms:Jemez` 1.

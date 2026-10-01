@@ -43,7 +43,7 @@ Report: `reports/reservoirs/galisteo_annual_fill.csv`. Regenerate with `just rep
 | inflow | `usace_cwms:Galisteo` | 3,187 | 2018-01-02 | 2026-09-24 |
 | storage | `usace_cwms:Galisteo` | 3,189 | 2018-01-01 | 2026-09-24 |
 | storage | `usgs:08317900` | 12,419 | 1983-10-01 | 2017-09-30 |
-| release (gauge below dam) | `usgs:08317950` | 20,642 | 1970-03-20 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08317950` | 20,647 | 1970-03-20 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usgs:08317900` 12,419, `usace_cwms:Galisteo` 3,189.
 

@@ -49,7 +49,7 @@ Report: `reports/reservoirs/lake_sumner_annual_fill.csv`. Regenerate with `just 
 | release | `usbr_hydrodata:943` | 11,662 | 1990-02-28 | 2026-09-24 |
 | storage | `usbr_hydrodata:943` | 22,184 | 1965-10-01 | 2026-09-23 |
 | storage | `usgs:08384000` | 18,725 | 1965-10-01 | 2017-01-31 |
-| release (gauge below dam) | `usgs:08384500` | 40,443 | 1912-10-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08384500` | 40,447 | 1912-10-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:943` 22,184, `usgs:08384000` 63, `usace_cwms:Sumner` 1.
 

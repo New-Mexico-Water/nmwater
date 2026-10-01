@@ -50,7 +50,7 @@ Report: `reports/reservoirs/cochiti_annual_fill.csv`. Regenerate with `just repo
 | release | `usbr_hydrodata:2696` | 9,764 | 2000-01-01 | 2026-09-24 |
 | storage | `usbr_hydrodata:2696` | 18,895 | 1974-12-31 | 2026-09-23 |
 | storage | `usgs:08317300` | 16,344 | 1973-01-01 | 2017-09-30 |
-| release (gauge below dam) | `usgs:08317400` | 20,448 | 1970-10-01 | 2026-09-24 |
+| release (gauge below dam) | `usgs:08317400` | 20,452 | 1970-10-01 | 2026-09-28 |
 
 Storage is spliced day by day in registry priority order. Days taken from each site: `usbr_hydrodata:2696` 18,894, `usace_cwms:Cochiti` 1.
 
