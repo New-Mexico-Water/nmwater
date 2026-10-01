@@ -1,0 +1,373 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Watershed precipitation",
+ "description": "precipitation/<huc8>/precip.json: monthly totals, the last 90 days and the recent windows for one HUC8.",
+ "type": "object",
+ "properties": {
+  "huc8": {
+   "type": "string",
+   "pattern": "^\\d{8}$"
+  },
+  "name": {
+   "type": "string"
+  },
+  "states": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "area_km2": {
+   "type": "number"
+  },
+  "nm_fraction": {
+   "type": "number",
+   "minimum": 0,
+   "maximum": 1
+  },
+  "grid_fraction": {
+   "type": "number",
+   "minimum": 0,
+   "maximum": 1
+  },
+  "partial": {
+   "type": "boolean"
+  },
+  "coverage_note": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "stats": {
+   "type": "object",
+   "properties": {
+    "7": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "window_start": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "window_end": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "total_in": {
+         "type": "number"
+        },
+        "normal_in": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percent_of_normal": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percentile": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "class": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "wettest_date": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "wettest_in": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "window_start",
+        "window_end",
+        "total_in",
+        "normal_in",
+        "percent_of_normal",
+        "percentile",
+        "class",
+        "wettest_date",
+        "wettest_in"
+       ],
+       "additionalProperties": true
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "30": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "window_start": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "window_end": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "total_in": {
+         "type": "number"
+        },
+        "normal_in": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percent_of_normal": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percentile": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "class": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "wettest_date": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "wettest_in": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "window_start",
+        "window_end",
+        "total_in",
+        "normal_in",
+        "percent_of_normal",
+        "percentile",
+        "class",
+        "wettest_date",
+        "wettest_in"
+       ],
+       "additionalProperties": true
+      },
+      {
+       "type": "null"
+      }
+     ]
+    },
+    "90": {
+     "anyOf": [
+      {
+       "type": "object",
+       "properties": {
+        "window_start": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "window_end": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "total_in": {
+         "type": "number"
+        },
+        "normal_in": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percent_of_normal": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "percentile": {
+         "type": [
+          "number",
+          "null"
+         ]
+        },
+        "class": {
+         "type": [
+          "string",
+          "null"
+         ]
+        },
+        "wettest_date": {
+         "type": "string",
+         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "wettest_in": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "window_start",
+        "window_end",
+        "total_in",
+        "normal_in",
+        "percent_of_normal",
+        "percentile",
+        "class",
+        "wettest_date",
+        "wettest_in"
+       ],
+       "additionalProperties": true
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "7",
+    "30",
+    "90"
+   ],
+   "additionalProperties": true
+  },
+  "rivers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug",
+     "name"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "schema_version": {
+   "const": 1
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "baseline": {
+   "type": "string"
+  },
+  "months": {
+   "type": "array",
+   "items": {
+    "type": "string",
+    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+   }
+  },
+  "total_in": {
+   "type": "array",
+   "items": {
+    "type": [
+     "number",
+     "null"
+    ]
+   }
+  },
+  "normal_in": {
+   "type": "array",
+   "items": {
+    "type": [
+     "number",
+     "null"
+    ]
+   }
+  },
+  "days_counted": {
+   "type": "array",
+   "items": {
+    "type": [
+     "number",
+     "null"
+    ]
+   }
+  },
+  "complete": {
+   "type": "array",
+   "items": {
+    "type": "boolean"
+   }
+  },
+  "daily": {
+   "type": "object",
+   "properties": {
+    "dates": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "inches": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "note": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "dates",
+    "inches",
+    "note"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "huc8",
+  "name",
+  "states",
+  "area_km2",
+  "nm_fraction",
+  "grid_fraction",
+  "partial",
+  "coverage_note",
+  "stats",
+  "rivers",
+  "schema_version",
+  "as_of",
+  "baseline",
+  "months",
+  "total_in",
+  "normal_in",
+  "days_counted",
+  "complete",
+  "daily"
+ ],
+ "additionalProperties": true
+}

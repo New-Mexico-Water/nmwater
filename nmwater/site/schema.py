@@ -76,6 +76,51 @@ def river_consistency(d: Path, summary: dict, files: dict[str, dict]) -> list[st
     return out
 
 
+def precip_problems(root: Path, man: dict) -> list[str]:
+    """The precipitation section: files against their schemas, parallel arrays, the map and the rivers it links to."""
+    block = man.get("precipitation")
+    if not block:
+        return []
+    base = root / block["path"]
+    out: list[str] = []
+    idx_path = base / block["files"]["index"]
+    if not idx_path.exists():
+        return [f"precipitation: {idx_path} is missing"]
+    idx = json.loads(idx_path.read_text())
+    out += _validate(idx, "precip_index", "precipitation/index.json")
+    if out:
+        return out
+    svg = (base / block["files"]["map"]).read_text() if (base / block["files"]["map"]).exists() else ""
+    rivers = {e["slug"] for e in man.get("rivers", [])}
+    listed = {w["huc8"] for w in idx["watersheds"]}
+    if len(listed) != len(idx["watersheds"]) or len(listed) != block["watersheds"]:
+        out.append("precipitation: the manifest count and the index list differ")
+    for w in idx["watersheds"]:
+        h = w["huc8"]
+        if w["nm_fraction"] > 0 and f'data-huc8="{h}"' not in svg:           # a watershed wholly outside the state has a page but is not on the map
+            out.append(f"precipitation: watershed {h} is not in map.svg")
+        out += [f"precipitation/{h}: river {r['slug']} is not in the bundle" for r in w["rivers"] if r["slug"] not in rivers]
+        f = base / h / "precip.json"
+        if not f.exists():
+            out.append(f"precipitation: {f} is missing")
+            continue
+        d = json.loads(f.read_text())
+        bad = _validate(d, "precip_watershed", f"precipitation/{h}/precip.json")
+        out += bad
+        if bad:
+            continue
+        n = len(d["months"])
+        if any(len(d[k]) != n for k in ("total_in", "normal_in", "days_counted", "complete")):
+            out.append(f"precipitation/{h}: monthly arrays differ in length")
+        if len(d["daily"]["dates"]) != len(d["daily"]["inches"]):
+            out.append(f"precipitation/{h}: daily dates and inches differ in length")
+        if d["stats"] != w["stats"]:
+            out.append(f"precipitation/{h}: stats differ between index.json and precip.json")
+    for h in sorted({p.name for p in base.iterdir() if p.is_dir()} - listed):
+        out.append(f"precipitation: directory {h} is not listed in the index")
+    return out
+
+
 def validate_bundle(root: Path) -> list[str]:
     """Problems found in the bundle at root (an empty list means it conforms)."""
     try:
@@ -88,6 +133,7 @@ def validate_bundle(root: Path) -> list[str]:
         return [f"{man_path} is missing"]
     man = json.loads(man_path.read_text())
     problems += _validate(man, "manifest", "manifest.json")
+    problems += precip_problems(root, man)
     for e in man.get("rivers", []):
         d = root / e["path"]
         if not d.is_dir():
