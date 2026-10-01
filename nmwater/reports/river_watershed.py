@@ -99,15 +99,17 @@ def update_climate(grids: Path, wbd_dir: Path, cache: Path, codes: list[str]) ->
 
     # SNODAS snow-water equivalent, Mondays October-June
     # SNODAS moved its grid slightly in October 2013, so masks are built per grid (shape and corner).
-    done = set(pd.to_datetime(have.loc[have["variable"] == "swe_in", "date"]).dt.date)
+    # What is done is tracked per watershed and week: a watershed added later is filled for every past week,
+    # and a watershed the SNODAS grid does not reach (no cell inside) is skipped without reading the files.
+    swe_rows = have.loc[have["variable"] == "swe_in"]
+    done = set(zip(swe_rows["huc8"], pd.to_datetime(swe_rows["date"]).dt.date))
     mask_cache: dict[tuple, dict] = {}
     for f in sorted((grids / "snodas").glob("snodas_*.nc")):
         d = pd.Timestamp(f.stem.split("_")[1]).date()
-        if d.weekday() != 0 or d.month in (7, 8, 9) or d in done:
+        if d.weekday() != 0 or d.month in (7, 8, 9):
             continue
-        with NC_LOCK, xr.open_dataset(f) as ds:
-            a = ds["swe"].isel(time=0).load() if "time" in ds["swe"].dims else ds["swe"].load()
-        lat, lon = a["lat"].values, a["lon"].values
+        with NC_LOCK, xr.open_dataset(f) as ds:                  # metadata only until we know a value is needed
+            lat, lon = ds["lat"].values, ds["lon"].values
         step = np.diff(lat)
         if len(lat) < 2 or step.min() < 0.9 / 120 or step.max() > 1.1 / 120:
             log.warning("snodas %s: irregular grid, skipped (see scripts/repair_snodas_grid.py)", d)
@@ -116,9 +118,13 @@ def update_climate(grids: Path, wbd_dir: Path, cache: Path, codes: list[str]) ->
         if key not in mask_cache:
             mask_cache[key] = _masks(polys, lat, lon)
         masks = mask_cache[key]
-        for code, m in masks.items():
-            if m.any():
-                new.append((code, "swe_in", d, float(np.nanmean(a.values[m])) * M_TO_IN))
+        need = [c for c, m in masks.items() if m.any() and (c, d) not in done]
+        if not need:
+            continue
+        with NC_LOCK, xr.open_dataset(f) as ds:
+            a = ds["swe"].isel(time=0).load() if "time" in ds["swe"].dims else ds["swe"].load()
+        for code in need:
+            new.append((code, "swe_in", d, float(np.nanmean(a.values[masks[code]])) * M_TO_IN))
 
     if new:
         add = pd.DataFrame(new, columns=["huc8", "variable", "date", "value"])
@@ -149,3 +155,80 @@ def monthly_vs_normal(clim: pd.DataFrame, variable: str, baseline: tuple[int, in
     c = c.merge(norm, on=["huc8", "m"], how="left")
     c["anomaly"] = c["value"] - c["normal"]
     return c.drop(columns="m").sort_values(["huc8", "date"]).reset_index(drop=True)
+
+
+# ---------------------------------------------------------------------------- daily precipitation
+RECENT_DAYS = 90          # days shown in the recent-rain chart
+MONTHS_SHOWN = 36
+WINDOW_DAYS = 30          # the "last 30 days" comparison
+NORMAL_YEARS = (1991, 2020)
+
+
+def precip_summary(con, codes: list[str]) -> tuple[dict, dict] | None:
+    """Recent and monthly precipitation per HUC8 from the catalog's `watershed_precip` view
+    (nmwater watershed-precip), or None when the catalog does not have it.
+
+    Returns (series, coverage). series[huc8] has:
+      daily_dates, daily       the last RECENT_DAYS PRISM days (a PRISM day ends 12:00 UTC on its date)
+      months, month_total, month_normal, month_days, month_complete
+                               the last MONTHS_SHOWN months; a month in progress is compared with the
+                               1991-2020 median of the same days of that month
+      recent                   the last WINDOW_DAYS days against the same dates in 1991-2020: total,
+                               normal, percent of normal, percentile among the 30 years, wettest day
+      year_dates, year_daily   the last 365 days (for the CSV)
+    coverage[huc8] = {grid_fraction, has_precip, nm_fraction, states}."""
+    from .river_normal import percentile_rank
+
+    try:
+        con.sql("SELECT 1 FROM watershed_precip LIMIT 1")
+    except Exception:
+        return None
+    ids = ",".join("'" + c + "'" for c in sorted(set(codes)))
+    cov = {r.huc8: {"grid_fraction": float(r.grid_fraction), "has_precip": bool(r.has_precip), "nm_fraction": float(r.nm_fraction),
+                    "states": str(r.states)}
+           for r in con.sql(f"SELECT huc8, grid_fraction, has_precip, nm_fraction, states FROM watersheds WHERE huc8 IN ({ids})").df().itertuples()}
+    d = con.sql(f"""SELECT huc8, date::DATE AS date, precip_in FROM watershed_precip
+                    WHERE interval = 'daily' AND huc8 IN ({ids}) AND date >= DATE '1990-01-01' ORDER BY huc8, date""").df()
+    d["date"] = pd.to_datetime(d["date"])
+    out: dict = {}
+    for code, g in d.groupby("huc8"):
+        s = g.set_index("date")["precip_in"]
+        last = s.index.max()
+        recent = s.iloc[-RECENT_DAYS:]
+        # monthly totals; a complete month has every day
+        mm = s.groupby(s.index.to_period("M")).agg(["sum", "size"])
+        mm["days_in_month"] = [p.days_in_month for p in mm.index]
+        mm["complete"] = mm["size"] == mm["days_in_month"]
+        base = mm[(mm.index.year >= NORMAL_YEARS[0]) & (mm.index.year <= NORMAL_YEARS[1]) & mm["complete"]]
+        normal_by_month = base.groupby(base.index.month)["sum"].median()
+        shown = mm.iloc[-MONTHS_SHOWN:]
+        normals = []
+        for p, row in shown.iterrows():
+            if row["complete"]:
+                normals.append(float(normal_by_month.get(p.month, np.nan)))
+            else:                                               # month in progress: the same days in other years
+                n = int(row["size"])
+                vals = [s[(s.index.year == y) & (s.index.month == p.month) & (s.index.day <= n)].sum()
+                        for y in range(NORMAL_YEARS[0], NORMAL_YEARS[1] + 1)]
+                normals.append(float(np.median(vals)))
+        # the last WINDOW_DAYS days against the same calendar window in each baseline year
+        win = float(s.iloc[-WINDOW_DAYS:].sum())
+        ref = []
+        for y in range(NORMAL_YEARS[0], NORMAL_YEARS[1] + 1):
+            end = pd.Timestamp(year=y, month=last.month, day=min(last.day, pd.Timestamp(year=y, month=last.month, day=1).days_in_month))
+            ref.append(float(s[end - pd.Timedelta(days=WINDOW_DAYS - 1):end].sum()))
+        ref_a = np.array(ref)
+        normal30 = float(np.median(ref_a))
+        last30 = s.iloc[-WINDOW_DAYS:]
+        wet = last30.idxmax()
+        out[code] = {
+            "daily_dates": list(recent.index), "daily": [float(v) for v in recent.values],
+            "months": [p.to_timestamp() for p in shown.index], "month_total": [float(v) for v in shown["sum"]],
+            "month_normal": normals, "month_days": [int(v) for v in shown["size"]],
+            "month_complete": [bool(v) for v in shown["complete"]],
+            "recent": {"last": last, "window_start": last - pd.Timedelta(days=WINDOW_DAYS - 1), "total": win, "normal": normal30,
+                       "pct_normal": (win / normal30 * 100) if normal30 > 0 else None,
+                       "percentile": percentile_rank(ref_a, win), "wettest_date": wet, "wettest_in": float(last30.loc[wet])},
+            "year_dates": list(s.iloc[-365:].index), "year_daily": [float(v) for v in s.iloc[-365:].values],
+        }
+    return out, cov

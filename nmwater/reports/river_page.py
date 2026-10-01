@@ -54,6 +54,8 @@ class Bundle:
     clim: pd.DataFrame
     drought: pd.DataFrame
     huc8_of: dict
+    precip: dict | None = None           # rw.precip_summary: per-HUC8 daily and monthly precipitation, or None
+    coverage: dict | None = None         # per-HUC8 grid_fraction, has_precip, nm_fraction
 
 
 def extend(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Path) -> Bundle:
@@ -71,10 +73,48 @@ def extend(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Path) ->
     clim = rw.update_climate(grids, grids / "wbd", cache, codes) if codes else pd.DataFrame(
         columns=["huc8", "variable", "date", "value"])
     drought = rw.drought(con, codes) if codes else pd.DataFrame(columns=["huc8", "huc4", "date", "dsci"])
-    return Bundle(r, normal, dry, quality, clim, drought, huc8_of)
+    ps = rw.precip_summary(con, codes) if codes else None
+    return Bundle(r, normal, dry, quality, clim, drought, huc8_of, *(ps or (None, None)))
 
 
 # ---------------------------------------------------------------------------- data for the pages
+def coverage_note(cov: dict | None) -> str:
+    """Words for a watershed the precipitation grid covers only partly, or not at all."""
+    if not cov:
+        return ""
+    gf = cov["grid_fraction"]
+    why = ("the grid is cut at the New Mexico border" + (", and PRISM has no data in Mexico" if "MX" in cov.get("states", "") else ""))
+    if not cov["has_precip"]:
+        return f"Precipitation is not shown for this watershed: only {gf:.0%} of it lies inside the precipitation grid ({why})."
+    if gf < 0.95:
+        return f"The precipitation grid covers {gf:.0%} of this watershed ({why}), so the values are averages over that part only."
+    return ""
+
+
+def precip_block(b: Bundle, h: str | None, old: pd.DataFrame) -> dict:
+    """Precipitation fields of one segment: from the daily dataset when the catalog has it, else the monthly cache."""
+    cov = (b.coverage or {}).get(h)
+    base = {"coverage_note": coverage_note(cov), "daily_dates": [], "daily": [], "recent": None, "month_days": [],
+            "month_complete": []}
+    if b.precip is None:                                       # catalog without watershed_precip: monthly cache only
+        return {**base, "months": [_ms(x) for x in old["date"]], "precip": [_num(v, 2) for v in old["value"]],
+                "precip_normal": [_num(v, 2) for v in old["normal"]],
+                "coverage_note": "Daily precipitation is not available in this catalog."}
+    x = b.precip.get(h)
+    if not x:
+        return {**base, "months": [], "precip": [], "precip_normal": []}
+    rc = x["recent"]
+    return {**base,
+            "months": [_ms(t) for t in x["months"]], "precip": [_num(v, 2) for v in x["month_total"]],
+            "precip_normal": [_num(v, 2) for v in x["month_normal"]], "month_days": x["month_days"],
+            "month_complete": x["month_complete"],
+            "daily_dates": [_ms(t) for t in x["daily_dates"]], "daily": [_num(v, 3) for v in x["daily"]],
+            "recent": {"last": _ms(rc["last"]), "start": _ms(rc["window_start"]), "total": _num(rc["total"], 2),
+                       "normal": _num(rc["normal"], 2), "pct_normal": _num(rc["pct_normal"], 0),
+                       "percentile": _num(rc["percentile"], 0), "wettest_date": _ms(rc["wettest_date"]),
+                       "wettest_in": _num(rc["wettest_in"], 2)}}
+
+
 def page_data(b: Bundle) -> dict:
     r, segs = b.r, b.r.segments
     colors = {s: f"var(--s{i + 1})" for i, s in enumerate(segs)}
@@ -135,6 +175,7 @@ def page_data(b: Bundle) -> dict:
     for seg in segs:
         h = b.huc8_of.get(seg)
         p = pv[(pv["huc8"] == h) & (pv["date"] >= start)]
+        pr = precip_block(b, h, p)
         t = tv[(tv["huc8"] == h) & (tv["date"] >= start)]
         sw = swe[swe["huc8"] == h].copy()
         # snow: by day of the water year (Oct 1 = 0), last three winters and the 2004-2025 median
@@ -148,7 +189,7 @@ def page_data(b: Bundle) -> dict:
         dd = dd[dd["date"] >= pd.Timestamp(r.as_of) - pd.DateOffset(years=10)].sort_values("date")
         ws["segments"].append({
             "name": seg, "huc8": h, "huc4": h[:4] if h else "",
-            "months": [_ms(x) for x in p["date"]], "precip": [_num(v, 2) for v in p["value"]], "precip_normal": [_num(v, 2) for v in p["normal"]],
+            **pr,
             "tmonths": [_ms(x) for x in t["date"]], "tanom": [_num(v, 1) for v in t["anomaly"]],
             "swe_weeks": wk, "swe_median": [_num(med.get(w), 1) for w in wk],
             "swe_winters": [{"wy": int(y), "values": [_num(sw[(sw["wy"] == y) & (sw["dwy"] == w)]["value"].mean(), 1) for w in wk]} for y in winters],
@@ -158,6 +199,25 @@ def page_data(b: Bundle) -> dict:
 
 
 # ---------------------------------------------------------------------------- overview
+def write_precip_csv(d: Path, b: Bundle) -> None:
+    """precip_daily_last_365_days.csv: one row per segment and PRISM day, with the period each value covers."""
+    if b.precip is None:
+        return
+    rows = []
+    for seg in b.r.segments:
+        h = b.huc8_of.get(seg)
+        x = (b.precip or {}).get(h)
+        if not x:
+            continue
+        for t, v in zip(x["year_dates"], x["year_daily"]):
+            end = pd.Timestamp(t) + pd.Timedelta(hours=12)
+            rows.append({"segment": seg, "huc8": h, "date": pd.Timestamp(t).date().isoformat(), "precip_in": round(v, 4),
+                         "period_start_utc": (end - pd.Timedelta(days=1)).strftime("%Y-%m-%d %H:%M"),
+                         "period_end_utc": end.strftime("%Y-%m-%d %H:%M")})
+    if rows:
+        pd.DataFrame(rows).to_csv(d / "precip_daily_last_365_days.csv", index=False)
+
+
 def overview_rows(b: Bundle, data: dict) -> list[dict]:
     r = b.r
     rows = []
@@ -183,8 +243,9 @@ def overview_rows(b: Bundle, data: dict) -> list[dict]:
                     sc = (sal["median"][k][col], sal["decades"][k])
                     break
         ws = next(w for w in data["watershed"]["segments"] if w["name"] == seg)
-        p3 = [v for v in ws["precip"][-3:] if v is not None]
-        n3 = [v for v in ws["precip_normal"][-3:] if v is not None]
+        done = [i for i, c in enumerate(ws["month_complete"] or [True] * len(ws["precip"])) if c][-3:]
+        p3 = [ws["precip"][i] for i in done if ws["precip"][i] is not None]
+        n3 = [ws["precip_normal"][i] for i in done if ws["precip_normal"][i] is not None]
         rows.append({"segment": seg, "color": f"var(--s{i + 1})",
                      "flow": None if cur.empty else float(cur["mean_cfs"].iloc[0]),
                      "cls": None if nsr.empty else nsr["cls"].iloc[0], "pct": None if nsr.empty else float(nsr["pct"].iloc[0]),
@@ -258,8 +319,23 @@ SECTION_JS = r"""
   if ($("w-seg")) {
     const W = D.watershed, sel = $("w-seg"); opt(sel, W.segments, s => s.name + " (HUC " + s.huc8 + ")");
     const draw = () => { const s = W.segments[+sel.value];
+      const fD = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+      const fDY = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+      const note = $("w-cov"); note.hidden = !s.coverage_note; note.textContent = s.coverage_note || "";
+      const rr = s.recent, sum = $("w-recent-sum"), dbox = $("w-daily");
+      if (rr) {
+        sum.textContent = "Last 30 days, " + fD.format(rr.start) + " to " + fDY.format(rr.last) + ": " + rr.total.toFixed(2) + " in"
+          + (rr.pct_normal == null ? "" : ", " + rr.pct_normal + "% of normal (" + rr.normal.toFixed(2) + " in, the 1991-2020 median for these dates)")
+          + (rr.percentile == null ? "" : "; wetter than " + rr.percentile + "% of those 30 years")
+          + ". Wettest day: " + rr.wettest_in.toFixed(2) + " in, " + fDY.format(rr.wettest_date) + ".";
+        C.bars(dbox, { x: s.daily_dates, xType: "time", values: s.daily, color: "var(--s1)", name: "Precipitation", unit: "in", height: 180,
+          label: "Daily precipitation, last 90 days, " + s.name, tickFmt: m => fD.format(m) });
+      } else { sum.textContent = s.coverage_note ? "" : "No daily precipitation for this watershed."; dbox.replaceChildren(); }
+      const partial = s.month_complete || [];
       C.bars($("w-precip"), { x: s.months, xType: "time", xRes: "month", values: s.precip, color: "var(--s1)", name: "Precipitation", unit: "in",
-        ref: { name: "Normal (1991-2020 median)", values: s.precip_normal }, height: 200, tickFmt: m => new Intl.DateTimeFormat("en-US", { month: "short", year: "2-digit", timeZone: "UTC" }).format(m) });
+        colorFn: (v, i) => partial.length && !partial[i] ? "var(--control)" : "var(--s1)", label: "Monthly precipitation, last 36 months, " + s.name,
+        ref: { name: "Normal (1991-2020 median)", values: s.precip_normal }, height: 200, extra: s.month_days.length ? [{ name: "Days counted", values: s.month_days }] : undefined,
+        tickFmt: m => new Intl.DateTimeFormat("en-US", { month: "short", year: "2-digit", timeZone: "UTC" }).format(m) });
       C.bars($("w-temp"), { x: s.tmonths, xType: "time", xRes: "month", values: s.tanom, colorFn: v => v >= 0 ? "var(--neg)" : "var(--pos)", name: "Difference from normal", unit: "°C", height: 200,
         tickFmt: m => new Intl.DateTimeFormat("en-US", { month: "short", year: "2-digit", timeZone: "UTC" }).format(m) });
       const pal = ["var(--s3)", "var(--s4)", "var(--s2)"];
@@ -313,14 +389,23 @@ def sec_quality(b: Bundle) -> str:
 
 
 def sec_watershed(b: Bundle) -> str:
+    daily = b.precip is not None
     return ('<h2>Watershed conditions</h2>'
-            '<p class="hint">Averaged over each segment\'s HUC8 watershed: precipitation and air temperature from PRISM (monthly, '
-            '4 km), snow-water equivalent from SNODAS (weekly, 1 km, from 2004), and drought from the US Drought Monitor\'s '
-            'Drought Severity and Coverage Index for the larger HUC4 basin (0 = no drought, 500 = all of the basin in '
-            'exceptional drought).</p>'
+            '<p class="hint">Averaged over each segment\'s HUC8 watershed: precipitation and air temperature from PRISM (4 km; '
+            'precipitation daily since 1981 and monthly before, temperature monthly), snow-water equivalent from SNODAS (weekly, '
+            '1 km, from 2004), and drought from the US Drought Monitor\'s Drought Severity and Coverage Index for the larger HUC4 '
+            'basin (0 = no drought, 500 = all of the basin in exceptional drought).</p>'
             '<div class="controls"><label for="w-seg">Segment</label><select id="w-seg"></select></div>'
-            '<div class="grid2"><div><h3>Precipitation by month</h3><div id="w-precip"></div></div>'
-            '<div><h3>Air temperature, difference from normal</h3><div id="w-temp"></div></div>'
+            '<p class="note" id="w-cov" hidden></p>'
+            + ('<h3>Recent rain</h3><p class="hint" id="w-recent-sum"></p><div id="w-daily"></div>'
+               '<p class="hint">Each bar is a PRISM day: the 24 hours ending at 12:00 UTC (about 6 AM Mountain, 5 AM in winter) on '
+               'the date shown, so a bar is mostly the rain of the day before. The newest days are provisional: PRISM revises '
+               'about the latest six months. '
+               '<a href="precip_daily_last_365_days.csv">Daily values for the last 365 days (CSV)</a>.</p>' if daily else
+               '<p class="hint" id="w-recent-sum" hidden></p><div id="w-daily" hidden></div>')
+            + '<div class="grid2"><div><h3>Precipitation by month</h3><div id="w-precip"></div>'
+            + ('<p class="hint">Grey bar: the month so far, compared with the 1991-2020 median of the same days.</p>' if daily else '')
+            + '</div><div><h3>Air temperature, difference from normal</h3><div id="w-temp"></div></div>'
             '<div><h3>Snowpack</h3><div id="w-swe"></div></div><div><h3>Drought</h3><div id="w-dsci"></div></div></div>')
 
 
@@ -410,6 +495,7 @@ def render(con, b: Bundle, d: Path, grids: Path, background: dict | None, genera
     tmp.mkdir(parents=True, exist_ok=True)
     ex_style, ex_markup, ex_script, ex_issues = explorer_parts(b, tmp)
     shutil.rmtree(tmp)
+    write_precip_csv(d, b)
     gauges = gauge_points(con, b)
     overview, ov = ro.panel(b, rows, con, gauges, grids, root, background)
     tabs = [("overview", "Overview", overview), ("flow", "Flow", ex_markup)]

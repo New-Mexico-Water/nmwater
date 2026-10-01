@@ -237,10 +237,17 @@ Each river page has tabs (a tab can be linked as `index.html#watershed`):
 - **Temperature & salinity**: water temperature from sensors (this year against other years, the
   hottest 7-day stretch each year) and specific conductance by segment and decade
   (`river_quality.py`). Shown only where the river has such data.
-- **Watershed**: PRISM precipitation and temperature, SNODAS snowpack and the Drought Monitor index
-  for each segment's watershed (`river_watershed.py`; averages are cached in
-  `data/parquet/reference/source=river_reports/huc8_climate.parquet` and only new months and weeks
-  are computed on later runs).
+- **Watershed**: **recent rain** (daily precipitation for the last 90 days with the last-30-days total
+  against the 1991-2020 normal for the same dates, wetter-than percentile and wettest day, plus a CSV of
+  the last 365 days), monthly precipitation for 36 months against normal (the month in progress is
+  grey and compared with the same days of other years), PRISM air temperature, SNODAS snowpack and the
+  Drought Monitor index for each segment's watershed. Precipitation comes from the catalog's
+  `watershed_precip` view (`nmwater watershed-precip`; see
+  [reports/watershed-precipitation.md](reports/watershed-precipitation.md)); a watershed the grid covers
+  only partly says so, and one it barely covers shows no precipitation. Temperature and snow come from
+  `river_watershed.py` (averages cached in
+  `data/parquet/reference/source=river_reports/huc8_climate.parquet`; only new months and weeks, and
+  watersheds not yet filled, are computed on later runs).
 - **Data notes**: removed values, reviewed notes and automatic findings.
 
 ```
