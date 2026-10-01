@@ -1,0 +1,701 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "River summary (Overview)",
+ "description": "rivers/<slug>/summary.json",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "river": {
+   "type": "object",
+   "properties": {
+    "name": {
+     "type": "string"
+    },
+    "slug": {
+     "type": "string"
+    },
+    "gnis_id": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "name",
+    "slug",
+    "gnis_id"
+   ],
+   "additionalProperties": true
+  },
+  "generated": {
+   "type": "string"
+  },
+  "data_through": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "tabs": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "files": {
+   "type": "object"
+  },
+  "description": {
+   "type": "object",
+   "properties": {
+    "auto": {
+     "type": "string"
+    },
+    "background": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "text": {
+        "type": "string",
+        "minLength": 1
+       },
+       "sources": {
+        "type": "array",
+        "items": {
+         "type": "integer",
+         "minimum": 1
+        }
+       }
+      },
+      "required": [
+       "text",
+       "sources"
+      ],
+      "additionalProperties": true
+     }
+    },
+    "background_references": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "auto",
+    "background",
+    "background_references"
+   ],
+   "additionalProperties": true
+  },
+  "status": {
+   "type": "object",
+   "properties": {
+    "segments_rated": {
+     "type": "integer"
+    },
+    "segments_below_normal": {
+     "type": "integer"
+    },
+    "segments": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "segments_rated",
+    "segments_below_normal",
+    "segments"
+   ],
+   "additionalProperties": true
+  },
+  "segments": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "index": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "name": {
+      "type": "string"
+     },
+     "color_index": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "huc8": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "flow_cfs": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "class": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "percentile": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "last_52_weeks_cfs": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "dry_days_this_year": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "dry_days_normal": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "water_temp_c": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "water_temp_site": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "conductance_uS_cm": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "conductance_decade": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "precip_3_months_percent_of_normal": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "dsci": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "huc4": {
+      "type": "string"
+     },
+     "towns": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "acequias": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    },
+    "required": [
+     "index",
+     "name",
+     "color_index",
+     "huc8",
+     "flow_cfs",
+     "class",
+     "percentile",
+     "last_52_weeks_cfs",
+     "dry_days_this_year",
+     "dry_days_normal",
+     "water_temp_c",
+     "water_temp_site",
+     "conductance_uS_cm",
+     "conductance_decade",
+     "precip_3_months_percent_of_normal",
+     "dsci",
+     "huc4",
+     "towns",
+     "acequias"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "culture": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "text": {
+      "type": "string",
+      "minLength": 1
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1
+      }
+     }
+    },
+    "required": [
+     "text",
+     "sources"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "habitat": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "text": {
+      "type": "string",
+      "minLength": 1
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1
+      }
+     }
+    },
+    "required": [
+     "text",
+     "sources"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "users": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "text": {
+      "type": "string",
+      "minLength": 1
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1
+      }
+     }
+    },
+    "required": [
+     "text",
+     "sources"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "acequias": {
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "where": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "segment": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "sources": {
+        "type": "array",
+        "items": {
+         "type": "integer"
+        }
+       }
+      },
+      "required": [
+       "name",
+       "where",
+       "segment",
+       "sources"
+      ],
+      "additionalProperties": true
+     }
+    },
+    "map_distance_km": {
+     "type": "number"
+    },
+    "note": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "items",
+    "map_distance_km",
+    "note"
+   ],
+   "additionalProperties": true
+  },
+  "reservoirs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "dam": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "year": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "purpose": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "storage_af": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "note": {
+      "anyOf": [
+       {
+        "type": "null"
+       },
+       {
+        "type": "object",
+        "properties": {
+         "text": {
+          "type": "string",
+          "minLength": 1
+         },
+         "sources": {
+          "type": "array",
+          "items": {
+           "type": "integer",
+           "minimum": 1
+          }
+         }
+        },
+        "required": [
+         "text",
+         "sources"
+        ],
+        "additionalProperties": true
+       }
+      ]
+     }
+    },
+    "required": [
+     "name",
+     "dam",
+     "year",
+     "purpose",
+     "storage_af",
+     "note"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "water_use": {
+   "type": [
+    "object",
+    "null"
+   ]
+  },
+  "irrigation_districts": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "name": {
+      "type": "string"
+     },
+     "acres": {
+      "type": "number"
+     }
+    },
+    "required": [
+     "name",
+     "acres"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "water_systems": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "sources": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "integer",
+      "minimum": 1
+     },
+     "title": {
+      "type": "string"
+     },
+     "publisher": {
+      "type": "string"
+     },
+     "url": {
+      "type": "string",
+      "pattern": "^https?://"
+     },
+     "accessed": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "title",
+     "publisher",
+     "url",
+     "accessed"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "map": {
+   "type": "object",
+   "properties": {
+    "file": {
+     "type": "string"
+    },
+    "title": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    },
+    "view_state": {
+     "type": "string"
+    },
+    "view_river": {
+     "type": "string"
+    },
+    "inset_svg": {
+     "type": "string"
+    },
+    "scale": {
+     "anyOf": [
+      {
+       "type": "null"
+      },
+      {
+       "type": "object",
+       "properties": {
+        "km": {
+         "type": "number"
+        },
+        "miles": {
+         "type": "number"
+        },
+        "width_pct": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "km",
+        "miles",
+        "width_pct"
+       ],
+       "additionalProperties": true
+      }
+     ]
+    },
+    "key": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "index": {
+        "type": "integer"
+       },
+       "name": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "index",
+       "name"
+      ],
+      "additionalProperties": true
+     }
+    }
+   },
+   "required": [
+    "file",
+    "title",
+    "description",
+    "view_state",
+    "view_river",
+    "inset_svg",
+    "scale",
+    "key"
+   ],
+   "additionalProperties": true
+  },
+  "meta": {
+   "type": "object",
+   "properties": {
+    "title": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string",
+     "maxLength": 200
+    },
+    "social_image": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "site_name": {
+     "type": "string"
+    },
+    "dataset": {
+     "type": "object",
+     "properties": {
+      "name": {
+       "type": "string"
+      },
+      "first_year": {
+       "type": "integer"
+      },
+      "through": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      "keywords": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "variables": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "bounds": {
+       "type": "object",
+       "properties": {
+        "west": {
+         "type": "number"
+        },
+        "south": {
+         "type": "number"
+        },
+        "east": {
+         "type": "number"
+        },
+        "north": {
+         "type": "number"
+        }
+       },
+       "required": [
+        "west",
+        "south",
+        "east",
+        "north"
+       ],
+       "additionalProperties": true
+      }
+     },
+     "required": [
+      "name",
+      "first_year",
+      "through",
+      "keywords",
+      "variables",
+      "bounds"
+     ],
+     "additionalProperties": true
+    }
+   },
+   "required": [
+    "title",
+    "description",
+    "social_image",
+    "site_name",
+    "dataset"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "river",
+  "generated",
+  "data_through",
+  "tabs",
+  "files",
+  "description",
+  "status",
+  "segments",
+  "culture",
+  "habitat",
+  "users",
+  "acequias",
+  "reservoirs",
+  "water_use",
+  "irrigation_districts",
+  "water_systems",
+  "sources",
+  "map",
+  "meta"
+ ],
+ "additionalProperties": true
+}

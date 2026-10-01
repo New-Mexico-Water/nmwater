@@ -1,0 +1,103 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Data gaps and disparities",
+ "description": "rivers/<slug>/notes.json: removed values, reviewed notes and automatic findings.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "counts": {
+   "type": "object",
+   "properties": {
+    "removed_values": {
+     "type": "integer"
+    },
+    "reviewed_notes": {
+     "type": "integer"
+    },
+    "warnings": {
+     "type": "integer"
+    },
+    "context": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "removed_values",
+    "reviewed_notes",
+    "warnings",
+    "context"
+   ],
+   "additionalProperties": true
+  },
+  "removed_values": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "reviewed_notes": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "findings": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "kind": {
+      "type": "string"
+     },
+     "severity": {
+      "enum": [
+       "warn",
+       "info"
+      ]
+     },
+     "subject": {
+      "type": "string"
+     },
+     "text": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "kind",
+     "severity",
+     "subject",
+     "text"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "gauges": {
+   "type": "array",
+   "items": {
+    "type": "object"
+   }
+  },
+  "min_weeks": {
+   "type": "integer"
+  },
+  "method_notes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ },
+ "required": [
+  "schema_version",
+  "counts",
+  "removed_values",
+  "reviewed_notes",
+  "findings",
+  "gauges",
+  "min_weeks",
+  "method_notes"
+ ],
+ "additionalProperties": true
+}

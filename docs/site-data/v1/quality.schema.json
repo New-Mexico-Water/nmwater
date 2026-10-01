@@ -1,0 +1,178 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Water temperature and salinity",
+ "description": "rivers/<slug>/quality.json",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 1
+  },
+  "temperature": {
+   "type": "object",
+   "properties": {
+    "sites": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "name": {
+        "type": "string"
+       },
+       "segment": {
+        "type": [
+         "string",
+         "null"
+        ]
+       },
+       "stat": {
+        "type": "string"
+       },
+       "years": {
+        "type": "integer"
+       },
+       "season": {
+        "anyOf": [
+         {
+          "type": "null"
+         },
+         {
+          "type": "object",
+          "properties": {
+           "p10": {
+            "type": "array",
+            "items": {
+             "type": [
+              "number",
+              "null"
+             ]
+            }
+           },
+           "p50": {
+            "type": "array",
+            "items": {
+             "type": [
+              "number",
+              "null"
+             ]
+            }
+           },
+           "p90": {
+            "type": "array",
+            "items": {
+             "type": [
+              "number",
+              "null"
+             ]
+            }
+           },
+           "this_year": {
+            "type": "array",
+            "items": {
+             "type": [
+              "number",
+              "null"
+             ]
+            }
+           }
+          },
+          "required": [
+           "p10",
+           "p50",
+           "p90",
+           "this_year"
+          ],
+          "additionalProperties": true
+         }
+        ]
+       },
+       "heat_years": {
+        "type": "array",
+        "items": {
+         "type": "integer"
+        }
+       },
+       "heat": {
+        "type": "array",
+        "items": {
+         "type": [
+          "number",
+          "null"
+         ]
+        }
+       },
+       "metric": {
+        "type": "string"
+       }
+      },
+      "required": [
+       "name",
+       "segment",
+       "stat",
+       "years",
+       "season",
+       "heat_years",
+       "heat",
+       "metric"
+      ],
+      "additionalProperties": true
+     }
+    }
+   },
+   "required": [
+    "sites"
+   ],
+   "additionalProperties": true
+  },
+  "salinity": {
+   "type": "object",
+   "properties": {
+    "segments": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "decades": {
+     "type": "array",
+     "items": {
+      "type": "integer"
+     }
+    },
+    "median_uS_cm": {
+     "type": "array",
+     "items": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "n_days": {
+     "type": "array",
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "integer"
+      }
+     }
+    }
+   },
+   "required": [
+    "segments",
+    "decades",
+    "median_uS_cm",
+    "n_days"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "temperature",
+  "salinity"
+ ],
+ "additionalProperties": true
+}

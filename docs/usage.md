@@ -191,6 +191,32 @@ What the columns mean, how the days line up (a PRISM day ends at 12:00 UTC on it
 watersheds are covered and how it was checked are in
 [reports/watershed-precipitation.md](reports/watershed-precipitation.md).
 
+### export-site-data
+
+Writes the data bundle the website renders: JSON, SVG and CSV files with a versioned contract. Output goes to
+`dist/site-data/` (not in git). The site is a separate repository that builds every page from the bundle; the files
+and conventions are in [site-data/README.md](site-data/README.md), with JSON Schemas in `docs/site-data/v1/`.
+
+```
+nmwater export-site-data                         # every river (about 25 minutes)
+nmwater export-site-data --river "Rio Tesuque"   # one river; the others in the bundle are kept
+nmwater export-site-data --no-csv --no-social    # a small bundle for tests
+python -m nmwater.site.schema dist/site-data     # check a bundle against the schemas again
+```
+
+Every run checks the whole bundle against the schemas and a set of consistency rules a schema cannot state
+(parallel arrays the same length, every listed file present, every cited source defined, the map key matching the
+segments) and exits non-zero if anything is wrong. The tree is built in a temporary directory and swapped in at the
+end, so a failed run leaves the previous bundle in place. The legacy `report-rivers` pages are unchanged and keep
+working until the site replaces them.
+
+**Scheduling and publishing.** `scripts/cron/site_data.sh [--update] [--publish]` wraps the export for cron (lock,
+log in `data/logs/site_data.log`). `--publish` runs `scripts/cron/publish_site_data.sh` after a good export: it
+uploads the bundle to a Cloudflare R2 bucket as `bundles/<build id>/`, writes `latest.json` last (so a reader always
+sees one complete snapshot), keeps the newest seven bundles, and, if `WEB_REPO` is set, sends the site repository a
+`data-updated` event so it rebuilds. R2 and GitHub settings go in `.env` (see `.env.example`). Try it with
+`scripts/cron/publish_site_data.sh --dry-run` first: it checks the bundle and prints what it would do.
+
 ### report-rivers
 
 Builds a streamflow page for every river with gauges: weekly mean cfs per watershed (HUC8)

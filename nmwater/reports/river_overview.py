@@ -137,7 +137,8 @@ def about(b, facts: rm.MapFacts, res: dict, sources: dict, cites: Cites, backgro
     return f'<section class="card about" aria-labelledby="h-about"><h2 id="h-about">About the {E(b.r.river)}</h2>{"".join(out)}</section>'
 
 
-def journey(rows: list[dict], layers: rm.Layers, aqs: list[dict]) -> str:
+def segment_facts(rows: list[dict], layers: rm.Layers, aqs: list[dict]) -> list[dict]:
+    """Per segment, upstream to downstream: its status row plus the towns beside the river in it and its acequias."""
     towns = layers.all_towns
     if len(towns) and layers.river is not None:          # towns beside the river, not anywhere in a large watershed
         import warnings
@@ -145,18 +146,24 @@ def journey(rows: list[dict], layers: rm.Layers, aqs: list[dict]) -> str:
         with warnings.catch_warnings():                  # degrees are fine for "within a few km"
             warnings.simplefilter("ignore", UserWarning)
             towns = towns[towns.distance(layers.river) < TOWN_DEG]
-    legs = []
-    for i, x in enumerate(rows):
-        seg = x["segment"]
-        poly = layers.hucs.loc[layers.hucs["segment"] == seg, "geometry"]
+    out = []
+    for x in rows:
+        poly = layers.hucs.loc[layers.hucs["segment"] == x["segment"], "geometry"]
         tn = [] if poly.empty else [rm.town_name(n) for n in towns[towns.within(poly.iloc[0])]["NAME20"]][:4]
-        aq = [x["name"] for x in aqs if x["segment"] == seg]
+        out.append({**x, "towns": tn, "acequias": [a["name"] for a in aqs if a["segment"] == x["segment"]]})
+    return out
+
+
+def journey(rows: list[dict], layers: rm.Layers, aqs: list[dict]) -> str:
+    legs = []
+    for i, x in enumerate(segment_facts(rows, layers, aqs)):
+        tn, aq = x["towns"], x["acequias"]
         chip = "" if not x["cls"] else f' <span class="st {x["cls"].replace(" ", "-")}">{E(x["cls"])}</span>'
         flow = "No data last week" if x["flow"] is None else f'{x["flow"]:,.0f} cfs last week'
         dry = "" if not x["dry"] else f', {x["dry"]} dry day{"s" if x["dry"] != 1 else ""} this year'
         legs.append(
             f'<li class="leg" style="--c:var(--s{i + 1})"><span class="num" aria-hidden="true">{i + 1}</span>'
-            f'<h3><span class="vh">Segment {i + 1}: </span>{E(seg)}</h3><p>{flow}{chip}{dry}.</p>'
+            f'<h3><span class="vh">Segment {i + 1}: </span>{E(x["segment"])}</h3><p>{flow}{chip}{dry}.</p>'
             + (f"<p>Towns: {E(', '.join(tn))}.</p>" if tn else "")
             + (f'<p>{len(aq)} acequia{"s" if len(aq) != 1 else ""} along this reach, including {E(", ".join(aq[:4]))}.</p>'
                if len(aq) > 4 else f'<p>Acequias: {E(", ".join(aq))}.</p>' if aq else "")

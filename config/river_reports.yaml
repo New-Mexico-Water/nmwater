@@ -5,7 +5,7 @@
 # canonical links, social-share images (og:image) and the sitemap, which must use absolute URLs; until it is
 # set those tags are left out. license: a URL for the data licence, added to the pages' Dataset metadata.
 site:
-  name: New Mexico River Conditions
+  name: New Mexico Water
   base_url: null
   twitter: null
   license: null
