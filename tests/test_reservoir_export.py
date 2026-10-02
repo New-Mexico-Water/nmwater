@@ -99,7 +99,7 @@ def make_reservoirs(root, man):
             "measure": "percent_full", "river_slugs": ["rio-x"], "rivers": [{"slug": "rio-x", "name": "Rio X"}], "record": {"first_date": "1974-01-01", "last_date": "2026-09-28", "years": 53},
             "status": status, "daily": daily, "normal": {"basis": "30 years", "years": [1991], "baseline": "1991-2020", "window_days": 3}, "annual": ann,
             "capacity": {"basis": "operator_table", "primary_pool": "full", "pools": [], "eras": [], "override": None, "table": None, "validation": None},
-            "provenance": {"series": [], "credits": []}, "guidance": {"summary": "s", "uses": [], "cautions": []}, "dam": {}, "files": {"csv": []}}
+            "provenance": {"series": [], "credits": []}, "guidance": {"summary": "s", "uses": [], "cautions": []}, "dam_facts": {}, "files": {"csv": []}}
     (base / "heron-reservoir" / "fill.json").write_text(json.dumps(fill))
     row = {"slug": "heron-reservoir", "key": "heron", "name": "Heron Reservoir", "dam": "Heron Dam", "basin": "Rio Grande", "role": "storage", "measure": "percent_full",
            "rivers": [{"slug": "rio-x", "name": "Rio X"}], "latest_date": "2026-09-28", "storage_af": 27000.0, "capacity_af": 400000.0, "percent": 6.9, "percentile": 0.0,
@@ -133,3 +133,9 @@ def test_reservoir_section_validates_and_catches_inconsistencies(tmp_path):
     assert any("disagree on the latest values" in p for p in sch.validate_bundle(tmp_path))
     edit(f, "fill.json", lambda o: o["status"].update(percent=6.9, class_floored=True))
     assert any("class_floored" in p for p in sch.validate_bundle(tmp_path))
+
+
+def test_guidance_text_is_made_public_without_file_pointers_or_column_names():
+    assert sr.public_text("Compact. See elephant-butte-fill.md for the curated treatment. `days_flood_storage` shows") == "Compact. days in flood storage shows"
+    assert sr.public_list(["**Bold** stays", "run scripts/reservoir_fill.py", "read the notes.md"]) == ["**Bold** stays"]
+    assert "`" not in sr.public_text("a `b` c")

@@ -3,7 +3,7 @@
 reservoirs/
   index.json                       every reservoir: where it stands now, how that compares with the same date in other years, and its rivers
   <slug>/fill.json                 one reservoir: status, the last 365 days, the normal range for each date, the annual history, capacity
-                                   eras and pools, provenance, the registry's hand-written guidance, and the dam's facts
+                                   eras and pools, provenance, the registry's hand-written guidance, and the dam's facts (dam_facts)
   <slug>/annual_fill.csv           the annual table (one row per year)
   <slug>/daily_last_365_days.csv   storage, capacity in force and percent for each of the last 365 days
   annual_fill_all.csv              every reservoir-year
@@ -52,6 +52,24 @@ SMALL = {"of", "and", "the", "for", "de"}
 
 def slugify(s: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
+
+
+COLUMN_WORDS = {"days_flood_storage": "days in flood storage", "peak_flood_pct": "peak flood-pool percent"}
+
+
+def public_text(s: str) -> str:
+    """Registry guidance is written for the notes files next to the CSVs; for the public page, name columns in words and drop pointers to
+    files and scripts. Markdown **bold** is kept (the website renders it)."""
+    s = " ".join(str(s).split())
+    for col, words in COLUMN_WORDS.items():
+        s = s.replace(f"`{col}`", words).replace(col, words)
+    s = re.sub(r"\s*See [\w./-]+\.md[^.]*\.", "", s)
+    s = s.replace("The flood-pool columns carry the hydrological signal.", "The days spent in flood storage carry the hydrological signal.")
+    return s.replace("`", "")
+
+
+def public_list(items) -> list[str]:
+    return [public_text(x) for x in items or [] if "scripts/" not in str(x) and ".md" not in str(x)]
 
 
 def tidy_owner(v) -> str | None:
@@ -106,8 +124,7 @@ def normal_for_date(st: pd.DataFrame) -> dict | None:
                 out[f"p{q}"][d] = np.percentile(s, q)
         else:
             samples[-1] = np.array([])
-    return {"years": [int(y) for y in years], "basis": f"{len(years)} years of {BASELINE[0]}-{BASELINE[1]} whose capacity table is {'/'.join(sorted(TRUSTED))}"
-            .replace("published_pool/current_table/high/medium", "published, current-table, high- or medium-confidence"), **out, "_samples": samples}
+    return {"years": [int(y) for y in years], "basis": f"{len(years)} years of {BASELINE[0]}-{BASELINE[1]} whose capacity figure is published, current-table, high- or medium-confidence", **out, "_samples": samples}
 
 
 def dam_facts(nid_row: dict, cfg: dict) -> dict:
@@ -220,9 +237,8 @@ def export_one(con, key: str, cfg: dict, nid: dict, out: Path, rivers: dict[str,
                      "table": None if not rm else {"agency": rm.get("agency"), "effective_date": rm.get("effective_date"), "datum": rm.get("datum"), "description": rm.get("description")},
                      "validation": valid or None},
         "provenance": {"series": used, "credits": [{"name": SOURCES[s], "url": rv.SOURCE_CITES[s][1]} for s in rv.SOURCE_CITES if s in {u["site"].split(":")[0] for u in used}]},
-        "guidance": {"summary": " ".join(str(cfg.get("summary", "")).split()), "uses": [" ".join(x.split()) for x in cfg.get("uses") or []],
-                     "cautions": [" ".join(x.split()) for x in cfg.get("cautions") or []]},
-        "dam": dam_facts(nid_row, cfg),
+        "guidance": {"summary": public_text(cfg.get("summary", "")), "uses": public_list(cfg.get("uses")), "cautions": public_list(cfg.get("cautions"))},
+        "dam_facts": dam_facts(nid_row, cfg),
         "files": {"csv": ["annual_fill.csv", "daily_last_365_days.csv"] if csv else []},
     }
     d = out / "reservoirs" / slug
