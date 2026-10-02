@@ -29,9 +29,10 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
         shutil.rmtree(dst)
     for e in keep:
         d = dst / e["path"]
-        shutil.copytree(src / e["path"], d, ignore=shutil.ignore_patterns("*.csv"))
+        shutil.copytree(src / e["path"], d, ignore=shutil.ignore_patterns("*.csv", "social.png"))   # share images are large and not needed to test the pages
         s = json.loads((d / "summary.json").read_text())
         s["files"]["csv"] = []
+        s["files"].pop("social", None)
         (d / "summary.json").write_text(json.dumps(s, separators=(",", ":"), ensure_ascii=False))
     if man.get("geo"):                                 # the shared state and county layers
         shutil.copytree(src / "geo", dst / "geo")
