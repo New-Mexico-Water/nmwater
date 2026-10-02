@@ -676,6 +676,68 @@
     "dataset"
    ],
    "additionalProperties": true
+  },
+  "facts": {
+   "type": "object",
+   "description": "Numbers and names the website composes its sentences from (the river's length, drainage, neighbours, gauges).",
+   "properties": {
+    "length_km": {
+     "type": "number",
+     "minimum": 0
+    },
+    "drainage_km2": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "flows_into": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "tributaries": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "reservoirs": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "towns": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "gauges": {
+     "type": "integer",
+     "minimum": 0
+    },
+    "first_year": {
+     "type": "integer"
+    },
+    "as_of_year": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "length_km",
+    "drainage_km2",
+    "flows_into",
+    "tributaries",
+    "reservoirs",
+    "towns",
+    "gauges",
+    "first_year",
+    "as_of_year"
+   ],
+   "additionalProperties": true
   }
  },
  "required": [
