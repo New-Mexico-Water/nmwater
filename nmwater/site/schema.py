@@ -123,6 +123,60 @@ def _coords(c):
             yield from _coords(x)
 
 
+def reservoir_problems(root: Path, man: dict) -> list[str]:
+    """The reservoir section: files against their schemas, parallel arrays, the rivers it links to, and rules a schema cannot state."""
+    block = man.get("reservoirs")
+    if not block:
+        return []
+    base = root / block["path"]
+    ip = base / block["files"]["index"]
+    if not ip.exists():
+        return [f"reservoirs: {ip} is missing"]
+    idx = json.loads(ip.read_text())
+    out = _validate(idx, "reservoir_index", "reservoirs/index.json")
+    if out:
+        return out
+    rivers = {e["slug"] for e in man.get("rivers", [])}
+    slugs = [r["slug"] for r in idx["reservoirs"]]
+    if len(set(slugs)) != len(slugs) or len(slugs) != block["reservoirs"]:
+        out.append("reservoirs: the manifest count and the index list differ, or a slug repeats")
+    for r in idx["reservoirs"]:
+        f = base / r["slug"] / "fill.json"
+        if not f.exists():
+            out.append(f"reservoirs: {f} is missing")
+            continue
+        d = json.loads(f.read_text())
+        bad = _validate(d, "reservoir_fill", f"reservoirs/{r['slug']}/fill.json")
+        out += bad
+        if bad:
+            continue
+        w = f"reservoirs/{r['slug']}"
+        n = len(d["daily"]["dates"])
+        arrays = [k for k, v in d["daily"].items() if isinstance(v, list) and len(v) != n]
+        if arrays:
+            out.append(f"{w}: daily arrays differ in length: {', '.join(arrays)}")
+        na = len(d["annual"]["years"])
+        short = [k for k, v in d["annual"].items() if isinstance(v, list) and len(v) != na]
+        if short:
+            out.append(f"{w}: annual arrays differ in length: {', '.join(short)}")
+        out += [f"{w}: river {x['slug']} is not in the bundle" for x in d["rivers"] if x["slug"] not in rivers]
+        if d["measure"] == "storage_only" and (d["status"]["percent"] is not None or d["status"]["class"] or d["normal"]):
+            out.append(f"{w}: a storage-only reservoir must not carry a percent, a rating or a normal")
+        if d["status"]["class"] and not d["normal"]:
+            out.append(f"{w}: rated without a normal")
+        if d["normal"] and not all(f"normal_p{q}" in d["daily"] for q in (10, 25, 50, 75, 90)):
+            out.append(f"{w}: has a normal but not its daily percentiles")
+        if (d["status"]["class_floored"] and d["status"]["class"] != "normal"):
+            out.append(f"{w}: class_floored but the class is not normal")
+        if r["percent"] != d["status"]["percent"] or r["class"] != d["status"]["class"] or r["storage_af"] != d["status"]["storage_af"]:
+            out.append(f"{w}: index.json and fill.json disagree on the latest values")
+        for pth in d["files"]["csv"]:
+            if not (base / r["slug"] / pth).exists():
+                out.append(f"{w}: lists {pth}, which is missing")
+    out += [f"reservoirs: directory {p.name} is not listed in the index" for p in sorted(base.iterdir()) if p.is_dir() and p.name not in slugs]
+    return out
+
+
 def geo_problems(root: Path, man: dict) -> list[str]:
     """geo/*.geojson and precipitation/watersheds.geojson: valid collections, inside the state, every in-state watershed drawn."""
     out: list[str] = []
@@ -202,6 +256,7 @@ def validate_bundle(root: Path) -> list[str]:
     problems += _validate(man, "manifest", "manifest.json")
     problems += precip_problems(root, man)
     problems += geo_problems(root, man)
+    problems += reservoir_problems(root, man)
     problems += files_problems(root)
     for e in man.get("rivers", []):
         d = root / e["path"]

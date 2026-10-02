@@ -424,6 +424,13 @@
         "additionalProperties": true
        }
       ]
+     },
+     "slug": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "the reservoir's page (/reservoirs/<slug>/) when it has one"
      }
     },
     "required": [

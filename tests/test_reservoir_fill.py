@@ -1,15 +1,12 @@
 """Unit tests for the reservoir report engine's pure pieces (no catalog needed)."""
 
-import sys
 from itertools import pairwise
-from pathlib import Path
 
 import duckdb
 import numpy as np
 import pandas as pd
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-import reservoir_fill as rf
+from nmwater.derived import reservoirs as rf
 
 
 def test_pava_is_non_increasing_and_pins_heavy_weights():

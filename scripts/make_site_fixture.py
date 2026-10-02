@@ -49,6 +49,21 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
                 o["rivers"] = [r for r in o["rivers"] if r["slug"] in have]
             f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
         pre["files"]["csv"] = []
+    if man.get("reservoirs"):                          # every reservoir; river links cut down to the rivers kept
+        rs = man["reservoirs"]
+        shutil.copytree(src / rs["path"], dst / rs["path"], ignore=shutil.ignore_patterns("*.csv"))
+        have = {e["slug"] for e in keep}
+        for f in sorted((dst / rs["path"]).rglob("*.json")):
+            o = json.loads(f.read_text())
+            if f.name == "index.json":
+                for r in o["reservoirs"]:
+                    r["rivers"] = [x for x in r["rivers"] if x["slug"] in have]
+                o["files"]["csv"] = []
+            else:
+                o["rivers"] = [x for x in o["rivers"] if x["slug"] in have]
+                o["files"]["csv"] = []
+            f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
+        rs["files"]["csv"] = []
     man["rivers"] = keep
     rated = [e for e in keep if e["segments_rated"]]
     man["headlines"] = {"rivers": {"total": len(keep), "rated": len(rated),
