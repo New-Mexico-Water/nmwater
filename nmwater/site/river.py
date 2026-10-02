@@ -217,6 +217,35 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
 
 
 # ---------------------------------------------------------------------------- one river
+def period_status(rated: list[dict]) -> dict | None:
+    """{segments_rated, segments_below_normal, worst} for a set of rated segments ({segment, cls, pct})."""
+    rated = [x for x in rated if x.get("cls") and x.get("pct") is not None and not pd.isna(x["pct"])]
+    if not rated:
+        return None
+    worst = min(rated, key=lambda x: x["pct"])
+    return {"segments_rated": len(rated), "segments_below_normal": sum("below" in x["cls"] for x in rated),
+            "worst": {"segment": worst["segment"], "class": worst["cls"], "percentile": round(float(worst["pct"]), 1)}}
+
+
+def river_periods(r: rf.RiverReport, rows: list[dict]) -> dict:
+    """Flow rated over the last 7, 30, 90, 180 and 365 days, for the site's home page. The week is the weekly rating the river page shows
+    (the last complete week against the same week of the year); the others are the mean flow over that many days ending the same Sunday against the
+    same days in other years (rn.flow_periods)."""
+    end = (r.weeks52[-1] + timedelta(days=6)) if r.weeks52 else None
+    out: dict = {}
+    wk = period_status([{"segment": x["segment"], "cls": x["cls"], "pct": x["pct"]} for x in rows])
+    if wk:
+        out["7"] = wk
+    if end is not None and r.chosen is not None:
+        seg_of = dict(zip(r.gauges["gauge"], r.gauges["segment"])) if "gauge" in r.gauges else {}
+        res = rn.flow_periods(r.chosen, seg_of, r.elig, end)
+        for k, g in res.groupby("days"):
+            s = period_status(g.rename(columns={"cls": "cls", "pct": "pct"}).to_dict("records"))
+            if s:
+                out[str(int(k))] = s
+    return out
+
+
 def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Path, root: Path, d: Path, background: dict | None,
                  generated: str, site_name: str, social: bool = True, csv: bool = True) -> dict:
     """Write one river's files into d and return its manifest entry. csv=False leaves out the CSV downloads."""
@@ -274,6 +303,7 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
             "reporting": bool(len(r.seg52) and max(pd.to_datetime(r.seg52["week_start"])) >= pd.Timestamp(r.weeks52[-4])),
             "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
             "segments_rated": len(rated), "segments_below_normal": len(below),
+            "periods": river_periods(r, rows),
             "issues_warn": sum(f.severity == "warn" for f in r.issues), "removed_values": len(r.removed),
             "social_image": files.get("social"),
             "bytes": sizes, "generated": datetime.now(UTC).isoformat(timespec="seconds")}

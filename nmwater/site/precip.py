@@ -1,10 +1,11 @@
 """The precipitation part of the site data bundle (schema_version 2; schemas in docs/site-data/v2/).
 
 precipitation/
-  index.json            every watershed with recent rain over 7, 30 and 90 days against 1991-2020, coverage, and the rivers
+  index.json            every watershed with rain over the last 7, 30, 90, 180 and 365 days against 1991-2020, coverage, and the rivers
                         whose pages use it; the statewide page is drawn from this
   watersheds.geojson     the watersheds that reach into New Mexico, clipped to it (huc8, name); ratings are in index.json
-  recent.csv            the same numbers as a table
+  recent.csv            the same numbers as a table (the index also carries `statewide`: the same windows for the area-weighted mean of all the
+                        watersheds in New Mexico)
   <huc8>/precip.json    one watershed: months, the last 90 days, the windows, coverage, rivers
   <huc8>/precip_daily_last_365_days.csv
 
@@ -30,7 +31,7 @@ from . import geo
 from .river import clean
 
 log = logging.getLogger("nmwater.site.precip")
-WINDOWS = (7, 30, 90)
+WINDOWS = (7, 30, 90, 180, 365)
 NORMAL_YEARS = rw.NORMAL_YEARS
 PARTIAL_BELOW = 0.95            # grid_fraction under this: averages over part of the watershed
 NOTE = "A PRISM day is the 24 hours ending at 12:00 UTC on its date (about 5 to 6 AM Mountain), so a day's value is mostly the previous day's rain."
@@ -146,8 +147,15 @@ def export_precip(con, out: Path, rivers_dir: Path, grids: Path, wbd_dir: Path, 
     if csv:
         pd.DataFrame(csv_rows).to_csv(base / "recent.csv", index=False)
         files["csv"] = ["recent.csv"]
+    # statewide: the area-weighted mean of the daily watershed series (watershed area inside New Mexico), rated like any other series
+    w_in = ws.assign(w=ws["area_km2"] * ws["nm_fraction"]).set_index("huc8")["w"]
+    pv = daily.pivot(index="date", columns="huc8", values="precip_in")
+    cols = [c for c in pv.columns if w_in.get(c, 0) > 0]
+    wts = pv[cols].notna().mul(w_in[cols], axis=1)
+    state = (pv[cols].fillna(0).mul(w_in[cols], axis=1)).sum(axis=1) / wts.sum(axis=1)
+    statewide = {"watersheds": len(cols), "stats": {str(w): window_stats(state.dropna(), w) for w in WINDOWS}}
     index = {"schema_version": SCHEMA_VERSION, "generated": generated, "as_of": as_of, "windows": list(WINDOWS), "baseline": f"{NORMAL_YEARS[0]}-{NORMAL_YEARS[1]}",
-             "classes": [label for _, label in rn.CLASSES], "note": NOTE, "watersheds": rows, "files": files}
+             "classes": [label for _, label in rn.CLASSES], "note": NOTE, "statewide": statewide, "watersheds": rows, "files": files}
     (base / "index.json").write_text(json.dumps(clean(index), separators=(",", ":"), allow_nan=False), encoding="utf-8")
     log.info("precipitation: %d watersheds, data through %s", len(rows), as_of.date())
     return {"path": "precipitation/", "watersheds": len(rows), "as_of": as_of, "windows": list(WINDOWS), "files": files}

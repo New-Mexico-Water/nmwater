@@ -128,3 +128,63 @@ def drying(chosen: pd.DataFrame, segment_of: dict[str, str], elig: set[str], as_
     by_seg = per_day.groupby(["segment", "year"]).agg(any_dry_days=("any_dry", "sum"), gauge_dry_days=("n_dry", "sum"),
                                                       days_with_data=("n", "size"), n_gauges=("n", "max")).reset_index()
     return DryingResult(by_seg, by_gauge, as_of, normally_dry)
+
+
+PERIOD_DAYS = (30, 90, 180, 365)       # flow periods beyond the week (the week keeps its weekly rating above)
+MIN_PERIOD_COVERAGE = 0.75             # share of a period's days a gauge needs data for
+
+
+def _window_means(vals: np.ndarray, ok: np.ndarray, ends: np.ndarray, k: int) -> np.ndarray:
+    """Mean of vals over the k days ending at each index in `ends` (None where fewer than MIN_PERIOD_COVERAGE of them have data)."""
+    cs = np.concatenate([[0.0], np.cumsum(np.where(ok, vals, 0.0))])
+    cn = np.concatenate([[0], np.cumsum(ok.astype(int))])
+    lo = ends - k + 1
+    n = cn[ends + 1] - cn[np.maximum(lo, 0)]
+    s = cs[ends + 1] - cs[np.maximum(lo, 0)]
+    out = np.full(len(ends), np.nan)
+    good = (lo >= 0) & (n >= MIN_PERIOD_COVERAGE * k)
+    out[good] = s[good] / n[good]
+    return out
+
+
+def flow_periods(chosen: pd.DataFrame, segment_of: dict[str, str], elig: set[str], end: date, periods=PERIOD_DAYS,
+                 baseline: tuple[int, int] = BASELINE) -> pd.DataFrame:
+    """Mean flow over the last k days ending `end`, rated against the same calendar days in other years, per segment (the median of its gauges'
+    percentiles, like the weekly rating). Baseline years are `baseline` when at least MIN_BASE_YEARS have data, else the whole record when at least
+    MIN_FALLBACK_YEARS do. Columns: segment, days, pct, cls, n_gauges."""
+    d = chosen[chosen["gauge"].isin(elig)].copy()
+    if d.empty:
+        return pd.DataFrame(columns=["segment", "days", "pct", "cls", "n_gauges"])
+    d["date"] = pd.to_datetime(d["date"])
+    end_ts = pd.Timestamp(end)
+    rows = []
+    for gname, g in d.groupby("gauge"):
+        seg = segment_of.get(gname)
+        s = g.groupby("date")["cfs"].mean()
+        idx = pd.date_range(s.index.min(), max(s.index.max(), end_ts), freq="D")
+        v = s.reindex(idx)
+        ok = v.notna().to_numpy()
+        vals = v.fillna(0.0).to_numpy()
+        pos = {y: idx.get_indexer([pd.Timestamp(year=y, month=end_ts.month, day=min(end_ts.day, pd.Timestamp(year=y, month=end_ts.month, day=1).days_in_month))])[0]
+               for y in range(idx[0].year, end_ts.year + 1)}
+        for k in periods:
+            cur = _window_means(vals, ok, np.array([idx.get_loc(end_ts)]), k)[0]
+            if np.isnan(cur):
+                continue
+            years = [y for y in range(idx[0].year, end_ts.year) if pos[y] >= 0]
+            ends = np.array([pos[y] for y in years])
+            m = _window_means(vals, ok, ends, k)
+            yrs = np.array(years)
+            base = m[(yrs >= baseline[0]) & (yrs <= baseline[1]) & ~np.isnan(m)]
+            if len(base) < MIN_BASE_YEARS:
+                base = m[~np.isnan(m)]
+                if len(base) < MIN_FALLBACK_YEARS:
+                    continue
+            rows.append({"gauge": gname, "segment": seg, "days": k, "pct": percentile_rank(base, cur)})
+    if not rows:
+        return pd.DataFrame(columns=["segment", "days", "pct", "cls", "n_gauges"])
+    g = pd.DataFrame(rows).dropna(subset=["segment"])
+    out = g.groupby(["segment", "days"])["pct"].agg(["median", "size"]).reset_index()
+    out.columns = ["segment", "days", "pct", "n_gauges"]
+    out["cls"] = out["pct"].map(classify)
+    return out

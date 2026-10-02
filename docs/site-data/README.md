@@ -43,7 +43,7 @@ Written on every run (a `--river` run rebuilds it too, from the river summaries 
 
 | File | Contents |
 |---|---|
-| `precipitation/index.json` | every watershed with data: recent rain over 7, 30 and 90 days against 1991-2020 (`total_in`, `normal_in`, `percent_of_normal`, `percentile`, `class`, the wettest day), coverage (`grid_fraction`, `partial`, `coverage_note`) and the rivers whose pages use the watershed |
+| `precipitation/index.json` | every watershed with data: rain over the last 7, 30, 90, 180 and 365 days against 1991-2020 (`total_in`, `normal_in`, `percent_of_normal`, `percentile`, `class`, the wettest day), coverage (`grid_fraction`, `partial`, `coverage_note`) and the rivers whose pages use the watershed |
 | `precipitation/recent.csv` | the same numbers as a table |
 | `precipitation/<huc8>/precip.json` | one watershed: 36 months of totals with the 1991-2020 median, the last 90 days, the windows, the rivers |
 | `precipitation/<huc8>/precip_daily_last_365_days.csv` | the last 365 PRISM days with the exact period each covers |

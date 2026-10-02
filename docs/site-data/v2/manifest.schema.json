@@ -125,6 +125,45 @@
      },
      "generated": {
       "type": "string"
+     },
+     "periods": {
+      "type": "object",
+      "description": "Flow rated over the last 7, 30, 90, 180 and 365 days (keys are the number of days).",
+      "additionalProperties": {
+       "type": "object",
+       "properties": {
+        "segments_rated": {
+         "type": "integer"
+        },
+        "segments_below_normal": {
+         "type": "integer"
+        },
+        "worst": {
+         "type": "object",
+         "properties": {
+          "segment": {
+           "type": "string"
+          },
+          "class": {
+           "type": "string"
+          },
+          "percentile": {
+           "type": "number"
+          }
+         },
+         "required": [
+          "segment",
+          "class",
+          "percentile"
+         ]
+        }
+       },
+       "required": [
+        "segments_rated",
+        "segments_below_normal",
+        "worst"
+       ]
+      }
      }
     },
     "required": [
