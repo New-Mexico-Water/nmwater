@@ -4,6 +4,7 @@ catalog tables (variables, crosswalk, sources), coverage stats, and a data dicti
 from __future__ import annotations
 
 import logging
+import os
 from pathlib import Path
 
 import duckdb
@@ -75,6 +76,13 @@ def build(settings: Settings) -> Path:
     if dbp.exists():
         dbp.unlink()
     con = duckdb.connect(str(dbp))
+    # Bounded so the build spills to disk instead of squeezing the whole machine (systemd-oomd
+    # kills the desktop session scope under sustained memory pressure). Override with env vars.
+    con.execute(f"SET memory_limit='{os.environ.get('NMWATER_DUCKDB_MEMORY', '6GB')}'")
+    con.execute(f"SET threads={int(os.environ.get('NMWATER_DUCKDB_THREADS', '4'))}")
+    spill = dbp.parent / "duckdb_tmp"
+    spill.mkdir(parents=True, exist_ok=True)
+    con.execute(f"SET temp_directory='{spill.as_posix()}'")
     pq = settings.parquet_dir.as_posix()
 
     # Sites: union, HUC assignment (if WBD present), single table -----------------------

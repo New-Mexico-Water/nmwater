@@ -520,8 +520,43 @@ variables:
     kind: index
     medium: atmosphere
   drought_area_pct:
-    label: Percent area in drought category
-    definition: US Drought Monitor percent of area at or above the category named in source_param (D0..D4).
+    label: Percent area in drought category (retired)
+    definition: Retired 2026-10-02. It carried D0..D4 under one name and only D4 survived deduplication, so every stored value was D4. Replaced by drought_d0_pct..drought_d4_pct.
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  drought_d0_pct:
+    label: Percent of area in drought category D0 or worse
+    definition: US Drought Monitor percent of the area at or above category D0 (abnormally dry); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  drought_d1_pct:
+    label: Percent of area in drought category D1 or worse
+    definition: US Drought Monitor percent of the area at or above category D1 (moderate drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  drought_d2_pct:
+    label: Percent of area in drought category D2 or worse
+    definition: US Drought Monitor percent of the area at or above category D2 (severe drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  drought_d3_pct:
+    label: Percent of area in drought category D3 or worse
+    definition: US Drought Monitor percent of the area at or above category D3 (extreme drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
+    unit: percent
+    quantity: ratio
+    kind: index
+    medium: atmosphere
+  drought_d4_pct:
+    label: Percent of area in drought category D4 or worse
+    definition: US Drought Monitor percent of the area at or above category D4 (exceptional drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
     unit: percent
     quantity: ratio
     kind: index
