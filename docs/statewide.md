@@ -40,6 +40,23 @@ Membership is fixed by the registry (`catalog/reservoirs.yaml`, 24 reservoirs) a
 - **Not a measurement of water.** The Monitor is an expert blend of indicators, drawn by authors each week; it says how dry conditions are, not how much water there is.
 - **Licence.** The Monitor's reuse terms are still unread (issue #5); it is listed in the licence audit.
 
+## Temperature (`statewide/temperature.json`)
+
+- **Source.** PRISM Climate Group AN81 4 km mean-temperature grids (daily from 1981, monthly from 1895), averaged over the state polygon (the union of the 33 TIGER counties,
+  121,590 square miles by our calculation against the official 121,590). Each cell is weighted by the share of it inside the state and by the cosine of its latitude; cells without
+  data are left out of both sums, and the share of the state the grid covers is published (1.0).
+- **Windows.** Mean temperature over the last 7, 30, 90, 180 and 365 days ending on PRISM's latest day, against the mean of the same calendar days in each year of 1991-2020
+  (30 years; at least 20 are needed). The anomaly is the difference from that mean; the percentile ranks this window among those 30 years, and the class uses the same bands as flow and rain
+  (the website calls them colder and warmer).
+- **History.** The last 365 days with the baseline mean for each calendar day (smoothed over 15 days), every month since 1895 against the mean of that calendar month, and the
+  anomaly of each complete calendar year.
+- **Cross-check.** The monthly statewide mean is computed the same way from NOAA's nClimGrid and compared (1991 to the latest month): 440 months, bias +0.03 C,
+  mean absolute difference 0.14 C, largest 0.6 C, correlation 0.9998. The figures are in the file and a test fails if they drift past stated limits.
+- **Not a thermometer.** PRISM interpolates station data and estimates cells with no station; the newest days are provisional (PRISM revises about six months) and the two products
+  can disagree by a few tenths of a degree in the most recent months (PRISM was 0.3-0.6 C cooler than nClimGrid in March-July 2026). Mean temperature is the average of the day's
+  minimum and maximum, not a mean of hourly readings.
+- **Licence.** PRISM: free to reproduce and redistribute with attribution (credit and access date shown on the page).
+
 ## What cannot be totalled from what we hold
 
 | Metric | Why not |

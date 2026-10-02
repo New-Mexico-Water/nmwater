@@ -202,9 +202,46 @@ def statewide_problems(root: Path, man: dict) -> list[str]:
             out += _reservoir_statewide(root, d, m)
         elif m["id"] == "drought":
             out += _drought_statewide(d, m)
+        elif m["id"] == "temperature":
+            out += _temperature_statewide(d, m)
     for pth in block["files"]["csv"]:
         if not (base / pth).exists():
             out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _temperature_statewide(d: dict, entry: dict) -> list[str]:
+    from ..derived.river_normal import classify
+
+    out = _validate(d, "statewide_temperature", "statewide/temperature.json")
+    if out:
+        return out
+    w, h, now = "statewide/temperature.json", d["history"], d["latest"]
+    for name, blk in h.items():
+        n = len(next(iter(blk.values())))
+        if any(len(v) != n for v in blk.values()):
+            out.append(f"{w}: history {name} arrays differ in length")
+    days = [x["days"] for x in now["windows"]]
+    if days != sorted(set(days)):
+        out.append(f"{w}: windows are not unique and in order")
+    for x in now["windows"]:
+        if x["window_end"] != d["as_of"]:
+            out.append(f"{w}: the {x['days']}-day window does not end on as_of")
+        if (x["normal_c"] is None) != (x["anomaly_c"] is None) or (x["percentile"] is None) != (x["class"] is None):
+            out.append(f"{w}: the {x['days']}-day window is partly rated")
+        elif x["anomaly_c"] is not None:
+            if abs(x["anomaly_c"] - (x["mean_c"] - x["normal_c"])) > 0.01:
+                out.append(f"{w}: the {x['days']}-day anomaly is not the mean minus the normal")
+            if classify(x["percentile"]) != x["class"]:
+                out.append(f"{w}: the {x['days']}-day class does not follow its percentile")
+    a = h["annual"]
+    if a["years"] != sorted(set(a["years"])):
+        out.append(f"{w}: annual years are not unique and in order")
+    if h["recent_daily"]["dates"] and h["recent_daily"]["dates"][-1] != d["as_of"]:
+        out.append(f"{w}: the daily series does not end on as_of")
+    hd = entry["headline"]
+    if entry["as_of"] != d["as_of"] or any(hd.get(f"anomaly_{x['days']}_c") != x["anomaly_c"] or hd.get(f"class_{x['days']}") != x["class"] for x in now["windows"]):
+        out.append(f"{w}: index.json and the file disagree on the headline")
     return out
 
 

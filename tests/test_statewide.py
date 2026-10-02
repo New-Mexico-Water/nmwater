@@ -188,3 +188,101 @@ def test_export_statewide_writes_reservoirs_and_drought_together_and_the_bundle_
     idx = json.loads((tmp_path / "statewide" / "index.json").read_text())
     assert all(isinstance(m["as_of"], str) for m in idx["metrics"])
     assert (tmp_path / "statewide" / "drought_weekly.csv").exists() and (tmp_path / "statewide" / "drought.json").exists()
+
+
+# Temperature -------------------------------------------------------------------------------------------------------------------------------------------
+from nmwater.derived import statewide_temperature as stt
+
+
+def temp_daily(start="1981-01-01", end="2026-09-26", warm_last=2.0):
+    """A seasonal cycle with a small year-to-year wobble, and a warm final 30 days."""
+    d = pd.date_range(start, end, freq="D")
+    base = 12.5 + 11 * np.sin(2 * np.pi * (d.dayofyear - 110) / 365.25) + 0.3 * np.sin(d.year * 1.7)
+    s = pd.Series(base, index=d)
+    s.iloc[-30:] += warm_last
+    return s
+
+
+def test_weighted_mean_ignores_missing_cells_and_reports_coverage():
+    a = np.array([[[10.0, 20.0], [np.nan, 40.0]]])
+    w = np.array([1.0, 1.0, 1.0, 2.0])
+    m, cover = stt.weighted_mean(a, w)
+    assert m[0] == pytest.approx((10 + 20 + 80) / 4) and cover[0] == pytest.approx(4 / 5)
+
+
+def test_window_anomaly_is_mean_minus_baseline_mean_and_needs_enough_years():
+    s = temp_daily()
+    w = stt.window_stats(s, 30)
+    assert w["days"] == 30 and w["window_end"] == "2026-09-26" and w["years"] == 30
+    assert w["anomaly_c"] == pytest.approx(w["mean_c"] - w["normal_c"]) and w["anomaly_c"] == pytest.approx(2.0, abs=0.5)
+    assert w["percentile"] == 100.0 and w["class"] == "much above normal"
+    short = stt.window_stats(temp_daily(start="2010-01-01"), 30)
+    assert short["normal_c"] is None and short["class"] is None and short["years"] < stt.MIN_YEARS      # no normal from too few years
+    assert stt.window_stats(s.iloc[:5], 30) is None
+
+
+def test_monthly_and_annual_anomalies_and_incomplete_years_are_left_out():
+    idx = pd.date_range("1990-01-01", "2026-08-01", freq="MS")
+    m = pd.Series(10 + 10 * np.sin(2 * np.pi * (idx.month - 4) / 12), index=idx)
+    m[m.index.year == 2026] += 1.5
+    ma = stt.monthly_anomaly(m)
+    assert ma["anomaly_c"][ma.index.year == 2026].mean() == pytest.approx(1.5, abs=0.05)
+    a = stt.annual_anomaly(ma)
+    assert 2026 not in a.index and 2025 in a.index                    # 2026 has only eight months
+
+
+def test_recent_daily_has_a_smooth_normal_for_every_day():
+    r = stt.recent_daily(temp_daily(), 365)
+    assert len(r) == 365 and r["normal_c"].notna().all()
+    assert (r["tmean_c"].iloc[-30:] - r["normal_c"].iloc[-30:]).mean() > 1.0
+
+
+def test_temperature_section_is_exported_validated_and_catches_inconsistencies(tmp_path, monkeypatch):
+    from nmwater.site import statewide as swx
+    daily = temp_daily()
+    idx = pd.date_range("1895-01-01", "2026-08-01", freq="MS")
+    monthly = pd.Series(10 + 10 * np.sin(2 * np.pi * (idx.month - 4) / 12), index=idx)
+    monkeypatch.setattr(stt, "nm_polygon", lambda g: None)
+    monkeypatch.setattr(stt, "series", lambda g, p=None: (daily, monthly, 1.0))
+    monkeypatch.setattr(stt, "crosscheck", lambda g, p, m: {"source": "x", "months": 200, "bias_c": 0.0, "mean_abs_diff_c": 0.1, "max_abs_diff_c": 0.5, "correlation": 0.999})
+    grids = tmp_path / "grids"
+    (grids / "prism").mkdir(parents=True)
+    (grids / "prism" / "tmean_daily_2026.nc").write_bytes(b"")
+    root = tmp_path / "bundle"
+    root.mkdir()
+    make_bundle(root)
+    man = json.loads((root / "manifest.json").read_text())
+    make_statewide(root, man)
+    base = root / "statewide"
+    content, entry = swx.temperature_file(grids, "2026-10-01T00:00:00+00:00", base)
+    assert [w["days"] for w in content["latest"]["windows"]] == [7, 30, 90, 180, 365] and (base / "temperature_monthly.csv").exists()
+    (base / "temperature.json").write_text(json.dumps(content))
+    idxj = json.loads((base / "index.json").read_text())
+    idxj["metrics"].append(entry)
+    (base / "index.json").write_text(json.dumps(idxj))
+    man["statewide"]["metrics"].append("temperature")
+    man["statewide"]["files"]["csv"].append("temperature_monthly.csv")
+    (root / "manifest.json").write_text(json.dumps(man))
+    assert [p for p in sch.validate_bundle(root) if "statewide" in p] == []
+    bad = lambda frag: any(frag in p for p in sch.validate_bundle(root))
+    edit(base, "temperature.json", lambda o: o["latest"]["windows"][1].update(anomaly_c=9.0))
+    assert bad("not the mean minus the normal")
+    edit(base, "temperature.json", lambda o: o["latest"]["windows"][1].update(anomaly_c=content["latest"]["windows"][1]["anomaly_c"], **{"class": "much below normal"}))
+    assert bad("does not follow its percentile")
+    edit(base, "temperature.json", lambda o: o["latest"]["windows"][1].update(**{"class": content["latest"]["windows"][1]["class"]}))
+    edit(base, "temperature.json", lambda o: o["history"]["monthly"]["anomaly_c"].pop())
+    assert bad("arrays differ")
+
+
+GRIDS = __import__("pathlib").Path("data/grids")
+
+
+@pytest.mark.skipif(not (GRIDS / "prism" / "tmean_monthly_2020.nc").exists() or not (GRIDS / "tiger" / "county.gpkg").exists(), reason="needs the PRISM and TIGER grids in data/grids")
+def test_state_polygon_area_and_prism_against_nclimgrid_on_the_archive():
+    import geopandas as gpd
+    poly = stt.nm_polygon(GRIDS)
+    sq_mi = gpd.GeoSeries([poly], crs=4326).to_crs(5070).area.iloc[0] / 2.58999e6
+    assert sq_mi == pytest.approx(121_590, rel=0.005)                    # the state's land and water area, 121,590 square miles
+    monthly = stt.series(GRIDS, poly)[1]
+    cc = stt.crosscheck(GRIDS, poly, monthly)
+    assert cc and cc["months"] > 300 and cc["correlation"] > 0.999 and cc["mean_abs_diff_c"] < 0.3 and abs(cc["bias_c"]) < 0.2
