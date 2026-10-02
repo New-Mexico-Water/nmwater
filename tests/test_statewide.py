@@ -110,3 +110,65 @@ def test_statewide_section_is_validated_and_catches_inconsistencies(tmp_path):
     edit(base, "reservoirs.json", lambda o: o["groups"]["all"].update(keys=["heron", "caballo", "ute"]))
     edit(base, "reservoirs.json", lambda o: o["recent_supply"].update(percent=[1.0]))
     assert bad("recent_supply arrays differ")
+
+
+def drought_con(weeks=60, start="2024-01-02"):
+    """An in-memory catalog with a statewide USDM series: cumulative categories that rise, so the latest week is the worst."""
+    import duckdb
+    con = duckdb.connect()
+    con.execute("CREATE TABLE observations (site_uid VARCHAR, variable VARCHAR, datetime_utc TIMESTAMPTZ, value DOUBLE)")
+    dates = pd.date_range(start, periods=weeks, freq="7D", tz="UTC")
+    for i, d in enumerate(dates):
+        base = i / weeks
+        cats = [90 * base + 10, 70 * base + 5, 50 * base, 30 * base, 10 * base]
+        for v, x in zip(sw.DROUGHT_VARS.values(), cats + [sum(cats)]):
+            con.execute("INSERT INTO observations VALUES ('usdm:state:35', ?, ?, ?)", [v, d.to_pydatetime(), float(x)])
+    con.execute("INSERT INTO observations VALUES ('usdm:huc8:1', 'dsci', ?, 999)", [dates[0].to_pydatetime()])   # another site: must not be mixed in
+    return con
+
+
+def test_drought_weekly_keeps_every_category_and_only_the_state():
+    w = sw.drought_weekly(drought_con())
+    assert list(w.columns) == ["d0", "d1", "d2", "d3", "d4", "dsci"] and len(w) == 60
+    assert (w["d0"] >= w["d1"]).all() and (w["d1"] >= w["d2"]).all() and (w["d3"] >= w["d4"]).all()     # D0-D3 are not lost to D4
+    assert w["dsci"].max() < 500 and (w["d4"] < w["d0"]).all()
+
+
+def test_drought_summary_changes_and_percentile_of_the_time_of_year():
+    w = sw.drought_weekly(drought_con(weeks=120))
+    s = sw.drought_summary(w)
+    assert s["as_of"] == w.index[-1].date().isoformat() and s["worst_category"] == "D4"
+    assert [c["weeks"] for c in s["changes"]] == [1, 4, 13, 26, 52]
+    c4 = next(c for c in s["changes"] if c["weeks"] == 4)
+    assert c4["change_dsci"] == pytest.approx(w["dsci"].iloc[-1] - w["dsci"].iloc[-5])
+    assert c4["change_d0"] == pytest.approx(w["d0"].iloc[-1] - w["d0"].iloc[-5])
+    assert s["percentile"] == pytest.approx(100.0)                      # the latest is worse than every earlier same-time-of-year week
+    assert s["sample_years"] >= 1 and s["baseline"] == "2000-2025"
+    assert sw.drought_summary(pd.DataFrame(columns=list(sw.DROUGHT_VARS))) is None
+
+
+def test_drought_section_is_exported_validated_and_catches_inconsistencies(tmp_path):
+    from nmwater.site import statewide as swx
+    make_bundle(tmp_path)
+    man = json.loads((tmp_path / "manifest.json").read_text())
+    make_statewide(tmp_path, man)
+    content, entry = swx.drought_file(drought_con(weeks=120), "2026-10-01T00:00:00+00:00", tmp_path / "statewide")
+    base = tmp_path / "statewide"
+    (base / "drought.json").write_text(json.dumps(content))
+    idx = json.loads((base / "index.json").read_text())
+    idx["metrics"].append(entry)
+    (base / "index.json").write_text(json.dumps(idx))
+    man["statewide"]["metrics"].append("drought")
+    man["statewide"]["files"]["csv"].append("drought_weekly.csv")
+    (tmp_path / "manifest.json").write_text(json.dumps(man))
+    assert (base / "drought_weekly.csv").exists()
+    assert [p for p in sch.validate_bundle(tmp_path) if "statewide" in p] == []
+    bad = lambda frag: any(frag in p for p in sch.validate_bundle(tmp_path))
+    edit(base, "drought.json", lambda o: o["history"]["d1"].__setitem__(-1, o["history"]["d0"][-1] + 1))
+    assert bad("not cumulative")
+    edit(base, "drought.json", lambda o: o["history"]["d1"].__setitem__(-1, content["history"]["d1"][-1]))
+    edit(base, "drought.json", lambda o: o["history"]["dsci"].__setitem__(-1, 7.0))
+    assert bad("not the sum of the categories")
+    edit(base, "drought.json", lambda o: o["history"]["dsci"].__setitem__(-1, content["history"]["dsci"][-1]))
+    edit(base, "drought.json", lambda o: o["history"]["d0"].pop())
+    assert bad("arrays differ")

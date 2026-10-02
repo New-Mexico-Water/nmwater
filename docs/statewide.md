@@ -28,6 +28,18 @@ Membership is fixed by the registry (`catalog/reservoirs.yaml`, 24 reservoirs) a
   reservoirs not in the registry (Storrie Lake, Morgan Lake, Stubblefield, Farmington Lake) and tailings ponds. And storage is not all New Mexico's: San Juan-Chama water in Heron,
   El Vado and Abiquiu belongs to its contractors; Elephant Butte and Caballo store Rio Grande Project water allocated to districts in New Mexico and Texas and to Mexico.
 
+## Drought (`statewide/drought.json`)
+
+- **Source.** The U.S. Drought Monitor's statewide series for New Mexico (`usdm:state:35`), weekly, valid Tuesdays, since 2000. Values are stored as the Monitor
+  published them; the only things we compute are the changes and the percentile.
+- **Categories.** The share of the state in D0 (abnormally dry) or worse, D1 (moderate) or worse, D2 (severe), D3 (extreme) and D4 (exceptional). Each is cumulative, so D0 >= D1 >= ... >= D4;
+  the bundle validator checks this for every week. (Before 2026-10-02 the ingest overwrote D0-D3 with D4; fixed, see the commit "USDM: keep D0-D4 as separate variables".)
+- **DSCI.** The Drought Severity and Coverage Index, the five cumulative percents added up (0 to 500). It is the Monitor's own number; the validator checks it equals the sum within 1.5.
+- **Changes.** The latest week against 1, 4, 13, 26 and 52 weeks earlier, for the DSCI and each category (percentage points).
+- **Percentile.** The share of weeks within 21 days of this time of year, 2000-2025 (this year excluded), with a lower DSCI. The record is 26 years, not a 30-year normal, and the file says so.
+- **Not a measurement of water.** The Monitor is an expert blend of indicators, drawn by authors each week; it says how dry conditions are, not how much water there is.
+- **Licence.** The Monitor's reuse terms are still unread (issue #5); it is listed in the licence audit.
+
 ## What cannot be totalled from what we hold
 
 | Metric | Why not |
