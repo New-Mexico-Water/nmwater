@@ -1,0 +1,948 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Statewide reservoirs",
+ "description": "statewide/reservoirs.json: acre-feet held and percent full of groups of reservoirs, with history, a normal for the date, window changes, members and exclusions.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "id": {
+   "const": "reservoirs"
+  },
+  "generated": {
+   "type": "string"
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+  },
+  "groups": {
+   "type": "object",
+   "properties": {
+    "supply": {
+     "type": "object",
+     "properties": {
+      "members": {
+       "type": "integer"
+      },
+      "keys": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "as_of": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      },
+      "storage_af": {
+       "type": "number"
+      },
+      "capacity_af": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "percent": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "stale": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "last_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         }
+        },
+        "required": [
+         "key",
+         "last_date"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "changes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "days": {
+          "type": "integer"
+         },
+         "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "storage_then_af": {
+          "type": "number"
+         },
+         "change_af": {
+          "type": "number"
+         },
+         "percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "percent_then": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "change_points": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "days",
+         "from",
+         "storage_af",
+         "storage_then_af",
+         "change_af"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "shares": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "slug": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "share_percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "key",
+         "slug",
+         "name",
+         "storage_af",
+         "share_percent"
+        ],
+        "additionalProperties": true
+       }
+      }
+     },
+     "required": [
+      "members",
+      "keys",
+      "as_of",
+      "storage_af",
+      "capacity_af",
+      "percent",
+      "stale",
+      "changes",
+      "shares"
+     ],
+     "additionalProperties": true
+    },
+    "flood_control": {
+     "type": "object",
+     "properties": {
+      "members": {
+       "type": "integer"
+      },
+      "keys": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "as_of": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      },
+      "storage_af": {
+       "type": "number"
+      },
+      "capacity_af": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "percent": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "stale": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "last_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         }
+        },
+        "required": [
+         "key",
+         "last_date"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "changes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "days": {
+          "type": "integer"
+         },
+         "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "storage_then_af": {
+          "type": "number"
+         },
+         "change_af": {
+          "type": "number"
+         },
+         "percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "percent_then": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "change_points": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "days",
+         "from",
+         "storage_af",
+         "storage_then_af",
+         "change_af"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "shares": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "slug": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "share_percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "key",
+         "slug",
+         "name",
+         "storage_af",
+         "share_percent"
+        ],
+        "additionalProperties": true
+       }
+      }
+     },
+     "required": [
+      "members",
+      "keys",
+      "as_of",
+      "storage_af",
+      "capacity_af",
+      "percent",
+      "stale",
+      "changes",
+      "shares"
+     ],
+     "additionalProperties": true
+    },
+    "dry": {
+     "type": "object",
+     "properties": {
+      "members": {
+       "type": "integer"
+      },
+      "keys": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "as_of": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      },
+      "storage_af": {
+       "type": "number"
+      },
+      "capacity_af": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "percent": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "stale": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "last_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         }
+        },
+        "required": [
+         "key",
+         "last_date"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "changes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "days": {
+          "type": "integer"
+         },
+         "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "storage_then_af": {
+          "type": "number"
+         },
+         "change_af": {
+          "type": "number"
+         },
+         "percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "percent_then": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "change_points": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "days",
+         "from",
+         "storage_af",
+         "storage_then_af",
+         "change_af"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "shares": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "slug": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "share_percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "key",
+         "slug",
+         "name",
+         "storage_af",
+         "share_percent"
+        ],
+        "additionalProperties": true
+       }
+      }
+     },
+     "required": [
+      "members",
+      "keys",
+      "as_of",
+      "storage_af",
+      "capacity_af",
+      "percent",
+      "stale",
+      "changes",
+      "shares"
+     ],
+     "additionalProperties": true
+    },
+    "owner_reported": {
+     "type": "object",
+     "properties": {
+      "members": {
+       "type": "integer"
+      },
+      "keys": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "as_of": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      },
+      "storage_af": {
+       "type": "number"
+      },
+      "capacity_af": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "percent": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "stale": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "last_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         }
+        },
+        "required": [
+         "key",
+         "last_date"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "changes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "days": {
+          "type": "integer"
+         },
+         "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "storage_then_af": {
+          "type": "number"
+         },
+         "change_af": {
+          "type": "number"
+         },
+         "percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "percent_then": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "change_points": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "days",
+         "from",
+         "storage_af",
+         "storage_then_af",
+         "change_af"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "shares": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "slug": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "share_percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "key",
+         "slug",
+         "name",
+         "storage_af",
+         "share_percent"
+        ],
+        "additionalProperties": true
+       }
+      }
+     },
+     "required": [
+      "members",
+      "keys",
+      "as_of",
+      "storage_af",
+      "capacity_af",
+      "percent",
+      "stale",
+      "changes",
+      "shares"
+     ],
+     "additionalProperties": true
+    },
+    "all": {
+     "type": "object",
+     "properties": {
+      "members": {
+       "type": "integer"
+      },
+      "keys": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      },
+      "as_of": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      },
+      "storage_af": {
+       "type": "number"
+      },
+      "capacity_af": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "percent": {
+       "type": [
+        "number",
+        "null"
+       ]
+      },
+      "stale": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "last_date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         }
+        },
+        "required": [
+         "key",
+         "last_date"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "changes": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "days": {
+          "type": "integer"
+         },
+         "from": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "storage_then_af": {
+          "type": "number"
+         },
+         "change_af": {
+          "type": "number"
+         },
+         "percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "percent_then": {
+          "type": [
+           "number",
+           "null"
+          ]
+         },
+         "change_points": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "days",
+         "from",
+         "storage_af",
+         "storage_then_af",
+         "change_af"
+        ],
+        "additionalProperties": true
+       }
+      },
+      "shares": {
+       "type": "array",
+       "items": {
+        "type": "object",
+        "properties": {
+         "key": {
+          "type": "string"
+         },
+         "slug": {
+          "type": "string"
+         },
+         "name": {
+          "type": "string"
+         },
+         "storage_af": {
+          "type": "number"
+         },
+         "share_percent": {
+          "type": [
+           "number",
+           "null"
+          ]
+         }
+        },
+        "required": [
+         "key",
+         "slug",
+         "name",
+         "storage_af",
+         "share_percent"
+        ],
+        "additionalProperties": true
+       }
+      }
+     },
+     "required": [
+      "members",
+      "keys",
+      "as_of",
+      "storage_af",
+      "capacity_af",
+      "percent",
+      "stale",
+      "changes",
+      "shares"
+     ],
+     "additionalProperties": true
+    }
+   },
+   "required": [
+    "supply",
+    "all"
+   ],
+   "additionalProperties": true
+  },
+  "history": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "object",
+    "properties": {
+     "dates": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+      }
+     },
+     "storage_af": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "capacity_af": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     },
+     "members": {
+      "type": "array",
+      "items": {
+       "type": [
+        "number",
+        "null"
+       ]
+      }
+     }
+    },
+    "required": [
+     "dates",
+     "storage_af",
+     "capacity_af",
+     "members"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "recent_supply": {
+   "type": "object",
+   "properties": {
+    "dates": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+     }
+    },
+    "storage_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "capacity_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "percent": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p10": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p25": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p50": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p75": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p90": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    }
+   },
+   "required": [
+    "dates",
+    "storage_af",
+    "capacity_af",
+    "percent"
+   ],
+   "additionalProperties": true
+  },
+  "ffill_days": {
+   "type": "integer"
+  },
+  "stale_days": {
+   "type": "integer"
+  },
+  "definitions": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "exclusions": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ },
+ "required": [
+  "schema_version",
+  "id",
+  "generated",
+  "as_of",
+  "groups",
+  "history",
+  "recent_supply",
+  "ffill_days",
+  "stale_days",
+  "definitions",
+  "exclusions"
+ ],
+ "additionalProperties": true
+}

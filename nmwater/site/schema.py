@@ -177,6 +177,81 @@ def reservoir_problems(root: Path, man: dict) -> list[str]:
     return out
 
 
+def statewide_problems(root: Path, man: dict) -> list[str]:
+    """The statewide section: files against their schemas and the rules a schema cannot state (membership, sums, percents)."""
+    block = man.get("statewide")
+    if not block:
+        return []
+    base = root / block["path"]
+    ip = base / block["files"]["index"]
+    if not ip.exists():
+        return [f"statewide: {ip} is missing"]
+    idx = json.loads(ip.read_text())
+    out = _validate(idx, "statewide_index", "statewide/index.json")
+    if out:
+        return out
+    if sorted(m["id"] for m in idx["metrics"]) != sorted(block["metrics"]):
+        out.append("statewide: the manifest and the index list different metrics")
+    for m in idx["metrics"]:
+        f = base / m["file"]
+        if not f.exists():
+            out.append(f"statewide: {f} is missing")
+            continue
+        d = json.loads(f.read_text())
+        if m["id"] == "reservoirs":
+            out += _reservoir_statewide(root, d, m)
+    for pth in block["files"]["csv"]:
+        if not (base / pth).exists():
+            out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _reservoir_statewide(root: Path, d: dict, entry: dict) -> list[str]:
+    out = _validate(d, "statewide_reservoirs", "statewide/reservoirs.json")
+    if out:
+        return out
+    w = "statewide/reservoirs.json"
+    g = d["groups"]
+    parts = [k for name in ("supply", "flood_control", "dry", "owner_reported") if name in g for k in g[name]["keys"]]
+    if len(parts) != len(set(parts)) or sorted(parts) != sorted(g["all"]["keys"]):
+        out.append(f"{w}: the groups do not partition the members of 'all'")
+    for name, e in g.items():
+        if e["members"] != len(e["keys"]):
+            out.append(f"{w}: group {name} counts {e['members']} members but lists {len(e['keys'])}")
+        has_pct = name in ("supply", "flood_control")
+        if has_pct and (e["capacity_af"] in (None, 0) or e["percent"] is None):
+            out.append(f"{w}: group {name} needs a capacity and a percent")
+        if not has_pct and (e["capacity_af"] is not None or e["percent"] is not None):
+            out.append(f"{w}: group {name} must not carry a capacity or a percent (acre-feet only)")
+        if has_pct and abs(e["percent"] - 100 * e["storage_af"] / e["capacity_af"]) > 0.01:
+            out.append(f"{w}: group {name} percent is not storage / capacity")
+        if abs(sum(x["storage_af"] for x in e["shares"]) - e["storage_af"]) > max(1.0, 1e-6 * e["storage_af"]) and not e["stale"]:
+            out.append(f"{w}: group {name} shares do not add up to its storage")
+    if abs(g["all"]["storage_af"] - sum(g[k]["storage_af"] for k in g if k != "all")) > max(50.0, 1e-4 * g["all"]["storage_af"]) and not g["all"]["stale"]:
+        out.append(f"{w}: 'all' storage is not the sum of the groups (they may differ only by reservoirs carried at different dates)")
+    for name, h in d["history"].items():
+        n = len(h["dates"])
+        if any(len(v) != n for v in h.values()):
+            out.append(f"{w}: history {name} arrays differ in length")
+    r = d["recent_supply"]
+    n = len(r["dates"])
+    short = [k for k, v in r.items() if isinstance(v, list) and len(v) != n]
+    if short:
+        out.append(f"{w}: recent_supply arrays differ in length: {', '.join(short)}")
+    if g["supply"].get("normal") and "normal_p50" not in r:
+        out.append(f"{w}: supply has a normal but recent_supply has no band")
+    if g["supply"].get("class") and not g["supply"].get("normal"):
+        out.append(f"{w}: supply is rated without a normal")
+    if entry["headline"]["storage_af"] != g["all"]["storage_af"] or entry["headline"].get("supply_storage_af") != g["supply"]["storage_af"]:
+        out.append(f"{w}: index.json and the file disagree on the headline storage")
+    slugs = set()
+    ri = root / "reservoirs" / "index.json"
+    if ri.exists():
+        slugs = {x["key"] for x in json.loads(ri.read_text())["reservoirs"]}
+        out += [f"{w}: member {k} is not a reservoir in the bundle" for k in g["all"]["keys"] if k not in slugs]
+    return out
+
+
 def geo_problems(root: Path, man: dict) -> list[str]:
     """geo/*.geojson and precipitation/watersheds.geojson: valid collections, inside the state, every in-state watershed drawn."""
     out: list[str] = []
@@ -257,6 +332,7 @@ def validate_bundle(root: Path) -> list[str]:
     problems += precip_problems(root, man)
     problems += geo_problems(root, man)
     problems += reservoir_problems(root, man)
+    problems += statewide_problems(root, man)
     problems += files_problems(root)
     for e in man.get("rivers", []):
         d = root / e["path"]

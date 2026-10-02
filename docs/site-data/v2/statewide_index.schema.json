@@ -1,0 +1,88 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Statewide index",
+ "description": "statewide/index.json: one entry per statewide metric, with its headline figures and the file that holds its history.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "generated": {
+   "type": "string"
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+  },
+  "metrics": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "title": {
+      "type": "string"
+     },
+     "file": {
+      "type": "string"
+     },
+     "as_of": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+     },
+     "unit": {
+      "type": "string"
+     },
+     "headline": {
+      "type": "object"
+     },
+     "sources": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    },
+    "required": [
+     "id",
+     "title",
+     "file",
+     "as_of",
+     "unit",
+     "headline",
+     "sources"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "files": {
+   "type": "object",
+   "properties": {
+    "index": {
+     "type": "string"
+    },
+    "csv": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "index",
+    "csv"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "generated",
+  "as_of",
+  "metrics",
+  "files"
+ ],
+ "additionalProperties": true
+}

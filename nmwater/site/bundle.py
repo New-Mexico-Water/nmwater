@@ -19,6 +19,7 @@ import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
+from ..derived import reservoirs as rv
 from ..derived import river_flow as rf
 from . import meta as rs
 from ..derived import river_watershed as rw
@@ -26,6 +27,7 @@ from . import SCHEMA_VERSION
 from . import geo
 from .precip import export_precip
 from .reservoirs import export_reservoirs
+from .statewide import export_statewide
 from .river import clean, export_river
 
 log = logging.getLogger("nmwater.site")
@@ -107,13 +109,15 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
             entries += [e for e in old if e["slug"] not in done]
         shared_geo = geo.write_shared(tmp, grids)
         precipitation = export_precip(con, tmp, tmp / "rivers", grids, grids / "wbd", generated, csv)
-        reservoirs = export_reservoirs(con, tmp, tmp / "rivers", generated, csv)
+        res = export_reservoirs(con, tmp, tmp / "rivers", generated, csv)
+        reservoirs, res_frames = res if res else (None, {})
+        statewide = export_statewide(tmp, res_frames, rv.load_registry(), generated, csv) if res_frames else None
         entries.sort(key=lambda e: (-e["gauges"], e["name"]))
         rated = [e for e in entries if e["segments_rated"]]
         manifest = {"schema_version": SCHEMA_VERSION, "producer": producer(root), "generated": generated,
                     "data_through": as_of, "site": {"name": site["name"]}, "license": rs.license_block(site),
                     "rivers": entries, "geo": shared_geo, **({"precipitation": precipitation} if precipitation else {}),
-                    **({"reservoirs": reservoirs} if reservoirs else {}),
+                    **({"reservoirs": reservoirs} if reservoirs else {}), **({"statewide": statewide} if statewide else {}),
                     "headlines": {"rivers": {"total": len(entries), "rated": len(rated),
                                              "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}}
         (tmp / "manifest.json").write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")
