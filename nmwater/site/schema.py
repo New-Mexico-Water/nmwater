@@ -200,9 +200,37 @@ def statewide_problems(root: Path, man: dict) -> list[str]:
         d = json.loads(f.read_text())
         if m["id"] == "reservoirs":
             out += _reservoir_statewide(root, d, m)
+        elif m["id"] == "drought":
+            out += _drought_statewide(d, m)
     for pth in block["files"]["csv"]:
         if not (base / pth).exists():
             out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _drought_statewide(d: dict, entry: dict) -> list[str]:
+    out = _validate(d, "statewide_drought", "statewide/drought.json")
+    if out:
+        return out
+    w, h, now = "statewide/drought.json", d["history"], d["latest"]
+    n = len(h["dates"])
+    if any(len(h[k]) != n for k in ("dsci", "d0", "d1", "d2", "d3", "d4")):
+        out.append(f"{w}: history arrays differ in length")
+        return out
+    if n != now["weeks"] or h["dates"][-1] != now["as_of"] or d["as_of"] != now["as_of"]:
+        out.append(f"{w}: latest does not describe the last history week")
+    if h["dates"] != sorted(set(h["dates"])):
+        out.append(f"{w}: history dates are not strictly increasing")
+    for i, dt in enumerate(h["dates"]):
+        c = [h[k][i] for k in ("d0", "d1", "d2", "d3", "d4")]
+        if any(a < b - 1e-6 for a, b in zip(c, c[1:])):
+            out.append(f"{w}: {dt} categories are not cumulative (D0 >= D1 >= D2 >= D3 >= D4)")
+            break
+        if abs(sum(c) - h["dsci"][i]) > 1.5:
+            out.append(f"{w}: {dt} DSCI {h['dsci'][i]} is not the sum of the categories {sum(c):.1f}")
+            break
+    if any(entry["headline"].get(k) != now[k] for k in ("dsci", "d0", "d1", "d2", "d3", "d4")) or entry["as_of"] != now["as_of"]:
+        out.append(f"{w}: index.json and the file disagree on the headline")
     return out
 
 

@@ -3,7 +3,8 @@
 statewide/
   index.json         one entry per metric: its title, unit, as-of date, headline figures and the file holding its history
   reservoirs.json    acre-feet held and percent full of groups of reservoirs, with history, a normal for the date, window changes, members and exclusions
-  (drought, temperature, snowpack and flow files follow in later phases)
+  drought.json       the U.S. Drought Monitor's state series: percent of the state in D0-D4 and the DSCI, weekly since 2000, with changes and a percentile for the time of year
+  (temperature, snowpack and flow files follow in later phases)
   *.csv              the histories as tables
 
 Definitions and exclusions are in nmwater/derived/statewide.py and docs/statewide.md.
@@ -109,7 +110,28 @@ def reservoirs_file(frames: dict[str, pd.DataFrame], reg: dict, generated: str, 
     return out, entry
 
 
-def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True) -> dict | None:
+def drought_file(con, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | None:
+    """(statewide/drought.json content, the index entry), or None when the catalog has no statewide drought series."""
+    w = sw.drought_weekly(con)
+    now = sw.drought_summary(w)
+    if now is None:
+        return None
+    hist = {"dates": [d.date().isoformat() for d in w.index], "dsci": [float(v) for v in w["dsci"]], **{c: [float(v) for v in w[c]] for c in ("d0", "d1", "d2", "d3", "d4")}}
+    out = {"schema_version": SCHEMA_VERSION, "id": "drought", "generated": generated, "as_of": now["as_of"], "site": sw.DROUGHT_SITE, "latest": now, "history": hist,
+           "definitions": {"categories": "D0 abnormally dry, D1 moderate, D2 severe, D3 extreme, D4 exceptional drought. Each percent is the share of the state in that category or a worse one, so D0 is at least D1 and so on.",
+                           "dsci": "Drought Severity and Coverage Index: the five cumulative percents added up, 0 (no part of the state abnormally dry) to 500 (all of it in exceptional drought).",
+                           "percentile": f"Percent of the weeks within {sw.DROUGHT_PLUS_MINUS_DAYS} days of this time of year in {now['baseline']} (excluding this year) with a lower DSCI. The record is short, so this is not a 30-year normal."},
+           "method": "Weekly statewide values published by the U.S. Drought Monitor (valid Tuesdays), stored unchanged; nothing is recomputed except the changes and the percentile."}
+    if csv_dir is not None:
+        pd.DataFrame({"valid_date": hist["dates"], "dsci": hist["dsci"], **{f"{c}_percent": hist[c] for c in ("d0", "d1", "d2", "d3", "d4")}}).to_csv(csv_dir / "drought_weekly.csv", index=False)
+    entry = {"id": "drought", "title": "Drought", "file": "drought.json", "as_of": now["as_of"], "unit": "DSCI (0-500) and percent of the state",
+             "headline": {"dsci": now["dsci"], "d0": now["d0"], "d1": now["d1"], "d2": now["d2"], "d3": now["d3"], "d4": now["d4"], "worst_category": now["worst_category"],
+                          "percentile": now["percentile"]},
+             "sources": ["usdm"]}
+    return out, entry
+
+
+def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None) -> dict | None:
     """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say."""
     base = out / "statewide"
     base.mkdir(parents=True, exist_ok=True)
@@ -121,6 +143,13 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("reservoirs_supply_weekly.csv")
+    dr = drought_file(con, generated, base if csv else None) if con is not None else None
+    if dr:
+        content, entry = dr
+        (base / "drought.json").write_text(json.dumps(clean(content), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        metrics.append(entry)
+        if csv:
+            files["csv"].append("drought_weekly.csv")
     if not metrics:
         return None
     as_of = max(m["as_of"] for m in metrics)

@@ -1,0 +1,210 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Statewide drought",
+ "description": "statewide/drought.json: the U.S. Drought Monitor's New Mexico series, weekly: percent of the state in D0-D4 and the DSCI, with changes and a percentile for the time of year.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "id": {
+   "const": "drought"
+  },
+  "generated": {
+   "type": "string"
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+  },
+  "site": {
+   "type": "string"
+  },
+  "latest": {
+   "type": "object",
+   "properties": {
+    "as_of": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+    },
+    "dsci": {
+     "type": "number"
+    },
+    "d0": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "d1": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "d2": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "d3": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "d4": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 100
+    },
+    "worst_category": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "changes": {
+     "type": "array",
+     "items": {
+      "type": "object",
+      "properties": {
+       "weeks": {
+        "type": "integer"
+       },
+       "from": {
+        "type": "string"
+       },
+       "dsci_then": {
+        "type": "number"
+       },
+       "change_dsci": {
+        "type": "number"
+       }
+      },
+      "required": [
+       "weeks",
+       "from",
+       "dsci_then",
+       "change_dsci"
+      ],
+      "additionalProperties": true
+     }
+    },
+    "percentile": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "sample_weeks": {
+     "type": "integer"
+    },
+    "sample_years": {
+     "type": "integer"
+    },
+    "baseline": {
+     "type": "string"
+    },
+    "record_start": {
+     "type": "string"
+    },
+    "weeks": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "as_of",
+    "dsci",
+    "d0",
+    "d1",
+    "d2",
+    "d3",
+    "d4",
+    "worst_category",
+    "changes",
+    "percentile",
+    "sample_weeks",
+    "baseline",
+    "record_start",
+    "weeks"
+   ],
+   "additionalProperties": true
+  },
+  "history": {
+   "type": "object",
+   "properties": {
+    "dates": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "dsci": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    },
+    "d0": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    },
+    "d1": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    },
+    "d2": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    },
+    "d3": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    },
+    "d4": {
+     "type": "array",
+     "items": {
+      "type": "number"
+     }
+    }
+   },
+   "required": [
+    "dates",
+    "dsci",
+    "d0",
+    "d1",
+    "d2",
+    "d3",
+    "d4"
+   ],
+   "additionalProperties": false
+  },
+  "definitions": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "method": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "schema_version",
+  "id",
+  "generated",
+  "as_of",
+  "site",
+  "latest",
+  "history",
+  "definitions",
+  "method"
+ ],
+ "additionalProperties": false
+}

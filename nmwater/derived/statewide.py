@@ -112,3 +112,56 @@ def storage_normal(s: pd.DataFrame, floor_af: float | None = None) -> tuple[dict
     if floor_af is not None and klass != "normal" and abs(now - median) < floor_af:
         klass, floored = "normal", True
     return normal, float(pctile), klass, floored, median
+
+
+# Drought -----------------------------------------------------------------------------------------------------------------------------------------------
+# The U.S. Drought Monitor's state series for New Mexico (site usdm:state:35): the share of the state in each cumulative category (D0 abnormally dry or worse ...
+# D4 exceptional drought) and the Drought Severity and Coverage Index (DSCI, 0-500: the sum of the five cumulative percents). Weekly, valid Tuesdays, since 2000.
+# Because the record is only 26 years the percentile is of the same time of year in those years, not of a 30-year normal, and the file says so.
+
+DROUGHT_WEEKS = (1, 4, 13, 26, 52)
+DROUGHT_BASELINE = (2000, 2025)
+DROUGHT_PLUS_MINUS_DAYS = 21                          # the same time of year: this week of the year and three either side
+DROUGHT_VARS = {"d0": "drought_d0_pct", "d1": "drought_d1_pct", "d2": "drought_d2_pct", "d3": "drought_d3_pct", "d4": "drought_d4_pct", "dsci": "dsci"}
+DROUGHT_SITE = "usdm:state:35"
+
+
+def drought_weekly(con) -> pd.DataFrame:
+    """Weekly statewide drought: index = valid date (UTC), columns d0..d4 (percent of the state, cumulative) and dsci. Empty when the catalog has no state series."""
+    names = ",".join(f"'{v}'" for v in DROUGHT_VARS.values())
+    d = con.sql(f"""SELECT (datetime_utc AT TIME ZONE 'UTC')::DATE AS date, variable, value FROM observations
+                    WHERE site_uid = '{DROUGHT_SITE}' AND variable IN ({names})""").df()
+    if d.empty:
+        return pd.DataFrame(columns=list(DROUGHT_VARS))
+    w = d.pivot_table(index="date", columns="variable", values="value", aggfunc="last")
+    w = w.rename(columns={v: k for k, v in DROUGHT_VARS.items()})
+    w.index = pd.to_datetime(w.index)
+    return w.reindex(columns=list(DROUGHT_VARS)).dropna(how="any").sort_index()
+
+
+def drought_summary(w: pd.DataFrame) -> dict | None:
+    """The latest week, what changed over DROUGHT_WEEKS, and where this week's DSCI stands among the same time of year in DROUGHT_BASELINE."""
+    if w.empty:
+        return None
+    asof = w.index[-1]
+    now = w.iloc[-1]
+    changes = []
+    for k in DROUGHT_WEEKS:
+        then = asof - pd.Timedelta(days=7 * k)
+        if then in w.index:
+            b = w.loc[then]
+            changes.append({"weeks": k, "from": then.date().isoformat(), "dsci_then": float(b["dsci"]), "change_dsci": float(now["dsci"] - b["dsci"]),
+                            **{f"{c}_then": float(b[c]) for c in ("d0", "d1", "d2", "d3", "d4")},
+                            **{f"change_{c}": float(now[c] - b[c]) for c in ("d0", "d1", "d2", "d3", "d4")}})
+    yrs = w[(w.index.year >= DROUGHT_BASELINE[0]) & (w.index.year <= DROUGHT_BASELINE[1]) & (w.index.year != asof.year)]
+    doy = yrs.index.dayofyear.to_numpy()
+    dist = np.abs(doy - asof.dayofyear)
+    dist = np.minimum(dist, 365 - dist)
+    sample = yrs[dist <= DROUGHT_PLUS_MINUS_DAYS]["dsci"].to_numpy()
+    cats = [c for c in ("d4", "d3", "d2", "d1", "d0") if now[c] > 0]
+    return {"as_of": asof.date().isoformat(), "dsci": float(now["dsci"]), **{c: float(now[c]) for c in ("d0", "d1", "d2", "d3", "d4")},
+            "worst_category": cats[0].upper() if cats else None, "changes": changes,
+            "percentile": None if not len(sample) else float(rn.percentile_rank(sample, float(now["dsci"]))),
+            "sample_weeks": int(len(sample)), "sample_years": int(yrs[dist <= DROUGHT_PLUS_MINUS_DAYS].index.year.nunique()),
+            "baseline": f"{DROUGHT_BASELINE[0]}-{DROUGHT_BASELINE[1]}",
+            "record_start": w.index[0].date().isoformat(), "weeks": int(len(w))}
