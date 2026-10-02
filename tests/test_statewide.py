@@ -172,3 +172,19 @@ def test_drought_section_is_exported_validated_and_catches_inconsistencies(tmp_p
     edit(base, "drought.json", lambda o: o["history"]["dsci"].__setitem__(-1, content["history"]["dsci"][-1]))
     edit(base, "drought.json", lambda o: o["history"]["d0"].pop())
     assert bad("arrays differ")
+
+
+def test_export_statewide_writes_reservoirs_and_drought_together_and_the_bundle_validates(tmp_path):
+    """The whole exporter on synthetic inputs (a full export takes 25 minutes, so a failure at its last step must be caught here)."""
+    from nmwater.site import statewide as swx
+    frames = {}
+    for k, cap in (("heron", 400.0), ("caballo", 300.0)):
+        f = frame("2026-01-01", "2026-09-28", 100.0, cap)
+        f["measure"], f["slug"] = "percent_full", k + "-r"
+        frames[k] = f
+    reg = {k: {"name": k.title()} for k in frames}
+    block = swx.export_statewide(tmp_path, frames, reg, "2026-10-01T00:00:00+00:00", True, drought_con(weeks=120))
+    assert block and block["metrics"] == ["reservoirs", "drought"] and block["as_of"] >= "2026-09-28"
+    idx = json.loads((tmp_path / "statewide" / "index.json").read_text())
+    assert all(isinstance(m["as_of"], str) for m in idx["metrics"])
+    assert (tmp_path / "statewide" / "drought_weekly.csv").exists() and (tmp_path / "statewide" / "drought.json").exists()
