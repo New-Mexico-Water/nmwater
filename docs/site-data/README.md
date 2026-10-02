@@ -45,3 +45,26 @@ Written on every run (a `--river` run rebuilds it too, from the river summaries 
 Ratings use the same percentile classes as flow (`much below normal` under the 10th percentile ... `much above normal` over the 90th). A window with
 fewer than 20 baseline years has no normal and no rating. A watershed wholly outside New Mexico (a Colorado or Texas HUC8 a river page uses) has a page
 but is not on the map. A PRISM day ends at 12:00 UTC on its date. Schemas: `precip_index.schema.json`, `precip_watershed.schema.json`.
+
+
+## Geometry (`geo/`, `rivers/<slug>/geo/`, `precipitation/watersheds.geojson`)
+
+nmwater prepares geometry (clipping, simplifying, joining; it needs the archive and the GIS libraries) and the website projects and draws it, so a
+map is data in the bundle, not a picture. GeoJSON (RFC 7946), WGS84 longitude/latitude, exterior rings counter-clockwise, coordinates rounded
+(3 decimals for state-scale layers, more for the fine river view).
+
+| File | Contents |
+|---|---|
+| `geo/state.geojson`, `geo/county-lines.geojson` | the state outline and the county boundaries inside it (coarse: about 0.5 px on a 600 px wide map of the state) |
+| `geo/main-rivers.geojson` | the state's main named rivers, one feature each with `name` and `gnis_id` (coarse) |
+| `geo/cities.geojson` | the five cities every state map labels |
+| `precipitation/watersheds.geojson` | the HUC8 watersheds that reach into New Mexico, clipped to it (`huc8`, `name`); ratings come from `index.json` |
+| `rivers/<slug>/geo/state-view.geojson` | coarse, whole extent: `kind` `segment` (`index`, `segment`, `huc8`) and `river` |
+| `rivers/<slug>/geo/river-view.geojson` | fine, clipped to the river frame plus a 15% margin: `kind` `segment`, `river`, `tributary`, `reservoir`, `state-boundary`, `county-lines`, `main-river`, and points `town`, `gauge`, `segment-label`, `reservoir-label` |
+| `rivers/<slug>/geo/bounds.json` | `extent` (the river's lon/lat box), `state_bounds` (the state's exact bounds) and `segments` (names, numbered 1..n in this order) |
+
+**The river map's frame** (the website must recompute it exactly; `nmwater/site/geo.py river_view_frame` and `src/lib/geo/rivermap.ts frame` agree, and a
+test compares the result with `summary.map.view_state`, `view_river` and `scale`): project with an equirectangular projection of
+`full` = the state bounds widened to include `extent`, plus 0.12 degrees on each side, 600 map units wide (x = (lon - west) * k * s,
+y = (north - lat) * s, k = cos(mean latitude), s = 600 / ((east - west) * k)). The river view is `extent`'s box in those units, widened to the
+full map's aspect ratio and centred.

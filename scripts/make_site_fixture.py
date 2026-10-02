@@ -33,6 +33,8 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
         s = json.loads((d / "summary.json").read_text())
         s["files"]["csv"] = []
         (d / "summary.json").write_text(json.dumps(s, separators=(",", ":"), ensure_ascii=False))
+    if man.get("geo"):                                 # the shared state and county layers
+        shutil.copytree(src / "geo", dst / "geo")
     if man.get("precipitation"):                       # every watershed, no CSVs; river links are cut down to the rivers kept
         pre = man["precipitation"]
         shutil.copytree(src / pre["path"], dst / pre["path"], ignore=shutil.ignore_patterns("*.csv"))

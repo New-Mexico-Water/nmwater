@@ -261,6 +261,9 @@
        "items": {
         "type": "string"
        }
+      },
+      "watersheds": {
+       "type": "string"
       }
      },
      "required": [
@@ -277,6 +280,46 @@
     "as_of",
     "windows",
     "files"
+   ],
+   "additionalProperties": true
+  },
+  "geo": {
+   "type": "object",
+   "properties": {
+    "state": {
+     "type": "string"
+    },
+    "county_lines": {
+     "type": "string"
+    },
+    "bounds": {
+     "type": "object",
+     "properties": {
+      "west": {
+       "type": "number"
+      },
+      "south": {
+       "type": "number"
+      },
+      "east": {
+       "type": "number"
+      },
+      "north": {
+       "type": "number"
+      }
+     },
+     "required": [
+      "west",
+      "south",
+      "east",
+      "north"
+     ]
+    }
+   },
+   "required": [
+    "state",
+    "county_lines",
+    "bounds"
    ],
    "additionalProperties": true
   }

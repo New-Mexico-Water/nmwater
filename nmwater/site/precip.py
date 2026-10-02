@@ -28,6 +28,7 @@ from ..derived import river_normal as rn
 from ..derived import river_table as rp
 from ..derived import river_watershed as rw
 from . import SCHEMA_VERSION
+from . import geo
 from .river import clean
 
 log = logging.getLogger("nmwater.site.precip")
@@ -102,6 +103,18 @@ def map_svg(wsheds: pd.DataFrame, stats: dict[str, dict], grids: Path, wbd_dir: 
             f'<path class="p-county" d="{counties}"/><g class="p-ws">{"".join(body)}</g><path class="p-state" d="{outline}"/></svg>')
 
 
+def watersheds_geojson(wsheds: pd.DataFrame, grids: Path, wbd_dir: Path) -> dict:
+    """The watersheds that reach into New Mexico, clipped to the state: a FeatureCollection with huc8 and name. Ratings are not in it:
+    they change daily, the shapes do not, and the website joins them by huc8 from index.json."""
+    nm, _counties, _mains = rm.state_layers(grids)
+    polys = rw.huc8_polygons(wbd_dir, list(wsheds["huc8"]))
+    names = dict(zip(wsheds["huc8"], wsheds["name"]))
+    feats = []
+    for r in polys.sort_values("huc8").itertuples():
+        feats.append(geo.feature(r.geometry.intersection(nm), huc8=r.huc8, name=names.get(r.huc8) or r.name))
+    return geo.collection(feats)
+
+
 def export_precip(con, out: Path, rivers_dir: Path, grids: Path, wbd_dir: Path, generated: str, csv: bool = True) -> dict | None:
     """Write <out>/precipitation/ and return the manifest block, or None when the catalog has no watershed precipitation."""
     try:
@@ -160,7 +173,9 @@ def export_precip(con, out: Path, rivers_dir: Path, grids: Path, wbd_dir: Path, 
                                  "percentile": None if st["percentile"] is None else round(st["percentile"]), "rating": st["class"] or "",
                                  "wettest_date": st["wettest_date"].date(), "wettest_in": round(st["wettest_in"], 3), "grid_fraction": round(float(w_.grid_fraction), 3)})
     (base / "map.svg").write_text(map_svg(ws[ws["huc8"].isin([r["huc8"] for r in rows])], {r["huc8"]: r["stats"] for r in rows}, grids, wbd_dir), encoding="utf-8")
-    files = {"index": "index.json", "map": "map.svg", "csv": []}
+    in_state = ws[ws["huc8"].isin([r["huc8"] for r in rows])]
+    geo.write(base / "watersheds.geojson", watersheds_geojson(in_state, grids, wbd_dir))
+    files = {"index": "index.json", "map": "map.svg", "watersheds": "watersheds.geojson", "csv": []}
     if csv:
         pd.DataFrame(csv_rows).to_csv(base / "recent.csv", index=False)
         files["csv"] = ["recent.csv"]

@@ -32,7 +32,7 @@ from ..derived import river_geo as rm
 from ..derived import river_normal as rn
 from ..derived import river_facts as ro
 from ..derived import river_table as rp
-from . import mapsvg, meta as rs
+from . import geo, mapsvg, meta as rs
 from . import social as social_card_mod
 from . import SCHEMA_VERSION
 from .sources import Sources
@@ -256,6 +256,7 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     csvs = sorted(p.name for p in d.glob("*.csv"))
     files["csv"] = csvs
     files["notes_md"] = "notes.md"
+    files["geo"] = ["geo/state-view.geojson", "geo/river-view.geojson", "geo/bounds.json"]
     gauges = rp.gauge_points(con, b)
     summary, mp, layers = summary_file(b, data, rows, con, gauges, grids, root, background, tabs, generated, site_name, files)
     if license_url:
@@ -270,6 +271,9 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     sizes = {"summary.json": dump(d / "summary.json", summary)}
     (d / "map.svg").write_text(mp.svg, encoding="utf-8")
     sizes["map.svg"] = len(mp.svg)
+    parts = geo.river_geo(r.gnis_id, r.river, r.segments, layers, gauges, grids)
+    for name, obj in parts.items():
+        sizes[f"geo/{name}"] = geo.write(d / "geo" / (f"{name}.json" if name == "bounds" else f"{name}.geojson"), obj)
     sizes["flow.json"] = dump(d / "flow.json", flow_file(r))
     sizes["drying.json"] = dump(d / "drying.json", drying_file(b, data))
     sizes["notes.json"] = dump(d / "notes.json", notes_file(r))
