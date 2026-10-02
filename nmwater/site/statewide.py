@@ -4,7 +4,8 @@ statewide/
   index.json         one entry per metric: its title, unit, as-of date, headline figures and the file holding its history
   reservoirs.json    acre-feet held and percent full of groups of reservoirs, with history, a normal for the date, window changes, members and exclusions
   drought.json       the U.S. Drought Monitor's state series: percent of the state in D0-D4 and the DSCI, weekly since 2000, with changes and a percentile for the time of year
-  (temperature, snowpack and flow files follow in later phases)
+  temperature.json   PRISM statewide mean air temperature: windows against 1991-2020, the last 365 days, monthly since 1895, annual, and a cross-check against nClimGrid
+  (snowpack and flow files follow in later phases)
   *.csv              the histories as tables
 
 Definitions and exclusions are in nmwater/derived/statewide.py and docs/statewide.md.
@@ -20,6 +21,7 @@ import numpy as np
 import pandas as pd
 
 from ..derived import statewide as sw
+from ..derived import statewide_temperature as stt
 from . import SCHEMA_VERSION
 from .river import clean
 
@@ -131,7 +133,41 @@ def drought_file(con, generated: str, csv_dir: Path | None) -> tuple[dict, dict]
     return out, entry
 
 
-def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None) -> dict | None:
+def temperature_file(grids: Path, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | None:
+    """(statewide/temperature.json content, the index entry), or None when there are no PRISM temperature grids."""
+    if not any((grids / "prism").glob("tmean_daily_*.nc")):
+        return None
+    poly = stt.nm_polygon(grids)
+    daily, monthly, cover = stt.series(grids, poly)
+    windows = [w for d in stt.WINDOWS if (w := stt.window_stats(daily, d))]
+    if not windows:
+        return None
+    m = stt.monthly_anomaly(monthly)
+    a = stt.annual_anomaly(m)
+    rec = stt.recent_daily(daily)
+    last_m = m.iloc[-1]
+    iso = lambda ix: [d.date().isoformat() for d in ix]
+    num = lambda v: [None if pd.isna(x) else round(float(x), 3) for x in v]
+    asof = daily.index[-1].date().isoformat()
+    out = {"schema_version": SCHEMA_VERSION, "id": "temperature", "generated": generated, "as_of": asof, "baseline": f"{stt.BASELINE[0]}-{stt.BASELINE[1]}",
+           "coverage": round(cover, 4), "unit": "degC",
+           "latest": {"windows": windows, "month": {"month": m.index[-1].date().isoformat(), "tmean_c": float(last_m["tmean_c"]), "normal_c": float(last_m["normal_c"]), "anomaly_c": float(last_m["anomaly_c"])}},
+           "history": {"recent_daily": {"dates": iso(rec.index), "tmean_c": num(rec["tmean_c"]), "normal_c": num(rec["normal_c"])},
+                       "monthly": {"dates": iso(m.index), "tmean_c": num(m["tmean_c"]), "normal_c": num(m["normal_c"]), "anomaly_c": num(m["anomaly_c"])},
+                       "annual": {"years": [int(y) for y in a.index], "tmean_c": num(a["tmean_c"]), "anomaly_c": num(a["anomaly_c"])}},
+           "crosscheck": stt.crosscheck(grids, poly, monthly),
+           "definitions": {"windows": "Mean temperature over the last N days, against the mean of the same calendar days in each year of the baseline; the anomaly is the difference from that mean, the percentile ranks this window among the baseline years.",
+                           "monthly": "Each month against the mean of the same calendar month in the baseline years. A year's anomaly is the mean of its twelve monthly anomalies; only complete years are listed.",
+                           "area": "Every 4 km cell is weighted by the share of it inside New Mexico and by the cosine of its latitude."},
+           "method": "PRISM Climate Group AN81 4 km mean temperature grids (a model estimate that interpolates station data; the newest days are provisional and PRISM revises about the latest six months), averaged over the state polygon."}
+    if csv_dir is not None:
+        pd.DataFrame({"month": iso(m.index), "tmean_c": num(m["tmean_c"]), "normal_1991_2020_c": num(m["normal_c"]), "anomaly_c": num(m["anomaly_c"])}).to_csv(csv_dir / "temperature_monthly.csv", index=False)
+    head = {"as_of": asof, **{f"anomaly_{w['days']}_c": w["anomaly_c"] for w in windows}, **{f"class_{w['days']}": w["class"] for w in windows}}
+    entry = {"id": "temperature", "title": "Air temperature", "file": "temperature.json", "as_of": asof, "unit": "degrees Celsius", "headline": head, "sources": ["prism"]}
+    return out, entry
+
+
+def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None) -> dict | None:
     """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say."""
     base = out / "statewide"
     base.mkdir(parents=True, exist_ok=True)
@@ -150,6 +186,13 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("drought_weekly.csv")
+    tp = temperature_file(grids, generated, base if csv else None) if grids is not None else None
+    if tp:
+        content, entry = tp
+        (base / "temperature.json").write_text(json.dumps(clean(content), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        metrics.append(entry)
+        if csv:
+            files["csv"].append("temperature_monthly.csv")
     if not metrics:
         return None
     as_of = max(pd.Timestamp(m["as_of"]).date().isoformat() for m in metrics)

@@ -111,7 +111,7 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
         precipitation = export_precip(con, tmp, tmp / "rivers", grids, grids / "wbd", generated, csv)
         res = export_reservoirs(con, tmp, tmp / "rivers", generated, csv)
         reservoirs, res_frames = res if res else (None, {})
-        statewide = export_statewide(tmp, res_frames, rv.load_registry(), generated, csv, con)
+        statewide = export_statewide(tmp, res_frames, rv.load_registry(), generated, csv, con, grids)
         entries.sort(key=lambda e: (-e["gauges"], e["name"]))
         rated = [e for e in entries if e["segments_rated"]]
         manifest = {"schema_version": SCHEMA_VERSION, "producer": producer(root), "generated": generated,
