@@ -1,11 +1,11 @@
-"""Validate a site data bundle against docs/site-data/v1 and check what a schema cannot say."""
+"""Validate a site data bundle against docs/site-data/v2 and check what a schema cannot say."""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-SCHEMA_DIR = Path(__file__).resolve().parents[2] / "docs" / "site-data" / "v1"
+SCHEMA_DIR = Path(__file__).resolve().parents[2] / "docs" / "site-data" / "v2"
 RIVER_FILES = {"summary.json": "summary", "flow.json": "flow", "normal.json": "normal", "drying.json": "drying",
                "quality.json": "quality", "watershed.json": "watershed", "notes.json": "notes"}
 
@@ -68,11 +68,8 @@ def river_consistency(d: Path, summary: dict, files: dict[str, dict]) -> list[st
     out += [f"{w}: statement cites source {n}, which is not in the source list" for n in sorted(set(cited) - ids)]
     if len(ids) != len(summary["sources"]) or ids != set(range(1, len(ids) + 1)):
         out.append(f"{w}: source ids are not 1..n")
-    svg = (d / summary["map"]["file"]).read_text() if (d / summary["map"]["file"]).exists() else ""
-    if "<svg" not in svg or 'data-river="' not in svg:
-        out.append(f"{w}: map.svg is not the zoomable map")
-    if [s["name"] for s in summary["segments"]] != [k["name"] for k in summary["map"]["key"]]:
-        out.append(f"{w}: the map key and the segments differ")
+    if "geo" not in summary["files"]:
+        out.append(f"{w}: summary.files.geo is missing (the website draws the map from it)")
     return out
 
 
@@ -90,15 +87,12 @@ def precip_problems(root: Path, man: dict) -> list[str]:
     out += _validate(idx, "precip_index", "precipitation/index.json")
     if out:
         return out
-    svg = (base / block["files"]["map"]).read_text() if (base / block["files"]["map"]).exists() else ""
     rivers = {e["slug"] for e in man.get("rivers", [])}
     listed = {w["huc8"] for w in idx["watersheds"]}
     if len(listed) != len(idx["watersheds"]) or len(listed) != block["watersheds"]:
         out.append("precipitation: the manifest count and the index list differ")
     for w in idx["watersheds"]:
         h = w["huc8"]
-        if w["nm_fraction"] > 0 and f'data-huc8="{h}"' not in svg:           # a watershed wholly outside the state has a page but is not on the map
-            out.append(f"precipitation: watershed {h} is not in map.svg")
         out += [f"precipitation/{h}: river {r['slug']} is not in the bundle" for r in w["rivers"] if r["slug"] not in rivers]
         f = base / h / "precip.json"
         if not f.exists():

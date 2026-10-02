@@ -9,9 +9,20 @@ import subprocess
 from pathlib import Path
 from ..derived import river_geo as rm
 
-from .meta import status_line
 
 log = logging.getLogger("nmwater.site.social")
+
+
+def status_line(rows: list[dict]) -> str:
+    """Last week's rating in words, for the card: one segment's class, or how many segments were below normal."""
+    rated = [x for x in rows if x["cls"]]
+    if not rated:
+        return ""
+    if len(rows) == 1:
+        return f"Last week's flow: {rated[0]['cls']}."
+    below = sum("below" in x["cls"] for x in rated)
+    return (f"Last week {below} of {len(rated)} segments were below normal." if below
+            else f"Last week none of its {len(rated)} rated segments was below normal.")
 
 
 E = html.escape

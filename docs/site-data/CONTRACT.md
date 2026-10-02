@@ -2,14 +2,14 @@
 
 **nmwater** collects, aggregates and computes. **nmwater-web** presents. They are separate repositories, built and run as separate
 tasks. The only thing that passes between them is a versioned **data bundle**. This page is the one-page agreement; the files and
-fields are in [README.md](README.md) and the JSON Schemas in `v1/`.
+fields are in [README.md](README.md) and the JSON Schemas in `v2/`.
 
 ## Who owns what
 
 | | nmwater | nmwater-web |
 |---|---|---|
 | The archive, catalog, fetchers, derived datasets, analysis | yes | never |
-| The bundle's files and the schemas that describe them (`docs/site-data/v1`) | owns | reads |
+| The bundle's files and the schemas that describe them (`docs/site-data/v2`) | owns | reads |
 | Layout, design, charts, maps drawn on screen, wording, search/sharing tags, accessibility | no | owns |
 | Fixture bundles for tests (`scripts/make_site_fixture.py`) | generates | commits a copy (`fixtures/site-data`) |
 | A pinned copy of the schemas (`contract/schemas`, `contract/VERSION`) | `just sync-contract` writes it | validates every bundle against it |
@@ -31,7 +31,7 @@ modules free of HTML.)
 
 ## Versioning
 
-`schema_version` is 1. Changes inside version 1 are **additive** (new optional fields, new files, new sections such as `precipitation/`);
+`schema_version` is 2. Changes inside a version are **additive** (new optional fields, new files, new sections such as `precipitation/`);
 the website must ignore what it does not know and tolerate what is absent. A change that removes or renames something is version 2:
 the website accepts both during the overlap, nmwater writes both until the website stops reading the old one. `contract/VERSION` in the
 website records which nmwater commit its schemas came from.
@@ -44,8 +44,9 @@ website records which nmwater commit its schemas came from.
    fixtures do not validate against them, so a forgotten sync is caught by the fixture check).
 4. Merge the side that only adds fields first; the website tolerates absent fields, so either order is safe for additions.
 
-## What is not (yet) pure data
+## What stays in nmwater, and what does not
 
-The bundle still carries three kinds of presentation that nmwater draws and the website will take over: the river and precipitation
-`map.svg` files, the `social.png` share images, and the auto-written descriptions (`description.auto`, `meta.description`). They are
-being replaced by geometry (GeoJSON) and plain facts the website turns into drawings and sentences.
+Version 2 (2026-10-01) moved presentation out of the bundle. Maps are **geometry** (GeoJSON, prepared in nmwater because it needs the archive
+and the GIS libraries) that the website projects and draws; sentences are composed by the website from **facts** (`summary.facts` and the
+segments' ratings). The one picture nmwater still draws is `social.png`, the 1200x630 share image (needs `rsvg-convert`), referenced by
+`summary.files.social` and optional.

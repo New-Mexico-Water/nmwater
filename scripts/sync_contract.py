@@ -4,7 +4,7 @@
     uv run python scripts/sync_contract.py ../nmwater-web --fixtures      # also rebuild fixtures/site-data from dist/site-data
 
 The website validates every bundle it builds from against contract/schemas and CI fails if they drift from what nmwater's
-docs/site-data/v1 says, so run this (and commit the result in the website repo) whenever a schema changes. nmwater owns the contract.
+docs/site-data/v2 says, so run this (and commit the result in the website repo) whenever a schema changes. nmwater owns the contract.
 """
 
 from __future__ import annotations
@@ -21,7 +21,7 @@ FIXTURE_RIVERS = ["rio-grande", "rio-tesuque", "pecos-river"]
 
 
 def main(web: Path, fixtures: bool) -> int:
-    schemas = sorted((ROOT / "docs" / "site-data" / "v1").glob("*.schema.json"))
+    schemas = sorted((ROOT / "docs" / "site-data" / "v2").glob("*.schema.json"))
     out = web / "contract"
     if (out / "schemas").exists():
         shutil.rmtree(out / "schemas")
@@ -30,7 +30,7 @@ def main(web: Path, fixtures: bool) -> int:
         shutil.copy2(s, out / "schemas" / s.name)
     sha = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=ROOT, capture_output=True, text=True).stdout.strip()
     dirty = bool(subprocess.run(["git", "status", "--porcelain", "docs/site-data"], cwd=ROOT, capture_output=True, text=True).stdout.strip())
-    version = {"schema_version": 1, "nmwater_git_sha": sha + ("+uncommitted" if dirty else ""),
+    version = {"schema_version": 2, "nmwater_git_sha": sha + ("+uncommitted" if dirty else ""),
                "schemas": {s.name: hashlib.sha256(s.read_bytes()).hexdigest()[:16] for s in schemas}}
     (out / "VERSION").write_text(json.dumps(version, indent=1) + "\n")
     print(f"{len(schemas)} schemas -> {out}")

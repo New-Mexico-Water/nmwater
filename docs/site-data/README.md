@@ -1,13 +1,20 @@
 # Site data bundle
 
 `nmwater export-site-data` writes the files the website renders. The contract is versioned (`schema_version`,
-currently 1) with JSON Schemas in `v1/`. The site (a separate repository) validates what it reads and fails
+currently 2) with JSON Schemas in `v2/`. The site (a separate repository) validates what it reads and fails
 the build on a mismatch, so a change here that the site cannot read is caught before it is published.
 
+The bundle is **data only**: numbers, names, series, geometry and the downloadable files. Layout, maps drawn on screen, sentences and
+search/sharing tags are the website's job (see [CONTRACT.md](CONTRACT.md)). Version 2 (2026-10-01) removed what nmwater used to draw or
+write for the site: the river and precipitation `map.svg` files, `summary.map`, `summary.meta`, `description.auto` and the manifest's
+per-river `description`; their data is now `geo/` (GeoJSON) and `summary.facts`.
+
 ```
-manifest.json                     producer, generated, data_through, rivers[], headlines
-rivers/<slug>/summary.json        the Overview: status, description, cited background, acequias, reservoirs, users, sources, map, meta
-rivers/<slug>/map.svg             the zoomable map (state and river views, two levels of detail; styled by the site)
+manifest.json                     producer, generated, data_through, rivers[], headlines, geo, precipitation
+files.json                        every file with its size and SHA-256 (written last)
+geo/*.geojson                     shared geometry: state, county lines, main rivers, cities
+rivers/<slug>/summary.json        the Overview: status, cited background, facts, acequias, reservoirs, users, sources
+rivers/<slug>/geo/                the river map's geometry (see Geometry below)
 rivers/<slug>/flow.json           weekly mean flow per segment, whole record, and its gauges
 rivers/<slug>/normal.json         last 52 weeks against 1991-2020                (only where there is a baseline)
 rivers/<slug>/drying.json         days a year below 0.1 cfs
@@ -25,7 +32,7 @@ its tabs in `tabs`; a tab whose file is absent is not offered. Numbers in `sourc
 hours ending at 12:00 UTC on its date.
 
 Compatibility: adding fields is allowed within a version (schemas permit extra properties); renaming or
-removing a field, or changing a unit, bumps `schema_version` and the folder (`v2/`). The exporter writes one
+removing a field, or changing a unit, bumps `schema_version` and the folder. The exporter writes one
 version at a time.
 
 
@@ -37,14 +44,13 @@ Written on every run (a `--river` run rebuilds it too, from the river summaries 
 | File | Contents |
 |---|---|
 | `precipitation/index.json` | every watershed with data: recent rain over 7, 30 and 90 days against 1991-2020 (`total_in`, `normal_in`, `percent_of_normal`, `percentile`, `class`, the wettest day), coverage (`grid_fraction`, `partial`, `coverage_note`) and the rivers whose pages use the watershed |
-| `precipitation/map.svg` | New Mexico's watersheds that reach into the state, clipped to it; `<path class="ws" data-huc8 data-name data-c7 data-c30 data-c90>`, the `data-c*` values being the rating slugs (`much-below-normal` ... `much-above-normal`, or `none`) |
 | `precipitation/recent.csv` | the same numbers as a table |
 | `precipitation/<huc8>/precip.json` | one watershed: 36 months of totals with the 1991-2020 median, the last 90 days, the windows, the rivers |
 | `precipitation/<huc8>/precip_daily_last_365_days.csv` | the last 365 PRISM days with the exact period each covers |
 
 Ratings use the same percentile classes as flow (`much below normal` under the 10th percentile ... `much above normal` over the 90th). A window with
 fewer than 20 baseline years has no normal and no rating. A watershed wholly outside New Mexico (a Colorado or Texas HUC8 a river page uses) has a page
-but is not on the map. A PRISM day ends at 12:00 UTC on its date. Schemas: `precip_index.schema.json`, `precip_watershed.schema.json`.
+but no shape in `watersheds.geojson`. A PRISM day ends at 12:00 UTC on its date. Schemas: `precip_index.schema.json`, `precip_watershed.schema.json`.
 
 
 ## Geometry (`geo/`, `rivers/<slug>/geo/`, `precipitation/watersheds.geojson`)

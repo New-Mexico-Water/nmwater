@@ -5,7 +5,7 @@
  "type": "object",
  "properties": {
   "schema_version": {
-   "const": 1
+   "const": 2
   },
   "generated": {
    "type": "string"
@@ -322,9 +322,6 @@
     "index": {
      "type": "string"
     },
-    "map": {
-     "type": "string"
-    },
     "csv": {
      "type": "array",
      "items": {
@@ -334,7 +331,6 @@
    },
    "required": [
     "index",
-    "map",
     "csv"
    ],
    "additionalProperties": true

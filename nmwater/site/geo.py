@@ -20,6 +20,7 @@ from shapely.geometry import mapping
 from shapely.geometry.polygon import orient
 
 from ..derived import river_geo as rg
+from . import SCHEMA_VERSION
 
 DECIMALS = 3
 SIMPLIFY_DEG = 0.004                    # about 0.5 px on a 600 px wide map of the state
@@ -146,7 +147,7 @@ def river_geo(gnis_id: str, label: str, segments: list[str], layers, gauges, gri
         if r.segment in seg_no and not g.is_empty:
             view.append(f(g.representative_point(), kind="segment-label", index=seg_no[r.segment], segment=str(r.segment)))
     sb = nm.bounds                                         # the state's exact bounds: the frame is computed from these, not from simplified shapes
-    bounds = {"schema_version": 1, "extent": {"west": ext[0], "south": ext[1], "east": ext[2], "north": ext[3]},
+    bounds = {"schema_version": SCHEMA_VERSION, "extent": {"west": ext[0], "south": ext[1], "east": ext[2], "north": ext[3]},
               "state_bounds": {"west": sb[0], "south": sb[1], "east": sb[2], "north": sb[3]}, "segments": list(segments)}
     return {"state-view": collection(state_view), "river-view": collection(view), "bounds": bounds}
 
