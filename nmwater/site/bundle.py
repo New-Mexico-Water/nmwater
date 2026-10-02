@@ -3,7 +3,7 @@
 <out>/
   manifest.json          what is in the bundle: producer, generated, data_through, every river's entry, headlines
   rivers/<slug>/...      see river.py
-  watersheds/, reservoirs/ (later phases)
+  precipitation/, reservoirs/, geo/   see precip.py, reservoirs.py, geo.py
 
 The tree is built in a temporary directory and swapped in at the end, so a failed or interrupted run leaves the
 previous bundle in place. With --river, only those rivers are rebuilt and the others are kept.
@@ -25,6 +25,7 @@ from ..derived import river_watershed as rw
 from . import SCHEMA_VERSION
 from . import geo
 from .precip import export_precip
+from .reservoirs import export_reservoirs
 from .river import clean, export_river
 
 log = logging.getLogger("nmwater.site")
@@ -106,11 +107,13 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
             entries += [e for e in old if e["slug"] not in done]
         shared_geo = geo.write_shared(tmp, grids)
         precipitation = export_precip(con, tmp, tmp / "rivers", grids, grids / "wbd", generated, csv)
+        reservoirs = export_reservoirs(con, tmp, tmp / "rivers", generated, csv)
         entries.sort(key=lambda e: (-e["gauges"], e["name"]))
         rated = [e for e in entries if e["segments_rated"]]
         manifest = {"schema_version": SCHEMA_VERSION, "producer": producer(root), "generated": generated,
                     "data_through": as_of, "site": {"name": site["name"]}, "license": rs.license_block(site),
                     "rivers": entries, "geo": shared_geo, **({"precipitation": precipitation} if precipitation else {}),
+                    **({"reservoirs": reservoirs} if reservoirs else {}),
                     "headlines": {"rivers": {"total": len(entries), "rated": len(rated),
                                              "with_segment_below_normal": sum(1 for e in rated if e["segments_below_normal"])}}}
         (tmp / "manifest.json").write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")

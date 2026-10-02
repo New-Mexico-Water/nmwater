@@ -1,0 +1,231 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Reservoir index",
+ "description": "reservoirs/index.json: every reservoir with where it stands now and how that compares with the same date in other years.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "generated": {
+   "type": "string"
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "baseline": {
+   "type": "string"
+  },
+  "min_normal_years": {
+   "type": "integer"
+  },
+  "classes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "reservoirs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "key": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     },
+     "dam": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "basin": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "role": {
+      "enum": [
+       "storage",
+       "flood_control",
+       "dry_flood",
+       "diversion",
+       "municipal"
+      ]
+     },
+     "measure": {
+      "enum": [
+       "percent_full",
+       "conservation_pool",
+       "flood_pool_use",
+       "storage_only"
+      ]
+     },
+     "rivers": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "slug": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "slug",
+        "name"
+       ],
+       "additionalProperties": true
+      }
+     },
+     "latest_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     },
+     "storage_af": {
+      "type": "number"
+     },
+     "capacity_af": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "percent": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "percentile": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "class": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "class_floored": {
+      "type": "boolean"
+     },
+     "normal_percent": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "storage_30_days_ago_af": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "percent_30_days_ago": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "capacity_confidence": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "days_in_flood_storage_this_year": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "above_conservation_pool_now": {
+      "type": [
+       "boolean",
+       "null"
+      ]
+     },
+     "has_normal": {
+      "type": "boolean"
+     },
+     "first_year": {
+      "type": "integer"
+     },
+     "stale": {
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "slug",
+     "key",
+     "name",
+     "dam",
+     "basin",
+     "role",
+     "measure",
+     "rivers",
+     "latest_date",
+     "storage_af",
+     "capacity_af",
+     "percent",
+     "percentile",
+     "class",
+     "class_floored",
+     "normal_percent",
+     "storage_30_days_ago_af",
+     "percent_30_days_ago",
+     "capacity_confidence",
+     "days_in_flood_storage_this_year",
+     "above_conservation_pool_now",
+     "has_normal",
+     "first_year",
+     "stale"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "files": {
+   "type": "object",
+   "properties": {
+    "index": {
+     "type": "string"
+    },
+    "csv": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "index",
+    "csv"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "generated",
+  "as_of",
+  "baseline",
+  "min_normal_years",
+  "classes",
+  "reservoirs",
+  "files"
+ ],
+ "additionalProperties": true
+}

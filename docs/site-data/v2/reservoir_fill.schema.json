@@ -1,0 +1,672 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Reservoir fill",
+ "description": "reservoirs/<slug>/fill.json: one reservoir's status, last 365 days, normal for each date, annual history, capacity, provenance and guidance.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "slug": {
+   "type": "string"
+  },
+  "key": {
+   "type": "string"
+  },
+  "name": {
+   "type": "string"
+  },
+  "dam": {
+   "type": "object"
+  },
+  "river": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "basin": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "role": {
+   "enum": [
+    "storage",
+    "flood_control",
+    "dry_flood",
+    "diversion",
+    "municipal"
+   ]
+  },
+  "measure": {
+   "enum": [
+    "percent_full",
+    "conservation_pool",
+    "flood_pool_use",
+    "storage_only"
+   ]
+  },
+  "river_slugs": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "rivers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug",
+     "name"
+    ],
+    "additionalProperties": true
+   }
+  },
+  "record": {
+   "type": "object",
+   "properties": {
+    "first_date": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "last_date": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "years": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "first_date",
+    "last_date",
+    "years"
+   ],
+   "additionalProperties": true
+  },
+  "status": {
+   "type": "object",
+   "properties": {
+    "latest_date": {
+     "type": "string",
+     "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "storage_af": {
+     "type": "number"
+    },
+    "capacity_af": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "percent": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "percentile": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "class": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "class_floored": {
+     "type": "boolean"
+    },
+    "normal_percent": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "storage_30_days_ago_af": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "percent_30_days_ago": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "storage_year_ago_af": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "percent_year_ago": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "capacity_confidence": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "days_in_flood_storage_this_year": {
+     "type": [
+      "integer",
+      "null"
+     ]
+    },
+    "above_conservation_pool_now": {
+     "type": [
+      "boolean",
+      "null"
+     ]
+    },
+    "last_flood_storage_date": {
+     "anyOf": [
+      {
+       "type": "string",
+       "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+      },
+      {
+       "type": "null"
+      }
+     ]
+    }
+   },
+   "required": [
+    "latest_date",
+    "storage_af",
+    "capacity_af",
+    "percent",
+    "percentile",
+    "class",
+    "class_floored",
+    "normal_percent",
+    "storage_30_days_ago_af",
+    "percent_30_days_ago",
+    "storage_year_ago_af",
+    "percent_year_ago",
+    "capacity_confidence",
+    "days_in_flood_storage_this_year",
+    "above_conservation_pool_now",
+    "last_flood_storage_date"
+   ],
+   "additionalProperties": true
+  },
+  "daily": {
+   "type": "object",
+   "properties": {
+    "dates": {
+     "type": "array",
+     "items": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+     }
+    },
+    "storage_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "capacity_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "percent": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "confidence": {
+     "type": "array",
+     "items": {
+      "type": [
+       "string",
+       "null"
+      ]
+     }
+    },
+    "inflow_cfs": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "release_cfs": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p10": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p25": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p50": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p75": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "normal_p90": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    }
+   },
+   "required": [
+    "dates",
+    "storage_af",
+    "capacity_af",
+    "percent",
+    "confidence",
+    "inflow_cfs",
+    "release_cfs"
+   ],
+   "additionalProperties": true
+  },
+  "normal": {
+   "anyOf": [
+    {
+     "type": "object",
+     "properties": {
+      "basis": {
+       "type": "string"
+      },
+      "years": {
+       "type": "array",
+       "items": {
+        "type": "integer"
+       }
+      },
+      "baseline": {
+       "type": "string"
+      },
+      "window_days": {
+       "type": "integer"
+      }
+     },
+     "required": [
+      "basis",
+      "years",
+      "baseline",
+      "window_days"
+     ],
+     "additionalProperties": true
+    },
+    {
+     "type": "null"
+    }
+   ]
+  },
+  "annual": {
+   "type": "object",
+   "properties": {
+    "years": {
+     "type": "array"
+    },
+    "n_days": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "capacity_confidence": {
+     "type": "array"
+    },
+    "full_pool_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "mean_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "low_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_pct": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "mean_pct": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "low_pct": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_date": {
+     "type": "array"
+    },
+    "flood_pool_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_flood_pct": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "days_flood_storage": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "inflow_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "release_af": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_inflow_cfs": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "peak_release_cfs": {
+     "type": "array",
+     "items": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    }
+   },
+   "required": [
+    "years",
+    "n_days",
+    "capacity_confidence",
+    "full_pool_af",
+    "peak_af",
+    "mean_af",
+    "low_af",
+    "peak_pct",
+    "mean_pct",
+    "low_pct",
+    "peak_date",
+    "flood_pool_af",
+    "peak_flood_pct",
+    "days_flood_storage",
+    "inflow_af",
+    "release_af",
+    "peak_inflow_cfs",
+    "peak_release_cfs"
+   ],
+   "additionalProperties": true
+  },
+  "capacity": {
+   "type": "object",
+   "properties": {
+    "basis": {
+     "enum": [
+      "operator_table",
+      "owner_reported_normal_storage"
+     ]
+    },
+    "primary_pool": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "pools": {
+     "type": "array"
+    },
+    "eras": {
+     "type": "array"
+    },
+    "override": {
+     "type": [
+      "object",
+      "null"
+     ]
+    },
+    "table": {
+     "type": [
+      "object",
+      "null"
+     ]
+    },
+    "validation": {
+     "type": [
+      "object",
+      "null"
+     ]
+    }
+   },
+   "required": [
+    "basis",
+    "primary_pool",
+    "pools",
+    "eras",
+    "override",
+    "table",
+    "validation"
+   ],
+   "additionalProperties": true
+  },
+  "provenance": {
+   "type": "object",
+   "properties": {
+    "series": {
+     "type": "array"
+    },
+    "credits": {
+     "type": "array"
+    }
+   },
+   "required": [
+    "series",
+    "credits"
+   ],
+   "additionalProperties": true
+  },
+  "guidance": {
+   "type": "object",
+   "properties": {
+    "summary": {
+     "type": "string"
+    },
+    "uses": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "cautions": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "summary",
+    "uses",
+    "cautions"
+   ],
+   "additionalProperties": true
+  },
+  "files": {
+   "type": "object",
+   "properties": {
+    "csv": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "csv"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "slug",
+  "key",
+  "name",
+  "dam",
+  "river",
+  "basin",
+  "role",
+  "measure",
+  "river_slugs",
+  "rivers",
+  "record",
+  "status",
+  "daily",
+  "normal",
+  "annual",
+  "capacity",
+  "provenance",
+  "guidance",
+  "files"
+ ],
+ "additionalProperties": true
+}

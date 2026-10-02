@@ -27,6 +27,7 @@ import numpy as np
 import pandas as pd
 
 from ..derived import river_context as rc
+from ..derived import reservoirs as rres
 from ..derived import river_flow as rf
 from ..derived import river_geo as rm
 from ..derived import river_normal as rn
@@ -171,11 +172,12 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
     acequias = [{"name": a["name"], "where": a["where"] or None, "segment": a["segment"], "sources": src.ids(a["sources"], aq_table)}
                 for a in aqs]
     notes = res.get("reservoirs_notes") or []
+    reg_slug = {k: v.get("slug") for k, v in rres.load_registry().items()}          # registry reservoirs have a page of their own
     reservoirs = []
     for x in ctx.reservoirs:
         word = x["name"].lower().split(" ")[0]
         n = next((y for y in notes if str(y.get("name", "")).lower().split(" ")[0] == word), None)
-        reservoirs.append({"name": x["name"], "dam": x.get("dam") if x.get("dam") != x["name"] else None, "year": x.get("year"),
+        reservoirs.append({"slug": reg_slug.get(x.get("key")), "name": x["name"], "dam": x.get("dam") if x.get("dam") != x["name"] else None, "year": x.get("year"),
                            "purpose": ro.ROLE.get(x.get("role"), x.get("purpose") or "") or None, "storage_af": x.get("storage_af"),
                            "note": None if not n else {"text": " ".join(str(n["text"]).split()), "sources": src.ids(n.get("sources"), table)}})
     seg_rows = ro.segment_facts(rows, layers, aqs)

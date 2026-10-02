@@ -1,5 +1,5 @@
 # Reservoir registry: which series, capacity table and pools describe each reservoir, and what its
-# data is good for. Read by scripts/reservoir_fill.py, which builds reports/*_annual_fill.csv and
+# data is good for. Read by nmwater/derived/reservoirs.py (scripts/reservoir_fill.py, nmwater export-site-data), which build reports/*_annual_fill.csv and
 # renders docs/reports/<key>-fill.md from the text fields below plus computed provenance.
 #
 # Dam facts (owner, type, purposes, year completed, height, hazard class) are NOT repeated here:
@@ -7,6 +7,8 @@
 #
 # Fields
 #   name, dam, river, basin     display
+#   slug                        the page's address (/reservoirs/<slug>/); never changes once published
+#   river_slugs                 the river pages (slugs in the site data bundle) this reservoir is on, for links both ways
 #   nid_id                      National Inventory of Dams id
 #   role                        storage | flood_control | dry_flood | diversion | municipal
 #                               storage       holds water for later use; percent of full pool is the headline
@@ -37,6 +39,8 @@ reservoirs:
     name: Heron Reservoir
     dam: Heron Dam
     river: Willow Creek, at the Rio Chama
+    slug: heron-reservoir
+    river_slugs: [willow-creek-rio-grande-elephant-butte]
     basin: Rio Grande (Rio Chama)
     nid_id: NM00122
     role: storage
@@ -64,6 +68,8 @@ reservoirs:
     name: El Vado Reservoir
     dam: El Vado Dam
     river: Rio Chama
+    slug: el-vado-reservoir
+    river_slugs: [rio-chama]
     basin: Rio Grande (Rio Chama)
     nid_id: NM10008
     role: storage
@@ -90,6 +96,8 @@ reservoirs:
     name: Abiquiu Lake
     dam: Abiquiu Dam
     river: Rio Chama
+    slug: abiquiu-lake
+    river_slugs: [rio-chama]
     basin: Rio Grande (Rio Chama)
     nid_id: NM00001
     role: flood_control
@@ -116,6 +124,8 @@ reservoirs:
     name: Nambe Falls Reservoir
     dam: Nambe Falls Dam
     river: Rio Nambe
+    slug: nambe-falls-reservoir
+    river_slugs: [rio-nambe]
     basin: Rio Grande
     nid_id: NM00412
     role: storage
@@ -142,6 +152,8 @@ reservoirs:
     name: Cochiti Lake
     dam: Cochiti Dam
     river: Rio Grande, at the Santa Fe River confluence
+    slug: cochiti-lake
+    river_slugs: [rio-grande]
     basin: Rio Grande
     nid_id: NM00404
     role: flood_control
@@ -173,6 +185,8 @@ reservoirs:
     name: Jemez Canyon Reservoir
     dam: Jemez Canyon Dam
     river: Jemez River, above its confluence with the Rio Grande
+    slug: jemez-canyon-reservoir
+    river_slugs: [jemez-river]
     basin: Rio Grande
     nid_id: NM00003
     role: dry_flood
@@ -197,6 +211,8 @@ reservoirs:
     name: Galisteo Reservoir
     dam: Galisteo Dam
     river: Galisteo Creek
+    slug: galisteo-reservoir
+    river_slugs: [galisteo-creek]
     basin: Rio Grande
     nid_id: NM00002
     role: dry_flood
@@ -221,6 +237,8 @@ reservoirs:
     name: Elephant Butte Reservoir
     dam: Elephant Butte Dam
     river: Rio Grande
+    slug: elephant-butte-reservoir
+    river_slugs: [rio-grande]
     basin: Rio Grande
     nid_id: NM00129
     role: storage
@@ -251,6 +269,8 @@ reservoirs:
     name: Caballo Reservoir
     dam: Caballo Dam
     river: Rio Grande
+    slug: caballo-reservoir
+    river_slugs: [rio-grande]
     basin: Rio Grande
     nid_id: NM00131
     role: storage
@@ -277,6 +297,8 @@ reservoirs:
     name: Santa Rosa Lake
     dam: Santa Rosa Dam
     river: Pecos River
+    slug: santa-rosa-lake
+    river_slugs: [pecos-river]
     basin: Pecos
     nid_id: NM00158
     role: flood_control
@@ -304,6 +326,8 @@ reservoirs:
     name: Lake Sumner
     dam: Sumner Dam (formerly Alamogordo Dam)
     river: Pecos River
+    slug: lake-sumner
+    river_slugs: [pecos-river]
     basin: Pecos
     nid_id: NM00130
     role: flood_control
@@ -328,6 +352,8 @@ reservoirs:
     name: Brantley Lake
     dam: Brantley Dam
     river: Pecos River
+    slug: brantley-lake
+    river_slugs: [pecos-river]
     basin: Pecos
     nid_id: NM00500
     role: flood_control
@@ -352,6 +378,8 @@ reservoirs:
     name: Avalon Reservoir
     dam: Avalon Dam
     river: Pecos River
+    slug: avalon-reservoir
+    river_slugs: [pecos-river]
     basin: Pecos
     nid_id: NM00132
     role: diversion
@@ -376,6 +404,8 @@ reservoirs:
     name: Two Rivers Reservoir (Diamond A Dam)
     dam: Diamond A Dam, Two Rivers project
     river: Rio Hondo
+    slug: two-rivers-reservoir-diamond-a-dam
+    river_slugs: [rio-hondo-upper-pecos]
     basin: Pecos
     nid_id: NM00004
     role: dry_flood
@@ -400,6 +430,8 @@ reservoirs:
     name: Two Rivers Reservoir (Rocky Dam)
     dam: Rocky Dam, Two Rivers project
     river: Rocky Arroyo
+    slug: two-rivers-reservoir-rocky-dam
+    river_slugs: [rocky-arroyo-rio-hondo]
     basin: Pecos
     nid_id: NM00004
     role: dry_flood
@@ -423,6 +455,8 @@ reservoirs:
     name: Conchas Lake
     dam: Conchas Dam
     river: Canadian River, at the Conchas River
+    slug: conchas-lake
+    river_slugs: [canadian-river]
     basin: Canadian
     nid_id: NM00006
     role: flood_control
@@ -446,6 +480,8 @@ reservoirs:
     name: Ute Reservoir
     dam: Ute Dam
     river: Canadian River
+    slug: ute-reservoir
+    river_slugs: [canadian-river]
     basin: Canadian
     nid_id: NM00293
     role: storage
@@ -469,6 +505,8 @@ reservoirs:
     name: Eagle Nest Lake
     dam: Eagle Nest Dam
     river: Cimarron River headwaters
+    slug: eagle-nest-lake
+    river_slugs: [cimarron-river-upper-canadian]
     basin: Canadian
     nid_id: NM00351
     role: storage
@@ -494,6 +532,8 @@ reservoirs:
     name: Navajo Lake
     dam: Navajo Dam
     river: San Juan River
+    slug: navajo-lake
+    river_slugs: [san-juan-river]
     basin: San Juan
     nid_id: NM00120
     role: storage
@@ -520,6 +560,8 @@ reservoirs:
     name: Costilla Reservoir
     dam: Costilla Dam
     river: Rio Costilla
+    slug: costilla-reservoir
+    river_slugs: [costilla-creek]
     basin: Rio Grande
     nid_id: NM00020
     role: storage
@@ -541,6 +583,8 @@ reservoirs:
     name: McClure Reservoir
     dam: McClure Dam
     river: Santa Fe River
+    slug: mcclure-reservoir
+    river_slugs: [santa-fe-river]
     basin: Rio Grande
     nid_id: NM00242
     role: municipal
@@ -560,6 +604,8 @@ reservoirs:
     name: Nichols Reservoir
     dam: Nichols Dam
     river: Santa Fe River
+    slug: nichols-reservoir
+    river_slugs: [santa-fe-river]
     basin: Rio Grande
     nid_id: NM00241
     role: municipal
@@ -579,6 +625,8 @@ reservoirs:
     name: Bluewater Lake
     dam: Bluewater Dam
     river: Bluewater Creek
+    slug: bluewater-lake
+    river_slugs: [bluewater-creek]
     basin: Rio Grande (Rio San Jose)
     nid_id: NM00239
     role: storage
@@ -599,6 +647,8 @@ reservoirs:
     name: Lake Maloya
     dam: Lake Maloya Dam
     river: Chicorica Creek
+    slug: lake-maloya
+    river_slugs: [chicorica-creek]
     basin: Canadian
     nid_id: NM00370
     role: municipal
