@@ -50,8 +50,8 @@ Membership is fixed by the registry (`catalog/reservoirs.yaml`, 24 reservoirs) a
   (the website calls them colder and warmer).
 - **History.** The last 365 days with the baseline mean for each calendar day (smoothed over 15 days), every month since 1895 against the mean of that calendar month, and the
   anomaly of each complete calendar year.
-- **Cross-check.** The monthly statewide mean is computed the same way from NOAA's nClimGrid and compared (1991 to the latest month): 440 months, bias +0.03 C,
-  mean absolute difference 0.14 C, largest 0.6 C, correlation 0.9998. The figures are in the file and a test fails if they drift past stated limits.
+- **Cross-check.** The monthly statewide mean is computed the same way from NOAA's nClimGrid and compared (1991 to the latest month): 428 months, bias +0.02 C,
+  mean absolute difference 0.13 C, largest 0.6 C, correlation 0.9998. The figures are in the file and a test fails if they drift past stated limits.
 - **Not a thermometer.** PRISM interpolates station data and estimates cells with no station; the newest days are provisional (PRISM revises about six months) and the two products
   can disagree by a few tenths of a degree in the most recent months (PRISM was 0.3-0.6 C cooler than nClimGrid in March-July 2026). Mean temperature is the average of the day's
   minimum and maximum, not a mean of hourly readings.
