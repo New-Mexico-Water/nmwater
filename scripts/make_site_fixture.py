@@ -64,6 +64,14 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
                 o["files"]["csv"] = []
             f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
         rs["files"]["csv"] = []
+    if man.get("statewide"):                           # the statewide figures, no CSVs
+        sw = man["statewide"]
+        shutil.copytree(src / sw["path"], dst / sw["path"], ignore=shutil.ignore_patterns("*.csv"))
+        f = dst / sw["path"] / "index.json"
+        o = json.loads(f.read_text())
+        o["files"]["csv"] = []
+        f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
+        sw["files"]["csv"] = []
     man["rivers"] = keep
     rated = [e for e in keep if e["segments_rated"]]
     man["headlines"] = {"rivers": {"total": len(keep), "rated": len(rated),

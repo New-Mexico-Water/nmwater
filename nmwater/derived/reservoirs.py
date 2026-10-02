@@ -509,3 +509,42 @@ def build(con, key: str, cfg: dict) -> dict:
     return {"key": key, "cfg": cfg, "annual": a, "eras": eras, "pools": pools, "primary": primary,
             "flood": flood, "rating": rmeta, "valid": valid, "raw": raw, "stor": st, "flows": fl,
             "paired": pr, "hist": hist}
+
+
+# ---------------------------------------------------------------------------- normal for the date (shared by the reservoir pages and the statewide totals)
+BASELINE = (1991, 2020)
+MIN_NORMAL_YEARS = 15
+MATERIAL_POINTS = 5.0                # percentage points of the pool below which a difference from the median is not worth a rating
+WINDOW_DAYS = 3                      # the normal for a date pools +/-3 days of every year
+TRUSTED = {"published_pool", "current_table", "high", "medium"}
+
+
+def doy366(dates: pd.Series) -> np.ndarray:
+    """Day of year on a leap-year calendar, so Feb 29 has its own day and Mar 1 is the same day every year."""
+    return np.array([pd.Timestamp(2000, d.month, d.day).dayofyear for d in dates])
+
+
+def normal_for_date(st: pd.DataFrame) -> dict | None:
+    """Percentiles of percent-of-pool by day of year from trusted years in the baseline, or None when there are too few years."""
+    ok = st[st.confidence.isin(TRUSTED) & st.date.dt.year.between(*BASELINE) & st.pct.notna()]
+    years = sorted(ok.date.dt.year.unique())
+    if len(years) < MIN_NORMAL_YEARS:
+        return None
+    M = np.full((len(years), 366), np.nan)
+    ix = {y: i for i, y in enumerate(years)}
+    for y, d, v in zip(ok.date.dt.year, doy366(ok.date), ok.pct):
+        M[ix[y], d - 1] = v
+    qs = (10, 25, 50, 75, 90)
+    out = {f"p{q}": np.full(366, np.nan) for q in qs}
+    samples: list[np.ndarray] = []
+    for d in range(366):
+        cols = [(d + k) % 366 for k in range(-WINDOW_DAYS, WINDOW_DAYS + 1)]
+        w = M[:, cols]
+        s = w[~np.isnan(w)]
+        samples.append(s)
+        if (~np.isnan(w)).any(axis=1).sum() >= MIN_NORMAL_YEARS:      # years with at least one value in the window
+            for q in qs:
+                out[f"p{q}"][d] = np.percentile(s, q)
+        else:
+            samples[-1] = np.array([])
+    return {"years": [int(y) for y in years], "basis": f"{len(years)} years of {BASELINE[0]}-{BASELINE[1]} whose capacity figure is published, current-table, high- or medium-confidence", **out, "_samples": samples}

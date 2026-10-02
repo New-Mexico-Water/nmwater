@@ -33,16 +33,12 @@ import numpy as np
 import pandas as pd
 
 from ..derived import reservoirs as rv
+from ..derived.reservoirs import BASELINE, MATERIAL_POINTS, MIN_NORMAL_YEARS, TRUSTED, WINDOW_DAYS, doy366, normal_for_date  # noqa: F401
 from ..derived import river_normal as rn
 from . import SCHEMA_VERSION
 from .river import clean
 
 log = logging.getLogger("nmwater.site.reservoirs")
-BASELINE = (1991, 2020)
-MIN_NORMAL_YEARS = 15
-TRUSTED = {"published_pool", "current_table", "high", "medium"}
-MATERIAL_POINTS = 5.0                # percentage points of the pool below which a difference from the median is not worth a rating
-WINDOW_DAYS = 3                      # the normal for a date pools +/-3 days of every year
 RECENT_DAYS = 365
 STALE_DAYS = 14                      # a reservoir with no reading this recent is flagged
 SOURCES = {"usbr_hydrodata": "Bureau of Reclamation HydroData", "usace_cwms": "U.S. Army Corps of Engineers CWMS", "usgs": "U.S. Geological Survey NWIS"}
@@ -94,37 +90,6 @@ def measure_of(role: str, confidence_last: str | None, overridden: bool) -> str:
     if role == "flood_control":
         return "conservation_pool"
     return "percent_full"
-
-
-def doy366(dates: pd.Series) -> np.ndarray:
-    """Day of year on a leap-year calendar, so Feb 29 has its own day and Mar 1 is the same day every year."""
-    return np.array([pd.Timestamp(2000, d.month, d.day).dayofyear for d in dates])
-
-
-def normal_for_date(st: pd.DataFrame) -> dict | None:
-    """Percentiles of percent-of-pool by day of year from trusted years in the baseline, or None when there are too few years."""
-    ok = st[st.confidence.isin(TRUSTED) & st.date.dt.year.between(*BASELINE) & st.pct.notna()]
-    years = sorted(ok.date.dt.year.unique())
-    if len(years) < MIN_NORMAL_YEARS:
-        return None
-    M = np.full((len(years), 366), np.nan)
-    ix = {y: i for i, y in enumerate(years)}
-    for y, d, v in zip(ok.date.dt.year, doy366(ok.date), ok.pct):
-        M[ix[y], d - 1] = v
-    qs = (10, 25, 50, 75, 90)
-    out = {f"p{q}": np.full(366, np.nan) for q in qs}
-    samples: list[np.ndarray] = []
-    for d in range(366):
-        cols = [(d + k) % 366 for k in range(-WINDOW_DAYS, WINDOW_DAYS + 1)]
-        w = M[:, cols]
-        s = w[~np.isnan(w)]
-        samples.append(s)
-        if (~np.isnan(w)).any(axis=1).sum() >= MIN_NORMAL_YEARS:      # years with at least one value in the window
-            for q in qs:
-                out[f"p{q}"][d] = np.percentile(s, q)
-        else:
-            samples[-1] = np.array([])
-    return {"years": [int(y) for y in years], "basis": f"{len(years)} years of {BASELINE[0]}-{BASELINE[1]} whose capacity figure is published, current-table, high- or medium-confidence", **out, "_samples": samples}
 
 
 def dam_facts(nid_row: dict, cfg: dict) -> dict:
@@ -254,11 +219,12 @@ def export_one(con, key: str, cfg: dict, nid: dict, out: Path, rivers: dict[str,
            "percent_30_days_ago": status["percent_30_days_ago"], "capacity_confidence": status["capacity_confidence"],
            "days_in_flood_storage_this_year": status["days_in_flood_storage_this_year"], "above_conservation_pool_now": status["above_conservation_pool_now"],
            "has_normal": normal is not None, "first_year": int(st.date.dt.year.min())}
-    return row, r["annual"]
+    return row, r["annual"], st[["date", "stor", "primary_af", "confidence"]].assign(role=role, measure=measure, slug=slug, key=key)
 
 
-def export_reservoirs(con, out: Path, rivers_dir: Path, generated: str, csv: bool = True) -> dict | None:
-    """Write <out>/reservoirs/ and return the manifest block, or None when the registry or catalog is not there."""
+def export_reservoirs(con, out: Path, rivers_dir: Path, generated: str, csv: bool = True) -> tuple[dict, dict[str, pd.DataFrame]] | None:
+    """Write <out>/reservoirs/ and return (the manifest block, each reservoir's daily frame for the statewide totals), or None when the registry or
+    catalog is not there."""
     try:
         reg = rv.load_registry()
         con.sql("SELECT 1 FROM reservoir_ratings LIMIT 1")
@@ -274,7 +240,7 @@ def export_reservoirs(con, out: Path, rivers_dir: Path, generated: str, csv: boo
         for s in cfg.get("river_slugs") or []:
             if s not in rivers:
                 log.warning("%s: river_slugs names %s, which is not in this bundle", k, s)
-    rows, annual = [], []
+    rows, annual, frames = [], [], {}
     (out / "reservoirs").mkdir(parents=True, exist_ok=True)
     for key, cfg in reg.items():
         try:
@@ -285,6 +251,7 @@ def export_reservoirs(con, out: Path, rivers_dir: Path, generated: str, csv: boo
         if res:
             rows.append(res[0])
             annual.append(res[1])
+            frames[key] = res[2]
     if not rows:
         return None
     as_of = max(r["latest_date"] for r in rows)
@@ -298,4 +265,4 @@ def export_reservoirs(con, out: Path, rivers_dir: Path, generated: str, csv: boo
     if csv:
         pd.concat(annual, ignore_index=True).to_csv(out / "reservoirs" / "annual_fill_all.csv", index=False)
     log.info("reservoirs: %d, latest data %s", len(rows), as_of.date())
-    return {"path": "reservoirs/", "reservoirs": len(rows), "as_of": as_of, "files": index["files"]}
+    return {"path": "reservoirs/", "reservoirs": len(rows), "as_of": as_of, "files": index["files"]}, frames
