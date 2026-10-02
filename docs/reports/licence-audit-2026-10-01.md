@@ -141,9 +141,15 @@ lists its sources.
 - Reservoir fill (now published: `reservoirs/` in the bundle, `/reservoirs/` on the site; added later the same day). Sources, from `catalog/reservoirs.yaml`
   and `nmwater/derived/reservoirs.py`: Bureau of Reclamation HydroData and the Army Corps' CWMS data API (storage, elevation, inflow, release, rating tables and
   pool levels), USGS NWIS (storage, elevation and release gauges), and the Army Corps' National Inventory of Dams (dam facts). All four are U.S. government
-  sources; USGS's public-domain statement was read on 2026-10-01 (see section 1). **Not individually verified:** Reclamation HydroData's and CWMS's own terms of
-  use, and whether any reservoir series the registry names is a non-federal copy; the registry names none of the restricted sources (CoCoRaHS, NMBGMR, Synoptic) and not
-  IEM DCP, but no series was traced one by one. What we publish is derived (capacity in force, percent of pool, a normal for each date, annual tables), plus the daily
+  sources. Checked 2026-10-01 by reading the pages: **USGS** states its data are in the public domain (credit requested). **Reclamation**: the HydroData page and the
+  Bureau's disclaimer state no terms (the disclaimer defers to the Department of the Interior's); RISE says it supports the OPEN Government Data Act; the catalogue item for
+  Elephant Butte daily storage (data.usbr.gov/catalog/2293/item/329) carries only "Data are provisional and subject to revision unless otherwise noted" and no licence.
+  **A different Reclamation notice exists and must not be confused with it:** RISE's GIS infrastructure layers (Reservoirs, Lakes and Pools; Dams; Levees; and others) say
+  "Reclamation does not authorize downloading or republishing, deriving new data products, or the dissemination of Reclamation's data into other systems or by others."
+  We use none of those layers (storage, elevation, inflow and release are HydroData time series); only one time-series item was read, so the others are assumed to
+  share its notice. **CWMS**: the API landing page states no terms; the USACE disclaimer and open-data pages returned 403, so USACE's statements were not read at the source
+  (a search summary says the USACE site's information is public and may be copied; that is not verified here). **National Inventory of Dams** and the series-by-series
+  trace of the registry's `sites` were not checked. What we publish is derived (capacity in force, percent of pool, a normal for each date, annual tables), plus the daily
   storage, release and inflow values for the last 365 days and the CSVs. Tracked in New-Mexico-Water/nmwater-web issue #10.
 - Watershed precipitation dataset (`watershed_precip`): PRISM only, so the PRISM terms above apply.
 - The site's own assets: Public Sans (SIL Open Font License), shadcn-svelte, bits-ui, Astro and Svelte (MIT).
