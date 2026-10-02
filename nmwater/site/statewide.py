@@ -103,7 +103,7 @@ def reservoirs_file(frames: dict[str, pd.DataFrame], reg: dict, generated: str, 
         wk["percent"] = (100 * wk["storage_af"] / wk["capacity_af"]).round(2)
         wk.to_csv(csv_dir / "reservoirs_supply_weekly.csv", index=False)
     g = groups["supply"]
-    entry = {"id": "reservoirs", "title": "Reservoir storage", "file": "reservoirs.json", "as_of": g["as_of"], "unit": "acre-feet",
+    entry = {"id": "reservoirs", "title": "Reservoir storage", "file": "reservoirs.json", "as_of": pd.Timestamp(g["as_of"]).date().isoformat(), "unit": "acre-feet",
              "headline": {"storage_af": groups["all"]["storage_af"], "members": groups["all"]["members"], "supply_percent": g["percent"], "supply_storage_af": g["storage_af"],
                           "supply_capacity_af": g["capacity_af"], "supply_members": g["members"], "class": g["class"], "percentile": g["percentile"], "normal_storage_af": g["normal_storage_af"]},
              "sources": ["usbr_hydrodata", "usace_cwms", "usgs"]}
@@ -152,7 +152,7 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
             files["csv"].append("drought_weekly.csv")
     if not metrics:
         return None
-    as_of = max(m["as_of"] for m in metrics)
+    as_of = max(pd.Timestamp(m["as_of"]).date().isoformat() for m in metrics)
     index = {"schema_version": SCHEMA_VERSION, "generated": generated, "as_of": as_of, "metrics": metrics, "files": {"index": "index.json", **files}}
     (base / "index.json").write_text(json.dumps(clean(index), separators=(",", ":"), allow_nan=False), encoding="utf-8")
     log.info("statewide: %s", ", ".join(m["id"] for m in metrics))
