@@ -53,6 +53,8 @@ def make_bundle(root):
                       "last_52_weeks_cfs": [1.0, None], "dry_days_this_year": 0, "dry_days_normal": 0.0, "water_temp_c": None,
                       "water_temp_site": None, "conductance_uS_cm": None, "conductance_decade": None,
                       "precip_3_months_percent_of_normal": 100.0, "dsci": None, "huc4": "1302", "towns": [], "acequias": []}],
+        "facts": {"length_km": 10.0, "drainage_km2": None, "flows_into": None, "tributaries": [], "reservoirs": [], "towns": [], "gauges": 1,
+                  "first_year": 1990, "as_of_year": 2026},
         "culture": [], "habitat": [], "users": [],
         "acequias": {"items": [{"name": "Acequia A", "where": None, "segment": "Seg", "sources": [1]}], "map_distance_km": 1.5, "note": "n"},
         "reservoirs": [], "water_use": None, "irrigation_districts": [], "water_systems": [],
