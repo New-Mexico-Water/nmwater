@@ -4,7 +4,7 @@
 
 The site repository commits the result so it builds and tests without the archive. CSV downloads are dropped
 (they are the bulk of the size) and the summaries and manifest are rewritten to match, so the fixture still
-conforms to docs/site-data/v1.
+conforms to docs/site-data/v2.
 """
 
 from __future__ import annotations

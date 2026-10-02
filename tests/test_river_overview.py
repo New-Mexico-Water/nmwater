@@ -1,10 +1,8 @@
 """Overview tab: acequia matching, citation numbering, the unreviewed-research gate, and share metadata."""
 
-from datetime import date
 
 from nmwater.derived import river_context as rc
 from nmwater.derived import river_facts as ro
-from nmwater.site import meta as rs
 
 
 def ctx(counties, mapped):
@@ -49,17 +47,6 @@ def test_unreviewed_research_is_not_used(tmp_path):
     assert ro.load_research(tmp_path, "x") == {}
     assert ro.load_research(tmp_path, "y")["river"] == "Y"
     assert ro.load_research(tmp_path, "missing") == {}
-
-
-def test_description_keeps_the_status_within_160_characters():
-    rows = [{"cls": "much below normal"}] * 4 + [{"cls": "normal"}, {"cls": None}]
-    d = rs.description("Cimarron River (Upper Canadian)", rows, ["normal", "quality", "watershed"], date(2026, 9, 20))
-    assert len(d) <= 160
-    assert "4 of 5 segments were below normal" in d and d.endswith("Sep 20, 2026.")
-    one = rs.description("Rio Tesuque", [{"cls": "much above normal"}], [], date(2026, 9, 20))
-    assert "Last week's flow: much above normal." in one
-
-
 
 
 def test_acequia_list_merges_the_map_and_the_research():

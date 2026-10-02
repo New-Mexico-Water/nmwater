@@ -1,9 +1,9 @@
-"""One river's files in the site data bundle (schema_version 1; schemas in docs/site-data/v1/).
+"""One river's files in the site data bundle (schema_version 2; schemas in docs/site-data/v2/).
 
 rivers/<slug>/
   summary.json    the Overview: status per segment, description, cited background, acequias, reservoirs, water
-                  users, the numbered source list, map description, page metadata
-  map.svg         the zoomable map (two levels of detail; styled by the site's stylesheet)
+                  users, the numbered source list, the facts the website writes its sentences from
+  geo/            the map's geometry: state-view.geojson, river-view.geojson, bounds.json (the website draws the map)
   flow.json       weekly mean flow per segment for the whole record, and the gauges behind it
   normal.json     last 52 weeks rated against 1991-2020, per segment and per gauge   (when there is a baseline)
   drying.json     days a year any gauge in a segment read below 0.1 cfs
@@ -32,7 +32,7 @@ from ..derived import river_geo as rm
 from ..derived import river_normal as rn
 from ..derived import river_facts as ro
 from ..derived import river_table as rp
-from . import geo, mapsvg, meta as rs
+from . import geo
 from . import social as social_card_mod
 from . import SCHEMA_VERSION
 from .sources import Sources
@@ -148,10 +148,9 @@ def notes_file(r: rf.RiverReport) -> dict:
 
 
 def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.DataFrame, grids: Path, root: Path,
-                 background: dict | None, tabs: list[str], generated: str, site_name: str, files: dict) -> tuple[dict, rm.MapParts, rm.Layers]:
+                 background: dict | None, tabs: list[str], generated: str, files: dict) -> tuple[dict, rm.Layers]:
     r = b.r
     layers, facts = rm.collect(r.gnis_id, r.segments, b.huc8_of, gauges, grids)
-    mp = mapsvg.zoom_map_parts(r.gnis_id, r.river, r.segments, layers, gauges, grids)
     ctx = rc.build(r.river, r.gnis_id, r.segments, b.huc8_of, con, root)
     res = ro.load_research(root, r.slug)
     aq_db = ro.load_acequias(root)
@@ -159,7 +158,6 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
     aq_table = aq_db.get("sources") or {}
     src = Sources()
     first = (pd.Timestamp(min(r.seg_all["week_start"])) + pd.Timedelta(days=6)).year
-    auto = mapsvg.describe(r.river, facts, r.segments, len(r.elig), first, r.as_of.year)
     background_refs: list[str] = []
     if res.get("summary"):
         summary_items = src.statements(res["summary"], table)
@@ -194,17 +192,11 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
     rated = [x for x in rows if x["cls"]]
     below = [x for x in rated if "below" in x["cls"]]
     last = r.weeks52[-1] + timedelta(days=6)
-    desc = rs.description(r.river, rows, tabs, last)
-    variables = ["streamflow (discharge), cubic feet per second", "flow percentile against 1991-2020"]
-    if "quality" in tabs:
-        variables += ["water temperature", "specific conductance"]
-    if "watershed" in tabs:
-        variables += ["precipitation", "snow-water equivalent", "Drought Severity and Coverage Index"]
     out = {
         "schema_version": SCHEMA_VERSION,
         "river": {"name": r.river, "slug": r.slug, "gnis_id": r.gnis_id},
         "generated": generated, "data_through": last, "tabs": tabs, "files": files,
-        "description": {"auto": auto, "background": summary_items, "background_references": background_refs},
+        "description": {"background": summary_items, "background_references": background_refs},
         "status": {"segments_rated": len(rated), "segments_below_normal": len(below), "segments": len(rows)},
         "segments": segments,
         "facts": {"length_km": facts.length_km, "drainage_km2": facts.drainage_km2, "flows_into": facts.flows_into,
@@ -218,22 +210,13 @@ def summary_file(b: rp.Bundle, data: dict, rows: list[dict], con, gauges: pd.Dat
         "irrigation_districts": [{"name": d["name"], "acres": d["acres"]} for d in ctx.districts],
         "water_systems": ctx.water_systems,
         "sources": src.items,
-        "map": {"file": "map.svg", "title": mp.title, "description": mp.desc, "view_state": mp.view_state, "view_river": mp.view_river,
-                "inset_svg": mp.inset, "scale": mp.scale, "key": [{"index": i + 1, "name": s} for i, s in enumerate(r.segments)]},
-        "meta": {"title": f"{r.river}: river conditions in New Mexico", "description": desc, "social_image": "social.png",
-                 "site_name": site_name,
-                 "dataset": {"name": f"{r.river} streamflow and conditions by watershed segment", "first_year": first,
-                             "through": last, "keywords": [r.river, "New Mexico", "streamflow", "discharge", "cfs", "drought",
-                                                          "river conditions", "HUC8"],
-                             "variables": variables, "bounds": {"west": facts.bounds[0], "south": facts.bounds[1],
-                                                                "east": facts.bounds[2], "north": facts.bounds[3]}}},
     }
-    return out, mp, layers
+    return out, layers
 
 
 # ---------------------------------------------------------------------------- one river
 def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Path, root: Path, d: Path, background: dict | None,
-                 generated: str, site_name: str, social: bool = True, csv: bool = True, license_url: str | None = None) -> dict:
+                 generated: str, site_name: str, social: bool = True, csv: bool = True) -> dict:
     """Write one river's files into d and return its manifest entry. csv=False leaves out the CSV downloads."""
     d.mkdir(parents=True, exist_ok=True)
     b = rp.extend(con, r, river_name, grids, cache)
@@ -249,7 +232,7 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     show = rp.has_tabs(data)
     tabs = ["overview", "flow"] + (["normal"] if show["normal"] else []) + ["drying"] + (["quality"] if show["quality"] else []) \
         + (["watershed"] if show["watershed"] else []) + ["notes"]
-    files = {"summary": "summary.json", "map": "map.svg", "flow": "flow.json", "drying": "drying.json", "notes": "notes.json"}
+    files = {"summary": "summary.json", "flow": "flow.json", "drying": "drying.json", "notes": "notes.json"}
     if show["normal"]:
         files["normal"] = "normal.json"
     if show["quality"]:
@@ -261,19 +244,13 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
     files["notes_md"] = "notes.md"
     files["geo"] = ["geo/state-view.geojson", "geo/river-view.geojson", "geo/bounds.json"]
     gauges = rp.gauge_points(con, b)
-    summary, mp, layers = summary_file(b, data, rows, con, gauges, grids, root, background, tabs, generated, site_name, files)
-    if license_url:
-        summary["meta"]["dataset"]["license"] = license_url
+    summary, layers = summary_file(b, data, rows, con, gauges, grids, root, background, tabs, generated, files)
     if social:
         ok = social_card_mod.social_card(d / "social.png", river=r.river, site_name=site_name, rows=rows, layers=layers, grids=grids,
                             as_of=r.weeks52[-1] + timedelta(days=6))
-        if not ok:
-            summary["meta"]["social_image"] = None
-    else:
-        summary["meta"]["social_image"] = None
+        if ok:
+            files["social"] = "social.png"                    # absent when it could not be drawn or was not asked for
     sizes = {"summary.json": dump(d / "summary.json", summary)}
-    (d / "map.svg").write_text(mp.svg, encoding="utf-8")
-    sizes["map.svg"] = len(mp.svg)
     parts = geo.river_geo(r.gnis_id, r.river, r.segments, layers, gauges, grids)
     for name, obj in parts.items():
         sizes[f"geo/{name}"] = geo.write(d / "geo" / (f"{name}.json" if name == "bounds" else f"{name}.geojson"), obj)
@@ -296,5 +273,5 @@ def export_river(con, r: rf.RiverReport, river_name: str, grids: Path, cache: Pa
             "last_52_mean_cfs": None if r.seg52.empty else round(float(r.seg52["mean_cfs"].mean()), 1),
             "segments_rated": len(rated), "segments_below_normal": len(below),
             "issues_warn": sum(f.severity == "warn" for f in r.issues), "removed_values": len(r.removed),
-            "description": summary["meta"]["description"], "social_image": summary["meta"]["social_image"],
+            "social_image": files.get("social"),
             "bytes": sizes, "generated": datetime.now(UTC).isoformat(timespec="seconds")}

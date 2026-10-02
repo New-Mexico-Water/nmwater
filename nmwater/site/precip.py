@@ -1,10 +1,9 @@
-"""The precipitation part of the site data bundle (schema_version 1; schemas in docs/site-data/v1/).
+"""The precipitation part of the site data bundle (schema_version 2; schemas in docs/site-data/v2/).
 
 precipitation/
   index.json            every watershed with recent rain over 7, 30 and 90 days against 1991-2020, coverage, and the rivers
                         whose pages use it; the statewide page is drawn from this
-  map.svg               New Mexico with its watersheds that reach into it (clipped to the state), one <path data-huc8> each, with the rating of
-                        each window in data-c7 / data-c30 / data-c90; styled by the site's stylesheet
+  watersheds.geojson     the watersheds that reach into New Mexico, clipped to it (huc8, name); ratings are in index.json
   recent.csv            the same numbers as a table
   <huc8>/precip.json    one watershed: months, the last 90 days, the windows, coverage, rivers
   <huc8>/precip_daily_last_365_days.csv
@@ -15,7 +14,6 @@ ends at 12:00 UTC on its date. Rain is inches of water (rain plus melted snow).
 
 from __future__ import annotations
 
-import html
 import json
 import logging
 from pathlib import Path
@@ -35,12 +33,7 @@ log = logging.getLogger("nmwater.site.precip")
 WINDOWS = (7, 30, 90)
 NORMAL_YEARS = rw.NORMAL_YEARS
 PARTIAL_BELOW = 0.95            # grid_fraction under this: averages over part of the watershed
-MAP_WIDTH = 600
 NOTE = "A PRISM day is the 24 hours ending at 12:00 UTC on its date (about 5 to 6 AM Mountain), so a day's value is mostly the previous day's rain."
-
-
-def slug_of(cls: str | None) -> str:
-    return (cls or "none").replace(" ", "-")
 
 
 def window_stats(s: pd.Series, window: int, years: tuple[int, int] = NORMAL_YEARS) -> dict | None:
@@ -76,31 +69,6 @@ def river_links(rivers_dir: Path) -> dict[str, list[dict]]:
         for h in {x["huc8"] for x in s["segments"] if x.get("huc8")}:
             out.setdefault(h, []).append({"slug": s["river"]["slug"], "name": s["river"]["name"]})
     return {h: sorted(v, key=lambda r: r["name"]) for h, v in out.items()}
-
-
-def map_svg(wsheds: pd.DataFrame, stats: dict[str, dict], grids: Path, wbd_dir: Path) -> str:
-    """New Mexico's watersheds, clipped to the state, as one SVG. Paths carry the rating of each window as data attributes."""
-    nm, _counties, _mains = rm.state_layers(grids)
-    p = rm.Proj(nm.bounds, MAP_WIDTH)
-    polys = rw.huc8_polygons(wbd_dir, list(wsheds["huc8"]))
-    names = dict(zip(wsheds["huc8"], wsheds["name"]))
-    body = []
-    for r in polys.itertuples():
-        g = r.geometry.intersection(nm)
-        d = p.path(g, tol_px=0.5)
-        if not d:
-            continue
-        st = stats.get(r.huc8, {})
-        attrs = "".join(f' data-c{w}="{slug_of(((st.get(str(w)) or {}).get("class")))}"' for w in WINDOWS)
-        name = html.escape(names.get(r.huc8) or r.name, quote=True)
-        body.append(f'<path class="ws" data-huc8="{r.huc8}" data-name="{name}"{attrs} d="{d}"><title>{name}</title></path>')
-    counties = p.path(rm.county_lines(grids), tol_px=0.6, topology=False)
-    outline = p.path(nm.boundary, tol_px=0.5)
-    return (f'<svg class="pmap" viewBox="0 0 {p.width:.1f} {p.height:.1f}" style="aspect-ratio:{p.width:.1f}/{p.height:.1f}" role="img" '
-            f'aria-labelledby="pm-t pm-d"><title id="pm-t">Map of New Mexico watersheds coloured by recent rain</title>'
-            f'<desc id="pm-d">New Mexico divided into its {len(body)} HUC8 watersheds, each coloured by how its recent rain compares with 1991 to 2020. '
-            f'The same numbers are in the table beside the map.</desc>'
-            f'<path class="p-county" d="{counties}"/><g class="p-ws">{"".join(body)}</g><path class="p-state" d="{outline}"/></svg>')
 
 
 def watersheds_geojson(wsheds: pd.DataFrame, grids: Path, wbd_dir: Path) -> dict:
@@ -172,10 +140,9 @@ def export_precip(con, out: Path, rivers_dir: Path, grids: Path, wbd_dir: Path, 
                                  "percent_of_normal": None if st["percent_of_normal"] is None else round(st["percent_of_normal"]),
                                  "percentile": None if st["percentile"] is None else round(st["percentile"]), "rating": st["class"] or "",
                                  "wettest_date": st["wettest_date"].date(), "wettest_in": round(st["wettest_in"], 3), "grid_fraction": round(float(w_.grid_fraction), 3)})
-    (base / "map.svg").write_text(map_svg(ws[ws["huc8"].isin([r["huc8"] for r in rows])], {r["huc8"]: r["stats"] for r in rows}, grids, wbd_dir), encoding="utf-8")
     in_state = ws[ws["huc8"].isin([r["huc8"] for r in rows])]
     geo.write(base / "watersheds.geojson", watersheds_geojson(in_state, grids, wbd_dir))
-    files = {"index": "index.json", "map": "map.svg", "watersheds": "watersheds.geojson", "csv": []}
+    files = {"index": "index.json", "watersheds": "watersheds.geojson", "csv": []}
     if csv:
         pd.DataFrame(csv_rows).to_csv(base / "recent.csv", index=False)
         files["csv"] = ["recent.csv"]

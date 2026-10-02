@@ -91,7 +91,7 @@ def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: li
                     continue
                 r.data_notes = list(river_notes.get(r.river) or [])
                 entry = export_river(con, r, name.name, grids, cache, root, tmp / "rivers" / r.slug,
-                                     descriptions.get(r.river) or descriptions.get(name.name), generated, site["name"], social, csv, site.get("license"))
+                                     descriptions.get(r.river) or descriptions.get(name.name), generated, site["name"], social, csv)
                 entries.append(entry)
                 log.info("%s: %d segments, %d gauges", name.label, entry["segments"], entry["gauges"])
             except Exception as e:                          # one bad river must not stop the rest

@@ -43,11 +43,11 @@ def make_bundle(root):
     d.mkdir(parents=True)
     weeks = ["2026-09-07", "2026-09-14"]
     summary = {
-        "schema_version": 1, "river": {"name": "Rio X", "slug": "rio-x", "gnis_id": "1"}, "generated": "2026-10-01T00:00:00+00:00",
+        "schema_version": 2, "river": {"name": "Rio X", "slug": "rio-x", "gnis_id": "1"}, "generated": "2026-10-01T00:00:00+00:00",
         "data_through": "2026-09-20", "tabs": ["overview", "flow", "normal", "drying", "watershed", "notes"],
-        "files": {"summary": "summary.json", "map": "map.svg", "flow": "flow.json", "drying": "drying.json", "notes": "notes.json",
+        "files": {"summary": "summary.json", "geo": ["geo/state-view.geojson", "geo/river-view.geojson", "geo/bounds.json"], "flow": "flow.json", "drying": "drying.json", "notes": "notes.json",
                   "normal": "normal.json", "watershed": "watershed.json", "csv": [], "notes_md": "notes.md"},
-        "description": {"auto": "A river.", "background": [{"text": "It flows.", "sources": [1]}], "background_references": []},
+        "description": {"background": [{"text": "It flows.", "sources": [1]}], "background_references": []},
         "status": {"segments_rated": 1, "segments_below_normal": 0, "segments": 1},
         "segments": [{"index": 1, "name": "Seg", "color_index": 1, "huc8": "13020101", "flow_cfs": 5.0, "class": "normal", "percentile": 50.0,
                       "last_52_weeks_cfs": [1.0, None], "dry_days_this_year": 0, "dry_days_normal": 0.0, "water_temp_c": None,
@@ -58,19 +58,14 @@ def make_bundle(root):
         "culture": [], "habitat": [], "users": [],
         "acequias": {"items": [{"name": "Acequia A", "where": None, "segment": "Seg", "sources": [1]}], "map_distance_km": 1.5, "note": "n"},
         "reservoirs": [], "water_use": None, "irrigation_districts": [], "water_systems": [],
-        "sources": [{"id": 1, "title": "T", "publisher": "P", "url": "https://example.org", "accessed": "2026-09-28"}],
-        "map": {"file": "map.svg", "title": "t", "description": "d", "view_state": "0 0 1 1", "view_river": "0 0 1 1", "inset_svg": "<svg/>",
-                "scale": None, "key": [{"index": 1, "name": "Seg"}]},
-        "meta": {"title": "Rio X", "description": "d", "social_image": None, "site_name": "S",
-                 "dataset": {"name": "n", "first_year": 1990, "through": "2026-09-20", "keywords": [], "variables": [],
-                             "bounds": {"west": 0, "south": 0, "east": 1, "north": 1}}}}
-    flow = {"schema_version": 1, "river": "Rio X", "weeks": weeks, "first_year": 1990, "last_week_end": "2026-09-20", "min_weeks": 26,
+        "sources": [{"id": 1, "title": "T", "publisher": "P", "url": "https://example.org", "accessed": "2026-09-28"}]}
+    flow = {"schema_version": 2, "river": "Rio X", "weeks": weeks, "first_year": 1990, "last_week_end": "2026-09-20", "min_weeks": 26,
             "series": [{"name": "Seg", "color_index": 1, "v": [1.0, 2.0], "n": [1, 1]}], "gauges": [], "notes": [], "dropped_segments": []}
-    normal = {"schema_version": 1, "baseline": "1991-2020", "classes": ["normal"], "weeks": weeks,
+    normal = {"schema_version": 2, "baseline": "1991-2020", "classes": ["normal"], "weeks": weeks,
               "segments": [{"name": "Seg", "color_index": 1, "cls": ["normal", None], "pct": [50.0, None]}], "gauges": []}
-    drying = {"schema_version": 1, "dry_cfs": 0.1, "normally_dry_share": 0.9, "years": [2025, 2026], "as_of": "2026-09-29", "baseline": "1991-2020",
+    drying = {"schema_version": 2, "dry_cfs": 0.1, "normally_dry_share": 0.9, "years": [2025, 2026], "as_of": "2026-09-29", "baseline": "1991-2020",
               "segments": [{"name": "Seg", "color_index": 1, "dry_days": [0, 1], "days_with_data": [365, 200], "median": 0.0}], "left_out": []}
-    ws = {"schema_version": 1, "as_of": "2026-09-29", "segments": [{
+    ws = {"schema_version": 2, "as_of": "2026-09-29", "segments": [{
         "name": "Seg", "color_index": 1, "huc8": "13020101", "huc4": "1302", "coverage": {"grid_fraction": 1.0, "has_precip": True, "note": None},
         "precipitation": {"months": ["2026-08-01", "2026-09-01"], "total_in": [1.0, 2.0], "normal_in": [1.5, 1.1], "days_counted": [31, 26],
                           "complete": [True, False]},
@@ -78,17 +73,21 @@ def make_bundle(root):
         "temperature": {"months": ["2026-08-01"], "anomaly_c": [1.0]},
         "snow": {"weeks_of_water_year": [0, 1], "median_2004_2025_in": [0.0, 1.0], "winters": [{"water_year": 2026, "inches": [0.0, 2.0]}]},
         "drought": {"dates": ["2026-09-22"], "dsci": [100]}}]}
-    notes = {"schema_version": 1, "counts": {"removed_values": 0, "reviewed_notes": 0, "warnings": 0, "context": 0}, "removed_values": [],
+    notes = {"schema_version": 2, "counts": {"removed_values": 0, "reviewed_notes": 0, "warnings": 0, "context": 0}, "removed_values": [],
              "reviewed_notes": [], "findings": [], "gauges": [], "min_weeks": 26, "method_notes": []}
     for name, obj in (("summary", summary), ("flow", flow), ("normal", normal), ("drying", drying), ("watershed", ws), ("notes", notes)):
         (d / f"{name}.json").write_text(json.dumps(obj))
-    (d / "map.svg").write_text('<svg class="zmap" data-state="0 0 1 1" data-river="0 0 1 1"></svg>')
     (d / "notes.md").write_text("notes")
-    manifest = {"schema_version": 1, "producer": {"name": "nmwater", "git_sha": None}, "generated": "2026-10-01T00:00:00+00:00",
+    (d / "geo").mkdir()
+    fc = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"kind": "river"}, "geometry": {"type": "LineString", "coordinates": [[-106.0, 35.0], [-105.9, 35.1]]}}]}
+    (d / "geo" / "state-view.geojson").write_text(json.dumps(fc))
+    (d / "geo" / "river-view.geojson").write_text(json.dumps(fc))
+    (d / "geo" / "bounds.json").write_text(json.dumps({"schema_version": 2, "extent": {"west": -106.1, "south": 34.9, "east": -105.8, "north": 35.2}}))
+    manifest = {"schema_version": 2, "producer": {"name": "nmwater", "git_sha": None}, "generated": "2026-10-01T00:00:00+00:00",
                 "data_through": "2026-09-29", "site": {"name": "S"},
                 "rivers": [{"slug": "rio-x", "name": "Rio X", "path": "rivers/rio-x/", "segments": 1, "gauges": 1, "first_year": 1990,
                             "last_week": "2026-09-14", "tabs": summary["tabs"], "reporting": True, "last_52_mean_cfs": 3.0, "segments_rated": 1,
-                            "segments_below_normal": 0, "issues_warn": 0, "removed_values": 0, "description": "d", "social_image": None,
+                            "segments_below_normal": 0, "issues_warn": 0, "removed_values": 0, "social_image": None,
                             "bytes": {}, "generated": "2026-10-01T00:00:00+00:00"}],
                 "headlines": {"rivers": {"total": 1, "rated": 1, "with_segment_below_normal": 0}}}
     (root / "manifest.json").write_text(json.dumps(manifest))
@@ -109,15 +108,14 @@ def test_a_conforming_bundle_has_no_problems(tmp_path):
 
 @pytest.mark.parametrize("name,fn,expect", [
     ("summary.json", lambda o: o.pop("sources"), "sources"),
-    ("summary.json", lambda o: o["meta"].update(description="x" * 250), "description"),
     ("flow.json", lambda o: o["series"][0].update(v=[1.0]), "series 'Seg' has 1 values"),
     ("normal.json", lambda o: o["segments"][0].update(pct=[1.0]), "arrays do not match"),
     ("drying.json", lambda o: o["segments"][0].update(dry_days=[0]), "arrays do not match"),
     ("watershed.json", lambda o: o["segments"][0]["precipitation"].update(days_counted=[31]), "arrays differ in length"),
     ("summary.json", lambda o: o["description"]["background"][0].update(sources=[7]), "cites source 7"),
     ("summary.json", lambda o: o.update(tabs=o["tabs"] + ["quality"]), "tab 'quality' has no file"),
-    ("summary.json", lambda o: o["map"]["key"].append({"index": 2, "name": "Other"}), "map key"),
-    ("flow.json", lambda o: o.update(schema_version=2), "schema_version"),
+    ("summary.json", lambda o: o["files"].pop("geo"), "files.geo is missing"),
+    ("flow.json", lambda o: o.update(schema_version=1), "schema_version"),
 ])
 def test_problems_are_found(tmp_path, name, fn, expect):
     d = make_bundle(tmp_path)
@@ -126,13 +124,15 @@ def test_problems_are_found(tmp_path, name, fn, expect):
     assert problems and any(expect in p for p in problems), problems
 
 
-def test_missing_file_and_bad_map_are_found(tmp_path):
+def test_missing_file_and_bad_geometry_are_found(tmp_path):
     d = make_bundle(tmp_path)
     (d / "flow.json").unlink()
     assert any("summary.files.flow names flow.json" in p for p in sch.validate_bundle(tmp_path))
     d = make_bundle(tmp_path / "b")
-    (d / "map.svg").write_text("<html/>")
-    assert any("not the zoomable map" in p for p in sch.validate_bundle(tmp_path / "b"))
+    edit(d / "geo", "river-view.geojson", lambda o: o["features"][0]["properties"].pop("kind"))
+    assert any("has no kind" in p for p in sch.validate_bundle(tmp_path / "b"))
+    edit(d / "geo", "river-view.geojson", lambda o: o.update(type="Feature"))
+    assert any("river-view.geojson" in p for p in sch.validate_bundle(tmp_path / "b"))
 
 
 def test_null_values_in_series_are_allowed(tmp_path):
@@ -157,7 +157,6 @@ def test_licence_block_is_optional_but_checked_when_present(tmp_path):
     m = json.loads(p.read_text())
     m["license"] = block
     p.write_text(json.dumps(m))
-    edit(d, "summary.json", lambda o: o["meta"]["dataset"].update(license=block["url"]))
     assert sch.validate_bundle(tmp_path) == []
     m["license"] = {k: v for k, v in block.items() if k != "url"}
     p.write_text(json.dumps(m))
@@ -189,14 +188,13 @@ def make_precip(root, man):
     stats = {"7": stat, "30": stat, "90": None}
     head = {"huc8": "13020101", "name": "Upper Rio Grande", "states": ["CO", "NM"], "area_km2": 100.0, "nm_fraction": 0.8, "grid_fraction": 1.0, "partial": False,
             "coverage_note": None, "stats": stats}
-    one = {**head, "schema_version": 1, "as_of": "2026-09-26", "baseline": "1991-2020", "months": ["2026-08-01", "2026-09-01"], "total_in": [1.0, 2.0], "normal_in": [1.5, 1.1],
+    one = {**head, "schema_version": 2, "as_of": "2026-09-26", "baseline": "1991-2020", "months": ["2026-08-01", "2026-09-01"], "total_in": [1.0, 2.0], "normal_in": [1.5, 1.1],
            "days_counted": [31, 26], "complete": [True, False], "daily": {"dates": ["2026-09-25"], "inches": [0.2], "note": "n"}, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}
     (base / "13020101" / "precip.json").write_text(json.dumps(one))
-    index = {"schema_version": 1, "generated": "2026-10-01T00:00:00+00:00", "as_of": "2026-09-26", "windows": [7, 30, 90], "baseline": "1991-2020",
+    index = {"schema_version": 2, "generated": "2026-10-01T00:00:00+00:00", "as_of": "2026-09-26", "windows": [7, 30, 90], "baseline": "1991-2020",
              "classes": ["normal"], "note": "n", "watersheds": [{**head, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}],
-             "files": {"index": "index.json", "map": "map.svg", "csv": []}}
+             "files": {"index": "index.json", "csv": []}}
     (base / "index.json").write_text(json.dumps(index))
-    (base / "map.svg").write_text('<svg><path data-huc8="13020101"/></svg>')
     man["precipitation"] = {"path": "precipitation/", "watersheds": 1, "as_of": "2026-09-26", "windows": [7, 30, 90], "files": index["files"]}
     (root / "manifest.json").write_text(json.dumps(man))
     return base
@@ -211,9 +209,8 @@ def test_precipitation_section_is_validated(tmp_path):
     assert any("monthly arrays differ" in p for p in sch.validate_bundle(tmp_path))
     edit(base / "13020101", "precip.json", lambda o: o.update(total_in=[1.0, 2.0], rivers=[{"slug": "nope", "name": "Nope"}], stats={}))
     assert any("stats" in p for p in sch.validate_bundle(tmp_path))
-    (base / "map.svg").write_text("<svg/>")
-    edit(base / "13020101", "precip.json", lambda o: None)
-    assert any("not in map.svg" in p for p in sch.validate_bundle(tmp_path))
+    (base / "13020101" / "precip.json").unlink()
+    assert any("precip.json is missing" in p for p in sch.validate_bundle(tmp_path))
 
 
 def test_files_index_lists_every_file_and_catches_changes(tmp_path):
@@ -224,7 +221,7 @@ def test_files_index_lists_every_file_and_catches_changes(tmp_path):
     idx = json.loads((tmp_path / "files.json").read_text())
     assert n == len(idx["files"]) and "manifest.json" in {e["path"] for e in idx["files"]} and "files.json" not in {e["path"] for e in idx["files"]}
     assert sch.validate_bundle(tmp_path) == []
-    (tmp_path / "rivers" / "rio-x" / "map.svg").write_text('<svg class="zmap" data-state="0 0 1 1" data-river="0 0 1 1" ></svg>')
+    (tmp_path / "rivers" / "rio-x" / "notes.md").write_text("changed after the index was written")
     assert any("does not match" in p for p in sch.validate_bundle(tmp_path))
     write_files_index(tmp_path)
     (tmp_path / "extra.txt").write_text("x")

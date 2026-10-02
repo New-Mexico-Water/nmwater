@@ -193,9 +193,9 @@ watersheds are covered and how it was checked are in
 
 ### export-site-data
 
-Writes the data bundle the website renders: JSON, CSV and (for now) SVG and PNG files with a versioned contract. Output goes to
+Writes the data bundle the website renders: JSON, GeoJSON and CSV files (and the share images) with a versioned contract; no drawings or sentences (the website writes those). Output goes to
 `dist/site-data/` (not in git). The site is a separate repository that builds every page from the bundle; the files
-and conventions are in [site-data/README.md](site-data/README.md), with JSON Schemas in `docs/site-data/v1/`.
+and conventions are in [site-data/README.md](site-data/README.md), with JSON Schemas in `docs/site-data/v2/`.
 
 ```
 nmwater export-site-data                         # every river (about 25 minutes)

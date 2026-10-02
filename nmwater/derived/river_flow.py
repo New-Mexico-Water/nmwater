@@ -389,6 +389,7 @@ def remove_bad_values(daily: pd.DataFrame, peak_of: dict, exclusions: list[dict]
     removed = [{"gauge": r.gauge, "date": r.date.date().isoformat(), "source": r.source, "cfs": round(float(r.cfs), 1),
                 "reason": w} for r, w in zip(d[drop].itertuples(), why[drop])]
     removed.sort(key=lambda x: (x["gauge"], x["date"], x["source"]))          # the database's scan order is not stable
+    conflicts.sort(key=lambda x: (x["gauge"], x["date"]))                     # (the "e.g." date in a finding is the first of these)
     return d[~drop].reset_index(drop=True), removed, conflicts
 
 

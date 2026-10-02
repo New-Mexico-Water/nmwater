@@ -505,7 +505,7 @@ def export_site_data(
     out: Optional[Path] = typer.Option(None, "--out", help="Bundle directory (default: <repo>/dist/site-data)"),
     no_social: bool = typer.Option(False, "--no-social", help="skip the 1200x630 share images"),
     no_csv: bool = typer.Option(False, "--no-csv", help="skip the CSV downloads (small test bundles)"),
-    validate: bool = typer.Option(True, "--validate/--no-validate", help="check every file against docs/site-data/v1 schemas"),
+    validate: bool = typer.Option(True, "--validate/--no-validate", help="check every file against docs/site-data/v2 schemas"),
     config: Optional[Path] = typer.Option(None, "--config", help="default: <repo>/config/river_reports.yaml"),
     data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
 ):
