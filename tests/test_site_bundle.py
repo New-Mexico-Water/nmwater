@@ -185,14 +185,14 @@ def make_precip(root, man):
     (base / "13020101").mkdir(parents=True)
     stat = {"window_start": "2026-09-20", "window_end": "2026-09-26", "total_in": 1.0, "normal_in": 0.5, "percent_of_normal": 200.0, "percentile": 95.0,
             "class": "much above normal", "wettest_date": "2026-09-24", "wettest_in": 0.6}
-    stats = {"7": stat, "30": stat, "90": None}
+    stats = {"7": stat, "30": stat, "90": None, "180": stat, "365": None}
     head = {"huc8": "13020101", "name": "Upper Rio Grande", "states": ["CO", "NM"], "area_km2": 100.0, "nm_fraction": 0.8, "grid_fraction": 1.0, "partial": False,
             "coverage_note": None, "stats": stats}
     one = {**head, "schema_version": 2, "as_of": "2026-09-26", "baseline": "1991-2020", "months": ["2026-08-01", "2026-09-01"], "total_in": [1.0, 2.0], "normal_in": [1.5, 1.1],
            "days_counted": [31, 26], "complete": [True, False], "daily": {"dates": ["2026-09-25"], "inches": [0.2], "note": "n"}, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}
     (base / "13020101" / "precip.json").write_text(json.dumps(one))
     index = {"schema_version": 2, "generated": "2026-10-01T00:00:00+00:00", "as_of": "2026-09-26", "windows": [7, 30, 90], "baseline": "1991-2020",
-             "classes": ["normal"], "note": "n", "watersheds": [{**head, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}],
+             "classes": ["normal"], "note": "n", "statewide": {"watersheds": 1, "stats": stats}, "watersheds": [{**head, "rivers": [{"slug": "rio-x", "name": "Rio X"}]}],
              "files": {"index": "index.json", "csv": []}}
     (base / "index.json").write_text(json.dumps(index))
     man["precipitation"] = {"path": "precipitation/", "watersheds": 1, "as_of": "2026-09-26", "windows": [7, 30, 90], "files": index["files"]}
