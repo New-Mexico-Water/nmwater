@@ -121,6 +121,56 @@ def precip_problems(root: Path, man: dict) -> list[str]:
     return out
 
 
+def _coords(c):
+    if c and isinstance(c[0], (int, float)):
+        yield c
+    else:
+        for x in c:
+            yield from _coords(x)
+
+
+def geo_problems(root: Path, man: dict) -> list[str]:
+    """geo/*.geojson and precipitation/watersheds.geojson: valid collections, inside the state, every in-state watershed drawn."""
+    out: list[str] = []
+    block = man.get("geo")
+    if not block:
+        return out
+    b = block["bounds"]
+    pad = 0.001
+
+    def load(rel: str):
+        p = root / rel
+        if not p.exists():
+            out.append(f"{rel} is missing")
+            return None
+        data = json.loads(p.read_text())
+        bad = _validate(data, "geojson", rel)
+        out.extend(bad)
+        if bad:
+            return None
+        for f in data["features"]:
+            for x, y, *_ in _coords(f["geometry"]["coordinates"]):
+                if not (b["west"] - pad <= x <= b["east"] + pad and b["south"] - pad <= y <= b["north"] + pad):
+                    out.append(f"{rel}: a coordinate ({x}, {y}) is outside the state's bounds")
+                    return data
+        return data
+
+    state = load(block["state"])
+    load(block["county_lines"])
+    if state and not state["features"]:
+        out.append(f"{block['state']} has no features")
+    pre = man.get("precipitation")
+    if pre and pre["files"].get("watersheds"):
+        ws = load(f"{pre['path']}{pre['files']['watersheds']}")
+        idx = json.loads((root / pre["path"] / pre["files"]["index"]).read_text()) if (root / pre["path"] / pre["files"]["index"]).exists() else {"watersheds": []}
+        if ws:
+            drawn = {f["properties"].get("huc8") for f in ws["features"]}
+            missing = [w["huc8"] for w in idx["watersheds"] if w["nm_fraction"] > 0 and w["huc8"] not in drawn]
+            if missing:
+                out.append(f"precipitation/watersheds.geojson has no shape for {', '.join(missing[:5])}")
+    return out
+
+
 def files_problems(root: Path) -> list[str]:
     """files.json (optional): every listed file exists with the recorded size and SHA-256, and nothing in the bundle is unlisted."""
     f = root / "files.json"
@@ -157,6 +207,7 @@ def validate_bundle(root: Path) -> list[str]:
     man = json.loads(man_path.read_text())
     problems += _validate(man, "manifest", "manifest.json")
     problems += precip_problems(root, man)
+    problems += geo_problems(root, man)
     problems += files_problems(root)
     for e in man.get("rivers", []):
         d = root / e["path"]
@@ -177,6 +228,13 @@ def validate_bundle(root: Path) -> list[str]:
             continue
         if len(problems) > before:                           # the cross-file checks assume the files match their schemas
             continue
+        for g in files["summary"]["files"].get("geo", []):
+            if g.endswith(".geojson") and (d / g).exists():
+                fc = json.loads((d / g).read_text())
+                bad = _validate(fc, "geojson", f"{e['slug']}/{g}")
+                problems += bad
+                if not bad:
+                    problems += [f"{e['slug']}/{g}: feature {i} has no kind" for i, ft in enumerate(fc["features"]) if "kind" not in ft["properties"]][:5]
         try:
             problems += river_consistency(d, files["summary"], files)
         except (KeyError, TypeError, IndexError) as err:

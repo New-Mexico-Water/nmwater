@@ -227,3 +227,28 @@ def test_files_index_lists_every_file_and_catches_changes(tmp_path):
     write_files_index(tmp_path)
     (tmp_path / "extra.txt").write_text("x")
     assert any("not in files.json" in p for p in sch.validate_bundle(tmp_path))
+
+
+# ---------------------------------------------------------------------------- geometry
+def test_geo_files_are_validated(tmp_path):
+    make_bundle(tmp_path)
+    man = json.loads((tmp_path / "manifest.json").read_text())
+    base = make_precip(tmp_path, man)
+    sq = {"type": "Polygon", "coordinates": [[[-107.0, 35.0], [-106.0, 35.0], [-106.0, 36.0], [-107.0, 36.0], [-107.0, 35.0]]]}
+    fc = {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"huc8": "13020101", "name": "x"}, "geometry": sq}]}
+    (tmp_path / "geo").mkdir()
+    (tmp_path / "geo" / "state.geojson").write_text(json.dumps(fc))
+    (tmp_path / "geo" / "county-lines.geojson").write_text(json.dumps(fc))
+    (base / "watersheds.geojson").write_text(json.dumps(fc))
+    man = json.loads((tmp_path / "manifest.json").read_text())
+    man["geo"] = {"state": "geo/state.geojson", "county_lines": "geo/county-lines.geojson", "bounds": {"west": -109.1, "south": 31.3, "east": -103.0, "north": 37.0}}
+    man["precipitation"]["files"]["watersheds"] = "watersheds.geojson"
+    (tmp_path / "manifest.json").write_text(json.dumps(man))
+    assert sch.validate_bundle(tmp_path) == []
+    fc["features"][0]["geometry"]["coordinates"][0][1] = [-90.0, 35.0]                  # a vertex in Louisiana
+    (base / "watersheds.geojson").write_text(json.dumps(fc))
+    assert any("outside the state's bounds" in p for p in sch.validate_bundle(tmp_path))
+    fc["features"][0]["properties"]["huc8"] = "99999999"
+    fc["features"][0]["geometry"]["coordinates"][0][1] = [-106.0, 35.0]
+    (base / "watersheds.geojson").write_text(json.dumps(fc))
+    assert any("has no shape for 13020101" in p for p in sch.validate_bundle(tmp_path))

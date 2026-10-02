@@ -1,0 +1,56 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "GeoJSON FeatureCollection",
+ "description": "A GeoJSON (RFC 7946) FeatureCollection: WGS84 lon/lat, exterior rings counter-clockwise, coordinates rounded to 3 decimals. Used by geo/*.geojson, precipitation/watersheds.geojson and rivers/<slug>/geo/*.geojson.",
+ "type": "object",
+ "properties": {
+  "type": {
+   "const": "FeatureCollection"
+  },
+  "features": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "type": {
+      "const": "Feature"
+     },
+     "properties": {
+      "type": "object"
+     },
+     "geometry": {
+      "type": "object",
+      "properties": {
+       "type": {
+        "enum": [
+         "Polygon",
+         "MultiPolygon",
+         "LineString",
+         "MultiLineString",
+         "Point",
+         "MultiPoint"
+        ]
+       },
+       "coordinates": {
+        "type": "array"
+       }
+      },
+      "required": [
+       "type",
+       "coordinates"
+      ]
+     }
+    },
+    "required": [
+     "type",
+     "properties",
+     "geometry"
+    ]
+   }
+  }
+ },
+ "required": [
+  "type",
+  "features"
+ ]
+}
