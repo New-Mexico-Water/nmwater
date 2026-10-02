@@ -17,7 +17,10 @@
    "type": "string"
   },
   "dam": {
-   "type": "object"
+   "type": [
+    "string",
+    "null"
+   ]
   },
   "river": {
    "type": [
@@ -644,6 +647,9 @@
     "csv"
    ],
    "additionalProperties": true
+  },
+  "dam_facts": {
+   "type": "object"
   }
  },
  "required": [
@@ -651,7 +657,6 @@
   "slug",
   "key",
   "name",
-  "dam",
   "river",
   "basin",
   "role",
@@ -666,7 +671,9 @@
   "capacity",
   "provenance",
   "guidance",
-  "files"
+  "files",
+  "dam",
+  "dam_facts"
  ],
  "additionalProperties": true
 }

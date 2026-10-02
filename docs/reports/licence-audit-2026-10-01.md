@@ -138,7 +138,12 @@ lists its sources.
   Monitor unreadable as described.
 
 ## 6. Not yet audited
-- Reservoir fill reports (`docs/reports/reservoirs/`): the registry (`catalog/reservoirs.yaml`) names USGS, Reclamation and
-  Corps series and the dam inventory; none of the restricted sources and not IEM DCP. Not checked series by series.
+- Reservoir fill (now published: `reservoirs/` in the bundle, `/reservoirs/` on the site; added later the same day). Sources, from `catalog/reservoirs.yaml`
+  and `nmwater/derived/reservoirs.py`: Bureau of Reclamation HydroData and the Army Corps' CWMS data API (storage, elevation, inflow, release, rating tables and
+  pool levels), USGS NWIS (storage, elevation and release gauges), and the Army Corps' National Inventory of Dams (dam facts). All four are U.S. government
+  sources; USGS's public-domain statement was read on 2026-10-01 (see section 1). **Not individually verified:** Reclamation HydroData's and CWMS's own terms of
+  use, and whether any reservoir series the registry names is a non-federal copy; the registry names none of the restricted sources (CoCoRaHS, NMBGMR, Synoptic) and not
+  IEM DCP, but no series was traced one by one. What we publish is derived (capacity in force, percent of pool, a normal for each date, annual tables), plus the daily
+  storage, release and inflow values for the last 365 days and the CSVs. Tracked in New-Mexico-Water/nmwater-web issue #10.
 - Watershed precipitation dataset (`watershed_precip`): PRISM only, so the PRISM terms above apply.
 - The site's own assets: Public Sans (SIL Open Font License), shadcn-svelte, bits-ui, Astro and Svelte (MIT).
