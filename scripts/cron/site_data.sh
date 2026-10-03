@@ -8,10 +8,11 @@
 #
 # Example crontab (daily at 05:30):
 #   30 5 * * *  /home/vance/projects/water_newmexico/scripts/cron/site_data.sh --update --publish
+# On this machine there is no cron daemon: scripts/cron/systemd/ has a systemd user timer that runs `--update` nightly (see docs/usage.md).
 #
 # - One run at a time (the lock is shared with other cron jobs); a second run exits 0.
 # - Log: data/logs/site_data.log. Exit: 0 success, 1 a river, the update, validation or the upload failed, 2 bad arguments.
-# - The bundle is swapped in only when complete and checked against docs/site-data/v1, so a failed run leaves the
+# - The bundle is swapped in only when complete and checked against docs/site-data/v2, so a failed run leaves the
 #   previous bundle in place, and nothing is published unless the export and the check passed.
 set -euo pipefail
 
@@ -50,6 +51,27 @@ if [ "$UPDATE" = 1 ]; then
     echo "$(date -Is) update failed; exporting from the existing catalog"
     status=1
   fi
+fi
+# `nmwater update` records a failed catalog build instead of failing (it leaves a stub database), so check the catalog before exporting from it
+# and rebuild it once if it is not healthy. The export reads only the catalog; a bad one would leave the website data stale with no clear reason.
+catalog_ok() {
+  "$UV" run python - <<'PY'
+import sys
+import duckdb
+from nmwater.core.config import Settings
+try:
+    n = duckdb.connect(str(Settings.load().duckdb_path), read_only=True).sql("select count(*) from observations").fetchone()[0]
+except Exception as e:
+    print("catalog check failed:", e)
+    sys.exit(1)
+print(f"catalog ok: {n:,} observations")
+sys.exit(0 if n > 1_000_000 else 1)
+PY
+}
+if ! catalog_ok; then
+  echo "$(date -Is) the catalog is not healthy; rebuilding it once"
+  "$UV" run nmwater catalog build || status=1
+  catalog_ok || status=1
 fi
 if "$UV" run nmwater export-site-data; then
   if [ "$PUBLISH" = 1 ]; then

@@ -1,0 +1,20 @@
+[Unit]
+Description=Nightly refresh of the New Mexico water archive and the website data bundle
+Documentation=file://%h/projects/water_newmexico/docs/usage.md
+OnFailure=nmwater-nightly-failed.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/projects/water_newmexico
+# nmwater update (fetch, compact, watershed precipitation, catalog build), a catalog check, then export-site-data. Log: data/logs/site_data.log.
+# The bundle is swapped in only when complete and valid, so a failed run leaves the previous one. Nothing is published (no --publish).
+ExecStart=%h/projects/water_newmexico/scripts/cron/site_data.sh --update
+# Refresh the dev server the owner uses to check the site, so it shows the new data (does nothing if it is not running).
+ExecStartPost=-/usr/bin/systemctl --user try-restart nmwater-web-dev.service
+# Low priority and capped: this machine is also a desktop, and systemd-oomd kills a user session that is under memory pressure.
+Nice=10
+IOSchedulingClass=idle
+CPUWeight=50
+MemoryHigh=8G
+MemoryMax=14G
+TimeoutStartSec=8h

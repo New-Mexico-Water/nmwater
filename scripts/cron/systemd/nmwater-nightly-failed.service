@@ -1,0 +1,7 @@
+[Unit]
+Description=Tell the owner the nightly New Mexico water refresh failed
+
+[Service]
+Type=oneshot
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=%t/bus
+ExecStart=/usr/bin/notify-send --urgency=normal --app-name=nmwater "Nightly water data refresh failed" "See ~/projects/water_newmexico/data/logs/site_data.log"
