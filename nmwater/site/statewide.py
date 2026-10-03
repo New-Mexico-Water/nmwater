@@ -5,7 +5,9 @@ statewide/
   reservoirs.json    acre-feet held and percent full of groups of reservoirs, with history, a normal for the date, window changes, members and exclusions
   drought.json       the U.S. Drought Monitor's state series: percent of the state in D0-D4 and the DSCI, weekly since 2000, with changes and a percentile for the time of year
   temperature.json   PRISM statewide mean air temperature: windows against 1991-2020, the last 365 days, monthly since 1895, annual, and a cross-check against nClimGrid
-  (snowpack and flow files follow in later phases)
+  snowpack.json      SNODAS statewide snow water equivalent: now (or out of season), the same dates in earlier weeks, the last season's peak, the season so far against other years,
+                     the peak of every season since 2004, and a cross-check against the SNOTEL stations
+  (flow files follow in a later phase)
   *.csv              the histories as tables
 
 Definitions and exclusions are in nmwater/derived/statewide.py and docs/statewide.md.
@@ -21,6 +23,7 @@ import numpy as np
 import pandas as pd
 
 from ..derived import statewide as sw
+from ..derived import statewide_snow as sns
 from ..derived import statewide_temperature as stt
 from . import SCHEMA_VERSION
 from .river import clean
@@ -167,7 +170,37 @@ def temperature_file(grids: Path, generated: str, csv_dir: Path | None) -> tuple
     return out, entry
 
 
-def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None) -> dict | None:
+def snowpack_file(grids: Path, con, cache: Path, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | None:
+    """(statewide/snowpack.json content, the index entry), or None when there are no SNODAS grids."""
+    if not any((grids / "snodas").glob("snodas_*.nc")):
+        return None
+    poly = stt.nm_polygon(grids)
+    df = sns.daily(grids, poly, cache)
+    df = df.astype({c: float for c in ("swe_in", "volume_af", "cover_pct", "valid_pct")})
+    s = sns.summarise(df)
+    if s is None:
+        return None
+    snotel = sns.snotel_percent_of_median(con, pd.DatetimeIndex(df["date"])) if con is not None else pd.Series(dtype=float)
+    now = s["now"]
+    out = {"schema_version": SCHEMA_VERSION, "id": "snowpack", "generated": generated, "as_of": s["as_of"], "baseline": s["baseline"] + " water years", "valid_pct": round(s["valid_pct"], 3),
+           "min_median_in": s["min_median_in"], "latest": {"now": now, "compare": s["compare"], "last_season": s["last_season"]}, "history": s["history"],
+           "crosscheck": sns.crosscheck(df, snotel) if len(snotel) else None,
+           "definitions": {"swe": "Snow water equivalent: the depth of water the snow would make if melted, averaged over the whole state (inches) and summed over the state (acre-feet).",
+                           "median": f"For a date, the median over the water years {s['baseline']} (October to September, named for the year they end) of the days within {sns.WINDOW_DAYS} days of the same calendar day; the season shown is left out.",
+                           "percent_of_median": f"Mean SWE over that median. Stated only when the median is at least {sns.MIN_MEDIAN_IN} inch; otherwise the state is out of snow season and no percent is given.",
+                           "cover": f"Share of the state with at least {int(sns.COVER_MM)} mm of SWE."},
+           "method": "NOAA NOHRSC SNODAS 1 km daily snow model (assimilates satellite, airborne and ground observations: an estimate, not a measurement) averaged over the state polygon, each cell by its true area."}
+    if csv_dir is not None:
+        d = df[["date", "swe_in", "volume_af", "cover_pct"]].copy()
+        d["date"] = d["date"].dt.date.astype(str)
+        d.round({"swe_in": 5, "volume_af": 1, "cover_pct": 3}).to_csv(csv_dir / "snowpack_daily.csv", index=False)
+    head = {"as_of": s["as_of"], "in_season": now["in_season"], "swe_in": now["swe_in"], "volume_af": now["volume_af"], "percent_of_median": now["percent_of_median"],
+            "last_season_peak_in": s["last_season"]["peak_swe_in"], "last_season_percent_of_median_peak": s["last_season"]["percent_of_median_peak"]}
+    entry = {"id": "snowpack", "title": "Snowpack", "file": "snowpack.json", "as_of": s["as_of"], "unit": "inches of snow water equivalent", "headline": head, "sources": ["snodas"]}
+    return out, entry
+
+
+def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None, cache: Path | None = None) -> dict | None:
     """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say."""
     base = out / "statewide"
     base.mkdir(parents=True, exist_ok=True)
@@ -193,6 +226,13 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("temperature_monthly.csv")
+    sp = snowpack_file(grids, con, cache, generated, base if csv else None) if grids is not None and cache is not None else None
+    if sp:
+        content, entry = sp
+        (base / "snowpack.json").write_text(json.dumps(clean(content), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        metrics.append(entry)
+        if csv:
+            files["csv"].append("snowpack_daily.csv")
     if not metrics:
         return None
     as_of = max(pd.Timestamp(m["as_of"]).date().isoformat() for m in metrics)

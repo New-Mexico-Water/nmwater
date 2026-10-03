@@ -57,6 +57,26 @@ Membership is fixed by the registry (`catalog/reservoirs.yaml`, 24 reservoirs) a
   minimum and maximum, not a mean of hourly readings.
 - **Licence.** PRISM: free to reproduce and redistribute with attribution (credit and access date shown on the page).
 
+## Snowpack (`statewide/snowpack.json`)
+
+- **Source.** NOAA NOHRSC SNODAS (via NSIDC), the 1 km daily snow model, 2003-09-30 on. It is a model that assimilates satellite, airborne and ground observations: an estimate.
+  Four days (2003-10-30 has no SWE product; 2012-08-24, 2012-12-19 and 2013-10-01 have an irregular grid) are skipped.
+- **Area.** The union of the TIGER counties; a cell is in the state when its centre is, and counts with its true area (the test checks the state comes to 77.8 million acres and that the
+  volume is the mean depth times that area). The share of the state with data is published (99.96%).
+- **Figures.** Mean snow water equivalent over the state in inches (the depth of water the snow would make if melted, averaged over everything including bare ground), the volume in
+  acre-feet, and the share of the state with at least 25 mm of it.
+- **Median and percent of median.** For a date, the median over the water years 2004-2025 (October to September, named for the year they end) of the days within 3 days of the same calendar day,
+  leaving out the season shown. A percent of median is stated only when the median is at least 0.05 in of mean SWE, which in these data is about 20 November to 5 May. Outside it the file
+  says it is out of season and gives the last season's peak (its date, depth, volume, share of the state covered, and how it ranks among the seasons since 2004) instead.
+- **History.** The season shown (the most recent one with a snow season, so just after 1 October it is still the winter that ended) day by day with the spread of past years, and the peak of every season since 2004.
+- **Cross-check against SNOTEL.** The NRCS SNOTEL stations in New Mexico, summed against their own medians over the same baseline years (the way NRCS reports a basin index), on December to April days:
+  correlation 0.70 over 3,168 days, median difference 21 percentage points, SNODAS 7 points higher on average; as season (December-April) averages the correlation is 0.89 over 23 seasons
+  with a mean difference of 22 points. They agree on which years are big and which are poor, not on the exact percent: the SNOTEL stations sit at 8,000-11,000 feet, SNODAS also
+  counts snow that falls on lowlands and melts within days. Nobody should quote a statewide percent of median to the point.
+- **Not a measurement.** No snow is measured at most of the state; SNODAS is also revised only by its own later runs. The state's snow is small compared with the Colorado Rockies' (mean SWE
+  at the best day on record, 5 February 2010, was 1.5 in).
+- **Licence.** SNODAS is listed as public domain with the NSIDC citation (see the licence audit); we have not re-read the NSIDC terms.
+
 ## What cannot be totalled from what we hold
 
 | Metric | Why not |

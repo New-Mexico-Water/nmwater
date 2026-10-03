@@ -204,9 +204,46 @@ def statewide_problems(root: Path, man: dict) -> list[str]:
             out += _drought_statewide(d, m)
         elif m["id"] == "temperature":
             out += _temperature_statewide(d, m)
+        elif m["id"] == "snowpack":
+            out += _snowpack_statewide(d, m)
     for pth in block["files"]["csv"]:
         if not (base / pth).exists():
             out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _snowpack_statewide(d: dict, entry: dict) -> list[str]:
+    out = _validate(d, "statewide_snowpack", "statewide/snowpack.json")
+    if out:
+        return out
+    w, h, now = "statewide/snowpack.json", d["history"], d["latest"]
+    n = len(h["season"]["dates"])
+    if any(len(v) != n for k, v in h["season"].items() if isinstance(v, list)):
+        out.append(f"{w}: season arrays differ in length")
+    p = h["peaks"]
+    if any(len(v) != len(p["water_years"]) for v in p.values()):
+        out.append(f"{w}: peaks arrays differ in length")
+    r = now["now"]
+    if r["date"] != d["as_of"]:
+        out.append(f"{w}: now is not as_of")
+    for x in [r, *now["compare"]]:
+        if x["in_season"] != (x["percent_of_median"] is not None):
+            out.append(f"{w}: {x['date']} is in season only when it has a percent of median")
+        if x["percent_of_median"] is not None and (x["median_in"] is None or x["median_in"] < d["min_median_in"] or abs(x["percent_of_median"] - 100 * x["swe_in"] / x["median_in"]) > 0.05):
+            out.append(f"{w}: {x['date']} percent of median is not swe over its median (or the median is below the minimum)")
+    days = [x["days"] for x in now["compare"]]
+    if days != sorted(set(days)):
+        out.append(f"{w}: compare days are not unique and in order")
+    ls = now["last_season"]
+    if ls["rank"] < 1 or ls["rank"] > ls["of"]:
+        out.append(f"{w}: last season rank is outside 1..of")
+    if ls["water_year"] != h["season"]["water_year"]:
+        out.append(f"{w}: the season shown is not the last season")
+    if abs(max((v for v in h["season"]["swe_in"] if v is not None), default=0) - ls["peak_swe_in"]) > 1e-3:
+        out.append(f"{w}: the season's highest day is not the last season's peak")
+    hd = entry["headline"]
+    if entry["as_of"] != d["as_of"] or hd.get("swe_in") != r["swe_in"] or hd.get("in_season") != r["in_season"] or hd.get("percent_of_median") != r["percent_of_median"]:
+        out.append(f"{w}: index.json and the file disagree on the headline")
     return out
 
 
