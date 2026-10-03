@@ -533,3 +533,58 @@ def test_flow_section_is_exported_validated_and_catches_inconsistencies(tmp_path
     edit(base, "flow.json", lambda o: o["history"]["total"].__setitem__(-1, content["history"]["total"][-1]))
     edit(base, "flow.json", lambda o: o["members"].append("lobatos"))
     assert bad("members are not all exit gauges")
+
+
+def test_a_statewide_refresh_replaces_the_changing_metrics_and_keeps_the_reservoirs_and_the_rest_of_the_bundle(tmp_path, monkeypatch):
+    from nmwater.site import bundle as bun
+    from nmwater.site import statewide as swx
+    monkeypatch.setattr(stt, "nm_polygon", lambda g: None)
+    daily = temp_daily()
+    monthly = pd.Series(10 + 10 * np.sin(2 * np.pi * (pd.date_range("1895-01-01", "2026-08-01", freq="MS").month - 4) / 12), index=pd.date_range("1895-01-01", "2026-08-01", freq="MS"))
+    monkeypatch.setattr(stt, "series", lambda g, p=None: (daily, monthly, 1.0))
+    monkeypatch.setattr(stt, "crosscheck", lambda g, p, m: None)
+    grids = tmp_path / "grids"
+    (grids / "prism").mkdir(parents=True)
+    (grids / "prism" / "tmean_daily_2026.nc").write_bytes(b"")
+    root = tmp_path / "bundle"
+    root.mkdir()
+    make_bundle(root)
+    man = json.loads((root / "manifest.json").read_text())
+    make_statewide(root, man)
+    before = (root / "statewide" / "reservoirs.json").read_bytes()
+    con = drought_con(weeks=120)
+    add_flow(con)
+    problems = bun.refresh_statewide(con, root, grids, tmp_path / "snow.parquet")
+    assert problems == []
+    m = json.loads((root / "manifest.json").read_text())
+    assert m["statewide"]["metrics"] == ["reservoirs", "drought", "temperature", "flow"]
+    assert (root / "statewide" / "reservoirs.json").read_bytes() == before            # the reservoir file is carried over untouched
+    assert (root / "statewide" / "flow.json").exists() and (root / "statewide" / "temperature_monthly.csv").exists()
+    assert [p for p in sch.validate_bundle(root) if "statewide" in p] == []
+    assert not (tmp_path / ".bundle.statewide.new").exists() and not (tmp_path / ".bundle.statewide.old").exists()
+    files = {f["path"] for f in json.loads((root / "files.json").read_text())["files"]}
+    assert "statewide/flow.json" in files and "statewide/reservoirs.json" in files
+
+
+def test_a_refresh_that_fails_validation_puts_the_previous_files_back(tmp_path, monkeypatch):
+    from nmwater.site import bundle as bun
+    from nmwater.site import statewide as swx
+    root = tmp_path / "bundle"
+    root.mkdir()
+    make_bundle(root)
+    man = json.loads((root / "manifest.json").read_text())
+    make_statewide(root, man)
+    before_manifest = (root / "manifest.json").read_text()
+    before = (root / "statewide" / "index.json").read_text()
+    real = swx.drought_file
+
+    def broken(con, generated, csv_dir):
+        content, entry = real(con, generated, csv_dir)
+        content["latest"]["dsci"] = 1.0                                       # disagrees with the index entry's headline
+        return content, entry
+    monkeypatch.setattr(swx, "drought_file", broken)
+    con = drought_con(weeks=120)
+    problems = bun.refresh_statewide(con, root, tmp_path / "grids", tmp_path / "snow.parquet")
+    assert problems and any("statewide" in p for p in problems)
+    assert (root / "manifest.json").read_text() == before_manifest and (root / "statewide" / "index.json").read_text() == before
+    assert not (root / "statewide" / "drought.json").exists()
