@@ -505,6 +505,7 @@ def export_site_data(
     out: Optional[Path] = typer.Option(None, "--out", help="Bundle directory (default: <repo>/dist/site-data)"),
     no_social: bool = typer.Option(False, "--no-social", help="skip the 1200x630 share images"),
     no_csv: bool = typer.Option(False, "--no-csv", help="skip the CSV downloads (small test bundles)"),
+    statewide_only: bool = typer.Option(False, "--statewide-only", help="only recompute the statewide drought, temperature, snowpack and flow files in the existing bundle (about 2 minutes)"),
     validate: bool = typer.Option(True, "--validate/--no-validate", help="check every file against docs/site-data/v2 schemas"),
     config: Optional[Path] = typer.Option(None, "--config", help="default: <repo>/config/river_reports.yaml"),
     data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
@@ -522,6 +523,23 @@ def export_site_data(
     def load(name, default):
         p = PROJECT_ROOT / "config" / name
         return (yaml.safe_load(p.read_text()) or default) if p.exists() else default
+
+    if statewide_only:
+        import duckdb
+
+        from .site.bundle import refresh_statewide
+
+        con = duckdb.connect(str(s.duckdb_path), read_only=True)
+        con.execute("SET TimeZone = 'UTC'")
+        try:
+            problems = refresh_statewide(con, out, s.data_dir / "grids", s.parquet_dir / "derived" / "statewide_snow_daily.parquet", csv=not no_csv)
+        finally:
+            con.close()
+        if problems:
+            console.print(f"[red]statewide refresh failed, previous files restored:[/red]\n  " + "\n  ".join(problems[:20]))
+            raise typer.Exit(1)
+        console.print(f"[green]statewide files refreshed in {out}[/green]")
+        return
 
     cfg = (yaml.safe_load(config.read_text()) or {}) if config.exists() else {}
     entries, failed = export(s.duckdb_path, out, PROJECT_ROOT, s.data_dir / "grids",

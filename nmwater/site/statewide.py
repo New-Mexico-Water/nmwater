@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import json
 import logging
+import shutil
 from pathlib import Path
 
 import numpy as np
@@ -240,8 +241,12 @@ def flow_file(con, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | 
     return out, entry
 
 
-def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None, cache: Path | None = None) -> dict | None:
-    """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say."""
+def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None, cache: Path | None = None,
+                     keep_reservoirs_from: Path | None = None) -> dict | None:
+    """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say.
+
+    With no reservoir `frames`, the reservoir file, its CSV and its index entry are carried over from `keep_reservoirs_from` (an existing statewide directory) when given:
+    that is how a refresh of the other metrics leaves the reservoirs as the full export made them."""
     base = out / "statewide"
     base.mkdir(parents=True, exist_ok=True)
     metrics, files = [], {"csv": []}
@@ -252,6 +257,16 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("reservoirs_supply_weekly.csv")
+    elif keep_reservoirs_from is not None and (keep_reservoirs_from / "reservoirs.json").exists() and (keep_reservoirs_from / "index.json").exists():
+        old = json.loads((keep_reservoirs_from / "index.json").read_text())
+        entry = next((m for m in old["metrics"] if m["id"] == "reservoirs"), None)
+        if entry:
+            shutil.copy2(keep_reservoirs_from / "reservoirs.json", base / "reservoirs.json")
+            metrics.append(entry)
+            for c in old["files"]["csv"]:
+                if c.startswith("reservoirs") and (keep_reservoirs_from / c).exists():
+                    shutil.copy2(keep_reservoirs_from / c, base / c)
+                    files["csv"].append(c)
     dr = drought_file(con, generated, base if csv else None) if con is not None else None
     if dr:
         content, entry = dr

@@ -53,6 +53,46 @@ def producer(root: Path) -> dict:
     return {"name": "nmwater", "git_sha": sha}
 
 
+def refresh_statewide(con, out: Path, grids: Path, snow_cache: Path, csv: bool = True) -> list[str]:
+    """Recompute the statewide drought, temperature, snowpack and flow files in an existing bundle at `out`, keeping its rivers, precipitation, reservoirs and the statewide
+    reservoir file, and rewrite manifest.json and files.json. The bundle is checked afterwards; on any problem the previous statewide files and manifest are put back and the
+    problems are returned (an empty list means it worked). A full export takes about 27 minutes; this takes two."""
+    from .schema import validate_bundle
+
+    mp = out / "manifest.json"
+    old_manifest = mp.read_text(encoding="utf-8")
+    manifest = json.loads(old_manifest)
+    old_dir, new_root, backup = out / "statewide", out.parent / f".{out.name}.statewide.new", out.parent / f".{out.name}.statewide.old"
+    for d in (new_root, backup):
+        if d.exists():
+            shutil.rmtree(d)
+    generated = datetime.now(UTC).isoformat(timespec="seconds")
+    new_root.mkdir(parents=True)
+    try:
+        block = export_statewide(new_root, {}, {}, generated, csv, con, grids, snow_cache, keep_reservoirs_from=old_dir if old_dir.exists() else None)
+        if block is None:
+            return ["statewide: nothing to write"]
+        if old_dir.exists():
+            old_dir.rename(backup)
+        (new_root / "statewide").rename(old_dir)
+        manifest["statewide"], manifest["generated"] = block, generated
+        mp.write_text(json.dumps(clean(manifest), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        write_files_index(out)
+        problems = validate_bundle(out)
+        if problems:
+            shutil.rmtree(old_dir)
+            if backup.exists():
+                backup.rename(old_dir)
+            mp.write_text(old_manifest, encoding="utf-8")
+            write_files_index(out)
+            return problems
+        return []
+    finally:
+        for d in (new_root, backup):
+            if d.exists():
+                shutil.rmtree(d)
+
+
 def export(db: Path, out: Path, root: Path, grids: Path, cache: Path, rivers: list[str] | None = None, config: dict | None = None,
            river_notes: dict | None = None, exclusions: list[dict] | None = None, descriptions: dict | None = None,
            social: bool = True, csv: bool = True) -> tuple[list[dict], list[str]]:
