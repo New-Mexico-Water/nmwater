@@ -216,22 +216,29 @@ sees one complete snapshot), keeps the newest seven bundles, and, if `WEB_REPO` 
 `data-updated` event so it rebuilds. R2 and GitHub settings go in `.env` (see `.env.example`). Try it with
 `scripts/cron/publish_site_data.sh --dry-run` first: it checks the bundle and prints what it would do.
 
-**Nightly on the owner's machine (systemd, because there is no cron daemon).** `scripts/cron/systemd/` holds a user timer that runs `scripts/cron/site_data.sh --update` at 02:00
-(`Persistent=true`, so a run missed while the machine was off or asleep happens when it is next up; no `--publish` until the R2 and GitHub settings exist). The wrapper runs `nmwater update`
-(fetch, compact, watershed precipitation, catalog build), checks the catalog (an `update` records a failed catalog build instead of failing, which leaves a stub database; the wrapper rebuilds it once),
-then `export-site-data`; a failed export leaves the previous bundle. The service is low priority and capped (8 GB soft, 14 GB hard) because the machine is also a desktop and systemd-oomd kills a user
-session under memory pressure. When it succeeds it restarts the dev server unit `nmwater-web-dev` so the site shows the new data; when it fails a desktop notification appears. A catch-up run after
-a long gap takes hours (the last was 3.5 h for the update); a normal night takes under an hour plus about 27 minutes for the export.
+**Nightly on the owner's machine (cron).** The crontab runs `scripts/cron/nightly.sh` at 02:00 (`crontab -l`):
 
-```bash
-systemctl --user link $PWD/scripts/cron/systemd/nmwater-nightly.{service,timer} $PWD/scripts/cron/systemd/nmwater-nightly-failed.service   # once
-systemctl --user enable --now nmwater-nightly.timer
-systemctl --user list-timers nmwater-nightly.timer          # when it runs next
-systemctl --user start nmwater-nightly.service              # run it now (hours; stop it with `systemctl --user stop nmwater-nightly.service`)
-tail -f data/logs/site_data.log                             # progress; the unit's own state: systemctl --user status nmwater-nightly.service
+```
+MAILTO=""
+0 2 * * * /home/vance/projects/water_newmexico/scripts/cron/nightly.sh
 ```
 
-User timers run while the user's systemd manager is running. Without `loginctl enable-linger $USER` that is while the owner is logged in; the timer's `Persistent=true` covers the rest.
+`nightly.sh` runs `scripts/cron/site_data.sh --update` (no `--publish` until the R2 and GitHub settings exist) as a transient user systemd unit with the limits below, because cron itself gives a
+job no memory cap, and the machine is also a desktop where systemd-oomd kills a user session under memory pressure: low priority, 8 GB soft and 14 GB hard memory. If the user's systemd manager is
+not reachable (logged out) it runs under `nice`/`ionice` alone. The wrapper runs `nmwater update` (fetch, compact, watershed precipitation, catalog build), checks the catalog (an `update` records a
+failed catalog build instead of failing, which leaves a stub database; the wrapper rebuilds it once), then `export-site-data`; a failed export leaves the previous bundle. On success `nightly.sh` restarts
+the dev server unit `nmwater-web-dev` so the site shows the new data; on failure a desktop notification appears. A catch-up run after a long gap takes hours (the last was 3.5 h for the update); a normal
+night takes under an hour plus about 27 minutes for the export. Plain cron has no catch-up: a night the machine is off is skipped (the next run catches up the data, since `update` fetches from each
+source's last success).
+
+```bash
+crontab -l                                                  # the schedule
+tail -f data/logs/site_data.log                             # progress and the result of the last run
+scripts/cron/nightly.sh                                     # run it now (hours); the lock stops two runs at once
+NIGHTLY_COMMAND=/bin/true scripts/cron/nightly.sh           # test the plumbing only
+```
+
+`scripts/cron/systemd/` keeps an equivalent systemd user timer and service (linked but the timer disabled) for a machine without cron: `systemctl --user enable --now nmwater-nightly.timer`. Use one scheduler, not both.
 
 ### What the river data contains
 
