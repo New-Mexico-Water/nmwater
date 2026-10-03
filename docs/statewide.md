@@ -77,6 +77,27 @@ Membership is fixed by the registry (`catalog/reservoirs.yaml`, 24 reservoirs) a
   at the best day on record, 5 February 2010, was 1.5 in).
 - **Licence.** SNODAS is listed as public domain with the NSIDC citation (see the licence audit); we have not re-read the NSIDC terms.
 
+## Flow at the state line (`statewide/flow.json`)
+
+This is **five gauges, not the state's outflow.** Many other streams cross the border (the Zuni River toward Arizona, the Dry Cimarron toward Oklahoma, ephemeral washes) and groundwater and
+pipelines move water too; none are counted.
+
+- **Gauges (one per river, so nothing is counted twice).** Rio Grande below Caballo Dam (Reclamation, with the USGS series that ended in 2013), Pecos River at Red Bluff NM, Canadian River at Logan NM,
+  San Juan River at Four Corners, Gila River below Blue Creek near Virden NM; and, entering the state, the Rio Grande near Lobatos CO (USGS until December 2024, then the Colorado Division
+  of Water Resources' copy of the same station). The Rio Grande below Elephant Butte Dam is not used: its water flows into Caballo, so adding both would count it twice.
+- **Where they are.** Red Bluff and Four Corners are at the state line; Logan is about 40 miles from the Texas line and Virden about 20 from Arizona; Caballo is about 90 river miles above Texas and
+  **most of the water released there is diverted for irrigation before the line**, so the Rio Grande's figure is what the dam lets go, not what reaches Texas. These caveats are in the file.
+- **Volume.** Mean flow over the last N days x N x 1.983471 acre-feet per cfs-day (so a few missing days do not shrink it), stated when at least 75% of the days have data. The windows end on the latest
+  day on which every exit has data (23 September 2026 now); the Lobatos entrance has its own end date.
+- **Normal.** The median volume over the same calendar days in each year of 1991-2020. For the sum a year counts only when every exit has a value that year (29 of 30 years now). The percentile
+  and class use the same bands as flow and rain.
+- **Stale gauges.** An exit whose newest reading is more than 14 days older than the newest exit's is left out of the sum and named in the file, and the sum is stated only when every remaining exit is rated.
+- **Water years.** October to September, named for the year they end, since 1978 (the San Juan record at Four Corners starts in 1977); a year needs 90% of its days at every gauge to be totalled.
+- **Not computed:** compact accounting (Rio Grande, Pecos, Canadian, Colorado River): it rests on annual reports and delivery schedules we do not hold. The Colorado line of the Rio Grande Compact is measured
+  at Lobatos only in part. We do not subtract the entrance from the exits.
+- **Managed rivers.** Every one of these is regulated (Navajo, Heron, El Vado, Elephant Butte, Caballo, Avalon and Brantley, Conchas and Ute dams), so "below normal" reflects storage, releases and diversions as much as weather.
+- **Licence.** USGS and Reclamation data are public; the Colorado Division of Water Resources data is listed in the licence audit (terms read by hand still pending, issue #5-style item for Colorado).
+
 ## What cannot be totalled from what we hold
 
 | Metric | Why not |

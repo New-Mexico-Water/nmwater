@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+
+import pandas as pd
 from pathlib import Path
 
 SCHEMA_DIR = Path(__file__).resolve().parents[2] / "docs" / "site-data" / "v2"
@@ -206,9 +208,88 @@ def statewide_problems(root: Path, man: dict) -> list[str]:
             out += _temperature_statewide(d, m)
         elif m["id"] == "snowpack":
             out += _snowpack_statewide(d, m)
+        elif m["id"] == "flow":
+            out += _flow_statewide(d, m)
     for pth in block["files"]["csv"]:
         if not (base / pth).exists():
             out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _flow_statewide(d: dict, entry: dict) -> list[str]:
+    from ..derived.river_normal import classify
+
+    out = _validate(d, "statewide_flow", "statewide/flow.json")
+    if out:
+        return out
+    w = "statewide/flow.json"
+    exits = {g["key"] for g in d["gauges"] if g["role"] == "exit"}
+    keys = {g["key"] for g in d["gauges"]}
+    if not set(d["members"]) <= exits:
+        out.append(f"{w}: members are not all exit gauges")
+    stale = {x["key"] for x in d["stale"]}
+    if stale & set(d["members"]) or {g["key"] for g in d["gauges"] if g["stale"]} != stale:
+        out.append(f"{w}: stale gauges are listed inconsistently with the members")
+    if set(d["members"]) | stale != exits:
+        out.append(f"{w}: every exit gauge must be a member or listed as stale")
+
+    def rated(x: dict, where: str):
+        if (x["normal_af"] is None) != (x["percentile"] is None) or (x["percentile"] is None) != (x["class"] is None) or (x["normal_af"] is None) != (x["percent_of_median"] is None):
+            out.append(f"{where}: partly rated")
+        elif x["percentile"] is not None:
+            if classify(x["percentile"]) != x["class"]:
+                out.append(f"{where}: class does not follow its percentile")
+            if x["normal_af"] > 0 and abs(x["percent_of_median"] - 100 * x["volume_af"] / x["normal_af"]) > 0.05:
+                out.append(f"{where}: percent of median is not volume over normal")
+
+    def check(win: dict, end: str, members: list[str], label: str):
+        if win["end"] != end:
+            out.append(f"{w}: {label} does not end on {end}")
+        if (pd.Timestamp(win["end"]) - pd.Timestamp(win["start"])).days + 1 != win["days"]:
+            out.append(f"{w}: {label} start and end do not span {win['days']} days")
+        got = [g["key"] for g in win["by_gauge"]]
+        if not set(got) <= set(members):
+            out.append(f"{w}: {label} has gauges that are not members")
+        if win["complete"] != (set(got) == set(members)):
+            out.append(f"{w}: {label} complete does not match its gauges")
+        for g in win["by_gauge"]:
+            rated(g, f"{w}: {label} {g['key']}")
+            if abs(g["volume_af"] - g["mean_cfs"] * win["days"] * 1.983471) > max(1.0, 1e-6 * g["volume_af"]):
+                out.append(f"{w}: {label} {g['key']} volume is not mean flow x days x 1.983471")
+        t = win["total"]
+        if win["complete"] != (t is not None):
+            out.append(f"{w}: {label} has a total only when every gauge is present")
+        if t is not None:
+            rated(t, f"{w}: {label} total")
+            if abs(t["volume_af"] - sum(g["volume_af"] for g in win["by_gauge"])) > max(1.0, 1e-6 * t["volume_af"]):
+                out.append(f"{w}: {label} total is not the sum of its gauges")
+
+    for win in d["windows"]:
+        check(win, d["as_of"], d["members"], f"{win['days']}-day window")
+    if d["water_year_to_date"]:
+        check(d["water_year_to_date"], d["as_of"], d["members"], "water year to date")
+    for win in d["entrance"] or []:
+        check(win, d["entrance_as_of"], [k for k in keys if k not in exits], f"entrance {win['days']}-day window")
+    days = [x["days"] for x in d["windows"]]
+    if days != sorted(set(days)):
+        out.append(f"{w}: windows are not unique and in order")
+    h = d["history"]
+    n = len(h["years"])
+    if h["years"] != sorted(set(h["years"])) or len(h["total"]) != n or any(len(v) != n for v in h["by_gauge"].values()) or (h["entrance"] is not None and len(h["entrance"]) != n):
+        out.append(f"{w}: history arrays differ in length or years are out of order")
+    elif set(h["by_gauge"]) != set(d["members"]):
+        out.append(f"{w}: history gauges are not the members")
+    else:
+        for i in range(n):
+            vals = [h["by_gauge"][k][i] for k in d["members"]]
+            if (h["total"][i] is None) != any(v is None for v in vals) or (h["total"][i] is not None and abs(h["total"][i] - sum(vals)) > 1.0):
+                out.append(f"{w}: water year {h['years'][i]} total is not the sum of its gauges")
+                break
+    hd = entry["headline"]
+    w30 = next((x for x in d["windows"] if x["days"] == hd.get("days")), None)
+    if entry["as_of"] != d["as_of"] or w30 is None or hd.get("members") != len(d["members"]) or hd.get("stale") != len(d["stale"]) or \
+            hd.get("volume_af") != (None if w30["total"] is None else w30["total"]["volume_af"]):
+        out.append(f"{w}: index.json and the file disagree on the headline")
     return out
 
 
