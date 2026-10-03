@@ -116,14 +116,15 @@ def drought_con(weeks=60, start="2024-01-02"):
     """An in-memory catalog with a statewide USDM series: cumulative categories that rise, so the latest week is the worst."""
     import duckdb
     con = duckdb.connect()
-    con.execute("CREATE TABLE observations (site_uid VARCHAR, variable VARCHAR, datetime_utc TIMESTAMPTZ, value DOUBLE)")
+    con.execute("CREATE TABLE observations (site_uid VARCHAR, variable VARCHAR, datetime_utc TIMESTAMPTZ, value DOUBLE, interval VARCHAR, statistic VARCHAR, qualifier VARCHAR)")
     dates = pd.date_range(start, periods=weeks, freq="7D", tz="UTC")
     for i, d in enumerate(dates):
         base = i / weeks
         cats = [90 * base + 10, 70 * base + 5, 50 * base, 30 * base, 10 * base]
         for v, x in zip(sw.DROUGHT_VARS.values(), cats + [sum(cats)]):
-            con.execute("INSERT INTO observations VALUES ('usdm:state:35', ?, ?, ?)", [v, d.to_pydatetime(), float(x)])
-    con.execute("INSERT INTO observations VALUES ('usdm:huc8:1', 'dsci', ?, 999)", [dates[0].to_pydatetime()])   # another site: must not be mixed in
+            con.execute("INSERT INTO observations VALUES ('usdm:state:35', ?, ?, ?, 'weekly', 'index', NULL)", [v, d.to_pydatetime(), float(x)])
+    con.execute("INSERT INTO observations VALUES ('usdm:huc8:1', 'dsci', ?, 999, 'weekly', 'index', NULL)", [dates[0].to_pydatetime()])   # another site: must not be mixed in
+    con.execute("CREATE VIEW observations_clean AS SELECT * FROM observations")
     return con
 
 
@@ -174,6 +175,17 @@ def test_drought_section_is_exported_validated_and_catches_inconsistencies(tmp_p
     assert bad("arrays differ")
 
 
+def add_flow(con, start="1990-01-01"):
+    """Daily discharge for every gauge's first uid, in the fake catalog."""
+    rows = []
+    for g in swf.GAUGES:
+        s = flow_series(start=start)[g["key"]]
+        rows.append(pd.DataFrame({"site_uid": g["uids"][0], "variable": "discharge", "datetime_utc": pd.to_datetime(s.index, utc=True), "value": s.to_numpy(), "interval": "daily", "statistic": "mean", "qualifier": None}))
+    df = pd.concat(rows, ignore_index=True)
+    con.register("flow_rows", df)
+    con.execute("INSERT INTO observations SELECT site_uid, variable, datetime_utc, value, interval, statistic, qualifier FROM flow_rows")
+
+
 def test_export_statewide_writes_reservoirs_and_drought_together_and_the_bundle_validates(tmp_path):
     """The whole exporter on synthetic inputs (a full export takes 25 minutes, so a failure at its last step must be caught here)."""
     from nmwater.site import statewide as swx
@@ -183,8 +195,11 @@ def test_export_statewide_writes_reservoirs_and_drought_together_and_the_bundle_
         f["measure"], f["slug"] = "percent_full", k + "-r"
         frames[k] = f
     reg = {k: {"name": k.title()} for k in frames}
-    block = swx.export_statewide(tmp_path, frames, reg, "2026-10-01T00:00:00+00:00", True, drought_con(weeks=120))
-    assert block and block["metrics"] == ["reservoirs", "drought"] and block["as_of"] >= "2026-09-28"
+    con = drought_con(weeks=120)
+    add_flow(con)
+    block = swx.export_statewide(tmp_path, frames, reg, "2026-10-01T00:00:00+00:00", True, con)
+    assert block and block["metrics"] == ["reservoirs", "drought", "flow"] and block["as_of"] >= "2026-09-28"
+    assert (tmp_path / "statewide" / "flow.json").exists() and (tmp_path / "statewide" / "flow_water_years.csv").exists()
     idx = json.loads((tmp_path / "statewide" / "index.json").read_text())
     assert all(isinstance(m["as_of"], str) for m in idx["metrics"])
     assert (tmp_path / "statewide" / "drought_weekly.csv").exists() and (tmp_path / "statewide" / "drought.json").exists()
@@ -397,3 +412,124 @@ def test_snodas_day_volume_matches_mean_depth_times_state_area_on_the_archive():
     assert state_acres == pytest.approx(77.8e6, rel=0.01)                  # 121,590 square miles
     assert vol_af == pytest.approx(mean_in / 12 * state_acres * valid / 100, rel=0.01)
     assert 1.2 < mean_in < 1.8 and 40 < cover < 60                         # a big snow year (the largest of 2004-2026)
+
+
+# State-line flow ---------------------------------------------------------------------------------------------------------------------------------------
+from nmwater.derived import statewide_flow as swf
+
+
+def flow_series(last="2026-09-23", stale_gila=False, start="1975-01-01"):
+    """Daily cfs for the six gauges: a seasonal flow with a per-gauge size and a year-to-year wobble; the Gila can end months early (a stale gauge)."""
+    out = {}
+    for i, g in enumerate(swf.GAUGES):
+        end = "2026-05-01" if (stale_gila and g["key"] == "gila") else last
+        d = pd.date_range("1977-10-01" if g["key"] == "san_juan" else start, end, freq="D")
+        out[g["key"]] = pd.Series(50.0 * (i + 1) * (1.2 + np.sin(2 * np.pi * (d.dayofyear - 120) / 365.25)) + 3.0 * np.sin(d.year * 1.3), index=d).clip(lower=0.5)
+    return out
+
+
+def test_every_exit_is_one_gauge_on_one_river_and_no_gauge_is_listed_twice():
+    exits = [g for g in swf.GAUGES if g["role"] == "exit"]
+    assert len(exits) == 5 and [g for g in swf.GAUGES if g["role"] == "entrance"][0]["key"] == "lobatos"
+    rivers = [g["river"] for g in exits]
+    assert len(set(rivers)) == 5
+    uids = [u for g in swf.GAUGES for u in g["uids"]]
+    assert len(uids) == len(set(uids))                                    # no station counted for two gauges
+    assert "usgs:08361000" not in uids                                    # Elephant Butte's release flows into Caballo: using both would count the Rio Grande twice
+
+
+def test_window_volume_is_mean_flow_times_days_times_the_cfs_day_factor():
+    ser = flow_series()
+    used, stale, end = swf.select(ser)
+    assert used == ["rio_grande", "pecos", "canadian", "san_juan", "gila"] and stale == [] and end == pd.Timestamp("2026-09-23")
+    w = swf.window_stats(ser, used, end, 30)
+    for g in w["by_gauge"]:
+        assert g["volume_af"] == pytest.approx(ser[g["key"]]["2026-08-25":"2026-09-23"].mean() * 30 * 1.983471)
+    assert w["complete"] and w["total"]["volume_af"] == pytest.approx(sum(g["volume_af"] for g in w["by_gauge"]))
+    assert w["start"] == "2026-08-25" and w["end"] == "2026-09-23" and w["total"]["years"] == 30
+
+
+def test_the_sum_is_rated_against_years_in_which_every_exit_has_a_value():
+    ser = flow_series()
+    ser["gila"] = ser["gila"]["2000-01-01":]                              # the Gila record starts in 2000: baseline years before it cannot enter the sum
+    used, _, end = swf.select(ser)
+    w = swf.window_stats(ser, used, end, 90)
+    gila = next(g for g in w["by_gauge"] if g["key"] == "gila")
+    assert gila["years"] == 21 and w["total"]["years"] == 21              # 2000-2020 for the Gila and so for the sum
+    assert next(g for g in w["by_gauge"] if g["key"] == "pecos")["years"] == 30
+
+
+def test_a_gauge_that_is_much_staler_than_the_rest_is_named_and_left_out_of_the_sum():
+    ser = flow_series(stale_gila=True)
+    used, stale, end = swf.select(ser)
+    assert "gila" not in used and [x["key"] for x in stale] == ["gila"] and stale[0]["last_date"] == "2026-05-01"
+    assert end == pd.Timestamp("2026-09-23")                              # END is not dragged back to May by the stale gauge
+
+
+def test_a_window_with_too_many_missing_days_is_not_stated_and_the_total_follows():
+    ser = flow_series()
+    ser["pecos"] = ser["pecos"].drop(ser["pecos"]["2026-09-01":"2026-09-20"].index)                 # 20 of the last 30 days missing
+    used, _, end = swf.select(ser)
+    w = swf.window_stats(ser, used, end, 30)
+    assert "pecos" not in [g["key"] for g in w["by_gauge"]] and w["complete"] is False and w["total"] is None
+    assert swf.window_stats(ser, used, end, 365)["total"] is not None      # a longer window still has 75% coverage
+
+
+def test_water_years_total_only_when_every_gauge_has_the_year():
+    ser = flow_series()
+    ser["canadian"] = ser["canadian"].drop(ser["canadian"]["2010-03-01":"2010-07-01"].index)         # a gap in water year 2010
+    used, _, end = swf.select(ser)
+    h = swf.water_years(ser, used, 2025)
+    i = h["years"].index(2010)
+    assert h["by_gauge"]["canadian"][i] is None and h["total"][i] is None           # 245 of 365 days present is below the 90% a water year needs: no figure, and so no total
+    assert h["years"][0] == 1978 and h["years"][-1] == 2025 and len(h["total"]) == 48
+    j = h["years"].index(2011)
+    assert h["total"][j] == pytest.approx(sum(h["by_gauge"][k][j] for k in used))
+
+
+def test_summary_has_water_year_to_date_and_an_entrance_rated_on_its_own_end_date():
+    ser = flow_series()
+    ser["lobatos"] = ser["lobatos"][:"2026-09-20"]
+    s = swf.summarise(ser)
+    assert s["as_of"] == "2026-09-23" and s["entrance_as_of"] == "2026-09-20" and [w["days"] for w in s["entrance"]] == [7, 30, 90, 180, 365]
+    assert s["water_year_to_date"]["days"] == (pd.Timestamp("2026-09-23") - pd.Timestamp("2025-10-01")).days + 1
+    assert all(w["by_gauge"][0]["key"] == "lobatos" for w in s["entrance"])
+    assert "lobatos" not in s["members"] and s["history"]["entrance"] is not None
+
+
+def test_flow_section_is_exported_validated_and_catches_inconsistencies(tmp_path):
+    from nmwater.site import statewide as swx
+    con = drought_con(weeks=10)
+    add_flow(con)
+    root = tmp_path / "bundle"
+    root.mkdir()
+    make_bundle(root)
+    man = json.loads((root / "manifest.json").read_text())
+    make_statewide(root, man)
+    base = root / "statewide"
+    content, entry = swx.flow_file(con, "2026-10-01T00:00:00+00:00", base)
+    assert (base / "flow_water_years.csv").exists() and content["members"] == ["rio_grande", "pecos", "canadian", "san_juan", "gila"]
+    (base / "flow.json").write_text(json.dumps(content))
+    idx = json.loads((base / "index.json").read_text())
+    idx["metrics"].append(entry)
+    (base / "index.json").write_text(json.dumps(idx))
+    man["statewide"]["metrics"].append("flow")
+    man["statewide"]["files"]["csv"].append("flow_water_years.csv")
+    (root / "manifest.json").write_text(json.dumps(man))
+    assert [p for p in sch.validate_bundle(root) if "statewide" in p] == []
+    bad = lambda frag: any(frag in p for p in sch.validate_bundle(root))
+    t0 = content["windows"][1]["total"]["volume_af"]
+    edit(base, "flow.json", lambda o: o["windows"][1]["total"].update(volume_af=t0 * 1.5))
+    assert bad("total is not the sum of its gauges")
+    edit(base, "flow.json", lambda o: o["windows"][1]["total"].update(volume_af=t0))
+    edit(base, "flow.json", lambda o: o["windows"][2]["by_gauge"][0].update(volume_af=o["windows"][2]["by_gauge"][0]["volume_af"] * 2))
+    assert bad("volume is not mean flow x days")
+    edit(base, "flow.json", lambda o: o["windows"][2]["by_gauge"][0].update(volume_af=content["windows"][2]["by_gauge"][0]["volume_af"]))
+    edit(base, "flow.json", lambda o: o["windows"][0]["by_gauge"][0].update(**{"class": "much below normal", "percentile": 99.0}))
+    assert bad("class does not follow its percentile")
+    edit(base, "flow.json", lambda o: o["windows"][0]["by_gauge"][0].update(**{"class": content["windows"][0]["by_gauge"][0]["class"], "percentile": content["windows"][0]["by_gauge"][0]["percentile"]}))
+    edit(base, "flow.json", lambda o: o["history"]["total"].__setitem__(-1, 123.0))
+    assert bad("is not the sum of its gauges")
+    edit(base, "flow.json", lambda o: o["history"]["total"].__setitem__(-1, content["history"]["total"][-1]))
+    edit(base, "flow.json", lambda o: o["members"].append("lobatos"))
+    assert bad("members are not all exit gauges")

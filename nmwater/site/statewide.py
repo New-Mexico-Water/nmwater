@@ -7,7 +7,7 @@ statewide/
   temperature.json   PRISM statewide mean air temperature: windows against 1991-2020, the last 365 days, monthly since 1895, annual, and a cross-check against nClimGrid
   snowpack.json      SNODAS statewide snow water equivalent: now (or out of season), the same dates in earlier weeks, the last season's peak, the season so far against other years,
                      the peak of every season since 2004, and a cross-check against the SNOTEL stations
-  (flow files follow in a later phase)
+  flow.json          acre-feet leaving New Mexico at five exit gauges (and entering at Lobatos) over windows and water years, against 1991-2020
   *.csv              the histories as tables
 
 Definitions and exclusions are in nmwater/derived/statewide.py and docs/statewide.md.
@@ -23,6 +23,7 @@ import numpy as np
 import pandas as pd
 
 from ..derived import statewide as sw
+from ..derived import statewide_flow as swf
 from ..derived import statewide_snow as sns
 from ..derived import statewide_temperature as stt
 from . import SCHEMA_VERSION
@@ -200,6 +201,45 @@ def snowpack_file(grids: Path, con, cache: Path, generated: str, csv_dir: Path |
     return out, entry
 
 
+FLOW_NOT_INCLUDED = [
+    "Other streams that cross the border (for example the Zuni River toward Arizona and the Dry Cimarron toward Oklahoma) and many ephemeral washes: these are five gauges, not the state's total outflow.",
+    "Tributaries that join between a gauge and the state line, and water diverted between them.",
+    "Rio Grande Compact, Pecos River Compact, Canadian River Compact and Colorado River Compact accounting, which rests on annual reports not held here.",
+    "Groundwater flowing across the border, and water imported into or exported out of the state by pipeline or diversion tunnel.",
+]
+
+
+def flow_file(con, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | None:
+    """(statewide/flow.json content, the index entry), or None when the exit gauges have no data."""
+    if con is None:
+        return None
+    s = swf.summarise(swf.read_series(con))
+    if s is None or not s["windows"]:
+        return None
+    used = {g["key"] for g in s["gauges"]}
+    out = {"schema_version": SCHEMA_VERSION, "id": "flow", "generated": generated, "unit": "acre-feet", **s,
+           "caveats": {k: v for k, v in swf.CAVEATS.items() if any(k in g["caveats"] for g in s["gauges"])},
+           "definitions": {"window": "Volume that passed the gauge in the last N days: mean flow x N x 1.983471 acre-feet per cfs-day, stated when at least 75% of the days have data.",
+                           "normal": f"The median volume over the same calendar days of each year in {s['baseline']} (the whole record when fewer than 20 of those years have data and at least 10 do); the percent is the volume over it.",
+                           "total": "The five exits added together: one gauge per river, so no water is counted twice. A year enters the total's normal only when every exit has a value that year.",
+                           "water_year": "October to September, named for the year it ends."},
+           "not_included": FLOW_NOT_INCLUDED,
+           "method": "Daily mean discharge from USGS, Bureau of Reclamation and Colorado Division of Water Resources gauges, one copy per gauge-day, converted to acre-feet; nothing is modelled."}
+    if csv_dir is not None:
+        h = out["history"]
+        d = pd.DataFrame({"water_year": h["years"], **{f"{k}_af": [None if v is None else round(v) for v in h["by_gauge"][k]] for k in h["by_gauge"]},
+                          "exits_total_af": [None if v is None else round(v) for v in h["total"]]})
+        if h["entrance"] is not None:
+            d["lobatos_af"] = [None if v is None else round(v) for v in h["entrance"]]
+        d.to_csv(csv_dir / "flow_water_years.csv", index=False)
+    w30 = next((w for w in s["windows"] if w["days"] == 30), s["windows"][0])
+    t = w30["total"]
+    head = {"as_of": s["as_of"], "members": len(s["members"]), "stale": len(s["stale"]), "days": w30["days"], "volume_af": None if t is None else t["volume_af"],
+            "percent_of_median": None if t is None else t["percent_of_median"], "class": None if t is None else t["class"]}
+    entry = {"id": "flow", "title": "Flow at the state line", "file": "flow.json", "as_of": s["as_of"], "unit": "acre-feet", "headline": head, "sources": ["usgs", "usbr_hydrodata", "codwr"]}
+    return out, entry
+
+
 def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None, cache: Path | None = None) -> dict | None:
     """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say."""
     base = out / "statewide"
@@ -233,6 +273,13 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("snowpack_daily.csv")
+    fl = flow_file(con, generated, base if csv else None) if con is not None else None
+    if fl:
+        content, entry = fl
+        (base / "flow.json").write_text(json.dumps(clean(content), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        metrics.append(entry)
+        if csv:
+            files["csv"].append("flow_water_years.csv")
     if not metrics:
         return None
     as_of = max(pd.Timestamp(m["as_of"]).date().isoformat() for m in metrics)
