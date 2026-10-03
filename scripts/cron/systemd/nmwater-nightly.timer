@@ -1,0 +1,12 @@
+[Unit]
+Description=Run the nightly New Mexico water refresh at 02:00
+
+[Timer]
+OnCalendar=*-*-* 02:00:00
+# a run missed because the machine was asleep or off happens when it is next up
+Persistent=true
+RandomizedDelaySec=10min
+Unit=nmwater-nightly.service
+
+[Install]
+WantedBy=timers.target
