@@ -286,3 +286,114 @@ def test_state_polygon_area_and_prism_against_nclimgrid_on_the_archive():
     monthly = stt.series(GRIDS, poly)[1]
     cc = stt.crosscheck(GRIDS, poly, monthly)
     assert cc and cc["months"] > 300 and cc["correlation"] > 0.999 and cc["mean_abs_diff_c"] < 0.3 and abs(cc["bias_c"]) < 0.2
+
+
+# Snowpack ----------------------------------------------------------------------------------------------------------------------------------------------
+from nmwater.derived import statewide_snow as sns
+
+
+def snow_df(end="2026-09-26", last_amp=0.15):
+    """Daily statewide SWE for 2003-09-30 on: a winter hump peaking in late February whose height varies by year (the last water year is poor)."""
+    d = pd.date_range("2003-09-30", end, freq="D")
+    wy = np.where(d.month >= 10, d.year + 1, d.year)
+    wyd = (d - pd.to_datetime([f"{y - 1}-10-01" for y in wy])).days.to_numpy()
+    amp = np.where(wy == 2026, last_amp, 0.3 + 0.1 * (wy % 3))
+    swe = amp * np.clip(np.sin(np.pi * (wyd - 45) / 200.0), 0, None)
+    return pd.DataFrame({"date": d, "swe_in": swe, "volume_af": swe * 6.5e6 / 12.0 * 12.0 / 12.0, "cover_pct": np.clip(swe * 100, 0, 100), "valid_pct": 99.9})
+
+
+def test_cell_area_is_the_true_area_of_a_lat_lon_cell():
+    a = sns.cell_area_m2(np.array([35.0]), 1.0, 1.0)[0]
+    assert a == pytest.approx(111_195 * 91_100, rel=0.01)               # a degree is 111.2 km north-south and 111.3 x cos(35) = 91.2 km east-west
+
+
+def test_day_stats_weights_by_area_and_refuses_a_grid_that_is_mostly_empty():
+    swe = np.array([[0.1, 0.0], [0.3, np.nan]])
+    mask = np.array([[True, True], [True, True]])
+    area = np.array([[1.0, 1.0], [2.0, 0.1]]) * 1e6
+    mean_in, vol_af, cover, valid = sns.day_stats(swe, mask, area)
+    assert mean_in == pytest.approx((0.1 * 1 + 0.3 * 2) / 4.0 * sns.M_TO_IN) and vol_af == pytest.approx(0.7e6 / sns.AF_M3)
+    assert cover == pytest.approx(100 * 3 / 4.0) and valid == pytest.approx(100 * 4.0 / 4.1)      # 0.1 m and 0.3 m are over the 25 mm threshold, 0 is not; the empty cell is left out
+    assert sns.day_stats(np.full((2, 2), np.nan), mask, area) is None
+    assert sns.day_stats(swe, np.array([[True, True], [True, True]]), np.array([[1.0, 1.0], [2.0, 5.0]]) * 1e6) is None      # the empty cell is most of the area
+
+
+def test_band_leaves_out_the_season_shown_and_a_summer_median_is_not_rated():
+    df = snow_df()
+    b = sns.band(df, exclude_wy=2026)
+    assert b.loc[225, "p50"] > 0.1 and b.loc[815, "p50"] == 0.0           # late February has snow, mid-August none
+    assert sns.percent_of_median(0.2, b.loc[815, "p50"]) is None and sns.percent_of_median(0.2, 0.1) == pytest.approx(200.0)
+    assert (b["years"] > 0).all()
+
+
+def test_in_summer_the_state_is_out_of_season_and_the_last_season_is_reported():
+    s = sns.summarise(snow_df())
+    assert s["now"]["in_season"] is False and s["now"]["percent_of_median"] is None
+    ls = s["last_season"]
+    assert ls["water_year"] == 2026 and ls["complete"] is True and ls["of"] == 23
+    assert ls["percent_of_median_peak"] < 60 and ls["rank"] == 23           # the poorest of the 23 seasons
+    assert [c["days"] for c in s["compare"]] == [7, 30, 90, 180, 365]
+    assert s["history"]["season"]["water_year"] == 2026 and max(v for v in s["history"]["season"]["swe_in"] if v is not None) == pytest.approx(ls["peak_swe_in"], abs=1e-3)
+
+
+def test_in_winter_the_percent_of_median_is_stated_and_the_season_is_not_complete():
+    s = sns.summarise(snow_df(end="2026-02-20"))
+    assert s["now"]["in_season"] is True and s["now"]["percent_of_median"] == pytest.approx(100 * s["now"]["swe_in"] / s["now"]["median_in"])
+    assert s["last_season"]["complete"] is False and s["last_season"]["water_year"] == 2026
+    assert all(v is None for v in s["history"]["season"]["swe_in"][s["history"]["season"]["dates"].index("2026-02-21"):])      # nothing after the as-of date
+
+
+def test_just_after_october_first_the_season_just_ended_is_still_the_one_shown():
+    s = sns.summarise(snow_df(end="2026-10-03"))
+    assert s["now"]["in_season"] is False and s["last_season"]["water_year"] == 2026 and s["last_season"]["complete"] is True
+
+
+def test_snowpack_section_is_exported_validated_and_catches_inconsistencies(tmp_path, monkeypatch):
+    from nmwater.site import statewide as swx
+    monkeypatch.setattr(stt, "nm_polygon", lambda g: None)
+    monkeypatch.setattr(sns, "daily", lambda g, p, c, rebuild=False: snow_df())
+    monkeypatch.setattr(sns, "snotel_percent_of_median", lambda con, ix: pd.Series(np.nan, index=ix))
+    grids = tmp_path / "grids"
+    (grids / "snodas").mkdir(parents=True)
+    (grids / "snodas" / "snodas_20260926.nc").write_bytes(b"")
+    root = tmp_path / "bundle"
+    root.mkdir()
+    make_bundle(root)
+    man = json.loads((root / "manifest.json").read_text())
+    make_statewide(root, man)
+    base = root / "statewide"
+    content, entry = swx.snowpack_file(grids, object(), tmp_path / "c.parquet", "2026-10-01T00:00:00+00:00", base)
+    assert (base / "snowpack_daily.csv").exists()
+    (base / "snowpack.json").write_text(json.dumps(content))
+    idx = json.loads((base / "index.json").read_text())
+    idx["metrics"].append(entry)
+    (base / "index.json").write_text(json.dumps(idx))
+    man["statewide"]["metrics"].append("snowpack")
+    man["statewide"]["files"]["csv"].append("snowpack_daily.csv")
+    (root / "manifest.json").write_text(json.dumps(man))
+    assert [p for p in sch.validate_bundle(root) if "statewide" in p] == []
+    bad = lambda frag: any(frag in p for p in sch.validate_bundle(root))
+    edit(base, "snowpack.json", lambda o: o["latest"]["now"].update(percent_of_median=50.0))
+    assert bad("in season only when")
+    edit(base, "snowpack.json", lambda o: o["latest"]["now"].update(percent_of_median=None))
+    edit(base, "snowpack.json", lambda o: o["latest"]["last_season"].update(rank=99))
+    assert bad("rank is outside")
+    edit(base, "snowpack.json", lambda o: o["latest"]["last_season"].update(rank=content["latest"]["last_season"]["rank"]))
+    edit(base, "snowpack.json", lambda o: o["history"]["season"]["p50"].pop())
+    assert bad("season arrays differ")
+
+
+@pytest.mark.skipif(not (GRIDS / "snodas" / "snodas_20100205.nc").exists() or not (GRIDS / "tiger" / "county.gpkg").exists(), reason="needs the SNODAS and TIGER grids in data/grids")
+def test_snodas_day_volume_matches_mean_depth_times_state_area_on_the_archive():
+    import xarray as xr
+    poly = stt.nm_polygon(GRIDS)
+    with xr.open_dataset(GRIDS / "snodas" / "snodas_20100205.nc") as ds:
+        lat, lon = ds["lat"].values, ds["lon"].values
+        a = ds["swe"].isel(time=0).load().values.astype(float) if "time" in ds["swe"].dims else ds["swe"].load().values.astype(float)
+    mask = sns.state_mask(poly, lat, lon)
+    area = sns.cell_area_m2(lat, abs(float(lat[1] - lat[0])), abs(float(lon[1] - lon[0])))[:, None] * np.ones((1, len(lon)))
+    mean_in, vol_af, cover, valid = sns.day_stats(a, mask, area)
+    state_acres = float(area[mask].sum()) / 4046.8564224
+    assert state_acres == pytest.approx(77.8e6, rel=0.01)                  # 121,590 square miles
+    assert vol_af == pytest.approx(mean_in / 12 * state_acres * valid / 100, rel=0.01)
+    assert 1.2 < mean_in < 1.8 and 40 < cover < 60                         # a big snow year (the largest of 2004-2026)
