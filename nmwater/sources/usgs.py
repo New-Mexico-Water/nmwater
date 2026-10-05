@@ -327,6 +327,7 @@ class USGS(Source):
     OGC_PAGE = 50000
     OGC_NO_DATETIME = frozenset({"peaks"})   # collections that reject a datetime filter
     OGC_FIRST_YEAR = 1850
+    OGC_MAX_PAGES = 400                      # a safety stop for paging with offset: 400 pages of 50,000 rows
 
     def _ogc_windows(self, since) -> list[tuple[date, date]]:
         """Yearly windows (decades before 1900) from first year or `since` to today."""
@@ -360,18 +361,40 @@ class USGS(Source):
             df = pd.read_csv(io.StringIO(text), dtype=str)
         except Exception:
             return []
-        if collection in self.OGC_NO_DATETIME:
-            if len(df) >= self.OGC_PAGE:
-                log.warning("usgs %s returned a full page (%d rows) and cannot be split by time; "
-                            "results are truncated", collection, len(df))
+        if len(df) < self.OGC_PAGE:
             return [df]
-        if len(df) < self.OGC_PAGE or depth >= 3 or b == e:
-            return [df]
+        if collection in self.OGC_NO_DATETIME or depth >= 3 or b == e:
+            # A full page that cannot be split further by time. It used to be returned as if complete (issue #50); page on with `offset` until a short page.
+            return self._ogc_follow_pages(collection, params, df, b, e, refresh, summ)
         # Full page: split the window in halves (year -> ~6 months -> ~3 months -> ~45 days)
         mid = b + (e - b) / 2
         log.info("usgs %s window %s..%s full (%d rows); splitting", collection, b, e, len(df))
         return (self._ogc_fetch_window(collection, base, b, mid, refresh, summ, depth + 1)
                 + self._ogc_fetch_window(collection, base, mid + timedelta(days=1), e, refresh, summ, depth + 1))
+
+    def _ogc_follow_pages(self, collection: str, params: dict, first: pd.DataFrame, b: date, e: date, refresh: bool,
+                          summ: FetchSummary) -> list[pd.DataFrame]:
+        """Read the pages after a full first page with the `offset` parameter, until one is short. Warns if the safety stop is reached, because then the result is truncated."""
+        frames = [first]
+        for page in range(1, self.OGC_MAX_PAGES):
+            art = self.get(f"{self.ogc}/collections/{collection}/items", params={**params, "offset": page * self.OGC_PAGE}, kind=collection,
+                           window=(b.isoformat(), e.isoformat()), refresh=refresh)
+            summ.n_requests += 1
+            if art.from_cache:
+                summ.n_cached += 1
+            text = art.read_text()
+            try:
+                df = pd.read_csv(io.StringIO(text), dtype=str) if text.strip() else pd.DataFrame()
+            except Exception:
+                df = pd.DataFrame()
+            if len(df):
+                frames.append(df)
+            if len(df) < self.OGC_PAGE:
+                log.info("usgs %s %s..%s: followed %d extra page(s), %d rows", collection, b, e, page, sum(len(f) for f in frames))
+                return frames
+        log.warning("usgs %s %s..%s: still full after %d pages; the result is truncated", collection, b, e, self.OGC_MAX_PAGES)
+        summ.notes.append(f"{collection} {b}..{e} truncated after {self.OGC_MAX_PAGES} pages")
+        return frames
 
     def fetch_ogc_table(self, collection: str, since, refresh, site_ids: list[str] | None = None) -> FetchSummary:
         summ = FetchSummary(self.name)
