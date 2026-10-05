@@ -314,7 +314,7 @@ def snow_df(end="2026-09-26", last_amp=0.15):
     wyd = (d - pd.to_datetime([f"{y - 1}-10-01" for y in wy])).days.to_numpy()
     amp = np.where(wy == 2026, last_amp, 0.3 + 0.1 * (wy % 3))
     swe = amp * np.clip(np.sin(np.pi * (wyd - 45) / 200.0), 0, None)
-    return pd.DataFrame({"date": d, "swe_in": swe, "volume_af": swe * 6.5e6 / 12.0 * 12.0 / 12.0, "cover_pct": np.clip(swe * 100, 0, 100), "valid_pct": 99.9})
+    return pd.DataFrame({"date": d, "swe_in": swe, "volume_af": swe * 6.5e6 / 12.0 * 12.0 / 12.0, "cover_pct": np.clip(swe * 100, 0, 100), "valid_pct": 99.9, "max_swe_in": swe * 30, "snow_sq_mi": swe * 5000})
 
 
 def test_cell_area_is_the_true_area_of_a_lat_lon_cell():
@@ -326,7 +326,8 @@ def test_day_stats_weights_by_area_and_refuses_a_grid_that_is_mostly_empty():
     swe = np.array([[0.1, 0.0], [0.3, np.nan]])
     mask = np.array([[True, True], [True, True]])
     area = np.array([[1.0, 1.0], [2.0, 0.1]]) * 1e6
-    mean_in, vol_af, cover, valid = sns.day_stats(swe, mask, area)
+    mean_in, vol_af, cover, valid, deepest, snowy = sns.day_stats(swe, mask, area)
+    assert deepest == pytest.approx(0.3 * sns.M_TO_IN) and snowy == pytest.approx(3e6 / sns.SQ_M_PER_SQ_MI)      # the 0.3 m and 0.1 m cells are over the 10 mm line
     assert mean_in == pytest.approx((0.1 * 1 + 0.3 * 2) / 4.0 * sns.M_TO_IN) and vol_af == pytest.approx(0.7e6 / sns.AF_M3)
     assert cover == pytest.approx(100 * 3 / 4.0) and valid == pytest.approx(100 * 4.0 / 4.1)      # 0.1 m and 0.3 m are over the 25 mm threshold, 0 is not; the empty cell is left out
     assert sns.day_stats(np.full((2, 2), np.nan), mask, area) is None
@@ -407,7 +408,7 @@ def test_snodas_day_volume_matches_mean_depth_times_state_area_on_the_archive():
         a = ds["swe"].isel(time=0).load().values.astype(float) if "time" in ds["swe"].dims else ds["swe"].load().values.astype(float)
     mask = sns.state_mask(poly, lat, lon)
     area = sns.cell_area_m2(lat, abs(float(lat[1] - lat[0])), abs(float(lon[1] - lon[0])))[:, None] * np.ones((1, len(lon)))
-    mean_in, vol_af, cover, valid = sns.day_stats(a, mask, area)
+    mean_in, vol_af, cover, valid, deepest, snowy = sns.day_stats(a, mask, area)
     state_acres = float(area[mask].sum()) / 4046.8564224
     assert state_acres == pytest.approx(77.8e6, rel=0.01)                  # 121,590 square miles
     assert vol_af == pytest.approx(mean_in / 12 * state_acres * valid / 100, rel=0.01)
@@ -621,3 +622,16 @@ def test_a_snodas_grid_is_regular_whether_latitude_runs_north_or_south(tmp_path)
     poly = sg.box(-108.0, 35.0, -106.0, 36.0)
     df = sns.daily(grids, poly, tmp_path / "c.parquet")
     assert [d.date().isoformat() for d in df["date"]] == ["2026-10-03", "2026-10-04"]         # both kept; before the fix neither was
+
+
+def test_a_few_snowy_peaks_leave_the_statewide_mean_at_zero_but_not_the_snow_area():
+    """The statewide mean over 121,000 square miles rounded to 0 while there was snow on Wheeler Peak: the published area and deepest cell must show it."""
+    lat = np.arange(10) * 0.25
+    swe = np.zeros((10, 10)); swe[0, 0] = 0.03                      # one cell with 30 mm
+    mask = np.ones((10, 10), bool)
+    area = np.full((10, 10), 1.0e6)                                  # 1 km2 cells, 100 of them
+    mean_in, vol_af, cover, valid, deepest, snowy = sns.day_stats(swe, mask, area)
+    assert round(mean_in, 3) == 0.012 and snowy == pytest.approx(1e6 / sns.SQ_M_PER_SQ_MI) and deepest == pytest.approx(0.03 * sns.M_TO_IN)
+    big = np.full((10, 10), 1.0e9)                                   # the same snowy cell in a state 1000 times larger: the mean is nothing, the snow is still there
+    m2, _, _, _, d2, s2 = sns.day_stats(swe, mask, big)
+    assert m2 == pytest.approx(0.03 * sns.M_TO_IN / 100) and d2 == deepest and s2 == pytest.approx(1e9 / sns.SQ_M_PER_SQ_MI)

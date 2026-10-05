@@ -61,6 +61,12 @@
       },
       "in_season": {
        "type": "boolean"
+      },
+      "max_swe_in": {
+       "type": "number"
+      },
+      "snow_sq_mi": {
+       "type": "number"
       }
      },
      "required": [
@@ -70,7 +76,9 @@
       "cover_pct",
       "median_in",
       "percent_of_median",
-      "in_season"
+      "in_season",
+      "max_swe_in",
+      "snow_sq_mi"
      ],
      "additionalProperties": false
     },
@@ -109,6 +117,12 @@
        },
        "days": {
         "type": "integer"
+       },
+       "max_swe_in": {
+        "type": "number"
+       },
+       "snow_sq_mi": {
+        "type": "number"
        }
       },
       "required": [
@@ -119,7 +133,9 @@
        "cover_pct",
        "median_in",
        "percent_of_median",
-       "in_season"
+       "in_season",
+       "max_swe_in",
+       "snow_sq_mi"
       ],
       "additionalProperties": false
      }

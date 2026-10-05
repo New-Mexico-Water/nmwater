@@ -178,7 +178,7 @@ def snowpack_file(grids: Path, con, cache: Path, generated: str, csv_dir: Path |
         return None
     poly = stt.nm_polygon(grids)
     df = sns.daily(grids, poly, cache)
-    df = df.astype({c: float for c in ("swe_in", "volume_af", "cover_pct", "valid_pct")})
+    df = df.astype({c: float for c in ("swe_in", "volume_af", "cover_pct", "valid_pct", "max_swe_in", "snow_sq_mi")})
     s = sns.summarise(df)
     if s is None:
         return None
@@ -190,12 +190,13 @@ def snowpack_file(grids: Path, con, cache: Path, generated: str, csv_dir: Path |
            "definitions": {"swe": "Snow water equivalent: the depth of water the snow would make if melted, averaged over the whole state (inches) and summed over the state (acre-feet).",
                            "median": f"For a date, the median over the water years {s['baseline']} (October to September, named for the year they end) of the days within {sns.WINDOW_DAYS} days of the same calendar day; the season shown is left out.",
                            "percent_of_median": f"Mean SWE over that median. Stated only when the median is at least {sns.MIN_MEDIAN_IN} inch; otherwise the state is out of snow season and no percent is given.",
-                           "cover": f"Share of the state with at least {int(sns.COVER_MM)} mm of SWE."},
+                           "cover": f"Share of the state with at least {int(sns.COVER_MM)} mm of SWE.",
+                           "snow_area": f"Square miles with at least {int(sns.SNOW_MM)} mm (0.4 inch) of water in the snow, and the deepest 1 km cell. The statewide mean averages over the whole state, so a few snowy peaks leave it near zero: the area says whether there is any snow."},
            "method": "NOAA NOHRSC SNODAS 1 km daily snow model (assimilates satellite, airborne and ground observations: an estimate, not a measurement) averaged over the state polygon, each cell by its true area."}
     if csv_dir is not None:
-        d = df[["date", "swe_in", "volume_af", "cover_pct"]].copy()
+        d = df[["date", "swe_in", "volume_af", "cover_pct", "max_swe_in", "snow_sq_mi"]].copy()
         d["date"] = d["date"].dt.date.astype(str)
-        d.round({"swe_in": 5, "volume_af": 1, "cover_pct": 3}).to_csv(csv_dir / "snowpack_daily.csv", index=False)
+        d.round({"swe_in": 5, "volume_af": 1, "cover_pct": 3, "max_swe_in": 3, "snow_sq_mi": 1}).to_csv(csv_dir / "snowpack_daily.csv", index=False)
     head = {"as_of": s["as_of"], "in_season": now["in_season"], "swe_in": now["swe_in"], "volume_af": now["volume_af"], "percent_of_median": now["percent_of_median"],
             "last_season_peak_in": s["last_season"]["peak_swe_in"], "last_season_percent_of_median_peak": s["last_season"]["percent_of_median_peak"]}
     entry = {"id": "snowpack", "title": "Snowpack", "file": "snowpack.json", "as_of": s["as_of"], "unit": "inches of snow water equivalent", "headline": head, "sources": ["snodas"]}

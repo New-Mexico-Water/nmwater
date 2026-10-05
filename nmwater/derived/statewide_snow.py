@@ -30,7 +30,9 @@ M_TO_IN = 39.3700787
 EARTH_KM = 6371.0088
 AF_M3 = 1233.48184
 MIN_VALID = 0.9                        # a day is kept only when at least this share of the state's area has data
-COLS = ["date", "swe_in", "volume_af", "cover_pct", "valid_pct"]
+COLS = ["date", "swe_in", "volume_af", "cover_pct", "valid_pct", "max_swe_in", "snow_sq_mi"]
+SNOW_MM = 10.0                         # a cell with at least this much SWE (0.4 in) counts as having snow; the statewide mean hides a few snowy peaks, the area does not
+SQ_M_PER_SQ_MI = 2_589_988.11
 
 
 def water_year(d: pd.Timestamp | pd.DatetimeIndex):
@@ -54,8 +56,8 @@ def state_mask(poly, lat: np.ndarray, lon: np.ndarray) -> np.ndarray:
     return _masks(gpd.GeoDataFrame({"huc8": ["NM"]}, geometry=[poly], crs=4326), lat, lon)["NM"]
 
 
-def day_stats(swe_m: np.ndarray, mask: np.ndarray, area: np.ndarray) -> tuple[float, float, float, float] | None:
-    """(mean SWE in, volume af, snow-covered percent, valid percent) for one day's SWE grid (metres, NaN = no data), the mask and the per-cell area (ny, nx)."""
+def day_stats(swe_m: np.ndarray, mask: np.ndarray, area: np.ndarray) -> tuple[float, float, float, float, float, float] | None:
+    """(mean SWE in, volume af, snow-covered percent, valid percent, deepest cell in, square miles with snow) for one day's SWE grid (metres, NaN = no data), the mask and the per-cell area (ny, nx)."""
     inside = mask
     valid = inside & np.isfinite(swe_m)
     tot = float(area[inside].sum())
@@ -64,7 +66,9 @@ def day_stats(swe_m: np.ndarray, mask: np.ndarray, area: np.ndarray) -> tuple[fl
         return None
     vol_m3 = float((np.where(valid, swe_m, 0.0) * area).sum())
     cover = float(area[valid & (swe_m * 1000 >= COVER_MM)].sum()) / ok
-    return vol_m3 / ok * M_TO_IN, vol_m3 / AF_M3, 100 * cover, 100 * ok / tot
+    deepest = float(np.nanmax(np.where(valid, swe_m, np.nan))) * M_TO_IN
+    snowy = float(area[valid & (swe_m * 1000 >= SNOW_MM)].sum()) / SQ_M_PER_SQ_MI
+    return vol_m3 / ok * M_TO_IN, vol_m3 / AF_M3, 100 * cover, 100 * ok / tot, deepest, snowy
 
 
 def daily(grids: Path, poly, cache: Path, rebuild: bool = False) -> pd.DataFrame:
@@ -73,7 +77,9 @@ def daily(grids: Path, poly, cache: Path, rebuild: bool = False) -> pd.DataFrame
 
     from ..core.grids import NC_LOCK
 
-    have = pd.DataFrame(columns=COLS) if rebuild or not cache.exists() else pd.read_parquet(cache)
+    have = pd.read_parquet(cache) if cache.exists() and not rebuild else pd.DataFrame(columns=COLS)
+    if set(COLS) - set(have.columns):          # a cache from before a column was added: recompute (about two minutes)
+        have = pd.DataFrame(columns=COLS)
     done = set(pd.to_datetime(have["date"]).dt.date)
     rows, masks = [], {}
     for f in sorted((grids / "snodas").glob("snodas_*.nc")):
@@ -199,7 +205,7 @@ def _row(df: pd.DataFrame, bnd: pd.DataFrame, when: pd.Timestamp) -> dict | None
     r = r.iloc[0]
     med = float(bnd["p50"].get(int(_key(pd.DatetimeIndex([when]))[0]), np.nan))
     pct = percent_of_median(float(r["swe_in"]), med)
-    return {"date": when.date().isoformat(), "swe_in": float(r["swe_in"]), "volume_af": float(r["volume_af"]), "cover_pct": float(r["cover_pct"]),
+    return {"date": when.date().isoformat(), "swe_in": float(r["swe_in"]), "max_swe_in": float(r["max_swe_in"]), "snow_sq_mi": float(r["snow_sq_mi"]), "volume_af": float(r["volume_af"]), "cover_pct": float(r["cover_pct"]),
             "median_in": None if not np.isfinite(med) else med, "percent_of_median": pct, "in_season": pct is not None}
 
 
