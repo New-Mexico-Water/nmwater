@@ -24,6 +24,24 @@ DATA_URL = "https://www.ncei.noaa.gov/data/global-historical-climatology-network
 ELEMENTS = ["PRCP", "SNOW", "SNWD", "TMAX", "TMIN", "TAVG", "TOBS", "WESD", "AWND"]
 
 
+def active_stations(sites: pd.DataFrame, since_year: int, live_last: dict[str, int] | None) -> pd.DataFrame:
+    """The stations an update should ask for: those that reported in or after `since_year`.
+
+    `live_last` is each station's last reporting year in the current NCEI inventory. The year stored when the station was discovered goes stale (a station recorded as ending in 2026 is
+    still reporting in 2027), so an update that filtered on it alone would silently drop every station at the turn of the year (issue #46). Without the live inventory (the download
+    failed) fall back to the stored year, with a year of tolerance, so a stale record can only keep a station, never lose it."""
+    def last(row) -> int:
+        if live_last is not None and row["native_id"] in live_last:
+            return live_last[row["native_id"]]
+        try:
+            stored = max((v[1] for v in json.loads(row["raw_metadata"]).get("inventory", {}).values()), default=0)
+        except Exception:
+            return 9999                                                        # unreadable metadata: keep the station
+        return stored + 1 if live_last is None else stored
+    keep = [last(r) >= since_year for _, r in sites.iterrows()]
+    return sites[keep]
+
+
 @register
 class NOAAGHCND(Source):
     name = "noaa_ghcnd"
@@ -98,13 +116,13 @@ class NOAAGHCND(Source):
         if site_ids:
             sites = sites[sites["native_id"].isin(site_ids)]
         if since is not None:
-            def _last(meta: str) -> int:
-                try:
-                    inv = json.loads(meta).get("inventory", {})
-                    return max((v[1] for v in inv.values()), default=0)
-                except Exception:
-                    return 9999
-            sites = sites[[_last(m) >= since.year for m in sites["raw_metadata"]]]
+            live = None
+            try:                                   # the current inventory, not the one stored at discovery
+                inv = self._inventory(refresh=True)
+                live = inv.dropna(subset=["last"]).groupby("native_id")["last"].max().astype(int).to_dict()
+            except Exception as e:
+                log.warning("noaa_ghcnd: could not refresh the inventory (%s); using the stored one with a year of tolerance", e)
+            sites = active_stations(sites, since.year, live)
         if limit:
             sites = sites.head(limit)
         do_refresh = refresh or since is not None
