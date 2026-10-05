@@ -212,6 +212,48 @@ class Store:
                     out[str(yd.relative_to(base))] = before - len(df)
         return out
 
+    # Tables written with append_table ------------------------------------
+    TABLE_GROUPS_SKIPPED = {"grids"}      # one row per grid file, never duplicated; many readers walk the part files
+
+    def compact_tables(self, source: str | None = None) -> dict[str, int]:
+        """Merge the part files of every appended table (reference, waterquality, forecasts, wateruse) and drop rows that are exact duplicates.
+
+        append_table writes a new part file every run, and whole-table pulls (USGS peaks, field measurements) re-read the same rows each time, so the tables only grew:
+        USGS peaks was 328,004 rows of which 49,511 were distinct (issue #44). A table whose parts cannot be read together (different column types) is left as it is and logged.
+        Returns {table: rows removed}."""
+        import duckdb
+
+        out: dict[str, int] = {}
+        for group_dir in sorted(p for p in self.root.iterdir() if p.is_dir() and p.name != "timeseries"):
+            src_dirs = [group_dir / f"source={_safe(source)}"] if source else sorted(group_dir.glob("source=*"))
+            for sd in src_dirs:
+                if not sd.is_dir():
+                    continue
+                for td in sorted(d for d in sd.iterdir() if d.is_dir() and d.name not in self.TABLE_GROUPS_SKIPPED):
+                    files = sorted(td.glob("*.parquet"))
+                    if len(files) <= 1:
+                        continue
+                    tmp = td / f"compact-{uuid.uuid4().hex[:8]}.parquet.tmp"
+                    try:
+                        con = duckdb.connect()
+                        con.execute("SET memory_limit='4GB'")
+                        con.execute(f"SET temp_directory='{(self.root / '.duckdb_tmp').as_posix()}'")
+                        src = "read_parquet([" + ",".join("'" + f.as_posix().replace("'", "''") + "'" for f in files) + "], union_by_name=true)"
+                        before = con.sql(f"SELECT count(*) FROM {src}").fetchone()[0]
+                        con.execute(f"COPY (SELECT DISTINCT * FROM {src}) TO '{tmp.as_posix()}' (FORMAT PARQUET, COMPRESSION ZSTD)")
+                        after = con.sql(f"SELECT count(*) FROM read_parquet('{tmp.as_posix()}')").fetchone()[0]
+                        con.close()
+                    except Exception as e:
+                        log.warning("compact_tables: %s left as it is (%s)", td.relative_to(self.root), e)
+                        if tmp.exists():
+                            tmp.unlink()
+                        continue
+                    for f in files:
+                        f.unlink()
+                    tmp.rename(td / f"compact-{uuid.uuid4().hex[:8]}.parquet")
+                    out[str(td.relative_to(self.root))] = before - after
+        return out
+
     # Sites ---------------------------------------------------------------
     def has_observations_without_sites(self, source: str) -> bool:
         """True when a source has stored observations but no sites file: a discover never wrote one."""

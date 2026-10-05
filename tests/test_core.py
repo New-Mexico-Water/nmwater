@@ -196,3 +196,33 @@ def test_nrcs_asks_for_depth_elements_with_a_wildcard_depth_and_leaves_the_rest_
     from nmwater.sources.nrcs import request_elements
     assert request_elements(["WTEQ", "SMS", "STO", "SNWD"]) == "WTEQ,SMS:*,STO:*,SNWD"
     assert request_elements(["WTEQ"]) == "WTEQ"
+
+
+def test_appended_tables_are_merged_and_exact_duplicates_dropped_but_distinct_rows_and_grids_are_kept(tmp_path):
+    """Issue #44: whole-table pulls (USGS peaks) append the same rows every run, so the table only grew."""
+    store = Store(tmp_path / "pq")
+    peaks = pd.DataFrame({"site": ["a", "a", "b"], "year": [2001, 2002, 2001], "peak_cfs": [10.0, 20.0, 30.0]})
+    store.append_table(peaks, "reference", "usgs", "peaks", "r1")
+    store.append_table(peaks, "reference", "usgs", "peaks", "r2")                                                     # the same pull again
+    store.append_table(pd.concat([peaks, pd.DataFrame({"site": ["c"], "year": [2003], "peak_cfs": [40.0]})]), "reference", "usgs", "peaks", "r3")   # plus a new row
+    store.append_table(pd.DataFrame({"site": ["a"], "year": [2001], "peak_cfs": [10.5]}), "reference", "usgs", "peaks", "r4")                        # a revised value is a different row
+    for run in ("r1", "r2"):
+        store.append_table(pd.DataFrame({"file": [run]}), "reference", "prism", "grids", run)
+    store.append_table(pd.DataFrame({"x": [1]}), "waterquality", "wqp", "results_a", "r1")                           # one part: untouched
+    removed = store.compact_tables()
+    td = tmp_path / "pq/reference/source=usgs/peaks"
+    files = list(td.glob("*.parquet"))
+    assert len(files) == 1 and removed == {"reference/source=usgs/peaks": 6}                                          # 3 + 3 + 4 + 1 rows in, 5 distinct out
+    got = pq.read_table(files[0]).to_pandas().sort_values(["site", "year", "peak_cfs"]).reset_index(drop=True)
+    assert len(got) == 5 and got["peak_cfs"].tolist() == [10.0, 10.5, 20.0, 30.0, 40.0]
+    assert len(list((tmp_path / "pq/reference/source=prism/grids").glob("*.parquet"))) == 2                           # the grid registry is left alone
+    assert len(list((tmp_path / "pq/waterquality/source=wqp/results_a").glob("*.parquet"))) == 1
+    assert store.compact_tables() == {}                                                                               # nothing left to do
+
+
+def test_a_table_whose_parts_cannot_be_read_together_is_left_as_it_is(tmp_path):
+    store = Store(tmp_path / "pq")
+    store.append_table(pd.DataFrame({"v": [1, 2]}), "reference", "usgs", "odd", "r1")
+    store.append_table(pd.DataFrame({"v": [[1, 2], [3]]}), "reference", "usgs", "odd", "r2")                          # a list where the first had integers
+    assert store.compact_tables() == {}
+    assert len(list((tmp_path / "pq/reference/source=usgs/odd").glob("*.parquet"))) == 2
