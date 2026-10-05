@@ -225,6 +225,8 @@ def compact(
     res = ctx.store.compact(source)
     removed = sum(res.values())
     console.print(f"compacted {len(res)} partitions, removed {removed:,} duplicate rows")
+    tabs = ctx.store.compact_tables(source)
+    console.print(f"compacted {len(tabs)} appended tables, removed {sum(tabs.values()):,} duplicate rows")
 
 
 @app.command()
@@ -331,7 +333,7 @@ def update(
             r.bytes_downloaded = ctx.ledger.bytes_for_run(run_id)
         t1 = time.monotonic()
         try:
-            r.duplicates_removed = int(sum(ctx.store.compact(name).values()))
+            r.duplicates_removed = int(sum(ctx.store.compact(name).values()) + sum(ctx.store.compact_tables(name).values()))
         except Exception as e:
             r.notes = (r.notes + f"; compact failed: {e}")[:300]
         r.compact_seconds = round(time.monotonic() - t1, 1)
