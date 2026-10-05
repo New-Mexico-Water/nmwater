@@ -70,7 +70,7 @@ def reservoirs_file(frames: dict[str, pd.DataFrame], reg: dict, generated: str, 
         entry = {"members": len(ks), "keys": ks, "as_of": asof, "storage_af": float(row["storage_af"]), "capacity_af": float(row["capacity_af"]) if pct_group else None,
                  "percent": float(100 * row["storage_af"] / row["capacity_af"]) if pct_group and row["capacity_af"] else None,
                  "stale": sw.stale_members(frames, ks, asof), "changes": changes,
-                 "shares": sorted(({"key": k, "slug": frames[k]["slug"].iloc[-1], "name": reg[k]["name"], "storage_af": float(frames[k].sort_values("date")["stor"].iloc[-1])} for k in ks),
+                 "shares": sorted(({"key": k, "slug": frames[k]["slug"].iloc[-1], "name": reg[k]["name"], "storage_af": sw.storage_on(frames[k], asof)} for k in ks),
                                   key=lambda x: -x["storage_af"])}
         for x in entry["shares"]:
             x["share_percent"] = round(100 * x["storage_af"] / entry["storage_af"], 1) if entry["storage_af"] else None

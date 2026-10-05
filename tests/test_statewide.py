@@ -588,3 +588,17 @@ def test_a_refresh_that_fails_validation_puts_the_previous_files_back(tmp_path, 
     assert problems and any("statewide" in p for p in problems)
     assert (root / "manifest.json").read_text() == before_manifest and (root / "statewide" / "index.json").read_text() == before
     assert not (root / "statewide" / "drought.json").exists()
+
+
+def test_shares_use_each_reservoirs_storage_on_the_groups_date_when_one_lags_by_more_than_the_carry_forward(tmp_path):
+    """The failure that stopped the Oct 4 nightly export: one reservoir was 8 days behind (too old to carry forward, not old enough to be listed as stale), so the group's date was
+    back before the others' newest readings and their shares no longer added up to the group's storage."""
+    from nmwater.site import statewide as swx
+    a = frame("2026-01-01", "2026-09-28", lambda d: 100.0 if d < pd.Timestamp("2026-09-28") else 140.0, 1000.0)       # a changes on its newest day
+    b = frame("2026-01-01", "2026-09-20", 50.0, 500.0)                                                                  # b stopped 8 days earlier
+    for f, k in ((a, "heron"), (b, "caballo")):
+        f["measure"], f["slug"] = "percent_full", k + "-r"
+    out = swx.reservoirs_file({"heron": a, "caballo": b}, {"heron": {"name": "Heron"}, "caballo": {"name": "Caballo"}}, "2026-10-04T00:00:00+00:00", None)
+    sup = out[0]["groups"]["supply"]
+    assert str(sup["as_of"])[:10] == "2026-09-27"                                                    # the last day b can be carried forward to (7 days after 09-20)
+    assert sum(x["storage_af"] for x in sup["shares"]) == pytest.approx(sup["storage_af"]) == pytest.approx(150.0)       # a's 100 on that day, not its 140 on the 28th
