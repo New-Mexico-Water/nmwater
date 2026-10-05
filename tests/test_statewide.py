@@ -602,3 +602,22 @@ def test_shares_use_each_reservoirs_storage_on_the_groups_date_when_one_lags_by_
     sup = out[0]["groups"]["supply"]
     assert str(sup["as_of"])[:10] == "2026-09-27"                                                    # the last day b can be carried forward to (7 days after 09-20)
     assert sum(x["storage_af"] for x in sup["shares"]) == pytest.approx(sup["storage_af"]) == pytest.approx(150.0)       # a's 100 on that day, not its 140 on the 28th
+
+
+def test_a_snodas_grid_is_regular_whether_latitude_runs_north_or_south(tmp_path):
+    """Files written since 2026-09-28 have latitude descending; the first version of the check called every one of them irregular and skipped a week of data."""
+    import xarray as xr
+    from nmwater.derived import river_watershed as rwm
+    lat = 37.44583 - np.arange(788) / 120.0
+    lon = -109.49583 + np.arange(834) / 120.0
+    for order, la in (("descending", lat), ("ascending", lat[::-1])):
+        ds = xr.Dataset({"swe": (("time", "lat", "lon"), np.zeros((1, 788, 834), dtype="float32"))}, coords={"time": [pd.Timestamp("2026-10-03")], "lat": la, "lon": lon})
+        ds.to_netcdf(tmp_path / f"snodas_{order}.nc")
+    grids = tmp_path / "g"
+    (grids / "snodas").mkdir(parents=True)
+    for order in ("descending", "ascending"):
+        (tmp_path / f"snodas_{order}.nc").rename(grids / "snodas" / ("snodas_20261003.nc" if order == "descending" else "snodas_20261004.nc"))
+    import shapely.geometry as sg
+    poly = sg.box(-108.0, 35.0, -106.0, 36.0)
+    df = sns.daily(grids, poly, tmp_path / "c.parquet")
+    assert [d.date().isoformat() for d in df["date"]] == ["2026-10-03", "2026-10-04"]         # both kept; before the fix neither was
