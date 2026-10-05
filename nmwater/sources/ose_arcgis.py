@@ -47,6 +47,18 @@ LAYERS: dict[str, tuple[str, str | None]] = {
     "Water_Use_2015_and_2020": ("water_use_2015_2020", None),
     "All_OSE_WaterRight_Records": ("water_right_records", None),
 }
+LAYER_REFRESH_DAYS = 7           # an update re-pulls the layers (and so the points of diversion) when the stored copy is older than this: the biggest is hundreds of thousands of features
+
+
+def layers_stale(path, days: int = LAYER_REFRESH_DAYS, now: float | None = None) -> bool:
+    """True when the stored layer table is missing or older than `days`."""
+    import time
+    from pathlib import Path
+
+    p = Path(path)
+    return (not p.exists()) or ((now if now is not None else time.time()) - p.stat().st_mtime) > days * 86400
+
+
 BIG_LAYERS = {"OSE_Points_of_Diversion", "All_OSE_WaterRight_Records", "EBID_Parcels", "OSE_Conveyances"}
 
 USE_SITE_TYPE = {
@@ -127,14 +139,14 @@ class OSEArcGIS(Source):
         df.columns = [str(c) for c in df.columns]
         return df
 
-    def discover(self) -> pd.DataFrame:
+    def discover(self, refresh_big: bool | None = None) -> pd.DataFrame:
         sites_frames = []
         only = self.opt("layers")  # optional subset for testing
         for layer, (tname, builder) in LAYERS.items():
             if only and layer not in only:
                 continue
             try:
-                feats = self._layer_features(layer, refresh=layer not in BIG_LAYERS or bool(self.opt("refresh_big", False)))
+                feats = self._layer_features(layer, refresh=layer not in BIG_LAYERS or bool(self.opt("refresh_big", False) if refresh_big is None else refresh_big))
             except Exception as e:
                 log.warning("ose_arcgis: layer %s failed: %s", layer, e)
                 continue
@@ -253,6 +265,15 @@ class OSEArcGIS(Source):
               site_ids: list[str] | None = None, refresh: bool = False, **opts) -> FetchSummary:
         summ = FetchSummary(self.name)
         p = self.store.root / "reference" / f"source={self.name}" / "points_of_diversion.parquet"
+        if since is not None and not limit and not site_ids and layers_stale(p):
+            # an update: the layers only refresh on discover, so without this the points of diversion never changed after the first run (issue #45)
+            try:
+                sites = self.discover(refresh_big=True)
+                if len(sites):
+                    self.store.write_sites(sites, self.name)
+                summ.notes.append(f"layers re-pulled ({len(sites):,} sites)")
+            except Exception as e:
+                log.warning("ose_arcgis: could not re-pull the layers (%s); using the stored ones", e)
         if not p.exists():
             summ.notes.append("run `nmwater discover ose_arcgis` first")
             return summ

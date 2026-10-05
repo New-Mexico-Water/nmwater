@@ -51,3 +51,69 @@ def test_ose_meas_coordinates_fall_back_and_skip_missing_station_ids(tmp_path):
     by_id, by_name = _rtm_index(p)
     assert set(by_id) == {"140", "7"} and abs(by_id["7"][0] - 35.6144) < 1e-3
     assert "heredia" in by_name and "gonzales" not in by_name     # ambiguous names are not used
+
+
+# Issue #45: an update must re-pull the layers, or the points of diversion never change after the first run.
+import os
+import time
+from datetime import date
+from types import SimpleNamespace
+
+from nmwater.catalog.crosswalk import Crosswalk
+from nmwater.sources.ose_arcgis import LAYER_REFRESH_DAYS, layers_stale
+
+
+def test_layers_are_stale_when_missing_or_older_than_a_week(tmp_path):
+    p = tmp_path / "points_of_diversion.parquet"
+    assert layers_stale(p)
+    p.write_text("x")
+    assert not layers_stale(p)
+    old = time.time() - (LAYER_REFRESH_DAYS + 1) * 86400
+    os.utime(p, (old, old))
+    assert layers_stale(p)
+
+
+def _fetch_source(tmp_path, calls):
+    s = OSEArcGIS.__new__(OSEArcGIS)
+    s.name = "ose_arcgis"
+    s.xw = Crosswalk()
+    d = tmp_path / "reference" / "source=ose_arcgis"
+    d.mkdir(parents=True)
+    pd.DataFrame({"pod_basin": ["RG"], "pod_nbr": ["1"], "pod_suffix": [None], "depth_wate": [50.0], "log_file_d": [None], "finish_dat": [None]}).to_parquet(d / "points_of_diversion.parquet")
+    s.store = SimpleNamespace(root=tmp_path, write_sites=lambda df, name: calls.append(("write_sites", len(df))))
+    s.write_obs = lambda df, tag=None: 0
+    s.discover = lambda refresh_big=None: (calls.append(("discover", refresh_big)) or pd.DataFrame({"native_id": ["pod:RG-1"]}))
+    return s, d / "points_of_diversion.parquet"
+
+
+def test_an_update_re_pulls_stale_layers_and_rewrites_the_sites_table(tmp_path):
+    calls = []
+    s, p = _fetch_source(tmp_path, calls)
+    old = time.time() - 30 * 86400
+    os.utime(p, (old, old))
+    s.fetch(since=date(2026, 9, 1))
+    assert calls == [("discover", True), ("write_sites", 1)]
+
+
+def test_a_fresh_copy_a_manual_fetch_or_a_limited_run_does_not_re_pull(tmp_path):
+    calls = []
+    s, p = _fetch_source(tmp_path, calls)
+    s.fetch(since=date(2026, 9, 1))                            # fresh
+    s.fetch()                                                  # a plain `fetch`, not an update
+    old = time.time() - 30 * 86400
+    os.utime(p, (old, old))
+    s.fetch(since=date(2026, 9, 1), limit=5)                   # a test run
+    assert calls == []
+
+
+def test_a_failed_re_pull_falls_back_to_the_stored_layers(tmp_path):
+    calls = []
+    s, p = _fetch_source(tmp_path, calls)
+    old = time.time() - 30 * 86400
+    os.utime(p, (old, old))
+
+    def boom(refresh_big=None):
+        raise RuntimeError("service down")
+    s.discover = boom
+    summ = s.fetch(since=date(2026, 9, 1))
+    assert any("PODs with depth-to-water" in n for n in summ.notes)
