@@ -161,9 +161,9 @@ sources:
     concurrency: 2
     min_interval_s: 0.5
     base_url: https://weather.nmsu.edu
-    # tmps (soil temperature) is left out until soil depth is part of the observation key; its
-    # columns are not parsed yet and would collide across depths (issue #63)
-    daily_products: [sfwx, dret]
+    # tmps (soil temperature, 10 cm: max, min and mean) is on now that depth is part of the observation key and its statistic-first
+    # column names are parsed (issue #63). A source's first fetch of a product is a backfill: run `nmwater fetch ziamet --kind daily` once.
+    daily_products: [sfwx, dret, tmps]
 
   edi:
     update: {skip: true, reason: "PASTA returned 403; never completed a fetch"}

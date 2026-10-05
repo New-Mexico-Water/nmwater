@@ -61,6 +61,8 @@ DAILY_COLS = {
     "penman-monteith eto": "dly_eto", "penman-monteith etr": "dly_etr",
 }
 SOIL_RE = re.compile(r"soil\s*temp[a-z]*\s*(?:at\s*)?(\d+)\s*(in|cm|\")?", re.I)
+# the daily soil product (tmps) names its columns "Max 10cm Soil Temperature", "Min ..." and "Mean ...": the statistic first, then the depth
+SOIL_STAT_RE = re.compile(r"^(max|min|mean|avg|average)?\s*(\d+)\s*(in|cm)\s*soil\s*temp", re.I)
 
 
 def _strip_units(h: str) -> tuple[str, str | None]:
@@ -269,7 +271,11 @@ class ZiaMet(Source):
             unit = unit_in_hdr or (units_row[i] if units_row and i < len(units_row) else None)
             p = DAILY_COLS.get(base)
             sm = SOIL_RE.match(base)
-            if p is None and sm:
+            ss = SOIL_STAT_RE.match(base)
+            if p is None and ss:
+                stat = (ss.group(1) or "mean").lower()
+                p = f"dly_soilt_{ss.group(2)}{ss.group(3).lower()}" if stat in ("mean", "avg", "average") else f"dly_soilt{stat}_{ss.group(2)}{ss.group(3).lower()}"
+            elif p is None and sm:
                 p = f"dly_soilt_{sm.group(1)}{(sm.group(2) or 'in').replace(chr(34), 'in')}"
             if p is None:
                 continue
@@ -280,7 +286,7 @@ class ZiaMet(Source):
                 p = "dly_rain_mm"
             if p in ("dly_eto", "dly_etr") and unit and unit.lower().startswith("mm"):
                 p = p + "_mm"
-            if p.startswith("dly_soilt_") and unit and unit.strip().upper().startswith("C"):
+            if p.startswith("dly_soilt") and unit and unit.strip().upper().startswith("C"):
                 p = p + "_c"
             frames.append(pd.DataFrame({
                 "site_uid": self.uid(sid), "datetime_utc": ts, "utc_offset_min": None,
@@ -292,7 +298,7 @@ class ZiaMet(Source):
         out = pd.concat(frames, ignore_index=True)
         out = out[out["value"].notna() & out["datetime_utc"].notna()]
         out = self.xw.apply(out, self.name, keep_unmapped=False)
-        unmapped = [c for c in header if _strip_units(c)[0] not in DAILY_COLS and not SOIL_RE.match(_strip_units(c)[0])
+        unmapped = [c for c in header if _strip_units(c)[0] not in DAILY_COLS and not SOIL_RE.match(_strip_units(c)[0]) and not SOIL_STAT_RE.match(_strip_units(c)[0])
                     and c.lower() not in ("date", "time")]
         if unmapped:
             log.debug("ziamet %s/%s unmapped columns: %s", sid, prod, unmapped)

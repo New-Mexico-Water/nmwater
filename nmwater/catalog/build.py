@@ -115,7 +115,7 @@ def build(settings: Settings) -> Path:
         con.execute(
             f"""CREATE VIEW observations AS
                 SELECT site_uid, variable, datetime_utc, utc_offset_min, value, unit, interval, statistic,
-                       qualifier, source_param, source_unit, ingest_run_id, source, year
+                       qualifier, source_param, source_unit, ingest_run_id, depth_cm, source, year
                 FROM read_parquet('{ts_glob}', hive_partitioning=true, union_by_name=true)"""
         )
         con.execute(

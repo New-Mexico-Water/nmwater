@@ -30,6 +30,11 @@ DAILY_WINDOW_YEARS = 10
 HOURLY_WINDOW_YEARS = 1
 
 
+def request_elements(codes) -> str:
+    """The AWDB `elements` parameter. A depth element asked for by its bare code (SMS) returns nothing; `SMS:*` returns every depth, and each series comes back with its heightDepth."""
+    return ",".join(f"{c}:*" if c in DEPTH_ELEMENTS else c for c in codes)
+
+
 @register
 class NRCS(Source):
     name = "nrcs"
@@ -133,7 +138,7 @@ class NRCS(Source):
             cur = b
             while cur <= e:
                 stop = min(date(cur.year + yrs, 1, 1) - timedelta(days=1), e)
-                params = {"stationTriplets": trip, "elements": ",".join(codes), "duration": dur,
+                params = {"stationTriplets": trip, "elements": request_elements(codes), "duration": dur,
                           "beginDate": cur.isoformat(), "endDate": stop.isoformat(), "returnFlags": "true"}
                 art = self.get(f"{self.base}/data", params=params, kind=dur.lower(), site_uid=self.uid(trip),
                                variable=dur, window=(cur.isoformat(), stop.isoformat()), refresh=refresh or bool(since))

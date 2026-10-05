@@ -153,3 +153,46 @@ def test_store_rejects_impossible_dates(tmp_path):
     store = Store(tmp_path / "pq")
     df = _obs("x:1", "discharge", ["0990-02-23", "2020-01-01", "2316-05-01"], [1, 2, 3])
     assert store.write_observations(df, "x", run_id="r1") == 1
+
+
+def test_soil_sensors_at_several_depths_all_survive_writing_and_compaction(tmp_path):
+    """Issue #63: the key had no depth, so five depths reporting at the same instant collapsed to one."""
+    store = Store(tmp_path / "pq")
+    xw = Crosswalk(registry=VariableRegistry())
+    when = pd.to_datetime(["2020-06-01T00:00Z"] * 5 + ["2020-06-01T01:00Z"] * 5)
+    params = ["SOIL_MOISTURE_5", "SOIL_MOISTURE_10", "SOIL_MOISTURE_20", "SOIL_MOISTURE_50", "SOIL_MOISTURE_100"] * 2
+    raw = pd.DataFrame({"site_uid": "uscrn:1", "datetime_utc": when, "value": [0.10, 0.12, 0.15, 0.20, 0.25, 0.11, 0.13, 0.16, 0.21, 0.26], "source_param": params,
+                        "interval": "hourly", "ingest_run_id": "r1"})
+    obs = xw.apply(raw, "uscrn")
+    assert sorted(obs["depth_cm"].unique()) == [5.0, 10.0, 20.0, 50.0, 100.0]
+    assert store.write_observations(obs, "uscrn", run_id="r1") == 10                  # all ten rows, not two
+    store.write_observations(obs.assign(ingest_run_id="r2", value=lambda d: d["value"] + 1), "uscrn", run_id="r2")      # a re-fetch with revised values
+    store.compact("uscrn")
+    files = list((tmp_path / "pq/timeseries/source=uscrn/variable=soil_moisture/year=2020").glob("*.parquet"))
+    assert len(files) == 1
+    df = pq.read_table(files[0]).to_pandas().sort_values(["datetime_utc", "depth_cm"])
+    assert len(df) == 10 and df["depth_cm"].tolist() == [5.0, 10.0, 20.0, 50.0, 100.0] * 2
+    assert df["value"].round(2).tolist()[:5] == [11.0, 13.0, 16.0, 21.0, 26.0]            # percent (x100) plus the revision of 1: the newer run replaced each depth separately
+
+
+def test_a_source_without_depths_is_deduplicated_exactly_as_before(tmp_path):
+    store = Store(tmp_path / "pq")
+    df = _obs("usgs:1", "discharge", ["2020-01-01", "2020-01-01"], [1, 2])            # the same key twice: the last wins
+    assert "depth_cm" not in df.columns
+    assert store.write_observations(df, "usgs", run_id="r1") == 1
+    store.write_observations(_obs("usgs:1", "discharge", ["2020-01-01"], [9], run="r2"), "usgs", run_id="r2")
+    assert sum(store.compact("usgs").values()) == 1
+
+
+def test_crosswalk_files_with_and_without_a_depth_column_load():
+    xw = Crosswalk(registry=VariableRegistry())
+    assert xw.lookup("uscrn", "SOIL_TEMP_50").depth_cm == 50.0
+    assert xw.lookup("nrcs", "SMS:-8").depth_cm == 20.32                                  # 8 inches
+    assert xw.lookup("usgs", "00060").depth_cm is None
+
+
+def test_nrcs_asks_for_depth_elements_with_a_wildcard_depth_and_leaves_the_rest_alone():
+    """Issue #63 (NRCS part): the bare code SMS returns nothing from the AWDB API, so no soil data was ever stored."""
+    from nmwater.sources.nrcs import request_elements
+    assert request_elements(["WTEQ", "SMS", "STO", "SNWD"]) == "WTEQ,SMS:*,STO:*,SNWD"
+    assert request_elements(["WTEQ"]) == "WTEQ"
