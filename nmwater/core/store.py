@@ -122,6 +122,9 @@ class Store:
                 df = df[~codes]
         if len(df) == 0:
             return 0
+        for k in OBS_KEY:                       # a source that has no depth (or no interval or statistic) leaves the column null
+            if k not in df.columns:
+                df[k] = pd.NA if k != "depth_cm" else float("nan")
         df = df.drop_duplicates(subset=OBS_KEY, keep="last")
         df["_year"] = df["datetime_utc"].dt.year
         n = 0

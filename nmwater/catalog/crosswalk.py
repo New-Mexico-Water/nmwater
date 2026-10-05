@@ -1,7 +1,8 @@
 """Source-native parameter -> canonical variable crosswalk (catalog/crosswalk.csv).
 
 Columns: source, source_param, source_name, source_unit, variable, factor, offset,
-statistic, interval, equivalence, caveat.
+statistic, interval, equivalence, caveat, and optionally depth_cm (the sensor depth in centimetres for a parameter measured at several depths at
+one site: it goes into the observation key, so each depth is kept).
   value_canonical = value_source * factor + offset
 
 catalog/crosswalk_sites.csv overrides the variable for one site's parameter (site_uid "*" = every site of
@@ -38,6 +39,7 @@ class XwEntry:
     interval: str | None
     equivalence: str
     caveat: str
+    depth_cm: float | None = None
 
     @property
     def unit(self) -> str:
@@ -85,6 +87,7 @@ class Crosswalk:
                     interval=(row.get("interval") or "").strip() or None,
                     equivalence=(row.get("equivalence") or "identical").strip(),
                     caveat=(row.get("caveat") or "").strip(),
+                    depth_cm=float(row["depth_cm"]) if (row.get("depth_cm") or "").strip() else None,
                 )
                 if e.variable and e.variable not in self.registry:
                     log.warning("crosswalk: %s/%s maps to unknown variable %s", e.source, e.source_param, e.variable)
@@ -135,6 +138,9 @@ class Crosswalk:
             out["interval"] = xi
         if "source_unit" not in out.columns:
             out["source_unit"] = params.map(lambda p: maps[p].source_unit if maps[p] else None)
+        xd = params.map(lambda p: maps[p].depth_cm if maps[p] else None).astype(float)
+        if xd.notna().any() or "depth_cm" in out.columns:
+            out["depth_cm"] = out["depth_cm"].where(out["depth_cm"].notna(), xd) if "depth_cm" in out.columns else xd
         if self.site_overrides and "site_uid" in out.columns:
             sites = out["site_uid"].astype(str)
             quals = out["qualifier"].astype(str) if "qualifier" in out.columns else None

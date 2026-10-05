@@ -18,10 +18,13 @@ OBS_SCHEMA = pa.schema(
         pa.field("source_param", pa.string()),
         pa.field("source_unit", pa.string()),
         pa.field("ingest_run_id", pa.string()),
+        pa.field("depth_cm", pa.float64()),  # sensor depth below the surface, for variables measured at several depths at one site (soil moisture, soil temperature); null otherwise
     ]
 )
 
-OBS_KEY = ["site_uid", "variable", "datetime_utc", "interval", "statistic"]
+# depth_cm is part of the key: soil sensors at 5, 10, 20, 50 and 100 cm report at the same instant, and without it compaction kept one depth per timestamp and silently dropped the rest.
+# Null (every other variable) compares equal to null when deduplicating, so nothing else changes.
+OBS_KEY = ["site_uid", "variable", "datetime_utc", "interval", "statistic", "depth_cm"]
 
 SITES_SCHEMA = pa.schema(
     [
