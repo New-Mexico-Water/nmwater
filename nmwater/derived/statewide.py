@@ -60,6 +60,13 @@ def group_series(frames: dict[str, pd.DataFrame], keys: list[str], end: pd.Times
     return out
 
 
+def storage_on(frame: pd.DataFrame, asof: pd.Timestamp) -> float:
+    """One reservoir's storage as of `asof`: its last reading on or before that day (a reading that is newer than the group's date must not count, or the shares would not add up to the group)."""
+    f = frame.assign(date=pd.to_datetime(frame["date"])).dropna(subset=["stor"])
+    f = f[f["date"] <= asof].sort_values("date")
+    return float(f["stor"].iloc[-1]) if len(f) else 0.0
+
+
 def latest_complete(s: pd.DataFrame) -> pd.Timestamp | None:
     ok = s[s["complete"] & s["storage_af"].notna()]
     return None if ok.empty else ok.index[-1]
