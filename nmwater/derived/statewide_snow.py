@@ -85,7 +85,7 @@ def daily(grids: Path, poly, cache: Path, rebuild: bool = False) -> pd.DataFrame
                 log.warning("snodas %s: no swe product, skipped", d)
                 continue
             lat, lon = ds["lat"].values, ds["lon"].values
-            step = np.diff(lat)
+            step = np.abs(np.diff(lat))         # the grid is written north to south (descending) since 2026-09-28: only the size of a step says whether it is regular
             if len(lat) < 2 or step.min() < 0.9 / 120 or step.max() > 1.1 / 120:
                 log.warning("snodas %s: irregular grid, skipped", d)
                 continue

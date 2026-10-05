@@ -110,7 +110,7 @@ def update_climate(grids: Path, wbd_dir: Path, cache: Path, codes: list[str]) ->
             continue
         with NC_LOCK, xr.open_dataset(f) as ds:                  # metadata only until we know a value is needed
             lat, lon = ds["lat"].values, ds["lon"].values
-        step = np.diff(lat)
+        step = np.abs(np.diff(lat))         # the grid is written north to south (descending) since 2026-09-28: only the size of a step says whether it is regular
         if len(lat) < 2 or step.min() < 0.9 / 120 or step.max() > 1.1 / 120:
             log.warning("snodas %s: irregular grid, skipped (see scripts/repair_snodas_grid.py)", d)
             continue
