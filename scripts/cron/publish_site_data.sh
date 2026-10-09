@@ -12,6 +12,7 @@
 #   KEEP          bundles to keep in the bucket (default 7)
 #
 # Layout in the bucket: bundles/<build id>/...   one folder per export, never changed after upload
+#                       state-now.json           the home page's summary line (optional; see 1b below)
 #                       latest.json              {"bundle": "<build id>", "generated": ..., "data_through": ...}
 # A reader fetches latest.json, then that one folder, so it always sees one consistent snapshot. latest.json is
 # written last, after the folder is complete. Old folders beyond KEEP are removed afterwards.
@@ -20,7 +21,7 @@ set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
-export PATH="$HOME/.local/bin:/usr/local/bin:/usr/bin:/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/.local/share/mise/shims:/usr/local/bin:/usr/bin:/bin:$PATH"
 UV="${UV:-$(command -v uv || echo "$HOME/.local/bin/uv")}"
 
 DRY=0
@@ -53,6 +54,23 @@ S3=(aws s3 --endpoint-url "$R2_ENDPOINT" --region auto)
 
 # 1. the folder, complete and immutable
 run "${S3[@]}" sync "$BUNDLE" "s3://$R2_BUCKET/bundles/$ID/" --only-show-errors
+# 1b. the home page's summary line, beside the pointer: written here, on the machine that makes the data, from the new bundle, by the website repository's
+#     scripts/summarize.ts (needs bun and ANTHROPIC_API_KEY in .env). The site checks it against the data and falls back to its own wording when it is
+#     missing, so nothing in this step can stop the publish.
+WEB_DIR="${WEB_DIR:-$HOME/projects/nmwater-web}"
+LINE="$WEB_DIR/.generated/state-now.json"
+if [ "$DRY" = 1 ]; then
+  echo "[dry run] would write the summary line with $WEB_DIR/scripts/summarize.ts and upload it as state-now.json"
+elif [ -f "$WEB_DIR/scripts/summarize.ts" ] && [ -n "${ANTHROPIC_API_KEY:-}" ] && command -v bun >/dev/null 2>&1; then
+  rm -f "$LINE"
+  if (cd "$WEB_DIR" && NMWATER_DATA="$(cd "$BUNDLE" && pwd)" bun scripts/summarize.ts) && [ -f "$LINE" ]; then
+    run "${S3[@]}" cp "$LINE" "s3://$R2_BUCKET/state-now.json" --content-type application/json --cache-control "max-age=60"
+  else
+    echo "no summary line was made this time; the site uses its own wording"
+  fi
+else
+  echo "summary line skipped (it needs the website repository at $WEB_DIR, bun, and ANTHROPIC_API_KEY in .env)"
+fi
 # 2. the pointer, last
 POINTER="$(mktemp)"; trap 'rm -f "$POINTER"' EXIT
 "$UV" run python - "$BUNDLE/manifest.json" "$ID" >"$POINTER" <<'PY'

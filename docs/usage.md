@@ -215,6 +215,7 @@ uploads the bundle to a Cloudflare R2 bucket as `bundles/<build id>/`, writes `l
 sees one complete snapshot), keeps the newest seven bundles, and, if `WEB_REPO` is set, sends the site repository a
 `data-updated` event so it rebuilds. R2 and GitHub settings go in `.env` (see `.env.example`). Try it with
 `scripts/cron/publish_site_data.sh --dry-run` first: it checks the bundle and prints what it would do.
+After the bundle folder is uploaded and before the pointer, the script also writes the home page's one-line summary: it runs the website repository's `scripts/summarize.ts` (default `~/projects/nmwater-web`, `WEB_DIR` to change; needs `bun` and `ANTHROPIC_API_KEY` in `.env`) on the new bundle and uploads the result as `state-now.json` beside `latest.json`. The site checks the line against its own data before using it and falls back to its own wording when the file is missing, so a failure in that step never stops the publish.
 
 **Nightly on the owner's machine (cron).** The crontab runs `scripts/cron/nightly.sh` at 02:00 (`crontab -l`):
 
