@@ -223,7 +223,7 @@ MAILTO=""
 0 2 * * * /home/vance/projects/water_newmexico/scripts/cron/nightly.sh
 ```
 
-`nightly.sh` runs `scripts/cron/site_data.sh --update` (no `--publish` until the R2 and GitHub settings exist) as a transient user systemd unit with the limits below, because cron itself gives a
+`nightly.sh` runs `scripts/cron/site_data.sh --update --publish` (the bundle goes to R2, bucket `nmwater-site-data`, served at `https://data.newmexicowater.org`; if `WEB_REPO` and `GH_TOKEN` are set in `.env` the website repository is told to rebuild, otherwise its daily 12:30 UTC run picks the new bundle up; a failed publish fails the job and raises the notification) as a transient user systemd unit with the limits below, because cron itself gives a
 job no memory cap, and the machine is also a desktop where systemd-oomd kills a user session under memory pressure: low priority, 8 GB soft and 14 GB hard memory. If the user's systemd manager is
 not reachable (logged out) it runs under `nice`/`ionice` alone. The wrapper runs `nmwater update` (fetch, compact, watershed precipitation, catalog build), checks the catalog (an `update` records a
 failed catalog build instead of failing, which leaves a stub database; the wrapper rebuilds it once), then `export-site-data`; a failed export leaves the previous bundle. On success `nightly.sh` restarts
