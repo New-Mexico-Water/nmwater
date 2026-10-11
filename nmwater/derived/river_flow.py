@@ -25,7 +25,11 @@ import pandas as pd
 log = logging.getLogger("nmwater.derived.river_flow")
 
 
-PRIORITY = ["usgs", "usbr_hydrodata", "usace_cwms", "codwr", "ose_meas", "nwps", "usbr_albuq"]
+# Where several sources publish one gauge, the copy used is the first here. The order follows the licence: USGS (verified public
+# domain), then federal agencies (U.S. government works, 17 U.S.C. 105), then sources whose reuse terms we have not confirmed
+# (Colorado DWR, NM State Engineer telemetry; see docs/reports/licence-audit-2026-10-01.md). Within a licence class, USGS first, then the
+# agencies that republish its record. A gauge with only an unconfirmed-licence copy still uses it.
+PRIORITY = ["usgs", "usbr_hydrodata", "usace_cwms", "nwps", "usbr_albuq", "codwr", "ose_meas"]
 
 
 MIN_DAYS = 4                 # days of 7 needed for a gauge-week
