@@ -61,3 +61,27 @@ def test_cocorahs_ids_map_to_ghcn_daily_ids():
     s = frame(site("cocorahs", "NM-BR-35"), site("noaa_ghcnd", "US1NMBR0035"), site("cocorahs", "NM-DA-22"), site("noaa_ghcnd", "US1NMDA0099"))
     got = gauge_id_links(s)
     assert [(r["site_uid_a"], r["site_uid_b"]) for r in got] == [("cocorahs:NM-BR-35", "noaa_ghcnd:US1NMBR0035")]
+
+
+def test_a_proximity_pair_is_settled_by_the_usgs_site_each_end_is_linked_to():
+    from nmwater.catalog.links import settle_by_usgs_anchor
+    cols = ["site_uid_a", "site_uid_b", "link_type", "evidence", "distance_m", "confidence"]
+    links = pd.DataFrame([
+        ["codwr:X", "usgs:1", "same_sensor", "e", None, 0.95], ["nwps:X", "usgs:1", "same_sensor", "e", None, 0.95], ["codwr:X", "nwps:X", "colocated", "near", 12.0, 0.8],
+        ["codwr:Y", "usgs:2", "same_sensor", "e", None, 0.95], ["nwps:Y", "usgs:3", "same_sensor", "e", None, 0.95], ["codwr:Y", "nwps:Y", "colocated", "near", 30.0, 0.7],
+        ["wqp:Z", "usgs:4", "same_location_different_sensor", "e", None, 0.95], ["nwps:Z", "usgs:4", "same_sensor", "e", None, 0.95], ["wqp:Z", "nwps:Z", "colocated", "near", 5.0, 0.8],
+        ["codwr:W", "nwps:W", "colocated", "near", 40.0, 0.7]], columns=cols)
+    out = settle_by_usgs_anchor(links)
+    pairs = {(r.site_uid_a, r.site_uid_b): r.link_type for r in out.itertuples()}
+    assert pairs[("codwr:X", "nwps:X")] == "same_sensor"                        # same USGS site at both ends
+    assert ("codwr:Y", "nwps:Y") not in pairs                                   # two different USGS sites: not the same place
+    assert pairs[("wqp:Z", "nwps:Z")] == "same_location_different_sensor"       # one end is only a sampling point at the site
+    assert pairs[("codwr:W", "nwps:W")] == "colocated"                          # no anchors: still a candidate
+
+
+def test_a_manual_link_settles_the_proximity_candidate_for_the_same_pair(tmp_path):
+    s = frame(site("codwr", "A", 35.0, -106.0, stype="stream"), site("nwps", "B", 35.0001, -106.0001, stype="stream"))
+    manual = tmp_path / "m.csv"
+    manual.write_text("site_uid_a,site_uid_b,link_type,evidence\nnwps:B,codwr:A,same_sensor,daily values agree\n")
+    got = build_links(s, manual=manual)
+    assert list(got["link_type"]) == ["same_sensor"]

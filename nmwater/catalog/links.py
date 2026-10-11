@@ -147,6 +147,38 @@ def gauge_id_links(sites: pd.DataFrame) -> list[dict]:
     return out
 
 
+def settle_by_usgs_anchor(links: pd.DataFrame) -> pd.DataFrame:
+    """Use the exact USGS links already found to settle proximity pairs (issue #68).
+
+    A site exactly linked to a USGS site has that USGS site as its anchor. For a proximity ('colocated') pair whose two sites both have one:
+    the same anchor means they are the same place, so the pair becomes an exact link (same_sensor when both are mirrors of the anchor, otherwise
+    same_location_different_sensor); different anchors mean two different USGS sites, so the pair is dropped. A site tied to several USGS sites is
+    ambiguous and settles nothing.
+    """
+    exact = links[links["link_type"] != "colocated"]
+    anchors: dict[str, set[str]] = {}
+    kind: dict[tuple[str, str], str] = {}
+    for a, b, t in exact[["site_uid_a", "site_uid_b", "link_type"]].itertuples(index=False):
+        if a.startswith("usgs:") != b.startswith("usgs:"):
+            u, o = (a, b) if a.startswith("usgs:") else (b, a)
+            anchors.setdefault(o, set()).add(u)
+            kind[(o, u)] = t
+    keep, promoted = [], []
+    for r in links.itertuples(index=False):
+        if r.link_type == "colocated":
+            aa, ab = anchors.get(r.site_uid_a), anchors.get(r.site_uid_b)
+            if aa and ab and len(aa) == 1 and len(ab) == 1:
+                ua, ub = next(iter(aa)), next(iter(ab))
+                if ua != ub:
+                    continue
+                both = kind[(r.site_uid_a, ua)] == "same_sensor" and kind[(r.site_uid_b, ub)] == "same_sensor"
+                promoted.append({"site_uid_a": r.site_uid_a, "site_uid_b": r.site_uid_b, "link_type": "same_sensor" if both else "same_location_different_sensor",
+                                 "evidence": f"both linked to {ua}", "distance_m": r.distance_m, "confidence": 0.95})
+                continue
+        keep.append(r._asdict())
+    return pd.concat([pd.DataFrame(keep, columns=links.columns), pd.DataFrame(promoted, columns=links.columns)], ignore_index=True)
+
+
 def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     r = 6371000.0
     p1, p2 = math.radians(lat1), math.radians(lat2)
@@ -240,6 +272,8 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
 
     links = pd.DataFrame(rows, columns=["site_uid_a", "site_uid_b", "link_type", "evidence", "distance_m", "confidence"])
 
+    links = settle_by_usgs_anchor(links)
+
     # 3. manual overrides / additions
     if manual and manual.exists():
         try:
@@ -251,6 +285,10 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                 links = pd.concat([links, man[links.columns]], ignore_index=True)
         except Exception as e:
             log.warning("could not read %s: %s", manual, e)
+    # a pair settled by an exact or manual link is no longer a candidate, whichever way round its ends are written
+    settled = {frozenset(p) for p in links.loc[links["link_type"] != "colocated", ["site_uid_a", "site_uid_b"]].itertuples(index=False, name=None)}
+    is_candidate = links["link_type"] == "colocated"
+    links = links[~(is_candidate & links[["site_uid_a", "site_uid_b"]].apply(lambda r: frozenset(r) in settled, axis=1))]
     links = links.drop_duplicates(subset=["site_uid_a", "site_uid_b", "link_type"])
     log.info("site_links: %d exact, %d colocated", (links["link_type"] != "colocated").sum(), (links["link_type"] == "colocated").sum())
     return links
