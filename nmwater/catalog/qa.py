@@ -11,20 +11,27 @@ from ..core.config import DOCS_DIR, Settings
 
 log = logging.getLogger("nmwater.qa")
 
-# (site_uid, variable, expected first date <=, minimum row count, description)
+# (site_uid, variable, interval or None for any, expected first date <=, minimum row count, description)
+# Expectations are each record's true start, checked against the provider's own catalog (issue #3), not the age of the
+# gauge: a gauge can be older than its daily record. The interval keeps annual peaks and 15-minute readings from
+# standing in for a daily series.
 LANDMARKS = [
-    ("usgs:08279500", "discharge", "1889-01-01", 45000, "Rio Grande at Embudo daily discharge from 1889"),
-    ("usgs:08313000", "discharge", "1895-12-31", 40000, "Rio Grande at Otowi Bridge"),
-    ("usgs:08330000", "discharge", "1942-01-01", 28000, "Rio Grande at Albuquerque"),
-    ("usgs:08358400", "discharge", "1949-12-31", 25000, "Rio Grande Floodway at San Marcial"),
-    ("usgs:08407500", "discharge", "1937-12-31", 30000, "Pecos River near Red Bluff"),
-    ("usgs:08364000", "discharge", "1938-12-31", 30000, "Rio Grande at El Paso"),
-    ("usbr_hydrodata:1119", "reservoir_storage", "1915-03-21", 40000, "Elephant Butte storage from 1915"),
-    ("usbr_hydrodata:1095", "discharge", "1899-10-01", 46000, "Otowi flow from 1899 (Reclamation)"),
-    ("usace_cwms:Cochiti", "reservoir_elevation", "1993-01-02", 12000, "Cochiti daily elevation from 1993"),
-    ("nrcs:486:NM:SNTL", "swe", "1971-10-01", 15000, "Frisco Divide SNOTEL WTEQ from 1971"),
-    ("nrcs:922:NM:SNTL", "swe", "1996-10-01", 10000, "Santa Fe SNOTEL from 1996"),
-    ("codwr:LAJCAPCO", "discharge", "1943-03-01", 20000, "La Jara Creek (CO DWR) from 1943"),
+    ("usgs:08279500", "discharge", "daily", "1889-01-01", 45000, "Rio Grande at Embudo daily discharge from 1889"),
+    ("usgs:08313000", "discharge", "daily", "1895-12-31", 40000, "Rio Grande at Otowi Bridge daily discharge from 1895"),
+    # USGS publishes daily discharge here only from 1965-10-01 (22,288 days); the 1942 record is annual peaks.
+    ("usgs:08330000", "discharge", "daily", "1965-10-01", 22000, "Rio Grande at Albuquerque daily discharge from 1965"),
+    ("usgs:08358400", "discharge", "daily", "1949-12-31", 25000, "Rio Grande Floodway at San Marcial"),
+    ("usgs:08407500", "discharge", "daily", "1937-12-31", 30000, "Pecos River near Red Bluff"),
+    # USGS has no daily discharge at El Paso (two sampled values only); its peaks run 1884-1982. Recent daily flow is IBWC's.
+    ("usgs:08364000", "discharge", "water_year", "1884-12-31", 80, "Rio Grande at El Paso annual peak flows"),
+    ("usbr_hydrodata:1119", "reservoir_storage", None, "1915-03-21", 40000, "Elephant Butte storage from 1915"),
+    # Reclamation's series has gaps in the source (1909, 1914, 1918), so under the 46,000 days between its ends.
+    ("usbr_hydrodata:1095", "discharge", "daily", "1899-10-01", 43000, "Otowi flow from 1899 (Reclamation)"),
+    ("usace_cwms:Cochiti", "reservoir_elevation", None, "1993-01-02", 12000, "Cochiti daily elevation from 1993"),
+    # NRCS lists the station from 1971-10-01 but its snow water element starts 1978-10-01 (hourly data from 1978-11-01).
+    ("nrcs:486:NM:SNTL", "swe", "hourly", "1978-12-31", 150000, "Frisco Divide SNOTEL snow water equivalent from 1978"),
+    ("nrcs:922:NM:SNTL", "swe", None, "1996-10-01", 10000, "Santa Fe SNOTEL from 1996"),
+    ("codwr:LAJCAPCO", "discharge", None, "1943-03-01", 20000, "La Jara Creek (CO DWR) from 1943"),
 ]
 
 SITE_COUNT_MIN = {
@@ -62,11 +69,11 @@ def run(settings: Settings, out: Path | None = None) -> Path:
     # Landmarks
     lines += ["", "## Landmark records", "", "| check | first | rows | ok |", "|---|---|---|---|"]
     n_fail = 0
-    for uid, var, first_by, min_rows, desc in LANDMARKS:
+    for uid, var, interval, first_by, min_rows, desc in LANDMARKS:
         try:
             r = con.execute(
-                "SELECT MIN(first_datetime) AS t0, SUM(n_obs) AS n FROM site_variables WHERE site_uid=? AND variable=?",
-                [uid, var],
+                "SELECT MIN(first_datetime) AS t0, SUM(n_obs) AS n FROM site_variables WHERE site_uid=? AND variable=? AND (? IS NULL OR interval=?)",
+                [uid, var, interval, interval],
             ).fetchone()
         except Exception:
             r = (None, None)
