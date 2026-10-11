@@ -163,7 +163,8 @@ and is linked the same way (1,601 pairs). A proximity pair is then settled by th
 site at both ends makes it an exact link, two different USGS sites drop it (they are different places). Pairs whose daily values
 agree on every shared variable (393 surface-water pairs, checked 2026-10-11, `docs/reports/site-links-surface-water-series.csv`) are
 `same_sensor` rows in `catalog/sites_manual.csv`, and a pair with an exact or manual link is never also listed as a candidate.
-The table now has 51,010 exact links and 33,982 proximity (`colocated`) pairs, down from 122,512 (most of the old pairs were the
+NWS gauges carry their USGS site number (read from each gauge's own page; the list of gauges leaves it empty), and a WQP site whose name cites a USGS number
+("... USGS 08276500 ...") is linked to that gauge as `same_location_different_sensor`. The table now has 51,346 exact links and 33,658 proximity (`colocated`) pairs, down from 122,512 (most of the old pairs were the
 same site found a second way, or two neighbouring wells).
 
 **A `colocated` pair is a candidate, not a duplicate.** Within 250 m is not the same place: well fields put dozens of wells
