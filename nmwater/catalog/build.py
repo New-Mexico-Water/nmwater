@@ -12,7 +12,7 @@ import pandas as pd
 import yaml
 
 from ..core.config import CATALOG_DIR, DOCS_DIR, Settings
-from ..core.geo import assign_hucs, assign_regions
+from ..core.geo import assign_hucs, assign_regions, clean_site_coordinates
 from ..core.store import Store
 from .crosswalk import Crosswalk
 from .links import build_links
@@ -88,6 +88,10 @@ def build(settings: Settings) -> Path:
     # Sites: union, HUC assignment (if WBD present), single table -----------------------
     sites = store.read_sites()
     if len(sites):
+        # Sites stored before the coordinate repair was added (lat 0 and lon 0, lost minus signs) are repaired here as well, so no source has to be fetched again.
+        sites, fixed = clean_site_coordinates(sites)
+        if any(fixed.values()):
+            log.info("catalog: site coordinates repaired %s", fixed)
         sites = assign_hucs(sites, settings.grids_dir)
         sites_path = settings.parquet_dir / "sites_all.parquet"
         sites.to_parquet(sites_path, index=False)

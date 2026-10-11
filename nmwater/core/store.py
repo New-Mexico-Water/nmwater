@@ -11,6 +11,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
+from .geo import clean_site_coordinates
 from .models import OBS_KEY, OBS_SCHEMA, SITES_SCHEMA
 
 log = logging.getLogger("nmwater.store")
@@ -273,6 +274,9 @@ class Store:
         if "site_uid" not in df.columns:
             df["site_uid"] = source + ":" + df["native_id"].astype(str)
         df = df.drop_duplicates(subset=["site_uid"], keep="last")
+        df, fixed = clean_site_coordinates(df)
+        if any(fixed.values()):
+            log.info("write_sites %s: coordinates repaired %s", source, fixed)
         table = coerce_to_schema(df, SITES_SCHEMA)
         pq.write_table(table, self.sites_path(source), compression="zstd")
         return table.num_rows

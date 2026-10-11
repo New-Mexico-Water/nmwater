@@ -87,8 +87,14 @@ def run(settings: Settings, out: Path | None = None) -> Path:
         lines.append(f"- variables in data missing from variables.yaml: {', '.join(unknown['variable']) if len(unknown) else 'none'}")
         nocoord = con.execute("SELECT source, COUNT(*) FROM sites WHERE lat IS NULL OR lon IS NULL GROUP BY 1").fetchall()
         lines.append("- sites without coordinates: " + (", ".join(f"{s}={n:,}" for s, n in nocoord) if nocoord else "none"))
-        nohuc = con.execute("SELECT COUNT(*) FROM sites WHERE huc8 IS NULL AND lat IS NOT NULL").fetchone()[0]
-        lines.append(f"- located sites without huc8 (run WBD download + catalog build to fill): {nohuc:,}")
+        # In New Mexico (the site's state is NM) a missing watershed is a problem to fix; outside it, the archive has no watershed layer to place a site in.
+        nohuc_nm, nohuc_out = con.execute(
+            "SELECT COUNT(*) FILTER (WHERE state = 'NM' OR state IS NULL), COUNT(*) FILTER (WHERE state IS NOT NULL AND state <> 'NM') FROM sites WHERE huc8 IS NULL AND lat IS NOT NULL"
+        ).fetchone()
+        lines.append(f"- located sites without huc8, in New Mexico (WBD regions missing or a bad coordinate): {nohuc_nm:,}")
+        lines.append(f"- located sites without huc8, in another state (expected; outside the watershed layers): {nohuc_out:,}")
+        zeros = con.execute("SELECT COUNT(*) FROM sites WHERE lat = 0 AND lon = 0").fetchone()[0]
+        lines.append(f"- sites at latitude 0, longitude 0 (a missing location written as a point; should be none): {zeros:,}")
         orphans = con.execute(
             "SELECT COUNT(DISTINCT sv.site_uid) FROM site_variables sv LEFT JOIN sites s USING (site_uid) WHERE s.site_uid IS NULL"
         ).fetchone()[0]
