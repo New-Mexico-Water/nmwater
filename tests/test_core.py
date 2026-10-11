@@ -155,6 +155,14 @@ def test_store_rejects_impossible_dates(tmp_path):
     assert store.write_observations(df, "x", run_id="r1") == 1
 
 
+def test_store_rejects_readings_dated_in_the_future(tmp_path):
+    """A typo such as 2026-12-08 for a 2016 reading must not be stored. A day ahead (a station's clock) is allowed."""
+    store = Store(tmp_path / "pq")
+    now = pd.Timestamp.now(tz="UTC")
+    when = [(now - pd.Timedelta(days=1)).isoformat(), (now + pd.Timedelta(days=1)).isoformat(), (now + pd.Timedelta(days=30)).isoformat()]
+    assert store.write_observations(_obs("x:1", "discharge", when, [1, 2, 3]), "x", run_id="r1") == 2
+
+
 def test_soil_sensors_at_several_depths_all_survive_writing_and_compaction(tmp_path):
     """Issue #63: the key had no depth, so five depths reporting at the same instant collapsed to one."""
     store = Store(tmp_path / "pq")
