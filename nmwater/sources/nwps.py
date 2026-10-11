@@ -40,6 +40,17 @@ class NWPS(Source):
                 log.warning("nwps gauges request failed (%s): %s", params, ex)
         return []
 
+    def _usgs_id(self, lid: str | None) -> str | None:
+        """The USGS site number of a gauge. The list of gauges leaves usgsId empty; the gauge's own page has it (issue #68)."""
+        if not lid:
+            return None
+        try:
+            art = self.get(f"{BASE}/gauges/{lid}", kind="meta", refresh=True)
+            return (art.read_json() or {}).get("usgsId") or None
+        except Exception as ex:
+            log.warning("nwps gauge %s: no detail (%s)", lid, ex)
+            return None
+
     def discover(self) -> pd.DataFrame:
         rows = []
         for g in self._gauges():
@@ -47,6 +58,8 @@ class NWPS(Source):
             st = (g.get("state") or {}).get("abbreviation")
             if st != self.scope.state_abbr and not self.scope.in_bbox(lat, lon):
                 continue
+            if not g.get("usgsId"):
+                g = {**g, "usgsId": self._usgs_id(g.get("lid"))}
             rows.append(
                 {
                     "native_id": g.get("lid"),

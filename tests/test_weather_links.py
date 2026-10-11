@@ -85,3 +85,14 @@ def test_a_manual_link_settles_the_proximity_candidate_for_the_same_pair(tmp_pat
     manual.write_text("site_uid_a,site_uid_b,link_type,evidence\nnwps:B,codwr:A,same_sensor,daily values agree\n")
     got = build_links(s, manual=manual)
     assert list(got["link_type"]) == ["same_sensor"]
+
+
+def test_a_wqp_name_that_cites_a_usgs_number_links_to_that_gauge():
+    from nmwater.catalog.links import gauge_id_links
+    s = frame(site("usgs", "08276500", stype="stream"), site("usgs", "08405500", stype="stream"),
+              site("wqp", "21NMEX_WQX-28RGrand664.0", meta={}, stype="stream"), site("wqp", "X-1", stype="stream"), site("wqp", "X-2", stype="stream"))
+    s.loc[s.native_id == "21NMEX_WQX-28RGrand664.0", "name"] = "Rio Grande blw Taos Junc Bridge-- USGS 08276500 - 28RGrand664.0"
+    s.loc[s.native_id == "X-1", "name"] = "08405500 BLACK R AB MALAGA"
+    s.loc[s.native_id == "X-2", "name"] = "Sample 12345678901 and USGS 08276500 and 08405500"        # two gauges named: ambiguous, no link
+    got = {(r["site_uid_a"], r["site_uid_b"], r["link_type"]) for r in gauge_id_links(s)}
+    assert got == {("wqp:21NMEX_WQX-28RGrand664.0", "usgs:08276500", "same_location_different_sensor"), ("wqp:X-1", "usgs:08405500", "same_location_different_sensor")}

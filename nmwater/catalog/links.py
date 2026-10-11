@@ -118,6 +118,7 @@ def weather_links(sites: pd.DataFrame) -> list[dict]:
     return list(out.values())
 
 
+_NUMBER_IN_NAME_RE = re.compile(r"(?<![0-9])(\d{8,15})(?![0-9])")
 _COCORAHS_RE = re.compile(r"^([A-Z]{2})-([A-Z]{2})-(\d+)$")
 
 
@@ -135,6 +136,13 @@ def gauge_id_links(sites: pd.DataFrame) -> list[dict]:
         if nid.startswith("USGS-") and usgs is not None and nid[5:] in usgs.index:
             out.append({"site_uid_a": r.site_uid, "site_uid_b": f"usgs:{nid[5:]}", "link_type": "same_sensor",
                         "evidence": "WQP id USGS-<number> is the USGS site number", "distance_m": None, "confidence": 0.99})
+    # A WQP site that is not itself a USGS site but whose name cites a USGS site number ("... USGS 08276500 ...") is a sampling point at that gauge.
+    if usgs is not None:
+        for r in sites[(sites["source"] == "wqp") & ~sites["native_id"].astype(str).str.startswith("USGS-")].itertuples(index=False):
+            hit = [n for n in _NUMBER_IN_NAME_RE.findall(str(getattr(r, "name", "") or "")) if n in usgs.index]
+            if len(set(hit)) == 1:
+                out.append({"site_uid_a": r.site_uid, "site_uid_b": f"usgs:{hit[0]}", "link_type": "same_location_different_sensor",
+                            "evidence": f"WQP site name cites USGS {hit[0]}", "distance_m": None, "confidence": 0.9})
     if ghcnd is not None:
         for r in sites[sites["source"] == "cocorahs"].itertuples(index=False):
             m = _COCORAHS_RE.match(str(r.native_id))
