@@ -43,3 +43,21 @@ def test_an_exact_link_replaces_the_proximity_guess_for_the_same_pair():
     links = build_links(s)
     pair = links[(links.site_uid_a == "noaa_ghcnd:USW00023050") & (links.site_uid_b == "noaa_ghcnh:USW00023050")]
     assert list(pair["link_type"]) == ["same_sensor"]
+
+
+def test_wqp_usgs_ids_link_to_the_usgs_site_and_never_to_its_neighbours():
+    from nmwater.catalog.links import gauge_id_links
+    s = frame(site("usgs", "370758107380001", 37.0, -107.0, stype="well"), site("usgs", "370757107380000", 37.0001, -107.0001, stype="well"),
+              site("wqp", "USGS-370758107380001", 37.0, -107.0, stype="well"), site("wqp", "NMED-1", 37.00005, -107.00005, stype="well"))
+    assert [(r["site_uid_a"], r["site_uid_b"]) for r in gauge_id_links(s)] == [("wqp:USGS-370758107380001", "usgs:370758107380001")]
+    links = build_links(s)
+    pairs = {(r.site_uid_a, r.site_uid_b, r.link_type) for r in links.itertuples()}
+    assert ("wqp:USGS-370758107380001", "usgs:370757107380000", "colocated") not in pairs and ("usgs:370757107380000", "wqp:USGS-370758107380001", "colocated") not in pairs
+    assert ("wqp:NMED-1", "usgs:370758107380001", "colocated") in pairs or ("usgs:370758107380001", "wqp:NMED-1", "colocated") in pairs   # an unrelated id near a USGS site stays a candidate
+
+
+def test_cocorahs_ids_map_to_ghcn_daily_ids():
+    from nmwater.catalog.links import gauge_id_links
+    s = frame(site("cocorahs", "NM-BR-35"), site("noaa_ghcnd", "US1NMBR0035"), site("cocorahs", "NM-DA-22"), site("noaa_ghcnd", "US1NMDA0099"))
+    got = gauge_id_links(s)
+    assert [(r["site_uid_a"], r["site_uid_b"]) for r in got] == [("cocorahs:NM-BR-35", "noaa_ghcnd:US1NMBR0035")]
