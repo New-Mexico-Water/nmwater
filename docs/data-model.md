@@ -159,12 +159,12 @@ the same value in 99.9% of 8,613, so for one station they are one record. To car
 **Other republished ids.** WQP lists every USGS site that has water-quality samples as `USGS-<site number>`; that is the
 usgs site itself, so the two are linked `same_sensor` (46,538 pairs) and a different usgs site beside it is never linked to
 it by proximity (it is a neighbour, typically in a well field). A CoCoRaHS station `NM-BR-35` is GHCN-Daily's `US1NMBR0035`
-and is linked the same way. After these, the table has 49,915 exact links and 36,802 proximity (`colocated`) pairs, down
+and is linked the same way (1,601 pairs). After these, the table has 49,915 exact links and 36,802 proximity (`colocated`) pairs, down
 from 122,512 (most of the old pairs were the same site found a second way, or two neighbouring wells).
 
 **A `colocated` pair is a candidate, not a duplicate.** Within 250 m is not the same place: well fields put dozens of wells
-inside it (one site has 71 neighbours), and 29,000 of the remaining pairs are wells from state sources (NMED, TWDB, NMWDI,
-NMBGMR) against USGS or WQP wells at a median 46 to 143 m. Do not drop or merge sites on a `colocated` link; deduplicate
+inside it (one site has 71 neighbours), and 29,514 of the remaining pairs are wells, 16,761 of them involving a state source (NMED, TWDB,
+NMWDI, NMBGMR), at a median of 46 to 143 m. Do not drop or merge sites on a `colocated` link; deduplicate
 on `same_sensor` and `same_location_different_sensor` only, and review `colocated` pairs into `catalog/sites_manual.csv`
 before relying on them.
 
