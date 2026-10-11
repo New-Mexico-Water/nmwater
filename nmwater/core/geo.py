@@ -79,6 +79,53 @@ def _wbd(huc_level: int, grids_dir: str):
     return g.to_crs(4326) if g.crs else g
 
 
+# Contiguous United States, for catching a longitude that lost its minus sign.
+_CONUS = (24.0, 50.0, -125.0, -66.0)      # south, north, west, east
+
+
+def clean_site_coordinates(sites: pd.DataFrame) -> tuple[pd.DataFrame, dict[str, int]]:
+    """Repair the two coordinate errors the sources actually make, and say how many of each.
+
+    - lat and lon both 0: a missing location written as a point. It becomes missing (null), so a site
+      is never "located" in the Gulf of Guinea. NMED's drinking-water sampling points do this (9,134).
+    - a positive longitude where the same point with the sign flipped falls inside the contiguous
+      United States: a lost minus sign (108.5 for -108.5). The longitude is flipped.
+
+    Anything else is left as the source gave it. Each fix is recorded in the row's raw_metadata
+    under "coordinate_fix", so the original problem stays visible. Returns the frame and the counts.
+    """
+    import json
+
+    out = sites.copy()
+    counts = {"zero_zero": 0, "sign_flipped": 0}
+    if out.empty or not {"lat", "lon"} <= set(out.columns):
+        return out, counts
+    lat, lon = pd.to_numeric(out["lat"], errors="coerce"), pd.to_numeric(out["lon"], errors="coerce")
+    zero = (lat.abs() < 1e-9) & (lon.abs() < 1e-9)
+    s, n, w, e = _CONUS
+    flip = (lon > 0) & lat.between(s, n) & (-lon).between(w, e)
+
+    def note(row_meta, what: str) -> str:
+        try:
+            meta = json.loads(row_meta) if isinstance(row_meta, str) and row_meta else {}
+        except ValueError:
+            meta = {}
+        meta["coordinate_fix"] = what
+        return json.dumps(meta, default=str)
+
+    if "raw_metadata" not in out.columns:
+        out["raw_metadata"] = None
+    if zero.any():
+        out.loc[zero, ["lat", "lon"]] = None
+        out.loc[zero, "raw_metadata"] = out.loc[zero, "raw_metadata"].map(lambda m: note(m, "latitude and longitude were both 0; location treated as missing"))
+        counts["zero_zero"] = int(zero.sum())
+    if flip.any():
+        out.loc[flip, "lon"] = -lon[flip]
+        out.loc[flip, "raw_metadata"] = out.loc[flip, "raw_metadata"].map(lambda m: note(m, "longitude was positive; sign flipped"))
+        counts["sign_flipped"] = int(flip.sum())
+    return out, counts
+
+
 def assign_hucs(sites: pd.DataFrame, grids_dir: Path) -> pd.DataFrame:
     """Fill huc8/huc12 by spatial join where missing. No-op if WBD not downloaded yet."""
     try:
