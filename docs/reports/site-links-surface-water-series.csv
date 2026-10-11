@@ -1,0 +1,871 @@
+ua,ub,sa,sb,na,nb,metres,variable,overlap_days,first_day,last_day,share_equal,r,median_ratio,verdict
+usace_cwms:Hwy 380,usbr_hydrodata:2721,usace_cwms,usbr_hydrodata,Rio Grande ab US Hwy 380,RIO GRANDE ABOVE HWY 380 NEAR SAN ANTONIO,5.3,discharge,6702,2008-05-15,2026-10-10,0.134,0.9233,0.965,related_not_the_same_record
+usace_cwms:Archuleta,usbr_hydrodata:741,usace_cwms,usbr_hydrodata,San Juan River nr Archuleta,"SAN JUAN RIVER NEAR ARCHULETA,NM",115.6,discharge,8235,2004-02-29,2026-10-09,0.181,0.9971,0.998,same_record_day_boundary_or_rounding
+usace_cwms:Bosque Farms,usbr_hydrodata:2717,usace_cwms,usbr_hydrodata,Rio Grande nr Bosque Farms,RIO GRANDE NEAR BOSQUE FARMS,0.5,discharge,6707,2008-05-15,2026-10-10,0.072,0.9775,1.001,same_record_day_boundary_or_rounding
+usace_cwms:Brantley DS,usbr_hydrodata:1561,usace_cwms,usbr_hydrodata,Pecos River bl Brantley Dam,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.1,discharge,8233,2004-02-27,2026-10-10,0.133,0.9744,0.997,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti Cn,usbr_hydrodata:1526,usace_cwms,usbr_hydrodata,Cochiti East Side Canal,"RIO GRANDE BELOW COCHITI DAM, NM",124.6,discharge,7829,2005-03-27,2026-10-10,0.0,0.235,10.085,different
+usace_cwms:Diamond A Ranch,usgs:08390500,usace_cwms,usgs,Rio Hondo at Diamond A Ranch,"RIO HONDO AT DIAMOND A RANCH NR ROSWELL, NM",0.0,discharge,8070,2004-05-14,2026-10-10,0.581,0.7759,0.798,different
+usace_cwms:Taylor Springs,usgs:07211500,usace_cwms,usgs,Canadian R nr Taylor Springs,"CANADIAN RIVER NEAR TAYLOR SPRINGS, NM",0.0,discharge,7786,2005-03-17,2026-10-10,0.101,0.7919,0.896,different
+usace_cwms:Rio Puerco,usbr_hydrodata:1539,usace_cwms,usbr_hydrodata,"Rio Puerco Near Bernardo, Nm","RIO PUERCO NEAR BERNARDO, NM",0.4,discharge,7894,2005-02-14,2026-10-09,0.429,0.9245,0.618,related_not_the_same_record
+usace_cwms:Farm Animas,usgs:09364500,usace_cwms,usgs,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",0.0,discharge,7600,2005-03-17,2026-10-10,0.057,0.9875,0.987,same_record_day_boundary_or_rounding
+usace_cwms:Farmington,usbr_hydrodata:772,usace_cwms,usbr_hydrodata,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",0.4,discharge,7825,2005-03-17,2026-10-09,0.055,0.9827,1.001,same_record_day_boundary_or_rounding
+usace_cwms:Central Ave,usbr_hydrodata:1534,usace_cwms,usbr_hydrodata,Rio Grande at Albuquerque,RIO GRANDE AT ALBUQUERQUE,19.1,discharge,7912,2005-02-07,2026-10-10,0.083,0.8207,0.989,different
+usace_cwms:E Butte,usbr_hydrodata:1119,usace_cwms,usbr_hydrodata,Elephant Butte Reservoir,ELEPHANT BUTTE,73.1,reservoir_elevation,7745,2005-02-27,2026-10-09,1.0,0.9993,1.0,same_record_identical
+usace_cwms:Cochiti,usgs:08317300,usace_cwms,usgs,Cochiti Lake,"COCHITI LAKE NEAR COCHITI PUEBLO, NM",75.9,reservoir_storage,9037,1993-01-02,2017-09-30,0.796,0.9968,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Trinidad,usgs:07124400,usace_cwms,usgs,Trinidad Lake,"TRINIDAD LAKE NEAR TRINIDAD, CO.",0.0,reservoir_storage,7609,1999-01-02,2019-11-07,0.7,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Avalon,usbr_hydrodata:2684,usace_cwms,usbr_hydrodata,Lake Avalon nr Carlsbad,AVALON,64.5,reservoir_storage,7786,1999-03-01,2026-10-09,0.195,0.9228,1.011,related_not_the_same_record
+usace_cwms:Sumner,usgs:08384000,usace_cwms,usgs,Lake Sumner,"LAKE SUMNER NR FORT SUMNER, NM",50.9,reservoir_storage,4732,1999-03-01,2017-01-31,0.864,0.9734,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Caballo,usbr_hydrodata:1094,usace_cwms,usbr_hydrodata,Caballo Reservoir,CABALLO,49.5,reservoir_storage,7286,2005-04-22,2026-10-09,0.54,0.9992,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Navajo,usgs:09355100,usace_cwms,usgs,Navajo Reservoir,"NAVAJO RESERVOIR NR ARCHULETA, NM",221.0,reservoir_storage,2445,2010-09-27,2017-09-29,0.951,0.9999,1.002,same_record_identical
+usbr_hydrodata:1513,usgs:08279500,usbr_hydrodata,usgs,"RIO GRANDE AT EMBUDO, NM","RIO GRANDE AT EMBUDO, NM",0.5,discharge,43321,1899-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usace_cwms:Pagosa Spgs,usgs:09342500,usace_cwms,usgs,San Juan River @ Pagosa Springs,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",0.1,stage,59,2026-08-13,2026-10-11,0.966,1.0,1.0,same_record_identical
+usace_cwms:Santa Rosa US,usgs:08382650,usace_cwms,usgs,Pecos River ab Santa Rosa Lake,"PECOS RIVER ABOVE SANTA ROSA LAKE, NM",0.0,stage,59,2026-08-13,2026-10-11,0.881,0.9999,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:846,usgs:09361000,usbr_hydrodata,usgs,"HERMOSA CREEK NEAR HERMOSA, CO.","HERMOSA CREEK NEAR HERMOSA, CO.",3.2,discharge,19315,1920-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usace_cwms:Kaiser Channel,usbr_hydrodata:1560,usace_cwms,usbr_hydrodata,Pecos River (Kaiser Channel),PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD,41.5,discharge,7804,2005-03-17,2026-10-09,0.064,0.9568,0.997,related_not_the_same_record
+usace_cwms:Lobatos,usbr_hydrodata:2723,usace_cwms,usbr_hydrodata,Rio Grande nr Lobatos,RIO GRANDE NEAR LOBATOS,9.1,discharge,7912,2005-02-07,2026-10-09,0.062,0.9138,0.987,related_not_the_same_record
+usace_cwms:Brantley DS,usgs:08401500,usace_cwms,usgs,Pecos River bl Brantley Dam,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.0,discharge,8233,2004-02-27,2026-10-10,0.132,0.9744,0.997,same_record_day_boundary_or_rounding
+usace_cwms:Caballo DS,usgs:08362500,usace_cwms,usgs,Rio Grande bl Caballo Dam,"RIO GRANDE BLW CABALLO DAM, NM",0.0,discharge,2761,2005-02-27,2013-12-30,0.05,0.9626,1.001,related_not_the_same_record
+usace_cwms:Del Norte,usgs:08220000,usace_cwms,usgs,Rio Grande nr Del Norte,"RIO GRANDE NEAR DEL NORTE, CO",4.7,discharge,7268,2005-02-07,2024-12-31,0.069,0.9771,0.956,related_not_the_same_record
+usace_cwms:Taos,usgs:08276500,usace_cwms,usgs,Rio Grande bl Taos Junction Brd,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.0,discharge,7887,2005-02-14,2026-10-10,0.165,0.998,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Pagosa Spgs,usgs:09342500,usace_cwms,usgs,San Juan River @ Pagosa Springs,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",0.1,discharge,7818,2005-03-17,2026-10-10,0.064,0.9334,0.983,related_not_the_same_record
+usace_cwms:Santa Rosa DS,usgs:08382830,usace_cwms,usgs,Pecos River bl Santa Rosa Dam,"PECOS RIVER BELOW SANTA ROSA DAM, NM",0.0,discharge,8243,2004-02-27,2026-10-10,0.149,0.9858,0.78,related_not_the_same_record
+usace_cwms:Santa Rosa US,usgs:08382650,usace_cwms,usgs,Pecos River ab Santa Rosa Lake,"PECOS RIVER ABOVE SANTA ROSA LAKE, NM",0.0,discharge,7782,2005-05-11,2026-10-10,0.055,0.9247,0.943,related_not_the_same_record
+usace_cwms:E Butte DS,usgs:08361000,usace_cwms,usgs,Rio Grande bl Elebutte Butte,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",0.0,discharge,7363,2005-02-23,2026-10-10,0.134,0.9932,0.992,same_record_day_boundary_or_rounding
+usace_cwms:El Vado DS,usgs:08285500,usace_cwms,usgs,Rio Chama bl El Vado Dam,"RIO CHAMA BELOW EL VADO DAM, NM",0.0,discharge,7909,2005-02-07,2026-10-10,0.274,0.9952,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Farmington,usgs:09365000,usace_cwms,usgs,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",0.0,discharge,6709,2005-03-17,2026-10-10,0.056,0.9815,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Pecos,usbr_hydrodata:1544,usace_cwms,usbr_hydrodata,Pecos River nr Pecos,"PECOS RIVER NEAR PECOS, NM",0.3,discharge,8174,2004-05-08,2026-10-09,0.065,0.9747,0.992,same_record_day_boundary_or_rounding
+usace_cwms:San Acacia,usgs:08354900,usace_cwms,usgs,Rio Grande Fldwy at San Acacia,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.0,discharge,7849,2005-02-14,2026-10-10,0.049,0.945,0.992,related_not_the_same_record
+usace_cwms:Thatcher,usbr_hydrodata:100075,usace_cwms,usbr_hydrodata,Purgatoire River nr Thatcher,PURTHACO,0.0,discharge,1581,2022-03-27,2026-10-09,0.166,0.9088,0.972,related_not_the_same_record
+usbr_hydrodata:1544,usgs:08378500,usbr_hydrodata,usgs,"PECOS RIVER NEAR PECOS, NM","PECOS RIVER NEAR PECOS, NM",0.3,discharge,36375,1919-10-01,2026-10-09,0.982,1.0,1.0,same_record_identical
+usbr_hydrodata:1510,usgs:08276500,usbr_hydrodata,usgs,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM","RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.5,discharge,36900,1925-10-01,2026-10-10,0.996,1.0,1.0,same_record_identical
+usbr_hydrodata:768,usgs:09363500,usbr_hydrodata,usgs,"ANIMAS RIVER NEAR CEDAR HILL, N. MEX.","ANIMAS RIVER NEAR CEDAR HILL, NM",0.0,discharge,33947,1933-11-01,2026-10-10,0.995,1.0,1.0,same_record_identical
+usbr_hydrodata:907,usgs:09340000,usbr_hydrodata,usgs,"EAST FORK SAN JUAN RIVER NR PAGOSA SPRINGS,","EAST FORK SAN JUAN RIVER NR PAGOSA SPRINGS, CO",0.6,discharge,16436,1935-10-01,1980-09-29,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1555,usgs:08386000,usbr_hydrodata,usgs,"PECOS RIVER NEAR ACME, NM","PECOS RIVER NEAR ACME, NM",0.6,discharge,32609,1937-07-01,2026-10-10,0.966,1.0,1.0,same_record_identical
+usbr_hydrodata:741,usgs:09355500,usbr_hydrodata,usgs,"SAN JUAN RIVER NEAR ARCHULETA,NM","SAN JUAN RIVER NEAR ARCHULETA, NM",115.6,discharge,26245,1954-12-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1113,usgs:08362500,usbr_hydrodata,usgs,RIO GRANDE BELOW CABALLO DAM,"RIO GRANDE BLW CABALLO DAM, NM",12.5,discharge,27757,1938-01-01,2013-12-30,0.978,0.9998,1.0,same_record_identical
+usbr_hydrodata:1542,usgs:08358500,usbr_hydrodata,usgs,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM","RIO GRANDE AT SAN MARCIAL, NM",59.9,discharge,5478,1949-10-01,1964-09-29,0.147,0.9343,1.195,related_not_the_same_record
+usbr_hydrodata:100075,usgs:07126300,usbr_hydrodata,usgs,PURTHACO,"PURGATOIRE RIVER NEAR THATCHER, CO.",45.7,discharge,21968,1966-07-01,2026-10-09,0.775,0.9954,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:2726,usgs:08382600,usbr_hydrodata,usgs,PECOS RIVER ABOVE CANON DEL UTA NEAR COLONIAS,"PECOS R ABV CANON DEL UTA NR COLONIAS, NM",0.4,discharge,18544,1976-01-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1527,usgs:08317950,usbr_hydrodata,usgs,"GALISTEO CREEK BELOW GALISTEO DAM, NM","GALISTEO CREEK BELOW GALISTEO DAM, NM",0.3,discharge,20659,1970-03-20,2026-10-10,1.0,0.9998,1.0,same_record_identical
+usbr_hydrodata:1549,usgs:08382830,usbr_hydrodata,usgs,"PECOS RIVER BELOW SANTA ROSA DAM, NM","PECOS RIVER BELOW SANTA ROSA DAM, NM",0.4,discharge,17063,1980-01-17,2026-10-09,0.986,1.0,1.0,same_record_identical
+usbr_hydrodata:1558,usgs:08393610,usbr_hydrodata,usgs,"RIO HONDO NEAR ROSWELL, NM","RIO HONDO NEAR ROSWELL, NM",0.6,discharge,10640,1997-06-01,2026-10-09,0.892,1.0,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:2717,usgs:08331160,usbr_hydrodata,usgs,RIO GRANDE NEAR BOSQUE FARMS,"RIO GRANDE NEAR BOSQUE FARMS, NM",0.5,discharge,7101,2006-03-16,2026-10-10,0.999,1.0,1.0,same_record_identical
+usbr_hydrodata:2728,usgs:08385503,usbr_hydrodata,usgs,SAND GATE DIV FROM FT SUMNER CANAL AT FT SUMNER,"SAND GATE DIV FROM FT SUMNER CANAL AT FT SUMNER,NM",0.5,discharge,8280,2004-02-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:100087,usgs:07124200,usbr_hydrodata,usgs,PURMADCO,"PURGATOIRE RIVER AT MADRID, CO.",0.0,discharge,7587,2005-07-28,2026-10-09,0.184,0.9027,0.997,related_not_the_same_record
+usbr_hydrodata:2720,usgs:08355050,usbr_hydrodata,usgs,RIO GRANDE AT BRIDGE NEAR ESCONDIDA,"RIO GRANDE AT BRIDGE NEAR ESCONDIDA, NM",0.5,discharge,7679,2005-09-30,2026-10-10,0.999,1.0,1.0,same_record_identical
+usbr_hydrodata:2718,usgs:08331510,usbr_hydrodata,usgs,RIO GRANDE AT STATE HWY 346 NEAR BOSQUE,"RIO GRANDE AT STATE HWY 346 NEAR BOSQUE, NM",0.4,discharge,7207,2005-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:100098,usgs:07124410,usbr_hydrodata,usgs,PURBTRCO,"PURGATOIRE RIVER BELOW TRINIDAD LAKE, CO.",0.0,discharge,7684,2005-07-28,2026-10-09,0.643,0.9142,1.0,related_not_the_same_record
+usbr_hydrodata:4242,usgs:08249000,usbr_hydrodata,usgs,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,"CONEJOS RIVER NEAR LASAUSES, CO",50.7,discharge,2191,2019-01-01,2024-12-31,0.128,0.9917,1.024,same_record_day_boundary_or_rounding
+usbr_hydrodata:2684,usgs:08403800,usbr_hydrodata,usgs,AVALON,LAKE AVALON NR CARLSBAD N MEX,64.5,reservoir_storage,18282,1965-10-01,2017-03-31,0.881,0.9927,1.0,same_record_day_boundary_or_rounding
+codwr:LAPHESCO,usgs:09365500,codwr,usgs,"LA PLATA RIVER AT HESPERUS, CO","LA PLATA RIVER AT HESPERUS, CO",9.6,discharge,36890,1917-10-01,2018-09-30,1.0,1.0,1.0,same_record_identical
+codwr:HERHERCO,usgs:09361000,codwr,usgs,"HERMOSA CREEK NEAR HERMOSA, CO.","HERMOSA CREEK NEAR HERMOSA, CO.",1.5,discharge,19296,1920-10-01,2026-09-30,1.0,1.0,1.0,same_record_identical
+codwr:ALABELCO,usgs:08236500,codwr,usgs,"ALAMOSA RIVER BELOW TERRACE RESERVOIR, CO.","ALAMOSA RIVER BELOW TERRACE RESERVOIR, CO.",135.8,discharge,11870,1923-04-01,1955-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOMONCO,usbr_hydrodata:3896,codwr,usbr_hydrodata,RIO GRANDE AT MONTE VISTA,RIO GRANDE AT MONTE VISTA,64.3,discharge,36687,1926-05-01,2026-10-09,0.991,1.0,1.0,same_record_identical
+codwr:TRIMTNCO,usgs:08241000,codwr,usgs,TRINCHERA CREEK ABOVE MOUNTAIN HOME RESERVOIR,"TRINCHERA C AB MTN HOME RE, NR FORT GARLAND, CO.",20.6,discharge,10356,1923-05-01,1955-09-29,1.0,1.0,1.0,same_record_identical
+codwr:FLODURCO,usgs:09363000,codwr,usgs,"FLORIDA RIVER NEAR DURANGO, CO.","FLORIDA RIVER NEAR DURANGO, CO.",1.0,discharge,15460,1910-10-01,1960-09-29,0.994,1.0,1.0,same_record_identical
+codwr:TRISMICO,usgs:08243500,codwr,usgs,TRINCHERA CREEK BELOW SMITH RESERVOIR,"TRINCHERA CREEK BELOW SMITH RES, NR BLANCA, CO.",40.1,discharge,17045,1929-10-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:LAJCAPCO,usgs:08238000,codwr,usgs,LAJARA CREEK AT GALLEGOS RANCH NEAR CAPULIN,"LA JARA CREEK AT GALLEGOS RANCH, NR CAPULIN, CO.",147.5,discharge,12814,1943-03-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:PIEBRICO,usgs:09347500,codwr,usgs,"PIEDRA R AT BRIDGE RNGR STA, NR PAGOSA SPGS, CO.","PIEDRA R AT BRIDGE RNGR STA, NR PAGOSA SPGS, CO.",1.2,discharge,4838,1936-10-01,1954-09-29,0.994,1.0,1.0,same_record_identical
+codwr:PIEPIECO,usgs:09349500,codwr,usgs,"PIEDRA RIVER NEAR PIEDRA, CO.","PIEDRA RIVER NEAR PIEDRA, CO.",1.5,discharge,12327,1939-10-01,1973-06-30,1.0,1.0,1.0,same_record_identical
+codwr:ANITIMCO,usbr_hydrodata:840,codwr,usbr_hydrodata,"ANIMAS RIVER AT TALL TIMBER RESORT ABOVE TACOMA,CO","ANIMAS RIVER ABOVE TACOMA, CO.",0.0,discharge,10932,1945-10-01,2026-10-09,0.981,1.0,1.0,same_record_identical
+codwr:LOSORTCO,usbr_hydrodata:2742,codwr,usbr_hydrodata,LOS PINOS RIVER NEAR ORTIZ,LOS PINOS RIVER NEAR ORTIZ,236.8,discharge,27641,1950-01-01,2026-10-09,0.797,0.9982,1.0,same_record_day_boundary_or_rounding
+codwr:LOSLABCO,usgs:09354500,codwr,usgs,"LOS PINOS RIVER AT LA BOCA, CO.","LOS PINOS RIVER AT LA BOCA, CO.",0.1,discharge,27664,1951-01-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:RIOBORCO,usgs:08252000,codwr,usgs,RIO GRANDE AT COLORADO-NEW MEXICO STATE LINE,RIO GRANDE AT COLORADO-NEW MEXICO STATE LINE,1.1,discharge,10591,1953-10-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOMILCO,usbr_hydrodata:3905,codwr,usbr_hydrodata,RIO GRANDE AT THIRTY MILE BRIDGE NEAR CREEDE,RIO GRANDE AT THIRTY MILE BRIDGE NEAR CREEDE,0.0,discharge,41622,1909-06-01,2026-10-09,0.994,1.0,1.0,same_record_identical
+codwr:HERHERCO,usbr_hydrodata:846,codwr,usbr_hydrodata,"HERMOSA CREEK NEAR HERMOSA, CO.","HERMOSA CREEK NEAR HERMOSA, CO.",1.7,discharge,19296,1920-10-01,2026-09-30,1.0,1.0,1.0,same_record_identical
+codwr:EASAPACO,usgs:09340000,codwr,usgs,EAST FORK SAN JUAN RIVER NEAR PAGOSA SPRINGS,"EAST FORK SAN JUAN RIVER NR PAGOSA SPRINGS, CO",11.4,discharge,2755,1935-10-01,1943-04-16,1.0,1.0,1.0,same_record_identical
+codwr:RIOTRICO,usbr_hydrodata:3909,codwr,usbr_hydrodata,RIO GRANDE ABOVE TRINCHERA CREEK NEAR LA SAUSES,RIO GRANDE ABOVE TRINCHERA CREEK NEAR LA SAUSES,0.0,discharge,33034,1936-05-01,2026-10-09,0.99,0.9999,1.0,same_record_identical
+codwr:RIOCERNM,usgs:08263500,codwr,usgs,"RIO GRANDE NEAR CERRO, NM.","RIO GRANDE NEAR CERRO, NM",0.0,discharge,28133,1948-10-01,2026-10-10,0.992,1.0,1.0,same_record_identical
+codwr:LOSORTCO,usgs:08248000,codwr,usgs,LOS PINOS RIVER NEAR ORTIZ,"LOS PINOS RIVER NEAR ORTIZ, CO",6.4,discharge,38809,1915-01-01,2024-12-31,0.999,1.0,1.0,same_record_identical
+codwr:RIOEMBNM,usgs:08279500,codwr,usgs,"RIO GRANDE AT EMBUDO, NM.","RIO GRANDE AT EMBUDO, NM",0.1,discharge,47032,1889-01-01,2026-10-10,0.996,1.0,1.0,same_record_identical
+codwr:ANIDURCO,usbr_hydrodata:771,codwr,usbr_hydrodata,"ANIMAS RIVER AT DURANGO, CO","ANIMAS RIVER AT DURANGO, CO.",1.7,discharge,41798,1899-10-01,2026-10-09,0.997,1.0,1.0,same_record_identical
+codwr:RIOELENM,usgs:08361000,codwr,usgs,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM","RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",0.0,discharge,40185,1916-10-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:RIOTAONM,usbr_hydrodata:1510,codwr,usbr_hydrodata,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM","RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.4,discharge,36900,1925-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:SANFARNM,usgs:09365000,codwr,usgs,"SAN JUAN RIVER AT FARMINGTON, NM","SAN JUAN RIVER AT FARMINGTON, NM",0.0,discharge,33951,1930-10-01,2026-10-10,0.992,1.0,1.0,same_record_identical
+codwr:RIOCERNM,usbr_hydrodata:1505,codwr,usbr_hydrodata,"RIO GRANDE NEAR CERRO, NM.","RIO GRANDE NEAR CERRO, NM",0.4,discharge,28133,1948-10-01,2026-10-10,0.986,1.0,1.0,same_record_identical
+codwr:SALTOXCO,usgs:09363100,codwr,usgs,"SALT CREEK NEAR OXFORD, CO.","SALT CREEK NEAR OXFORD, CO.",25.6,discharge,8398,1956-10-01,1983-09-29,1.0,1.0,1.0,same_record_identical
+codwr:NAVACHCO,usgs:09344300,codwr,usgs,"NAVAJO RIVER ABOVE CHROMO, CO.","NAVAJO RIVER ABOVE CHROMO, CO.",1.1,discharge,5112,1956-10-01,1970-09-29,1.0,1.0,1.0,same_record_identical
+codwr:JUNCDUCO,usgs:09361400,codwr,usgs,"JUNCTION CREEK NEAR DURANGO, CO.","JUNCTION CREEK NEAR DURANGO, CO.",1.0,discharge,2191,1959-10-01,1965-09-29,1.0,1.0,1.0,same_record_identical
+codwr:FLOBONCO,usgs:09363200,codwr,usgs,"FLORIDA RIVER AT BONDAD, CO.","FLORIDA RIVER AT BONDAD, CO.",29.8,discharge,8398,1956-10-01,1983-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RCHLAPNM,usgs:08284100,codwr,usgs,"RIO CHAMA NEAR LA PUENTA, NM.","RIO CHAMA NEAR LA PUENTE, NM",0.0,discharge,25943,1955-10-01,2026-10-10,0.99,1.0,1.0,same_record_identical
+codwr:FLOALECO,usbr_hydrodata:791,codwr,usbr_hydrodata,FLORIDA RIVER ABOVE LEMON RESERVOIR NEAR DURANGO,"FLORIDA RIVER ABOVE LEMON RESERVOIR, NR BAYFIELD, CO",89.6,discharge,10691,1992-10-01,2026-10-10,0.151,0.8292,1.011,different
+codwr:RIOWAGCO,usace_cwms:Wagon Wheel Gap,codwr,usace_cwms,RIO GRANDE AT WAGON WHEEL GAP,Rio Grande nr Wagon Wheel Gap,0.2,discharge,6671,2008-05-20,2026-10-10,0.061,0.9917,0.978,same_record_day_boundary_or_rounding
+codwr:SOULASCO,usace_cwms:La Sauses S,codwr,usace_cwms,SOUTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,South Conejos R nr La Sauses,0.1,discharge,6581,2008-05-15,2026-10-10,0.264,0.9805,1.028,same_record_day_boundary_or_rounding
+codwr:RIODELCO,usace_cwms:Del Norte,codwr,usace_cwms,"RIO GRANDE NEAR DEL NORTE, CO",Rio Grande nr Del Norte,0.1,discharge,7914,2005-02-07,2026-10-10,0.071,0.9774,1.041,related_not_the_same_record
+codwr:ANIDURCO,usace_cwms:Durango,codwr,usace_cwms,"ANIMAS RIVER AT DURANGO, CO",Animas River at Durango,1.4,discharge,7856,2005-03-16,2026-10-10,0.105,0.9922,1.011,same_record_day_boundary_or_rounding
+codwr:SMCRIONM,usace_cwms:San Marcial CC,codwr,usace_cwms,"SAN MARCIAL CONVEYANCE CHANNEL ON RIO GRANDE, NM",Rio Grande Conveyance Channel,0.0,discharge,6053,2005-02-14,2026-10-10,0.096,0.8964,0.995,different
+codwr:RCHBABNM,usbr_hydrodata:1517,codwr,usbr_hydrodata,RIO CHAMA BELOW ABIQUIU DAM,"RIO CHAMA BELOW ABIQUIU DAM, NM",81.6,discharge,23718,1961-11-01,2026-10-09,0.985,1.0,1.0,same_record_identical
+codwr:SANARCNM,usbr_hydrodata:741,codwr,usbr_hydrodata,"SAN JUAN RIVER NEAR ARCHULETA, NM","SAN JUAN RIVER NEAR ARCHULETA,NM",115.6,discharge,26245,1954-12-01,2026-10-09,0.99,1.0,1.0,same_record_identical
+codwr:NORLASCO,usgs:08249000,codwr,usgs,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,"CONEJOS RIVER NEAR LASAUSES, CO",11.4,discharge,14238,1985-04-15,2024-12-31,0.329,0.9976,1.018,same_record_day_boundary_or_rounding
+codwr:RIOELENM,usace_cwms:E Butte DS,codwr,usace_cwms,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",Rio Grande bl Elebutte Butte,0.0,discharge,7363,2005-02-23,2026-10-10,0.149,0.9932,1.002,same_record_day_boundary_or_rounding
+codwr:ANICEDNM,usace_cwms:Cedar Hill,codwr,usace_cwms,"ANIMAS RIVER NEAR CEDAR HILL, NM",Animas River nr Cedar Hill,1.1,discharge,7547,2005-03-16,2026-10-10,0.071,0.9703,0.996,same_record_day_boundary_or_rounding
+codwr:RCHCHANM,usace_cwms:Chamita,codwr,usace_cwms,"RIO CHAMA NEAR CHAMITA, NM.",Rio Chama nr Chamita,0.0,discharge,7135,2005-02-07,2026-10-10,0.071,0.9706,1.005,same_record_day_boundary_or_rounding
+codwr:ANIALPCO,usgs:09362520,codwr,usgs,"ANIMAS RIVER BLW DURANGO PUMP PLANT NR DURANGO, CO","ANIMAS RIVER BLW DURANGO PUMP PLANT NR DURANGO, CO",0.8,discharge,6774,2008-03-25,2026-10-10,0.981,1.0,1.0,same_record_identical
+codwr:SANARCNM,usace_cwms:Archuleta,codwr,usace_cwms,"SAN JUAN RIVER NEAR ARCHULETA, NM",San Juan River nr Archuleta,0.0,discharge,8235,2004-02-29,2026-10-10,0.2,0.9971,1.001,same_record_day_boundary_or_rounding
+nwps:MLGN5,usgs:08406500,nwps,usgs,Pecos River 3 miles ESE of Malaga,"PECOS RIVER NEAR MALAGA, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.9776,0.879,related_not_the_same_record
+nwps:GILN5,usace_cwms:Gila,nwps,usace_cwms,Gila River above Gila,Gila River nr Gila,0.5,discharge,57,2026-08-14,2026-10-11,0.404,1.0,0.995,same_record_day_boundary_or_rounding
+nwps:MCEC2,usgs:09372000,nwps,usgs,Mcelmo Creek near UT-CO Border,MCELMO CREEK NEAR COLORADO-UTAH STATE LINE,0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.9835,0.867,related_not_the_same_record
+nwps:FRIC2,usbr_hydrodata:791,nwps,usbr_hydrodata,Florida River above Lemon Reservoir,"FLORIDA RIVER ABOVE LEMON RESERVOIR, NR BAYFIELD, CO",0.0,discharge,58,2026-08-14,2026-10-10,0.017,0.952,1.042,related_not_the_same_record
+nwps:FRMN5,usace_cwms:Farmington,nwps,usace_cwms,San Juan River at Farmington,San Juan River at Farmington,5.2,discharge,58,2026-08-14,2026-10-11,0.069,0.9887,1.065,related_not_the_same_record
+nwps:CSBN5,usgs:08402000,nwps,usgs,Pecos River 9 miles NW of Carlsbad,"PECOS R AT DAMSITE 3 NR CARLSBAD, NM",0.0,discharge,57,2026-08-14,2026-10-09,0.0,0.9946,0.955,related_not_the_same_record
+nwps:WFGN5,usgs:09430010,nwps,usgs,West Fork Gila River at Cliff Dwellings,"WEST FORK GILA RIVER AT GILA CLIFF DWELLINGS, NM",39.8,discharge,58,2026-08-14,2026-10-10,0.017,0.9715,0.861,related_not_the_same_record
+usace_cwms:Glenwood,usgs:09444000,usace_cwms,usgs,San Francisco River near Glenwood,"SAN FRANCISCO RIVER NEAR GLENWOOD, NM",24.7,discharge,915,2024-03-27,2026-09-28,0.034,0.9756,0.967,related_not_the_same_record
+usace_cwms:Conchas,usgs:07223500,usace_cwms,usgs,Conchas Lake,CONCHAS LAKE AT CONCHAS DAM N. MEX.,5.7,reservoir_storage,2341,2011-01-02,2017-05-30,0.956,0.9999,1.0,same_record_identical
+codwr:NORLASCO,usace_cwms:La Sauses N,codwr,usace_cwms,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,North Conejos R nr La Sauses,0.1,discharge,6716,2008-05-21,2026-10-10,0.193,0.9913,1.01,same_record_day_boundary_or_rounding
+codwr:SANMANCO,usbr_hydrodata:3910,codwr,usbr_hydrodata,SAN ANTONIO RIVER NEAR MANASSA,SAN ANTONIO RIVER NEAR MANASSA,0.0,discharge,3458,2016-03-13,2026-10-09,0.339,0.9983,1.0,same_record_day_boundary_or_rounding
+nwps:GILN5,usgs:09430500,nwps,usgs,Gila River above Gila,"GILA RIVER NEAR GILA, NM",0.5,discharge,57,2026-08-14,2026-10-10,0.123,0.7842,0.977,different
+nwps:PUEN5,usbr_hydrodata:1550,nwps,usbr_hydrodata,Pecos River below Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",12.1,discharge,57,2026-08-14,2026-10-09,0.07,0.8138,1.111,different
+usace_cwms:Farm Animas,usgs:09364500,usace_cwms,usgs,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",0.0,stage,59,2026-08-13,2026-10-11,0.864,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Santa Rosa DS,usgs:08382830,usace_cwms,usgs,Pecos River bl Santa Rosa Dam,"PECOS RIVER BELOW SANTA ROSA DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Glenwood,usgs:09444000,usace_cwms,usgs,San Francisco River near Glenwood,"SAN FRANCISCO RIVER NEAR GLENWOOD, NM",24.7,stage,59,2026-08-13,2026-10-10,0.847,0.9673,1.0,related_not_the_same_record
+usbr_hydrodata:4663,usgs:09364200,usbr_hydrodata,usgs,ANIMAS RIVER AT PENNY LANE,"ANIMAS RIVER AT PENNY LANE NEAR FLORA VISTA, NM",0.0,discharge,2490,2019-12-13,2026-10-09,0.972,1.0,1.0,same_record_identical
+codwr:YELWARCO,usgs:08238350,codwr,usgs,"YELLOW WARBLER RES INFLOW NEAR ANTONIO, CO.","YELLOW WARBLER RES INFLOW NEAR ANTONIO, CO.",1.2,discharge,1682,1979-07-01,1989-09-30,1.0,1.0,1.0,same_record_identical
+codwr:NAVTOWCO,usgs:09371002,codwr,usgs,"NAVAJO WASH NEAR TOWAOC, CO","NAVAJO WASH NEAR TOWAOC, CO",1.4,discharge,2375,1986-10-01,1993-09-30,1.0,1.0,1.0,same_record_identical
+nwps:CSBN5,usgs:08402000,nwps,usgs,Pecos River 9 miles NW of Carlsbad,"PECOS R AT DAMSITE 3 NR CARLSBAD, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:JECN5,usgs:08328950,nwps,usgs,Jemez River below Jemez Dam,"JEMEZ RIVER OUTLET BELOW JEMEZ CANYON DAM, NM",53.0,stage,59,2026-08-14,2026-10-11,0.814,0.9892,1.0,same_record_day_boundary_or_rounding
+nwps:AICN5,usgs:08287000,nwps,usgs,Rio Chama below Abiquiu,"RIO CHAMA BELOW ABIQUIU DAM, NM",7.5,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:RGCN5,usgs:08317950,nwps,usgs,Galisteo Creek below Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",9.2,stage,59,2026-08-14,2026-10-11,0.932,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:DRGC2,usace_cwms:Durango,nwps,usace_cwms,Animas River at Durango,Animas River at Durango,0.0,stage,58,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:ACMN5,usbr_hydrodata:1555,nwps,usbr_hydrodata,Pecos River below Acme,"PECOS RIVER NEAR ACME, NM",0.6,discharge,58,2026-08-14,2026-10-10,0.052,0.9499,1.188,related_not_the_same_record
+nwps:CERN5,usbr_hydrodata:1505,nwps,usbr_hydrodata,Rio Grande near Cerro,"RIO GRANDE NEAR CERRO, NM",40.1,discharge,58,2026-08-14,2026-10-10,0.207,0.9758,0.993,same_record_day_boundary_or_rounding
+nwps:OTWN5,usace_cwms:Otowi,nwps,usace_cwms,Rio Grande at Otowi,Rio Grande at Otowi Bridge,8.0,discharge,58,2026-08-14,2026-10-11,0.0,0.9955,0.956,related_not_the_same_record
+nwps:ACMN5,usace_cwms:Acme,nwps,usace_cwms,Pecos River below Acme,Pecos River nr Acme,0.0,discharge,58,2026-08-14,2026-10-11,0.069,0.9993,1.106,related_not_the_same_record
+usace_cwms:Brantley DS,usgs:08401500,usace_cwms,usgs,Pecos River bl Brantley Dam,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:E Butte DS,usgs:08361000,usace_cwms,usgs,Rio Grande bl Elebutte Butte,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,0.0,1.0,0.937,related_not_the_same_record
+usace_cwms:Taylor Springs,usgs:07211500,usace_cwms,usgs,Canadian R nr Taylor Springs,"CANADIAN RIVER NEAR TAYLOR SPRINGS, NM",0.0,stage,59,2026-08-13,2026-10-11,0.39,0.9859,0.987,same_record_day_boundary_or_rounding
+usace_cwms:Diamond A Ranch,usgs:08390500,usace_cwms,usgs,Rio Hondo at Diamond A Ranch,"RIO HONDO AT DIAMOND A RANCH NR ROSWELL, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,1.0,1.0,same_record_identical
+resopsus:601,usace_cwms:Navajo,resopsus,usace_cwms,Navajo,Navajo Reservoir,243.0,reservoir_elevation,3761,2010-09-27,2021-01-27,1.0,0.9999,1.0,same_record_identical
+usbr_albuq:HERONDAM,usbr_hydrodata:2686,usbr_albuq,usbr_hydrodata,Heron Reservoir,HERON,0.0,reservoir_storage,32,2026-09-05,2026-10-09,0.625,0.9749,0.999,same_record_day_boundary_or_rounding
+usbr_hydrodata:1537,usgs:08332000,usbr_hydrodata,usgs,"RIO GRANDE FLOODWAY NEAR BERNARDO, NM","RIO GRANDE NR BERNARDO, NM",31.0,discharge,364,1957-10-01,1958-09-29,0.0,0.9837,3.744,related_not_the_same_record
+nwps:ARFN5,usgs:09364500,nwps,usgs,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",17.3,stage,59,2026-08-14,2026-10-11,0.881,0.9998,1.0,same_record_day_boundary_or_rounding
+nwps:DARN5,usgs:08390500,nwps,usgs,Rio Hondo above Roswell,"RIO HONDO AT DIAMOND A RANCH NR ROSWELL, NM",0.0,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+codwr:RIOSF2CO,usace_cwms:South Fork,codwr,usace_cwms,SOUTH FORK OF THE RIO GRANDE,South Fork Rio Grande nr S Fork,0.1,discharge,211,2018-07-06,2019-02-10,0.033,-0.4847,0.96,different
+nwps:PGMC2,usace_cwms:Madrid,nwps,usace_cwms,Purgatoire River at Madrid,Purgatoire River at Madrid,0.0,stage,58,2026-08-14,2026-10-11,0.948,0.3901,1.0,different
+nwps:PGRC2,usace_cwms:Trinidad DS,nwps,usace_cwms,Purgatoire River below Trinidad Lake,Purgatoire R bl Trinidad Dam,0.1,stage,58,2026-08-14,2026-10-11,0.983,0.9827,1.0,same_record_identical
+nwps:PGRC2,usbr_hydrodata:100098,nwps,usbr_hydrodata,Purgatoire River below Trinidad Lake,PURBTRCO,0.0,discharge,57,2026-08-14,2026-10-09,0.018,0.9521,1.076,related_not_the_same_record
+nwps:ARCN5,usgs:09355500,nwps,usgs,San Juan River near Archuleta,"SAN JUAN RIVER NEAR ARCHULETA, NM",6.7,discharge,58,2026-08-14,2026-10-10,0.293,0.9931,0.947,related_not_the_same_record
+nwps:DACN5,usgs:08405150,nwps,usgs,Dark Canyon at Carlsbad,"DARK CANYON AT CARLSBAD, NM",0.0,discharge,10,2026-09-24,2026-10-04,0.1,0.8943,0.078,too_little_overlap
+nwps:PSPC2,usgs:09342500,nwps,usgs,San Juan River at Pagosa Springs,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",0.0,discharge,58,2026-08-14,2026-10-10,0.052,0.9694,0.964,related_not_the_same_record
+nwps:PGRC2,usace_cwms:Trinidad DS,nwps,usace_cwms,Purgatoire River below Trinidad Lake,Purgatoire R bl Trinidad Dam,0.1,discharge,58,2026-08-14,2026-10-11,0.0,0.994,1.071,related_not_the_same_record
+nwps:ARCN5,usace_cwms:Archuleta,nwps,usace_cwms,San Juan River near Archuleta,San Juan River nr Archuleta,6.7,discharge,58,2026-08-14,2026-10-11,0.914,0.9998,1.0,same_record_day_boundary_or_rounding
+nwps:AICN5,usgs:08287000,nwps,usgs,Rio Chama below Abiquiu,"RIO CHAMA BELOW ABIQUIU DAM, NM",7.5,discharge,58,2026-08-14,2026-10-10,0.017,0.9824,1.088,related_not_the_same_record
+ibwc:08364000,nwps:EPRT2,ibwc,nwps,RG AT EL PASO (IBWC),Rio Grande at El Paso (Courchesne Bridge),57.3,stage,29,2026-08-14,2026-10-07,0.483,0.9823,1.004,too_little_overlap
+nwps:ACMN5,usace_cwms:Acme,nwps,usace_cwms,Pecos River below Acme,Pecos River nr Acme,0.0,stage,58,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:PSPC2,usgs:09342500,nwps,usgs,San Juan River at Pagosa Springs,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:WFGN5,usgs:09430010,nwps,usgs,West Fork Gila River at Cliff Dwellings,"WEST FORK GILA RIVER AT GILA CLIFF DWELLINGS, NM",39.8,stage,59,2026-08-14,2026-10-11,1.0,0.9999,1.0,same_record_identical
+nwps:CRBN5,usgs:08401900,nwps,usgs,Rocky Arroyo 7 miles S of Lakewood,"ROCKY ARROYO AT HWY BRD NR CARLSBAD, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:FRMN5,usace_cwms:Farmington,nwps,usace_cwms,San Juan River at Farmington,San Juan River at Farmington,5.2,stage,58,2026-08-14,2026-10-11,0.862,0.9997,1.0,same_record_day_boundary_or_rounding
+nwps:RSFN5,usace_cwms:Reserve,nwps,usace_cwms,San Francisco River at Reserve,San Francisco River at Reserve,28.6,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:OTWN5,usace_cwms:Otowi,nwps,usace_cwms,Rio Grande at Otowi,Rio Grande at Otowi Bridge,8.0,stage,58,2026-08-14,2026-10-11,0.966,0.9999,1.0,same_record_identical
+nwps:RSFN5,usgs:09442681,nwps,usgs,San Francisco River at Reserve,"SAN FRANCISCO RIVER AT RESERVE, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:ARFN5,usgs:09364500,nwps,usgs,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",17.3,discharge,57,2026-08-14,2026-10-10,0.035,0.9897,0.991,same_record_day_boundary_or_rounding
+nwps:DARN5,usgs:08390500,nwps,usgs,Rio Hondo above Roswell,"RIO HONDO AT DIAMOND A RANCH NR ROSWELL, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.989,0.0,related_not_the_same_record
+nwps:MCCN5,usgs:09430600,nwps,usgs,Mogollon Creek above Cliff 14N,"MOGOLLON CREEK NEAR CLIFF, NM",51.7,discharge,57,2026-08-14,2026-10-10,0.0,0.6722,0.913,different
+nwps:ATSN5,usbr_hydrodata:1559,nwps,usbr_hydrodata,Pecos River 6 miles E of Artesia,"PECOS RIVER NEAR ARTESIA, NM",0.3,discharge,58,2026-08-14,2026-10-10,0.017,0.9854,0.86,related_not_the_same_record
+nwps:DRGC2,usace_cwms:Durango,nwps,usace_cwms,Animas River at Durango,Animas River at Durango,0.0,discharge,58,2026-08-14,2026-10-11,0.931,1.0,1.001,same_record_day_boundary_or_rounding
+nwps:SNAN5,usbr_hydrodata:1116,nwps,usbr_hydrodata,Rio Grande near San Acacia,RIO GRANDE FLOODWAY AT SAN ACACIA,0.3,discharge,19,2026-09-21,2026-10-09,0.053,0.9557,0.996,too_little_overlap
+nwps:DACN5,usgs:08405150,nwps,usgs,Dark Canyon at Carlsbad,"DARK CANYON AT CARLSBAD, NM",0.0,stage,49,2026-08-19,2026-10-06,0.102,0.974,0.938,related_not_the_same_record
+nwps:PBAN5,usace_cwms:Avalon DS,nwps,usace_cwms,Pecos River below Avalon Reservoir,Pecos River bl Avalon Dam,0.0,stage,58,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:PBAN5,usgs:08404000,nwps,usgs,Pecos River below Avalon Reservoir,"PECOS RIVER BELOW AVALON DAM, NM",0.0,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:SNCN5,usace_cwms:Sanchez,nwps,usace_cwms,Canadian River near Sanchez,Canadian River nr Sanchez,12.4,stage,58,2026-08-14,2026-10-11,0.948,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:San Acacia,usgs:08354900,usace_cwms,usgs,Rio Grande Fldwy at San Acacia,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.0,stage,31,2026-09-10,2026-10-11,0.935,0.9985,1.0,same_record_day_boundary_or_rounding
+nwps:RGCN5,usgs:08317950,nwps,usgs,Galisteo Creek below Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",9.2,discharge,24,2026-09-01,2026-10-10,0.042,0.9616,0.536,too_little_overlap
+nwps:DKCN5,usgs:08405105,nwps,usgs,Dark Canyon 8 miles N of Whites City,"DARK CANYON DRAW NEAR WHITES CITY, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:SANPAGCO,nwps:PSPC2,codwr,nwps,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",San Juan River at Pagosa Springs,1.4,discharge,58,2026-08-14,2026-10-10,0.052,0.9791,1.023,same_record_day_boundary_or_rounding
+nwps:GILN5,usace_cwms:Gila,nwps,usace_cwms,Gila River above Gila,Gila River nr Gila,0.5,stage,57,2026-08-14,2026-10-11,0.86,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:GILN5,usgs:09430500,nwps,usgs,Gila River above Gila,"GILA RIVER NEAR GILA, NM",0.5,stage,58,2026-08-14,2026-10-11,0.897,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:SNCN5,usace_cwms:Sanchez,nwps,usace_cwms,Canadian River near Sanchez,Canadian River nr Sanchez,12.4,discharge,26,2026-08-17,2026-10-11,0.0,0.9994,1.19,too_little_overlap
+codwr:FLOALECO,nwps:FRIC2,codwr,nwps,FLORIDA RIVER ABOVE LEMON RESERVOIR NEAR DURANGO,Florida River above Lemon Reservoir,89.6,discharge,58,2026-08-14,2026-10-10,0.0,0.9637,0.956,related_not_the_same_record
+nwps:MLGN5,usgs:08406500,nwps,usgs,Pecos River 3 miles ESE of Malaga,"PECOS RIVER NEAR MALAGA, NM",0.0,stage,59,2026-08-14,2026-10-11,0.542,0.9853,1.0,same_record_day_boundary_or_rounding
+nwps:PPCN5,usgs:08407000,nwps,usgs,Pecos River 6 miles ESE of Malaga at Pierce Canyon Crossing,"PECOS RIVER AT PIERCE CANYON CROSSING, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Farmington,usgs:09365000,usace_cwms,usgs,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",0.0,stage,59,2026-08-13,2026-10-11,0.763,0.995,1.0,same_record_day_boundary_or_rounding
+usace_cwms:El Vado DS,usgs:08285500,usace_cwms,usgs,Rio Chama bl El Vado Dam,"RIO CHAMA BELOW EL VADO DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:LAPLAPNM,nwps:LPRN5,codwr,nwps,"LA PLATA RIVER AT LA PLATA, NM",La Plata River near La Plata,11.9,discharge,23,2026-08-14,2026-10-10,0.043,0.8796,1.058,too_little_overlap
+ibwc:08364000,nwps:EPRT2,ibwc,nwps,RG AT EL PASO (IBWC),Rio Grande at El Paso (Courchesne Bridge),57.3,discharge,29,2026-08-14,2026-10-07,0.138,0.9837,1.005,too_little_overlap
+nwps:LKWN5,usbr_hydrodata:3503,nwps,usbr_hydrodata,Fourmile Draw 4 miles NNW of Lakewood,FOUR MILE DRAW NEAR LAKEWOOD,14.0,discharge,57,2026-08-14,2026-10-09,0.719,0.4943,1.157,different
+nwps:MCCN5,usgs:09430600,nwps,usgs,Mogollon Creek above Cliff 14N,"MOGOLLON CREEK NEAR CLIFF, NM",51.7,stage,58,2026-08-14,2026-10-11,0.931,0.9996,1.0,same_record_day_boundary_or_rounding
+nwps:SMFN5,usace_cwms:San Marcial,nwps,usace_cwms,Rio Grande near San Marcial,Rio Grande Fldwy at San Marcial,10.6,stage,20,2026-09-21,2026-10-11,0.85,0.9836,1.0,too_little_overlap
+nwps:RSFN5,usace_cwms:Reserve,nwps,usace_cwms,San Francisco River at Reserve,San Francisco River at Reserve,28.6,discharge,58,2026-08-14,2026-10-11,0.19,0.9998,0.998,same_record_day_boundary_or_rounding
+nwps:RSFN5,usgs:09442681,nwps,usgs,San Francisco River at Reserve,"SAN FRANCISCO RIVER AT RESERVE, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.103,0.9742,0.987,same_record_day_boundary_or_rounding
+codwr:COSCOSNM,nwps:COSN5,codwr,nwps,"COSTILLA CREEK NEAR COSTILLA, NM",Costilla Creek at Costilla,13.6,discharge,58,2026-08-14,2026-10-10,0.034,0.9572,1.998,related_not_the_same_record
+usbr_albuq:HERONDAM,usbr_hydrodata:2686,usbr_albuq,usbr_hydrodata,Heron Reservoir,HERON,0.0,reservoir_release,32,2026-09-05,2026-10-09,0.563,0.9806,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Galisteo,usgs:08317900,usace_cwms,usgs,Galisteo Reservoir,"GALISTEO RESERVOIR NEAR CERRILLOS, N. MEX.",234.2,precip,57,2026-08-13,2026-10-08,0.719,0.3379,0.004,different
+nwps:PPCN5,usgs:08407000,nwps,usgs,Pecos River 6 miles ESE of Malaga at Pierce Canyon Crossing,"PECOS RIVER AT PIERCE CANYON CROSSING, NM",0.0,discharge,18,2026-09-22,2026-10-10,0.0,0.9167,7.016,too_little_overlap
+nwps:CPDN5,usbr_hydrodata:1565,nwps,usbr_hydrodata,Pecos River 2 miles E of Carlsbad below Dark Canyon,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.6,discharge,57,2026-08-14,2026-10-09,0.0,0.991,0.908,related_not_the_same_record
+usace_cwms:Taos,usgs:08276500,usace_cwms,usgs,Rio Grande bl Taos Junction Brd,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,0.999,1.0,same_record_identical
+nwps:JECN5,usgs:08328950,nwps,usgs,Jemez River below Jemez Dam,"JEMEZ RIVER OUTLET BELOW JEMEZ CANYON DAM, NM",53.0,discharge,18,2026-08-28,2026-10-05,0.0,0.9589,0.804,too_little_overlap
+codwr:ANICEDNM,nwps:CDRC2,codwr,nwps,"ANIMAS RIVER NEAR CEDAR HILL, NM",Animas River above Cedar Hill,1.1,discharge,58,2026-08-14,2026-10-10,0.069,0.9863,1.011,same_record_day_boundary_or_rounding
+nwps:ARCN5,usgs:09355500,nwps,usgs,San Juan River near Archuleta,"SAN JUAN RIVER NEAR ARCHULETA, NM",6.7,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:ARCN5,usace_cwms:Archuleta,nwps,usace_cwms,San Juan River near Archuleta,San Juan River nr Archuleta,6.7,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:RIOELENM,nwps:EDBN5,codwr,nwps,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",Rio Grande below Elephant Butte Dam,14.8,discharge,16,2026-09-06,2026-10-10,0.0,0.8732,1.522,too_little_overlap
+nwps:SMFN5,usace_cwms:San Marcial,nwps,usace_cwms,Rio Grande near San Marcial,Rio Grande Fldwy at San Marcial,10.6,discharge,20,2026-09-21,2026-10-11,0.4,0.9816,1.004,too_little_overlap
+nwps:SSRN5,usbr_hydrodata:3504,nwps,usbr_hydrodata,South Seven Rivers 1 mile SE of Seven Rivers,SOUTH SEVEN RIVERS NEAR LAKEWOOD,0.2,discharge,4,2026-09-24,2026-09-30,0.0,0.995,0.085,too_little_overlap
+nwps:PBAN5,usgs:08404000,nwps,usgs,Pecos River below Avalon Reservoir,"PECOS RIVER BELOW AVALON DAM, NM",0.0,discharge,5,2026-09-24,2026-09-30,0.0,0.7867,0.545,too_little_overlap
+nwps:PBAN5,usace_cwms:Avalon DS,nwps,usace_cwms,Pecos River below Avalon Reservoir,Pecos River bl Avalon Dam,0.0,discharge,5,2026-09-24,2026-09-30,0.0,0.9602,0.694,too_little_overlap
+nwps:DKCN5,usgs:08405105,nwps,usgs,Dark Canyon 8 miles N of Whites City,"DARK CANYON DRAW NEAR WHITES CITY, NM",0.0,discharge,3,2026-09-24,2026-10-06,0.0,0.9945,0.36,too_little_overlap
+nwps:CRBN5,usgs:08401900,nwps,usgs,Rocky Arroyo 7 miles S of Lakewood,"ROCKY ARROYO AT HWY BRD NR CARLSBAD, NM",0.0,discharge,2,2026-09-25,2026-09-30,0.0,-1.0,0.222,too_little_overlap
+usace_cwms:Kaiser Channel,usgs:08399500,usace_cwms,usgs,Pecos River (Kaiser Channel),"PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM",0.0,discharge,7800,2005-03-17,2026-10-10,0.064,0.9568,0.997,related_not_the_same_record
+usace_cwms:La Madera,usgs:08289000,usace_cwms,usgs,Rio Ojo Caliente at La Madera,"RIO OJO CALIENTE AT LA MADERA, NM",0.0,discharge,7896,2005-02-07,2026-10-10,0.049,0.0982,0.997,different
+usace_cwms:La Puente,usbr_hydrodata:1514,usace_cwms,usbr_hydrodata,Rio Chama nr La Puente,"RIO CHAMA NEAR LA PUENTE, NM",63.3,discharge,7864,2005-02-07,2026-10-10,0.051,0.8869,0.976,different
+usace_cwms:Avalon DS,usbr_hydrodata:1563,usace_cwms,usbr_hydrodata,Pecos River bl Avalon Dam,"PECOS RIVER BELOW AVALON DAM, NM",0.5,discharge,7734,2005-03-16,2026-10-10,0.959,0.9488,0.984,same_record_identical
+usace_cwms:Carlsbad Main,usbr_hydrodata:1562,usace_cwms,usbr_hydrodata,Carlsbad Main Canal at Head,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.5,discharge,7834,2005-03-16,2026-10-10,0.5,0.9875,0.981,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti DS,usgs:08314000,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"SILE MAIN CANAL (AT HEAD) AT COCHITI, NM",171.4,discharge,6709,2004-09-30,2026-10-03,0.0,0.3282,0.051,different
+usace_cwms:Continental DS,usbr_hydrodata:3904,usace_cwms,usbr_hydrodata,Nth Clear Cr bl Continental Res,NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR,0.0,discharge,6704,2008-05-15,2026-10-09,0.467,0.9896,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Diamond A DS,usgs:08390800,usace_cwms,usgs,Rio Hondo bl Diamond A Dam,"RIO HONDO BLW DIAMOND A DAM NR ROSWELL, NM",0.0,discharge,8078,2004-03-01,2026-10-10,0.757,0.9371,0.991,related_not_the_same_record
+usace_cwms:Virden,usgs:09432000,usace_cwms,usgs,Gila River bl Blue Creek,"GILA RIVER BELOW BLUE CREEK, NEAR VIRDEN, NM",221.7,discharge,5792,2008-05-15,2026-10-10,0.033,0.823,0.891,different
+usace_cwms:Madrid,usgs:07124200,usace_cwms,usgs,Purgatoire River at Madrid,"PURGATOIRE RIVER AT MADRID, CO.",0.0,discharge,8948,2002-03-22,2026-10-10,0.04,0.0508,0.965,different
+usace_cwms:Ortiz S A,usgs:08247500,usace_cwms,usgs,San Antonio River at Ortiz,"SAN ANTONIO RIVER AT ORTIZ, CO",24.2,discharge,5996,2008-05-15,2024-12-31,0.109,0.9666,0.931,related_not_the_same_record
+usace_cwms:Pagosa Spgs,usbr_hydrodata:799,usace_cwms,usbr_hydrodata,San Juan River @ Pagosa Springs,SAN JUAN  RIVER AT PAGOSA SPRINGS,0.1,discharge,7847,2005-03-17,2026-10-10,0.065,0.9341,0.984,related_not_the_same_record
+usace_cwms:Red Rock,usgs:09431500,usace_cwms,usgs,Gila River nr Redrock,"GILA RIVER NEAR REDROCK, NM",0.0,discharge,5763,2008-05-13,2026-10-10,0.038,0.9101,0.992,related_not_the_same_record
+usace_cwms:Roswell,usbr_hydrodata:1558,usace_cwms,usbr_hydrodata,Rio Hondo nr Roswell,"RIO HONDO NEAR ROSWELL, NM",0.6,discharge,8175,2004-05-14,2026-10-09,0.05,0.0284,0.966,different
+usace_cwms:Santa Rosa DS,usbr_hydrodata:1549,usace_cwms,usbr_hydrodata,Pecos River bl Santa Rosa Dam,"PECOS RIVER BELOW SANTA ROSA DAM, NM",0.4,discharge,8242,2004-02-27,2026-10-09,0.149,0.9858,0.78,related_not_the_same_record
+usace_cwms:South Fork,usbr_hydrodata:3907,usace_cwms,usbr_hydrodata,South Fork Rio Grande nr S Fork,SOUTH FORK RIO GRANDE AT SOUTH FORK,0.1,discharge,6593,2008-05-18,2026-10-09,0.068,0.9899,0.997,same_record_day_boundary_or_rounding
+usace_cwms:El Vado DS,usbr_hydrodata:1515,usace_cwms,usbr_hydrodata,Rio Chama bl El Vado Dam,"RIO CHAMA BELOW EL VADO DAM, NM",44.2,discharge,7909,2005-02-07,2026-10-10,0.274,0.9952,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Embudo,usgs:08279500,usace_cwms,usgs,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",0.1,discharge,7904,2005-02-07,2026-10-10,0.151,0.9846,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Alamosa,usbr_hydrodata:3894,usace_cwms,usbr_hydrodata,Rio Grande at Alamosa,RIO GRANDE AT ALAMOSA,137.8,discharge,6717,2008-05-15,2026-10-09,0.065,0.9295,0.983,related_not_the_same_record
+usace_cwms:Jemez,usbr_hydrodata:2744,usace_cwms,usbr_hydrodata,Jemez Canyon Reservoir,JEMEZ CANYON ,228.9,reservoir_elevation,6120,2010-01-02,2026-10-08,1.0,0.9994,1.0,same_record_identical
+usace_cwms:Reserve,usgs:09442681,usace_cwms,usgs,San Francisco River at Reserve,"SAN FRANCISCO RIVER AT RESERVE, NM",28.5,discharge,909,2024-04-02,2026-10-10,0.1,0.0052,0.996,different
+usace_cwms:Paseo del Norte,usgs:351055106390810,usace_cwms,usgs,Rio Grande nr Alameda,T11N.R3E.17.314 pdnrgsw,29.4,stage,882,2008-10-16,2011-10-10,0.0,0.8714,1595.76,different
+usace_cwms:Central Ave,usgs:350521106405503,usace_cwms,usgs,Rio Grande at Albuquerque,T10N.R02E.13.431c (projected) crgsw,71.1,stage,808,2009-02-20,2011-11-01,0.0,0.9496,1692.658,related_not_the_same_record
+usbr_hydrodata:1095,usgs:08313000,usbr_hydrodata,usgs,"RIO GRANDE AT OTOWI BRIDGE, NM","RIO GRANDE AT OTOWI BRIDGE, NM",0.4,discharge,43657,1899-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1559,usgs:08396500,usbr_hydrodata,usgs,"PECOS RIVER NEAR ARTESIA, NM","PECOS RIVER NEAR ARTESIA, NM",0.3,discharge,44172,1905-10-01,2026-10-10,0.988,1.0,1.0,same_record_identical
+usbr_hydrodata:771,usgs:09361500,usbr_hydrodata,usgs,"ANIMAS RIVER AT DURANGO, CO.","ANIMAS RIVER AT DURANGO, CO",54.7,discharge,41798,1899-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:859,usgs:09364500,usbr_hydrodata,usgs,"ANIMAS RIVER AT FARMINGTON, NM","ANIMAS RIVER AT FARMINGTON, NM",0.0,discharge,37395,1913-10-01,2026-10-09,0.997,1.0,1.0,same_record_identical
+usace_cwms:Puerto de Luna,usgs:08383500,usace_cwms,usgs,Pecos River nr Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Reserve,usgs:09442681,usace_cwms,usgs,San Francisco River at Reserve,"SAN FRANCISCO RIVER AT RESERVE, NM",28.5,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Roswell,usgs:08393610,usace_cwms,usgs,Rio Hondo nr Roswell,"RIO HONDO NEAR ROSWELL, NM",0.0,stage,38,2026-09-03,2026-10-11,0.921,0.9998,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1115,usgs:08361000,usbr_hydrodata,usgs,RIO GRANDE BL E.BUTTE DAM,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",0.3,discharge,40185,1916-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1519,usgs:08290000,usbr_hydrodata,usgs,"RIO CHAMA NEAR CHAMITA, NM","RIO CHAMA NEAR CHAMITA, NM",0.6,discharge,37744,1912-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+usace_cwms:Hwy 380,usgs:08355490,usace_cwms,usgs,Rio Grande ab US Hwy 380,"RIO GRANDE ABOVE US HWY 380 NR SAN ANTONIO, NM",0.0,discharge,5616,2008-05-15,2026-10-10,0.137,0.9166,0.961,related_not_the_same_record
+usace_cwms:La Sauses N,usgs:08249000,usace_cwms,usgs,North Conejos R nr La Sauses,"CONEJOS RIVER NEAR LASAUSES, CO",11.4,discharge,6069,2008-05-21,2024-12-31,0.166,0.989,1.019,same_record_day_boundary_or_rounding
+usace_cwms:Avalon DS,usgs:08404000,usace_cwms,usgs,Pecos River bl Avalon Dam,"PECOS RIVER BELOW AVALON DAM, NM",0.0,discharge,7734,2005-03-16,2026-10-10,0.959,0.9488,0.984,same_record_identical
+usace_cwms:Bosque Farms,usgs:08331160,usace_cwms,usgs,Rio Grande nr Bosque Farms,"RIO GRANDE NEAR BOSQUE FARMS, NM",0.0,discharge,6707,2008-05-15,2026-10-10,0.072,0.9775,1.001,same_record_day_boundary_or_rounding
+usace_cwms:Carlsbad Main,usgs:08403500,usace_cwms,usgs,Carlsbad Main Canal at Head,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.0,discharge,7834,2005-03-16,2026-10-10,0.5,0.9875,0.981,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti Cn,usgs:08313500,usace_cwms,usgs,Cochiti East Side Canal,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",11.5,discharge,6091,2005-09-30,2026-10-10,0.457,0.8535,1.0,different
+usace_cwms:Puerto de Luna,usgs:08383500,usace_cwms,usgs,Pecos River nr Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",0.0,discharge,7898,2005-02-08,2026-10-10,0.187,0.9318,0.999,related_not_the_same_record
+usace_cwms:Roswell,usgs:08393610,usace_cwms,usgs,Rio Hondo nr Roswell,"RIO HONDO NEAR ROSWELL, NM",0.0,discharge,8144,2004-05-14,2026-10-10,0.049,0.0284,0.966,different
+usace_cwms:Embudo,usbr_hydrodata:1513,usace_cwms,usbr_hydrodata,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",0.5,discharge,7904,2005-02-07,2026-10-10,0.151,0.9846,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Escondida,usbr_hydrodata:2720,usace_cwms,usbr_hydrodata,Rio Grande at Brdg nr Escondida,RIO GRANDE AT BRIDGE NEAR ESCONDIDA,0.5,discharge,6702,2008-05-22,2026-10-10,0.03,0.9194,0.961,related_not_the_same_record
+usace_cwms:Anton Chico,usbr_hydrodata:1545,usace_cwms,usbr_hydrodata,Pecos River nr Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",0.3,discharge,8136,2004-05-08,2026-10-09,0.043,0.8869,0.989,different
+usace_cwms:Cochiti DS,usbr_hydrodata:1526,usace_cwms,usbr_hydrodata,Rio Grande bl Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",11.7,discharge,8229,2004-02-27,2026-10-10,0.293,0.9975,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1512,usgs:08279000,usbr_hydrodata,usgs,"EMBUDO CREEK AT DIXON, NM","EMBUDO CREEK AT DIXON, NM",0.5,discharge,34119,1923-10-01,2026-10-10,0.962,1.0,1.0,same_record_identical
+usbr_hydrodata:1568,usgs:08407500,usbr_hydrodata,usgs,"PECOS RIVER AT RED BLUFF, NM","PECOS RIVER AT RED BLUFF, NM",0.4,discharge,32516,1937-10-01,2026-10-09,0.975,1.0,1.0,same_record_identical
+usbr_hydrodata:3590,usgs:08394500,usbr_hydrodata,usgs,"RIO FELIX AT OLD HWY BRD NR HAGERMAN, NM","RIO FELIX AT OLD HWY BRD NR HAGERMAN, NM",0.4,discharge,18305,1939-10-01,2024-10-18,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1505,usgs:08263500,usbr_hydrodata,usgs,"RIO GRANDE NEAR CERRO, NM","RIO GRANDE NEAR CERRO, NM",0.4,discharge,28133,1948-10-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+usbr_hydrodata:2741,usgs:08246500,usbr_hydrodata,usgs,CONEJOS RIVER NEAR MOGOTE,"CONEJOS RIVER NEAR MOGOTE, CO.",52.1,discharge,27356,1950-01-01,2024-12-31,0.85,0.998,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:2742,usgs:08248000,usbr_hydrodata,usgs,LOS PINOS RIVER NEAR ORTIZ,"LOS PINOS RIVER NEAR ORTIZ, CO",237.5,discharge,27051,1950-01-01,2024-12-31,0.811,0.9982,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1560,usgs:08399500,usbr_hydrodata,usgs,PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD,"PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM",41.6,discharge,27883,1950-05-16,2026-10-09,0.977,1.0,1.0,same_record_identical
+usbr_hydrodata:3502,usgs:08398500,usbr_hydrodata,usgs,RIO PENASCO AT DAYTON,"RIO PENASCO AT DAYTON, NM",0.3,discharge,27491,1951-04-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:3505,usgs:08401900,usbr_hydrodata,usgs,ROCKY ARROYO AT HIGHWAY BRIDGE,"ROCKY ARROYO AT HWY BRD NR CARLSBAD, NM",0.1,discharge,23020,1963-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:827,usgs:09352900,usbr_hydrodata,usgs,"VALLECITO CREEK NEAR BAYFIELD, CO.","VALLECITO CREEK NEAR BAYFIELD, CO.",54.1,discharge,23338,1962-10-01,2026-10-09,0.952,1.0,1.0,same_record_identical
+usbr_hydrodata:1065,usgs:08284160,usbr_hydrodata,usgs,AZOTEA TUNNEL OUTLET,"AZOTEA TUNNEL AT OUTLET NEAR CHAMA, NM",50.0,discharge,13604,1970-10-01,2008-09-29,0.675,0.9997,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1561,usgs:08401500,usbr_hydrodata,usgs,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM","PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.1,discharge,19934,1971-10-01,2026-10-10,0.958,1.0,1.0,same_record_identical
+usbr_hydrodata:1534,usgs:08330000,usbr_hydrodata,usgs,RIO GRANDE AT ALBUQUERQUE,"RIO GRANDE AT ALBUQUERQUE, NM",19.1,discharge,22288,1965-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1565,usgs:08405200,usbr_hydrodata,usgs,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM","PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.6,discharge,20736,1970-01-01,2026-10-09,0.935,1.0,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1526,usgs:08314000,usbr_hydrodata,usgs,"RIO GRANDE BELOW COCHITI DAM, NM","SILE MAIN CANAL (AT HEAD) AT COCHITI, NM",180.2,discharge,17037,1970-10-01,2026-10-03,0.0,0.3214,0.04,different
+usbr_hydrodata:3764,usgs:08266820,usbr_hydrodata,usgs,"RED RIVER BL FISH HATCHERY, NR QUESTA","RED RIVER BELOW FISH HATCHERY, NEAR QUESTA, NM",0.2,discharge,17594,1978-08-09,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1517,usgs:08287000,usbr_hydrodata,usgs,"RIO CHAMA BELOW ABIQUIU DAM, NM","RIO CHAMA BELOW ABIQUIU DAM, NM",81.6,discharge,23718,1961-11-01,2026-10-09,0.991,1.0,1.0,same_record_identical
+usbr_hydrodata:1553,usgs:08385522,usbr_hydrodata,usgs,"PECOS RIVER BELOW TAIBAN CREEK NEAR FORT SUMNER,NM","PECOS RIVER BELOW TAIBAN CREEK NEAR FORT SUMNER,NM",0.3,discharge,12112,1992-08-12,2026-10-10,0.952,1.0,1.0,same_record_identical
+codwr:RIOSFKCO,usbr_hydrodata:3907,codwr,usbr_hydrodata,SOUTH FORK RIO GRANDE AT SOUTH FORK,SOUTH FORK RIO GRANDE AT SOUTH FORK,0.0,discharge,37352,1910-08-01,2026-10-09,0.993,1.0,1.0,same_record_identical
+codwr:SAGSAGCO,usgs:08227000,codwr,usgs,"SAGUACHE CREEK NEAR SAGUACHE, CO","SAGUACHE CREEK NEAR SAGUACHE, CO",14.1,discharge,34880,1910-08-01,2007-09-29,1.0,1.0,1.0,same_record_identical
+codwr:UTEFTGCO,usgs:08242500,codwr,usgs,"UTE CREEK NEAR FORT GARLAND, CO","UTE CREEK NEAR FORT GARLAND, CO",10.5,discharge,24623,1923-05-01,2007-09-29,1.0,1.0,1.0,same_record_identical
+codwr:MANTOWCO,usgs:09371000,codwr,usgs,"MANCOS RIVER NEAR TOWAOC, CO.","MANCOS RIVER NEAR TOWAOC, CO.",0.5,discharge,35739,1921-04-01,2026-10-10,0.997,1.0,1.0,same_record_identical
+codwr:CULSANCO,usgs:08250000,codwr,usgs,"CULEBRA CREEK AT SAN LUIS, CO","CULEBRA CREEK AT SAN LUIS, CO",10.0,discharge,23557,1927-04-01,2007-09-29,1.0,1.0,1.0,same_record_identical
+codwr:SANFTGCO,usgs:08241500,codwr,usgs,"SANGRE DE CRISTO CREEK NEAR FORT GARLAND, CO.","SANGRE DE CRISTO CREEK NEAR FORT GARLAND, CO.",22.6,discharge,18398,1916-04-01,1981-09-29,0.998,1.0,1.0,same_record_identical
+codwr:CULBANCO,usgs:08250500,codwr,usgs,"CULEBRA CREEK BELOW SAN LUIS, CO.","CULEBRA CREEK BELOW SAN LUIS, CO.",0.8,discharge,6269,1938-08-01,1955-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOTRICO,usgs:08240000,codwr,usgs,RIO GRANDE ABOVE TRINCHERA CREEK NEAR LA SAUSES,"RIO GRANDE AB MOUTH TRINCHERA C NR LASAUSES, CO.",42.5,discharge,22798,1936-05-01,1998-09-30,1.0,1.0,1.0,same_record_identical
+codwr:SANCOSNM,usgs:08253500,codwr,usgs,"SANTISTEVAN CREEK NEAR COSTILLA, NM.","SANTISTEVAN CREEK NEAR COSTILLA, NM",0.0,discharge,15133,1937-05-01,2026-10-10,0.997,1.0,1.0,same_record_identical
+codwr:NAVBANCO,usgs:09344000,codwr,usgs,NAVAJO RIVER AT BANDED PEAK RANCH NEAR CHROMO,"NAVAJO R AT BANDED PEAK RANCH, NEAR CHROMO, CO.",6.8,discharge,21548,1936-10-01,1995-09-29,1.0,1.0,1.0,same_record_identical
+codwr:WESMANCO,usgs:09368500,codwr,usgs,"WEST MANCOS RIVER NEAR MANCOS, CO.","WEST MANCOS RIVER NEAR MANCOS, CO.",1.4,discharge,5478,1938-10-01,1953-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CHERRECO,usgs:09366000,codwr,usgs,"CHERRY CREEK NEAR RED MESA, CO.","CHERRY CREEK NEAR RED MESA, CO.",1.4,discharge,8217,1928-04-01,1950-09-29,1.0,1.0,1.0,same_record_identical
+codwr:MIDMANCO,usgs:09369500,codwr,usgs,"MIDDLE MANCOS RIVER NEAR MANCOS, CO.","MIDDLE MANCOS RIVER NEAR MANCOS, CO.",1.4,discharge,4930,1938-04-01,1951-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CASCOSNM,usgs:08253000,codwr,usgs,"CASIAS CREEK NEAR COSTILLA, NM","CASIAS CREEK NEAR COSTILLA, NM",0.1,discharge,14966,1937-05-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:RCHCHANM,usgs:08290000,codwr,usgs,"RIO CHAMA NEAR CHAMITA, NM.","RIO CHAMA NEAR CHAMITA, NM",0.1,discharge,37744,1912-10-01,2026-10-10,0.987,1.0,1.0,same_record_identical
+codwr:CONLASCO,usgs:08249000,codwr,usgs,"CONEJOS RIVER NEAR LASAUSES, CO","CONEJOS RIVER NEAR LASAUSES, CO",1.3,discharge,37896,1921-04-01,2024-12-31,0.997,1.0,1.0,same_record_identical
+codwr:MCELMSCO,usgs:09372000,codwr,usgs,MCELMO CREEK NEAR COLORADO-UTAH STATE LINE,MCELMO CREEK NEAR COLORADO-UTAH STATE LINE,1.8,discharge,27586,1951-03-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:RIODELCO,usgs:08220000,codwr,usgs,"RIO GRANDE NEAR DEL NORTE, CO","RIO GRANDE NEAR DEL NORTE, CO",4.6,discharge,46266,1890-01-01,2024-12-31,0.999,1.0,1.0,same_record_identical
+codwr:RCHELVNM,usbr_hydrodata:1515,codwr,usbr_hydrodata,"RIO CHAMA BELOW EL VADO DAM, NM","RIO CHAMA BELOW EL VADO DAM, NM",44.2,discharge,33219,1935-10-30,2026-10-10,0.989,1.0,1.0,same_record_identical
+codwr:SANFARNM,usbr_hydrodata:772,codwr,usbr_hydrodata,"SAN JUAN RIVER AT FARMINGTON, NM","SAN JUAN RIVER AT FARMINGTON, NM",0.3,discharge,34248,1930-10-01,2026-10-09,0.992,1.0,1.0,same_record_identical
+codwr:PIEARBCO,usgs:09349800,codwr,usgs,"PIEDRA RIVER NEAR ARBOLES, CO.","PIEDRA RIVER NEAR ARBOLES, CO.",0.8,discharge,22970,1962-09-01,2026-10-07,0.965,1.0,1.0,same_record_identical
+codwr:SMCRIONM,usbr_hydrodata:1541,codwr,usbr_hydrodata,"SAN MARCIAL CONVEYANCE CHANNEL ON RIO GRANDE, NM","RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.3,discharge,26406,1951-12-01,2026-10-10,0.967,1.0,1.0,same_record_identical
+codwr:VALBAYCO,usbr_hydrodata:827,codwr,usbr_hydrodata,"VALLECITO CREEK NEAR BAYFIELD, CO.","VALLECITO CREEK NEAR BAYFIELD, CO.",1.2,discharge,23317,1962-10-01,2026-10-09,0.956,1.0,1.0,same_record_identical
+codwr:LITNACCO,usgs:09345200,codwr,usgs,"LITTLE NAVAJO RIV BEL L OSO DIV DAM, NR CHROMO, CO","LITTLE NAVAJO RIV BEL L OSO DIV DAM, NR CHROMO, CO",1.7,discharge,9253,1971-06-01,1996-09-29,1.0,1.0,1.0,same_record_identical
+codwr:ANIBSICO,usbr_hydrodata:838,codwr,usbr_hydrodata,"ANIMAS RIVER BELOW SILVERTON, CO","ANIMAS RIVER BELOW SILVERTON, CO",224.2,discharge,12249,1991-10-01,2026-10-09,0.896,0.9996,1.0,same_record_day_boundary_or_rounding
+codwr:ANISILCO,usbr_hydrodata:833,codwr,usbr_hydrodata,"ANIMAS RIVER AT SILVERTON, CO.","ANIMAS RIVER AT SILVERTON, CO.",1.0,discharge,11798,1991-10-01,2026-10-08,0.859,0.9985,1.0,same_record_day_boundary_or_rounding
+codwr:LOSDOLCO,usgs:09166950,codwr,usgs,"LOST CANYON CREEK NEAR DOLORES, CO.","LOST CANYON CREEK NEAR DOLORES, CO.",32.4,discharge,15523,1984-04-01,2026-10-10,0.996,1.0,1.0,same_record_identical
+codwr:MINASICO,usbr_hydrodata:837,codwr,usbr_hydrodata,"MINERAL CREEK AT SILVERTON, CO","MINERAL CREEK AT SILVERTON, CO",1.4,discharge,11813,1991-10-01,2026-10-09,0.846,0.9989,1.0,same_record_day_boundary_or_rounding
+codwr:RIOOTANM,usace_cwms:Otowi,codwr,usace_cwms,"RIO GRANDE AT OTOWI BRIDGE NEAR SAN ILDEFONSO, NM.",Rio Grande at Otowi Bridge,0.0,discharge,8027,2004-10-06,2026-10-10,0.123,0.996,1.0,same_record_day_boundary_or_rounding
+codwr:LAPLAPNM,usgs:09367000,codwr,usgs,"LA PLATA RIVER AT LA PLATA, NM","LA PLATA RIVER AT LA PLATA, NM",0.0,discharge,8689,2002-12-17,2026-10-10,0.973,0.9999,1.0,same_record_identical
+codwr:SANCARCO,usgs:09346400,codwr,usgs,"SAN JUAN RIVER NEAR CARRACAS, CO.","SAN JUAN RIVER NEAR CARRACAS, CO.",0.9,discharge,23686,1961-11-01,2026-10-10,0.989,1.0,1.0,same_record_identical
+codwr:RCHELVNM,usace_cwms:El Vado DS,codwr,usace_cwms,"RIO CHAMA BELOW EL VADO DAM, NM",Rio Chama bl El Vado Dam,0.0,discharge,7909,2005-02-07,2026-10-10,0.278,0.9952,1.0,same_record_day_boundary_or_rounding
+codwr:RCHLAPNM,usace_cwms:La Puente,codwr,usace_cwms,"RIO CHAMA NEAR LA PUENTA, NM.",Rio Chama nr La Puente,0.0,discharge,7864,2005-02-07,2026-10-10,0.054,0.8869,1.022,different
+codwr:RGFSANNM,usgs:08354900,codwr,usgs,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM","RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.0,discharge,24834,1958-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:SANARCNM,usgs:09355500,codwr,usgs,"SAN JUAN RIVER NEAR ARCHULETA, NM","SAN JUAN RIVER NEAR ARCHULETA, NM",0.0,discharge,26246,1954-12-01,2026-10-10,0.99,1.0,1.0,same_record_identical
+codwr:CONMOGCO,usace_cwms:Mogote,codwr,usace_cwms,"CONEJOS RIVER NEAR MOGOTE, CO.",Conejos River nr Mogote,0.1,discharge,6721,2008-05-15,2026-10-10,0.074,0.9866,1.021,same_record_day_boundary_or_rounding
+codwr:NCLCONCO,usace_cwms:Continental DS,codwr,usace_cwms,NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR,Nth Clear Cr bl Continental Res,0.0,discharge,6720,2008-05-15,2026-10-10,0.077,0.9883,0.996,same_record_day_boundary_or_rounding
+codwr:NORLASCO,usbr_hydrodata:4242,codwr,usbr_hydrodata,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,44.2,discharge,2838,2019-01-01,2026-10-09,0.213,0.994,1.001,same_record_day_boundary_or_rounding
+resopsus:601,usbr_hydrodata:920,resopsus,usbr_hydrodata,Navajo,NAVAJO,246.4,reservoir_inflow,21395,1962-07-02,2021-01-27,0.976,1.0,1.0,same_record_identical
+resopsus:601,usbr_hydrodata:920,resopsus,usbr_hydrodata,Navajo,NAVAJO,246.4,reservoir_release,21395,1962-07-02,2021-01-27,0.999,1.0,1.0,same_record_identical
+resopsus:601,usbr_hydrodata:920,resopsus,usbr_hydrodata,Navajo,NAVAJO,246.4,reservoir_storage,21396,1962-07-01,2021-01-27,1.0,1.0,1.0,same_record_identical
+nwps:LPAC2,usgs:09352800,nwps,usgs,Low Pinos River above Vallecito Reservoir,"LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO",1.4,discharge,58,2026-08-14,2026-10-10,0.138,0.9697,0.98,related_not_the_same_record
+nwps:CMCN5,usgs:08403500,nwps,usgs,Pecos River 3 miles NNW of Carlsbad North,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.034,0.9828,0.933,related_not_the_same_record
+nwps:PIDC2,usgs:09349800,nwps,usgs,Piedra River near Arboles,"PIEDRA RIVER NEAR ARBOLES, CO.",55.1,discharge,54,2026-08-14,2026-10-07,0.056,0.9835,0.967,related_not_the_same_record
+nwps:PSBN5,usgs:08401500,nwps,usgs,Pecos River below Brantley Reservoir,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.9944,0.858,related_not_the_same_record
+nwps:TLCN5,usgs:08481500,nwps,usgs,Tularosa Creek near Bent,"TULAROSA CREEK NEAR BENT, NM",66.0,discharge,57,2026-08-14,2026-10-10,0.0,0.6974,0.964,different
+codwr:RIOALACO,usace_cwms:Alamosa,codwr,usace_cwms,RIO GRANDE AT ALAMOSA,Rio Grande at Alamosa,0.1,discharge,6718,2008-05-15,2026-10-10,0.058,0.9285,1.019,related_not_the_same_record
+codwr:ANIALPCO,usbr_hydrodata:3085,codwr,usbr_hydrodata,"ANIMAS RIVER BLW DURANGO PUMP PLANT NR DURANGO, CO",ANIMAS RIVER BELOW DPP,0.8,discharge,6774,2008-03-25,2026-10-10,0.981,1.0,1.0,same_record_identical
+nwps:ABQN5,usbr_hydrodata:1534,nwps,usbr_hydrodata,Rio Grande at Albuquerque,RIO GRANDE AT ALBUQUERQUE,31.6,discharge,59,2026-08-13,2026-10-10,0.034,0.9844,0.069,related_not_the_same_record
+nwps:RCAN5,usgs:08286500,nwps,usgs,Rio Chama above Abiquiu,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",10.7,discharge,58,2026-08-14,2026-10-10,0.19,0.8831,0.998,different
+nwps:CTDN5,usgs:08314000,nwps,usgs,Rio Grande below Cochiti Dam,"SILE MAIN CANAL (AT HEAD) AT COCHITI, NM",176.3,discharge,51,2026-08-14,2026-10-03,0.0,-0.6655,0.252,different
+nwps:CMCN5,usace_cwms:Carlsbad Main,nwps,usace_cwms,Pecos River 3 miles NNW of Carlsbad North,Carlsbad Main Canal at Head,0.0,discharge,58,2026-08-14,2026-10-11,0.052,0.9958,0.979,same_record_day_boundary_or_rounding
+nwps:PSBN5,usace_cwms:Brantley DS,nwps,usace_cwms,Pecos River below Brantley Reservoir,Pecos River bl Brantley Dam,0.0,discharge,58,2026-08-14,2026-10-11,0.0,0.9992,0.86,related_not_the_same_record
+nwps:SHRN5,usgs:09368000,nwps,usgs,San Juan River at Shiprock,"SAN JUAN RIVER AT SHIPROCK, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.086,0.976,1.018,same_record_day_boundary_or_rounding
+codwr:RIOALBNM,usace_cwms:Central Ave,codwr,usace_cwms,"RIO GRANDE AT ALBUQUERQUE, NM.",Rio Grande at Albuquerque,0.0,discharge,7910,2005-02-07,2026-10-10,0.087,0.8207,1.011,different
+codwr:PINAVACO,usbr_hydrodata:828,codwr,usbr_hydrodata,"LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO","LOS PINOS R ABV VALLECITO  NR BAYFIELD, CO.",52.8,discharge,3090,2018-04-20,2026-10-09,0.92,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:CTDN5,usgs:08317400,nwps,usgs,Rio Grande below Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",8.0,discharge,58,2026-08-14,2026-10-10,0.155,0.9943,0.994,same_record_day_boundary_or_rounding
+nwps:FRMN5,usbr_hydrodata:772,nwps,usbr_hydrodata,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",5.0,discharge,53,2026-08-14,2026-10-09,0.151,0.9486,0.994,related_not_the_same_record
+nwps:CMCN5,usbr_hydrodata:1562,nwps,usbr_hydrodata,Pecos River 3 miles NNW of Carlsbad North,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.5,discharge,58,2026-08-14,2026-10-10,0.034,0.9828,0.933,related_not_the_same_record
+nwps:PSBN5,usbr_hydrodata:1561,nwps,usbr_hydrodata,Pecos River below Brantley Reservoir,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.1,discharge,58,2026-08-14,2026-10-10,0.0,0.9944,0.858,related_not_the_same_record
+nwps:CTDN5,usace_cwms:Cochiti DS,nwps,usace_cwms,Rio Grande below Cochiti Dam,Rio Grande bl Cochiti Dam,5.0,discharge,58,2026-08-14,2026-10-11,0.224,0.9989,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Red Rock,usgs:09431500,usace_cwms,usgs,Gila River nr Redrock,"GILA RIVER NEAR REDROCK, NM",0.0,stage,59,2026-08-13,2026-10-11,0.949,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti Cn,usgs:08313500,usace_cwms,usgs,Cochiti East Side Canal,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",11.5,stage,60,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:ALACASCO,usgs:08235700,codwr,usgs,ALAMOSA RIVER BELOW CASTLEMAN GULCH NEAR JASPER,ALAMOSA RIVER BELOW CASTLEMAN GULCH NEAR JASPER,1.4,discharge,791,1995-08-01,1999-10-27,0.966,0.9994,1.0,same_record_identical
+codwr:2200509A,usbr_hydrodata:4243,codwr,usbr_hydrodata,BALL BROS OVERFLOW NO 1,COMBINED CHANNEL CONEJOS RIVER NEAR LA SAUSES,24.8,discharge,546,2022-08-22,2024-08-12,0.0,0.7785,12.808,different
+ose_meas:100,usgs:08477110,ose_meas,usgs,Heuchling #1,"MIMBRES RIVER AT MIMBRES, NM",231.2,discharge,3500,2012-03-15,2026-10-09,0.0,-0.0005,24.008,different
+codwr:ALAWIGCO,usgs:08235250,codwr,usgs,"ALAMOSA RIVER ABOVE WIGHTMAN FORK NEAR JASPER, CO","ALAMOSA RIVER ABOVE WIGHTMAN FORK NEAR JASPER, CO",173.0,discharge,761,1995-08-01,1999-10-27,0.965,0.9995,1.0,same_record_identical
+codwr:CONPLACO,usace_cwms:Platoro DS,codwr,usace_cwms,"CONEJOS RIVER BELOW PLATORO RESERVOIR, CO.",Conejos River bl Platoro Dam,0.1,discharge,8252,2004-02-27,2026-10-10,0.117,0.9613,0.996,related_not_the_same_record
+codwr:LAPLAPNM,ose_meas:98,codwr,ose_meas,"LA PLATA RIVER AT LA PLATA, NM",McDerrmott,216.4,discharge,4201,2011-12-31,2026-10-09,0.007,0.2715,6.184,different
+usbr_albuq:SUMNERDAM(NAVD88),usbr_hydrodata:943,usbr_albuq,usbr_hydrodata,Sumner Lake,SUMNER,4.4,reservoir_elevation,32,2026-09-05,2026-10-09,1.0,0.9911,1.0,same_record_identical
+codwr:MUDCORCO,usgs:09371495,codwr,usgs,"MUD CREEK NEAR CORTEZ, CO.","MUD CREEK NEAR CORTEZ, CO.",1.5,discharge,1645,1978-04-01,1984-09-30,1.0,1.0,1.0,same_record_identical
+nwps:MGAN5,usgs:08406000,nwps,usgs,Black River 1 mile NE of Malaga,"BLACK RIVER AT MALAGA, NM",0.0,stage,59,2026-08-14,2026-10-11,0.78,0.5863,1.0,different
+nwps:PIDC2,usgs:09349800,nwps,usgs,Piedra River near Arboles,"PIEDRA RIVER NEAR ARBOLES, CO.",55.1,stage,57,2026-08-14,2026-10-09,0.895,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:CAAN5,usace_cwms:Caballo DS,nwps,usace_cwms,Rio Grande below Caballo Dam,Rio Grande bl Caballo Dam,27.9,stage,57,2026-08-14,2026-10-11,0.0,-0.5333,2.309,different
+nwps:CDRC2,usace_cwms:Cedar Hill,nwps,usace_cwms,Animas River above Cedar Hill,Animas River nr Cedar Hill,0.0,stage,58,2026-08-14,2026-10-11,0.983,0.9997,1.0,same_record_identical
+nwps:DRGC2,usgs:09361500,nwps,usgs,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO",55.1,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:SSRN5,usgs:08401200,nwps,usgs,South Seven Rivers 1 mile SE of Seven Rivers,"SOUTH SEVEN RIVERS NR LAKEWOOD, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:ANFN5,usgs:08329900,nwps,usgs,AMAFCA at North Floodway Channel near Alameda,"NORTH FLOODWAY CHANNEL NEAR ALAMEDA, NM",0.0,discharge,48,2026-08-21,2026-10-10,0.0,0.564,0.067,different
+nwps:CDRC2,usace_cwms:Cedar Hill,nwps,usace_cwms,Animas River above Cedar Hill,Animas River nr Cedar Hill,0.0,discharge,58,2026-08-14,2026-10-11,0.81,0.9994,1.0,same_record_day_boundary_or_rounding
+nwps:OTWN5,usbr_hydrodata:1095,nwps,usbr_hydrodata,Rio Grande at Otowi,"RIO GRANDE AT OTOWI BRIDGE, NM",8.2,discharge,58,2026-08-14,2026-10-10,0.0,0.972,0.943,related_not_the_same_record
+nwps:GVRN5,usgs:09432000,nwps,usgs,Gila River near Virden,"GILA RIVER BELOW BLUE CREEK, NEAR VIRDEN, NM",29.9,discharge,52,2026-08-14,2026-10-10,0.0,0.9408,0.994,related_not_the_same_record
+nwps:RDBN5,usgs:08408500,nwps,usgs,Delaware River (NM) 11 miles NW of Red Bluff,"DELAWARE RIVER NR RED BLUFF, NM",0.0,discharge,43,2026-08-14,2026-09-25,0.0,0.3806,0.334,different
+nwps:OTWN5,usgs:08313000,nwps,usgs,Rio Grande at Otowi,"RIO GRANDE AT OTOWI BRIDGE, NM",8.0,discharge,58,2026-08-14,2026-10-10,0.0,0.9719,0.943,related_not_the_same_record
+usace_cwms:Cochiti DS,usgs:08314000,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"SILE MAIN CANAL (AT HEAD) AT COCHITI, NM",171.4,stage,53,2026-08-13,2026-10-04,0.0,-0.8394,1.73,different
+usace_cwms:Bosque Farms,usgs:08331160,usace_cwms,usgs,Rio Grande nr Bosque Farms,"RIO GRANDE NEAR BOSQUE FARMS, NM",0.0,stage,59,2026-08-13,2026-10-11,0.898,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Hwy 380,usgs:08355490,usace_cwms,usgs,Rio Grande ab US Hwy 380,"RIO GRANDE ABOVE US HWY 380 NR SAN ANTONIO, NM",0.0,stage,20,2026-09-21,2026-10-11,0.9,0.9388,1.0,too_little_overlap
+usbr_albuq:BRANTLEYDAM,usbr_hydrodata:937,usbr_albuq,usbr_hydrodata,Brantley Lake,BRANTLEY,0.0,reservoir_elevation,32,2026-09-05,2026-10-09,1.0,0.9959,1.0,same_record_identical
+nwps:ANFN5,usgs:08329900,nwps,usgs,AMAFCA at North Floodway Channel near Alameda,"NORTH FLOODWAY CHANNEL NEAR ALAMEDA, NM",0.0,stage,59,2026-08-14,2026-10-11,0.864,0.9987,1.0,same_record_day_boundary_or_rounding
+nwps:TLCN5,usgs:08481500,nwps,usgs,Tularosa Creek near Bent,"TULAROSA CREEK NEAR BENT, NM",66.0,stage,58,2026-08-14,2026-10-11,0.931,0.9819,1.0,same_record_day_boundary_or_rounding
+nwps:BNDN5,usace_cwms:Rio Puerco,nwps,usace_cwms,Rio Puerco near Bernardo,"Rio Puerco Near Bernardo, Nm",0.0,stage,59,2026-08-14,2026-10-11,0.898,0.9462,1.0,related_not_the_same_record
+nwps:GVRN5,usgs:09432000,nwps,usgs,Gila River near Virden,"GILA RIVER BELOW BLUE CREEK, NEAR VIRDEN, NM",29.9,stage,46,2026-08-14,2026-10-11,0.609,0.991,1.0,same_record_day_boundary_or_rounding
+nwps:MFGN5,usgs:09430020,nwps,usgs,Middle Fork Gila River near Gila Hot Springs,"W FORK GILA R BLW MDL FORK NR GILA HOT SPRINGS, NM",9.6,stage,59,2026-08-14,2026-10-11,0.983,0.9998,1.0,same_record_identical
+nwps:ARFN5,usace_cwms:Farm Animas,nwps,usace_cwms,Animas River at Farmington,Animas River at Farmington,17.3,stage,58,2026-08-14,2026-10-11,0.931,0.9997,1.0,same_record_day_boundary_or_rounding
+nwps:BNDN5,usace_cwms:Rio Puerco,nwps,usace_cwms,Rio Puerco near Bernardo,"Rio Puerco Near Bernardo, Nm",0.0,discharge,43,2026-08-18,2026-10-11,0.302,0.9369,0.993,related_not_the_same_record
+nwps:CMMN5,usgs:07207000,nwps,usgs,Cimarron River (NM) above Cimarron,"CIMARRON RIVER NEAR CIMARRON, NM",12.4,discharge,58,2026-08-14,2026-10-10,0.0,0.8887,1.734,different
+nwps:LMDN5,usace_cwms:La Madera,nwps,usace_cwms,Rio Ojo Caliente below La Madera,Rio Ojo Caliente at La Madera,2.8,discharge,58,2026-08-14,2026-10-11,0.103,0.9942,1.05,related_not_the_same_record
+nwps:PGRC2,usgs:07124410,nwps,usgs,Purgatoire River below Trinidad Lake,"PURGATOIRE RIVER BELOW TRINIDAD LAKE, CO.",0.0,discharge,58,2026-08-14,2026-10-10,0.034,0.9508,1.076,related_not_the_same_record
+nwps:GSFN5,usgs:09444000,nwps,usgs,San Francisco River below Glenwood,"SAN FRANCISCO RIVER NEAR GLENWOOD, NM",6.2,discharge,46,2026-08-14,2026-09-28,0.109,0.985,0.988,same_record_day_boundary_or_rounding
+nwps:AICN5,usbr_hydrodata:1517,nwps,usbr_hydrodata,Rio Chama below Abiquiu,"RIO CHAMA BELOW ABIQUIU DAM, NM",77.9,discharge,57,2026-08-14,2026-10-09,0.018,0.9826,1.088,related_not_the_same_record
+nwps:BNDN5,usbr_hydrodata:1539,nwps,usbr_hydrodata,Rio Puerco near Bernardo,"RIO PUERCO NEAR BERNARDO, NM",0.5,discharge,39,2026-08-18,2026-10-09,0.0,0.6914,0.667,different
+nwps:PSPC2,usbr_hydrodata:799,nwps,usbr_hydrodata,San Juan River at Pagosa Springs,SAN JUAN  RIVER AT PAGOSA SPRINGS,0.0,discharge,58,2026-08-14,2026-10-10,0.069,0.9694,0.964,related_not_the_same_record
+usace_cwms:Carlsbad Main,usgs:08403500,usace_cwms,usgs,Carlsbad Main Canal at Head,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Diamond A DS,usgs:08390800,usace_cwms,usgs,Rio Hondo bl Diamond A Dam,"RIO HONDO BLW DIAMOND A DAM NR ROSWELL, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Embudo,usgs:08279500,usace_cwms,usgs,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",0.1,stage,59,2026-08-13,2026-10-11,0.966,0.9998,1.0,same_record_identical
+usace_cwms:La Madera,usgs:08289000,usace_cwms,usgs,Rio Ojo Caliente at La Madera,"RIO OJO CALIENTE AT LA MADERA, NM",0.0,stage,59,2026-08-13,2026-10-11,0.508,0.9983,0.999,same_record_day_boundary_or_rounding
+codwr:RIOALBNM,nwps:ABQN5,codwr,nwps,"RIO GRANDE AT ALBUQUERQUE, NM.",Rio Grande at Albuquerque,12.6,discharge,59,2026-08-13,2026-10-10,0.034,0.9871,1.052,related_not_the_same_record
+nwps:MIMN5,usgs:08477110,nwps,usgs,Mimbres River at Mimbres,"MIMBRES RIVER AT MIMBRES, NM",68.7,stage,58,2026-08-14,2026-10-11,0.931,0.7775,1.0,different
+nwps:OTWN5,usgs:08313000,nwps,usgs,Rio Grande at Otowi,"RIO GRANDE AT OTOWI BRIDGE, NM",8.0,stage,59,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:EMBN5,usgs:08279500,nwps,usgs,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",7.5,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:DARN5,usace_cwms:Diamond A Ranch,nwps,usace_cwms,Rio Hondo above Roswell,Rio Hondo at Diamond A Ranch,0.0,stage,58,2026-08-14,2026-10-11,0.948,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:EDBN5,usace_cwms:E Butte DS,nwps,usace_cwms,Rio Grande below Elephant Butte Dam,Rio Grande bl Elebutte Butte,14.8,stage,57,2026-08-14,2026-10-11,0.0,1.0,1.067,related_not_the_same_record
+nwps:ATSN5,usace_cwms:Artesia,nwps,usace_cwms,Pecos River 6 miles E of Artesia,Pecos River nr Artesia,72.7,discharge,58,2026-08-14,2026-10-11,0.31,0.9998,0.986,same_record_day_boundary_or_rounding
+nwps:GNTN5,usgs:08343500,nwps,usgs,Rio San Jose at Acoma Pueblo,"RIO SAN JOSE AT ACOMA PUEBLO, NM",3.7,discharge,58,2026-08-14,2026-10-10,0.0,0.4026,0.198,different
+nwps:LCSA3,usgs:09385700,nwps,usgs,Little Colorado River near St Johns,"LITTLE COLORADO RIVER BELOW SALADO SPRINGS, AZ",0.0,discharge,33,2026-08-15,2026-10-06,0.152,0.9877,0.71,related_not_the_same_record
+nwps:DRGC2,usgs:09361500,nwps,usgs,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO",55.1,discharge,58,2026-08-14,2026-10-10,0.155,0.9835,0.992,same_record_day_boundary_or_rounding
+nwps:AZRN5,usgs:09364010,nwps,usgs,Animas River at Aztec,"ANIMAS RIVER BELOW AZTEC, NM",144.7,discharge,58,2026-08-14,2026-10-10,0.017,0.9874,0.974,same_record_day_boundary_or_rounding
+nwps:DIXN5,usbr_hydrodata:1512,nwps,usbr_hydrodata,Embudo Creek below Dixon,"EMBUDO CREEK AT DIXON, NM",3.4,discharge,58,2026-08-14,2026-10-10,0.0,0.9906,0.453,related_not_the_same_record
+nwps:ARFN5,usbr_hydrodata:859,nwps,usbr_hydrodata,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",17.3,discharge,57,2026-08-14,2026-10-09,0.035,0.9897,0.994,same_record_day_boundary_or_rounding
+nwps:DARN5,usace_cwms:Diamond A Ranch,nwps,usace_cwms,Rio Hondo above Roswell,Rio Hondo at Diamond A Ranch,0.0,discharge,58,2026-08-14,2026-10-11,0.052,0.9975,0.068,related_not_the_same_record
+nwps:SNAN5,usgs:08354900,nwps,usgs,Rio Grande near San Acacia,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.0,discharge,20,2026-09-21,2026-10-10,0.05,0.9562,0.994,too_little_overlap
+nwps:ARFN5,usace_cwms:Farm Animas,nwps,usace_cwms,Animas River at Farmington,Animas River at Farmington,17.3,discharge,58,2026-08-14,2026-10-11,0.707,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:DRGC2,usbr_hydrodata:771,nwps,usbr_hydrodata,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO.",0.4,discharge,57,2026-08-14,2026-10-09,0.158,0.9835,0.992,same_record_day_boundary_or_rounding
+usace_cwms:Kaiser Channel,usgs:08399500,usace_cwms,usgs,Pecos River (Kaiser Channel),"PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM",0.0,stage,59,2026-08-13,2026-10-11,0.983,0.9999,1.0,same_record_identical
+nwps:CPDN5,usace_cwms:Carlsbad,nwps,usace_cwms,Pecos River 2 miles E of Carlsbad below Dark Canyon,Pecos River bl Dark Canyon Draw,0.0,stage,58,2026-08-14,2026-10-11,0.966,0.9995,1.0,same_record_identical
+nwps:SHRN5,usgs:09368000,nwps,usgs,San Juan River at Shiprock,"SAN JUAN RIVER AT SHIPROCK, NM",0.0,stage,59,2026-08-14,2026-10-11,0.966,0.9999,1.0,same_record_identical
+nwps:CPDN5,usgs:08405200,nwps,usgs,Pecos River 2 miles E of Carlsbad below Dark Canyon,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.0,stage,59,2026-08-14,2026-10-11,0.966,0.9997,1.0,same_record_identical
+nwps:CTDN5,usgs:08314000,nwps,usgs,Rio Grande below Cochiti Dam,"SILE MAIN CANAL (AT HEAD) AT COCHITI, NM",176.3,stage,53,2026-08-14,2026-10-05,0.0,-0.8524,1.725,different
+nwps:CTDN5,usgs:08317400,nwps,usgs,Rio Grande below Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",8.0,stage,59,2026-08-14,2026-10-11,0.983,0.9998,1.0,same_record_identical
+nwps:CTDN5,usace_cwms:Cochiti DS,nwps,usace_cwms,Rio Grande below Cochiti Dam,Rio Grande bl Cochiti Dam,5.0,stage,58,2026-08-14,2026-10-11,0.966,0.9997,1.0,same_record_identical
+usace_cwms:Virden,usgs:09432000,usace_cwms,usgs,Gila River bl Blue Creek,"GILA RIVER BELOW BLUE CREEK, NEAR VIRDEN, NM",221.7,stage,46,2026-08-14,2026-10-11,0.609,0.9875,1.0,same_record_day_boundary_or_rounding
+nwps:RGRN5,usgs:09431500,nwps,usgs,Gila River near Redrock,"GILA RIVER NEAR REDROCK, NM",84.0,discharge,57,2026-08-14,2026-10-10,0.035,0.9935,1.049,related_not_the_same_record
+nwps:CMCN5,usgs:08403500,nwps,usgs,Pecos River 3 miles NNW of Carlsbad North,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.0,stage,59,2026-08-14,2026-10-11,0.864,0.9979,1.0,same_record_day_boundary_or_rounding
+nwps:CMCN5,usace_cwms:Carlsbad Main,nwps,usace_cwms,Pecos River 3 miles NNW of Carlsbad North,Carlsbad Main Canal at Head,0.0,stage,58,2026-08-14,2026-10-11,0.862,0.9979,1.0,same_record_day_boundary_or_rounding
+nwps:GSFN5,usgs:09444000,nwps,usgs,San Francisco River below Glenwood,"SAN FRANCISCO RIVER NEAR GLENWOOD, NM",6.2,stage,58,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:EDBN5,usace_cwms:E Butte DS,nwps,usace_cwms,Rio Grande below Elephant Butte Dam,Rio Grande bl Elebutte Butte,14.8,discharge,16,2026-09-06,2026-10-11,0.0,0.9608,1.027,too_little_overlap
+nwps:ATCN5,usgs:08379500,nwps,usgs,Pecos River below Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",10.2,stage,59,2026-08-14,2026-10-11,0.678,0.9953,1.0,same_record_day_boundary_or_rounding
+nwps:SJCC2,usgs:09346400,nwps,usgs,San Juan River near Carracas,"SAN JUAN RIVER NEAR CARRACAS, CO.",54.8,discharge,58,2026-08-14,2026-10-10,0.017,0.9822,0.97,same_record_day_boundary_or_rounding
+nwps:AZRN5,usgs:09364010,nwps,usgs,Animas River at Aztec,"ANIMAS RIVER BELOW AZTEC, NM",144.7,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:RCHCHANM,nwps:CMTN5,codwr,nwps,"RIO CHAMA NEAR CHAMITA, NM.",Rio Chama near Chamita,6.6,discharge,58,2026-08-14,2026-10-10,0.086,0.9039,0.996,related_not_the_same_record
+nwps:LMDN5,usace_cwms:La Madera,nwps,usace_cwms,Rio Ojo Caliente below La Madera,Rio Ojo Caliente at La Madera,2.8,stage,58,2026-08-14,2026-10-11,0.879,0.9991,1.0,same_record_day_boundary_or_rounding
+nwps:MGAN5,usgs:08406000,nwps,usgs,Black River 1 mile NE of Malaga,"BLACK RIVER AT MALAGA, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.7148,1.138,different
+nwps:MIMN5,usgs:08477110,nwps,usgs,Mimbres River at Mimbres,"MIMBRES RIVER AT MIMBRES, NM",68.7,discharge,52,2026-08-14,2026-10-10,0.038,0.7373,0.971,different
+nwps:ATCN5,usgs:08379500,nwps,usgs,Pecos River below Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",10.2,discharge,37,2026-09-04,2026-10-10,0.027,0.9578,0.926,related_not_the_same_record
+nwps:MIMN5,ose_meas:100,nwps,ose_meas,Mimbres River at Mimbres,Heuchling #1,228.4,discharge,18,2026-08-14,2026-10-09,0.0,nan,0.0,too_little_overlap
+nwps:TYLN5,usgs:07211500,nwps,usgs,Canadian River near Taylor Springs,"CANADIAN RIVER NEAR TAYLOR SPRINGS, NM",10.7,discharge,41,2026-08-14,2026-10-10,0.0,0.8255,0.0,different
+usace_cwms:Avalon DS,usgs:08404000,usace_cwms,usgs,Pecos River bl Avalon Dam,"PECOS RIVER BELOW AVALON DAM, NM",0.0,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:SMFN5,usgs:08358400,nwps,usgs,Rio Grande near San Marcial,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",10.6,stage,21,2026-09-21,2026-10-11,0.857,0.9923,1.0,too_little_overlap
+nwps:RGRN5,usgs:09431500,nwps,usgs,Gila River near Redrock,"GILA RIVER NEAR REDROCK, NM",84.0,stage,58,2026-08-14,2026-10-11,0.948,0.9988,1.0,same_record_day_boundary_or_rounding
+nwps:SJCC2,usgs:09346400,nwps,usgs,San Juan River near Carracas,"SAN JUAN RIVER NEAR CARRACAS, CO.",54.8,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:GNTN5,usgs:08343500,nwps,usgs,Rio San Jose at Acoma Pueblo,"RIO SAN JOSE AT ACOMA PUEBLO, NM",3.7,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:PSBN5,usgs:08401500,nwps,usgs,Pecos River below Brantley Reservoir,"PECOS RIVER BELOW BRANTLEY DAM NEAR CARLSBAD, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:PSBN5,usace_cwms:Brantley DS,nwps,usace_cwms,Pecos River below Brantley Reservoir,Pecos River bl Brantley Dam,0.0,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:CPDN5,usace_cwms:Carlsbad,nwps,usace_cwms,Pecos River 2 miles E of Carlsbad below Dark Canyon,Pecos River bl Dark Canyon Draw,0.0,discharge,58,2026-08-14,2026-10-11,0.0,0.9985,0.907,related_not_the_same_record
+nwps:CPDN5,usgs:08405200,nwps,usgs,Pecos River 2 miles E of Carlsbad below Dark Canyon,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.0,0.9909,0.909,related_not_the_same_record
+nwps:RCAN5,usgs:08286500,nwps,usgs,Rio Chama above Abiquiu,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",10.7,stage,59,2026-08-14,2026-10-11,0.966,0.9999,1.0,same_record_identical
+nwps:TYLN5,usgs:07211500,nwps,usgs,Canadian River near Taylor Springs,"CANADIAN RIVER NEAR TAYLOR SPRINGS, NM",10.7,stage,59,2026-08-14,2026-10-11,0.305,0.9861,0.987,same_record_day_boundary_or_rounding
+nwps:CMMN5,usgs:07207000,nwps,usgs,Cimarron River (NM) above Cimarron,"CIMARRON RIVER NEAR CIMARRON, NM",12.4,stage,59,2026-08-14,2026-10-11,0.983,0.9999,1.0,same_record_identical
+nwps:EMBN5,usgs:08279500,nwps,usgs,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",7.5,discharge,58,2026-08-14,2026-10-10,0.31,0.9164,0.998,related_not_the_same_record
+nwps:ATSN5,usace_cwms:Artesia,nwps,usace_cwms,Pecos River 6 miles E of Artesia,Pecos River nr Artesia,72.7,stage,58,2026-08-14,2026-10-11,0.948,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:SNAN5,usgs:08354900,nwps,usgs,Rio Grande near San Acacia,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.0,stage,21,2026-09-21,2026-10-11,0.952,0.9997,1.0,too_little_overlap
+codwr:SMFRIONM,nwps:SMFN5,codwr,nwps,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",Rio Grande near San Marcial,10.6,discharge,20,2026-09-21,2026-10-10,0.05,0.9713,0.995,too_little_overlap
+nwps:SMFN5,usgs:08358400,nwps,usgs,Rio Grande near San Marcial,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",10.6,discharge,20,2026-09-21,2026-10-10,0.05,0.9617,1.004,too_little_overlap
+nwps:SSRN5,usgs:08401200,nwps,usgs,South Seven Rivers 1 mile SE of Seven Rivers,"SOUTH SEVEN RIVERS NR LAKEWOOD, NM",0.0,discharge,4,2026-09-24,2026-09-30,0.0,0.995,0.085,too_little_overlap
+nwps:RDBN5,usgs:08408500,nwps,usgs,Delaware River (NM) 11 miles NW of Red Bluff,"DELAWARE RIVER NR RED BLUFF, NM",0.0,stage,4,2026-09-26,2026-10-01,0.0,0.9919,0.957,too_little_overlap
+usace_cwms:Abiquiu DS,usbr_hydrodata:1517,usace_cwms,usbr_hydrodata,Rio Chama bl Abiquiu Dam,"RIO CHAMA BELOW ABIQUIU DAM, NM",81.6,discharge,8065,2004-02-27,2026-10-09,0.219,0.9953,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Alameda,usgs:08329918,usace_cwms,usgs,Rio Grande at Alameda Bridge,"RIO GRANDE AT ALAMEDA BRIDGE AT ALAMEDA, NM",0.0,discharge,7623,2005-09-30,2026-10-10,0.055,0.9755,0.968,related_not_the_same_record
+usace_cwms:Artesia,usgs:08396500,usace_cwms,usgs,Pecos River nr Artesia,"PECOS RIVER NEAR ARTESIA, NM",72.7,discharge,8107,2004-05-08,2026-10-10,0.064,0.9746,0.985,same_record_day_boundary_or_rounding
+usace_cwms:Caballo DS,usbr_hydrodata:1113,usace_cwms,usbr_hydrodata,Rio Grande bl Caballo Dam,RIO GRANDE BELOW CABALLO DAM,12.6,discharge,7307,2005-02-27,2026-10-10,0.057,0.9814,0.991,same_record_day_boundary_or_rounding
+usace_cwms:Carlsbad,usbr_hydrodata:1565,usace_cwms,usbr_hydrodata,Pecos River bl Dark Canyon Draw,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.6,discharge,7855,2005-03-16,2026-10-09,0.062,0.8831,0.963,different
+usace_cwms:Cedar Hill,usgs:09363500,usace_cwms,usgs,Animas River nr Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, NM",0.1,discharge,7804,2005-03-16,2026-10-10,0.051,0.9697,1.012,related_not_the_same_record
+usace_cwms:Cerro,usgs:08263500,usace_cwms,usgs,Rio Grande nr Cerro,"RIO GRANDE NEAR CERRO, NM",0.0,discharge,7883,2005-02-07,2026-10-10,0.109,0.9842,0.994,same_record_day_boundary_or_rounding
+usace_cwms:Chamita,usgs:08290000,usace_cwms,usgs,Rio Chama nr Chamita,"RIO CHAMA NEAR CHAMITA, NM",0.1,discharge,6838,2005-02-07,2026-10-10,0.067,0.9697,0.996,related_not_the_same_record
+usace_cwms:Del Norte,usbr_hydrodata:2722,usace_cwms,usbr_hydrodata,Rio Grande nr Del Norte,RIO GRANDE NEAR DEL NORTE,16.9,discharge,7913,2005-02-07,2026-10-09,0.076,0.9773,0.964,related_not_the_same_record
+usace_cwms:Taiban,usgs:08385522,usace_cwms,usgs,Pecos River bl Taiban Creek,"PECOS RIVER BELOW TAIBAN CREEK NEAR FORT SUMNER,NM",0.0,discharge,7818,2004-05-08,2026-10-10,0.06,0.9724,1.005,same_record_day_boundary_or_rounding
+usace_cwms:Platoro DS,usgs:08245000,usace_cwms,usgs,Conejos River bl Platoro Dam,"CONEJOS RIVER BELOW PLATORO RESERVOIR, CO",6.3,discharge,7606,2004-02-27,2024-12-31,0.105,0.9591,1.003,related_not_the_same_record
+usace_cwms:Puerto de Luna,usbr_hydrodata:1550,usace_cwms,usbr_hydrodata,Pecos River nr Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",0.4,discharge,7897,2005-02-08,2026-10-09,0.185,0.9318,0.999,related_not_the_same_record
+usace_cwms:San Marcial CC,usgs:08358300,usace_cwms,usgs,Rio Grande Conveyance Channel,"RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.0,discharge,6989,2005-02-14,2026-10-10,0.098,0.9054,1.002,related_not_the_same_record
+usace_cwms:Sanchez,usgs:07221500,usace_cwms,usgs,Canadian River nr Sanchez,"CANADIAN RIVER NEAR SANCHEZ, NM",0.0,discharge,7406,2005-03-17,2026-10-10,0.066,0.975,0.971,same_record_day_boundary_or_rounding
+usace_cwms:Dunlap,usgs:08385630,usace_cwms,usgs,Pecos River nr Dunlap,"PECOS RIVER NEAR DUNLAP, NM",0.0,discharge,6987,2004-09-21,2026-10-10,0.045,0.8493,0.975,different
+usace_cwms:Durango,usgs:09361500,usace_cwms,usgs,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO",55.1,discharge,7856,2005-03-16,2026-10-10,0.104,0.9922,0.989,same_record_day_boundary_or_rounding
+usace_cwms:Escondida,usgs:08355050,usace_cwms,usgs,Rio Grande at Brdg nr Escondida,"RIO GRANDE AT BRIDGE NEAR ESCONDIDA, NM",0.0,discharge,6701,2008-05-22,2026-10-10,0.03,0.9194,0.961,related_not_the_same_record
+usace_cwms:Fish Hatchery,usbr_hydrodata:3764,usace_cwms,usbr_hydrodata,Red River bl Fish Hatchery,"RED RIVER BL FISH HATCHERY, NR QUESTA",0.2,discharge,6629,2008-05-15,2026-10-09,0.073,0.9663,0.993,related_not_the_same_record
+usace_cwms:Gila,usgs:09430500,usace_cwms,usgs,Gila River nr Gila,"GILA RIVER NEAR GILA, NM",0.0,discharge,6148,2008-05-15,2026-10-10,0.087,0.943,0.99,related_not_the_same_record
+usace_cwms:Anton Chico,usgs:08379500,usace_cwms,usgs,Pecos River nr Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",0.0,discharge,7711,2004-05-08,2026-10-10,0.043,0.886,0.991,different
+usace_cwms:Trinidad Cty,usbr_hydrodata:100079,usace_cwms,usbr_hydrodata,Purgatoire River at Trinidad,PURTRICO,224.4,discharge,8770,2002-03-24,2026-10-09,0.212,0.3138,0.998,different
+usace_cwms:La Sauses S,usbr_hydrodata:4065,usace_cwms,usbr_hydrodata,South Conejos R nr La Sauses,SOUTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,11.3,discharge,3487,2016-12-31,2026-10-09,0.351,0.9932,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Paseo del Norte,usgs:08329928,usace_cwms,usgs,Rio Grande nr Alameda,"RIO GRANDE NR ALAMEDA, NM",6.2,discharge,7833,2005-04-18,2026-10-10,0.068,0.9827,0.999,same_record_day_boundary_or_rounding
+usace_cwms:Pecos,usgs:08378500,usace_cwms,usgs,Pecos River nr Pecos,"PECOS RIVER NEAR PECOS, NM",0.0,discharge,8174,2004-05-08,2026-10-10,0.064,0.9747,0.992,same_record_day_boundary_or_rounding
+usace_cwms:Sumner DS,usbr_hydrodata:1551,usace_cwms,usbr_hydrodata,Pecos River bl Sumner Dam,"PECOS RIVER BELOW SUMNER DAM, NM",0.6,discharge,8260,2004-02-27,2026-10-10,0.29,0.9898,0.999,same_record_day_boundary_or_rounding
+usace_cwms:La Sauses N,usbr_hydrodata:4242,usace_cwms,usbr_hydrodata,North Conejos R nr La Sauses,NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,44.1,discharge,2837,2019-01-01,2026-10-09,0.208,0.9984,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Trinidad,usgs:07124400,usace_cwms,usgs,Trinidad Lake,"TRINIDAD LAKE NEAR TRINIDAD, CO.",0.0,reservoir_elevation,10125,1999-01-02,2026-10-09,1.0,0.9999,1.0,same_record_identical
+usace_cwms:San Acacia,usbr_hydrodata:1116,usace_cwms,usbr_hydrodata,Rio Grande Fldwy at San Acacia,RIO GRANDE FLOODWAY AT SAN ACACIA,0.3,discharge,7849,2005-02-14,2026-10-09,0.049,0.945,0.992,related_not_the_same_record
+usace_cwms:Avalon,usbr_hydrodata:2684,usace_cwms,usbr_hydrodata,Lake Avalon nr Carlsbad,AVALON,64.5,reservoir_elevation,7660,2005-03-16,2026-10-09,1.0,0.9761,1.0,same_record_identical
+usace_cwms:Caballo,usbr_hydrodata:1094,usace_cwms,usbr_hydrodata,Caballo Reservoir,CABALLO,49.5,reservoir_elevation,7809,2005-02-17,2026-10-09,1.0,0.9989,1.0,same_record_identical
+usace_cwms:Brantley,usgs:08401450,usace_cwms,usgs,Brantley Reservoir,"BRANTLEY LAKE NEAR CARLSBAD, NM",0.0,reservoir_storage,4655,1999-03-01,2017-03-31,0.863,0.9993,1.0,same_record_day_boundary_or_rounding
+usace_cwms:E Butte,usbr_hydrodata:1119,usace_cwms,usbr_hydrodata,Elephant Butte Reservoir,ELEPHANT BUTTE,73.1,reservoir_storage,7746,2005-02-27,2026-10-09,0.658,0.9997,1.001,same_record_day_boundary_or_rounding
+usbr_hydrodata:2723,usgs:08251500,usbr_hydrodata,usgs,RIO GRANDE NEAR LOBATOS,"RIO GRANDE NEAR LOBATOS, CO",0.4,discharge,45748,1899-10-01,2024-12-31,0.999,1.0,1.0,same_record_identical
+usbr_hydrodata:100079,usgs:07124500,usbr_hydrodata,usgs,PURTRICO,"PURGATOIRE RIVER AT TRINIDAD, CO.",48.0,discharge,25534,1905-09-01,1981-09-29,0.996,1.0,1.0,same_record_identical
+usbr_hydrodata:1545,usgs:08379500,usbr_hydrodata,usgs,"PECOS RIVER NEAR ANTON CHICO, NM","PECOS RIVER NEAR ANTON CHICO, NM",0.3,discharge,37285,1910-10-01,2026-10-09,0.978,1.0,1.0,same_record_identical
+usbr_hydrodata:1551,usgs:08384500,usbr_hydrodata,usgs,"PECOS RIVER BELOW SUMNER DAM, NM","PECOS RIVER BELOW SUMNER DAM, NM",0.6,discharge,40458,1912-10-01,2026-10-10,0.987,1.0,1.0,same_record_identical
+usace_cwms:Sumner DS,usgs:08384500,usace_cwms,usgs,Pecos River bl Sumner Dam,"PECOS RIVER BELOW SUMNER DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,0.847,1.0,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Hwy 346,usbr_hydrodata:2718,usace_cwms,usbr_hydrodata,Rio Grande at State Hwy 346,RIO GRANDE AT STATE HWY 346 NEAR BOSQUE,0.4,discharge,6719,2008-05-15,2026-10-10,0.069,0.995,0.993,same_record_day_boundary_or_rounding
+usace_cwms:La Puente,usgs:08284100,usace_cwms,usgs,Rio Chama nr La Puente,"RIO CHAMA NEAR LA PUENTE, NM",0.0,discharge,7864,2005-02-07,2026-10-10,0.05,0.8869,0.976,different
+usace_cwms:Abiquiu DS,usgs:08287000,usace_cwms,usgs,Rio Chama bl Abiquiu Dam,"RIO CHAMA BELOW ABIQUIU DAM, NM",0.0,discharge,8066,2004-02-27,2026-10-10,0.22,0.9953,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Acme,usgs:08386000,usace_cwms,usgs,Pecos River nr Acme,"PECOS RIVER NEAR ACME, NM",0.0,discharge,7883,2005-02-14,2026-10-10,0.038,0.8079,0.95,different
+usace_cwms:Archuleta,usgs:09355500,usace_cwms,usgs,San Juan River nr Archuleta,"SAN JUAN RIVER NEAR ARCHULETA, NM",0.0,discharge,8235,2004-02-29,2026-10-10,0.181,0.9971,0.998,same_record_day_boundary_or_rounding
+usace_cwms:Carlsbad,usgs:08405200,usace_cwms,usgs,Pecos River bl Dark Canyon Draw,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.0,discharge,7856,2005-03-16,2026-10-10,0.063,0.8831,0.963,different
+usace_cwms:Cerro,usbr_hydrodata:1505,usace_cwms,usbr_hydrodata,Rio Grande nr Cerro,"RIO GRANDE NEAR CERRO, NM",0.4,discharge,7883,2005-02-07,2026-10-10,0.109,0.9842,0.994,same_record_day_boundary_or_rounding
+usace_cwms:Chamita,usbr_hydrodata:1519,usace_cwms,usbr_hydrodata,Rio Chama nr Chamita,"RIO CHAMA NEAR CHAMITA, NM",0.6,discharge,7894,2005-02-07,2026-10-10,0.065,0.9712,0.996,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti DS,usgs:08313500,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",124.7,discharge,6094,2005-09-30,2026-10-10,0.0,0.2216,0.09,different
+usace_cwms:Mogote,usgs:08246500,usace_cwms,usgs,Conejos River nr Mogote,"CONEJOS RIVER NEAR MOGOTE, CO.",34.4,discharge,6075,2008-05-15,2024-12-31,0.073,0.9884,0.978,same_record_day_boundary_or_rounding
+usace_cwms:Ortiz Los Pinos,usbr_hydrodata:2742,usace_cwms,usbr_hydrodata,Los Pinos River nr Ortiz,LOS PINOS RIVER NEAR ORTIZ,240.9,discharge,6313,2008-05-22,2026-10-09,0.137,0.9892,0.992,same_record_day_boundary_or_rounding
+usace_cwms:Otowi,usbr_hydrodata:1095,usace_cwms,usbr_hydrodata,Rio Grande at Otowi Bridge,"RIO GRANDE AT OTOWI BRIDGE, NM",0.4,discharge,8027,2004-10-06,2026-10-10,0.118,0.996,1.0,same_record_day_boundary_or_rounding
+usace_cwms:San Marcial CC,usbr_hydrodata:1541,usace_cwms,usbr_hydrodata,Rio Grande Conveyance Channel,"RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.3,discharge,6990,2005-02-14,2026-10-10,0.101,0.9055,1.002,related_not_the_same_record
+usace_cwms:Durango,usbr_hydrodata:771,usace_cwms,usbr_hydrodata,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO.",0.5,discharge,7855,2005-03-16,2026-10-09,0.104,0.9922,0.989,same_record_day_boundary_or_rounding
+usace_cwms:Farm Animas,usbr_hydrodata:859,usace_cwms,usbr_hydrodata,Animas River at Farmington,"ANIMAS RIVER AT FARMINGTON, NM",0.0,discharge,7832,2005-03-17,2026-10-09,0.057,0.9877,0.988,same_record_day_boundary_or_rounding
+usace_cwms:Fish Hatchery,usgs:08266820,usace_cwms,usgs,Red River bl Fish Hatchery,"RED RIVER BELOW FISH HATCHERY, NEAR QUESTA, NM",0.0,discharge,6630,2008-05-15,2026-10-10,0.073,0.9663,0.993,related_not_the_same_record
+usace_cwms:Galisteo DS,usbr_hydrodata:1527,usace_cwms,usbr_hydrodata,Galisteo Creek bl Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",0.3,discharge,8071,2004-02-27,2026-10-10,0.663,0.882,0.0,different
+usace_cwms:Central Ave,usgs:08330000,usace_cwms,usgs,Rio Grande at Albuquerque,"RIO GRANDE AT ALBUQUERQUE, NM",0.1,discharge,7910,2005-02-07,2026-10-10,0.083,0.8206,0.989,different
+usace_cwms:Sumner DS,usgs:08384500,usace_cwms,usgs,Pecos River bl Sumner Dam,"PECOS RIVER BELOW SUMNER DAM, NM",0.0,discharge,8260,2004-02-27,2026-10-10,0.294,0.9898,0.999,same_record_day_boundary_or_rounding
+usace_cwms:Dixon,usgs:08279000,usace_cwms,usgs,Embudo Creek at Dixon,"EMBUDO CREEK AT DIXON, NM",0.0,discharge,7650,2005-02-14,2026-10-10,0.043,0.9596,0.977,related_not_the_same_record
+usace_cwms:Avalon,usgs:08403800,usace_cwms,usgs,Lake Avalon nr Carlsbad,LAKE AVALON NR CARLSBAD N MEX,0.0,reservoir_storage,4374,1999-03-01,2017-03-31,0.053,0.8561,1.276,different
+usbr_hydrodata:1528,usgs:08319000,usbr_hydrodata,usgs,"RIO GRANDE AT SAN FELIPE, NM","RIO GRANDE AT SAN FELIPE, NM",0.5,discharge,34586,1927-01-01,2024-09-04,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:772,usgs:09365000,usbr_hydrodata,usgs,"SAN JUAN RIVER AT FARMINGTON, NM","SAN JUAN RIVER AT FARMINGTON, NM",0.4,discharge,33950,1930-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:799,usgs:09342500,usbr_hydrodata,usgs,SAN JUAN  RIVER AT PAGOSA SPRINGS,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",0.0,discharge,33219,1935-10-01,2026-10-10,0.979,1.0,1.0,same_record_identical
+usbr_hydrodata:1562,usgs:08403500,usbr_hydrodata,usgs,"CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM","CARLSBAD MAIN CANAL AT HEAD NEAR CARLSBAD, NM",0.5,discharge,31727,1939-07-01,2026-10-10,0.998,1.0,1.0,same_record_identical
+usbr_hydrodata:1530,usgs:08329000,usbr_hydrodata,usgs,"JEMEZ RIVER BELOW JEMEZ CANYON DAM, NM","JEMEZ RIVER BELOW JEMEZ CANYON DAM, NM",0.4,discharge,24836,1936-04-01,2009-09-29,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:3503,usgs:08400000,usbr_hydrodata,usgs,FOUR MILE DRAW NEAR LAKEWOOD,"FOURMILE DRAW NR LAKEWOOD, NM",14.0,discharge,27285,1951-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1563,usgs:08404000,usbr_hydrodata,usgs,"PECOS RIVER BELOW AVALON DAM, NM","PECOS RIVER BELOW AVALON DAM, NM",0.5,discharge,27526,1951-06-01,2026-10-10,0.998,1.0,1.0,same_record_identical
+usbr_hydrodata:1116,usgs:08354900,usbr_hydrodata,usgs,RIO GRANDE FLOODWAY AT SAN ACACIA,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",0.3,discharge,24833,1958-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1526,usgs:08317400,usbr_hydrodata,usgs,"RIO GRANDE BELOW COCHITI DAM, NM","RIO GRANDE BELOW COCHITI DAM, NM",0.4,discharge,20464,1970-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1537,usgs:08332010,usbr_hydrodata,usgs,"RIO GRANDE FLOODWAY NEAR BERNARDO, NM","RIO GRANDE FLOODWAY NEAR BERNARDO, NM",0.4,discharge,22947,1957-10-01,2026-10-10,0.982,1.0,1.0,same_record_identical
+usbr_hydrodata:1526,usgs:08313500,usbr_hydrodata,usgs,"RIO GRANDE BELOW COCHITI DAM, NM","COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",113.1,discharge,16210,1970-10-01,2026-10-10,0.0,0.2728,0.078,different
+usbr_hydrodata:3591,usgs:08393500,usbr_hydrodata,usgs,"RIO HONDO AT ROSWELL, NM","RIO HONDO AT ROSWELL, NM",0.5,discharge,5933,1981-02-19,1997-05-18,0.954,1.0,1.0,same_record_identical
+usbr_hydrodata:1548,usgs:08382650,usbr_hydrodata,usgs,"PECOS RIVER ABOVE SANTA ROSA LAKE, NM","PECOS RIVER ABOVE SANTA ROSA LAKE, NM",0.5,discharge,18487,1976-02-28,2026-10-09,0.957,1.0,1.0,same_record_identical
+usbr_hydrodata:1536,usgs:08330875,usbr_hydrodata,usgs,"RIO GRANDE AT ISLETA LAKES NR ISLETA, NM","RIO GRANDE AT ISLETA LAKES NR ISLETA, NM",0.4,discharge,8776,2002-10-01,2026-10-10,0.999,1.0,1.0,same_record_identical
+codwr:RIOLOBCO,usbr_hydrodata:2723,codwr,usbr_hydrodata,RIO GRANDE NEAR LOBATOS,RIO GRANDE NEAR LOBATOS,9.1,discharge,46395,1899-10-01,2026-10-09,0.985,0.9999,1.0,same_record_identical
+codwr:RCHCHANM,usbr_hydrodata:1519,codwr,usbr_hydrodata,"RIO CHAMA NEAR CHAMITA, NM.","RIO CHAMA NEAR CHAMITA, NM",0.6,discharge,38041,1912-10-01,2026-10-10,0.989,1.0,1.0,same_record_identical
+codwr:RIOALACO,usbr_hydrodata:3894,codwr,usbr_hydrodata,RIO GRANDE AT ALAMOSA,RIO GRANDE AT ALAMOSA,137.8,discharge,41769,1912-06-01,2026-10-09,0.993,0.9999,1.0,same_record_identical
+codwr:LIGHTNCO,usgs:09362000,codwr,usgs,"LIGHTNER CREEK NEAR DURANGO, CO","LIGHTNER CREEK NEAR DURANGO, CO",0.6,discharge,8035,1927-10-01,1949-09-29,0.997,1.0,1.0,same_record_identical
+codwr:LOSBAYCO,usgs:09353500,codwr,usgs,"LOS PINOS RIVER NEAR BAYFIELD, CO.","LOS PINOS RIVER NEAR BAYFIELD, CO.",1.3,discharge,21549,1927-10-01,1986-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CONAPLCO,usgs:08245500,codwr,usgs,"CONEJOS RIVER AT PLATORO, CO.","CONEJOS RIVER AT PLATORO, CO.",1.5,discharge,6208,1936-10-01,1953-09-29,1.0,1.0,1.0,same_record_identical
+codwr:EASAPACO,usbr_hydrodata:907,codwr,usbr_hydrodata,EAST FORK SAN JUAN RIVER NEAR PAGOSA SPRINGS,"EAST FORK SAN JUAN RIVER NR PAGOSA SPRINGS,",11.0,discharge,2755,1935-10-01,1943-04-16,1.0,1.0,1.0,same_record_identical
+codwr:COSBELNM,usgs:08254000,codwr,usgs,"COSTILLA CREEK BELOW COSTILLA DAM, NM.","COSTILLA CREEK BELOW COSTILLA DAM, NM",0.1,discharge,23977,1937-04-09,2026-10-10,0.996,1.0,1.0,same_record_identical
+codwr:RIONEPCO,usgs:09343000,codwr,usgs,"RIO BLANCO NEAR PAGOSA SPRINGS, CO.","RIO BLANCO NEAR PAGOSA SPRINGS, CO.",1.2,discharge,13363,1935-05-01,1971-11-30,1.0,1.0,1.0,same_record_identical
+codwr:RITBLACO,usgs:09343500,codwr,usgs,"RITO BLANCO NEAR PAGOSA SPRINGS, CO.","RITO BLANCO NEAR PAGOSA SPRINGS, CO.",0.8,discharge,6362,1935-05-01,1952-09-29,1.0,1.0,1.0,same_record_identical
+codwr:TURKPACO,usgs:09342000,codwr,usgs,"TURKEY CREEK NEAR PAGOSA SPRINGS, CO.","TURKEY CREEK NEAR PAGOSA SPRINGS, CO.",1.2,discharge,4535,1937-05-01,1949-09-29,1.0,1.0,1.0,same_record_identical
+codwr:SPRILACO,usgs:09355000,codwr,usgs,"SPRING CREEK AT LA BOCA, CO","SPRING CREEK AT LA BOCA, CO",1.1,discharge,22187,1951-01-01,2011-09-29,0.918,1.0,1.0,same_record_day_boundary_or_rounding
+codwr:RIOEMBNM,usbr_hydrodata:1513,codwr,usbr_hydrodata,"RIO GRANDE AT EMBUDO, NM.","RIO GRANDE AT EMBUDO, NM",0.5,discharge,43321,1899-10-01,2026-10-10,0.995,1.0,1.0,same_record_identical
+codwr:LAPMEXCO,usgs:09366500,codwr,usgs,LA PLATA RIVER AT THE COLORADO-NEW MEXICO STATELINE,LA PLATA RIVER AT COLORADO-NEW MEXICO STATE LINE,2.8,discharge,35794,1920-10-01,2018-09-30,1.0,1.0,1.0,same_record_identical
+codwr:RIOELENM,usbr_hydrodata:1115,codwr,usbr_hydrodata,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",RIO GRANDE BL E.BUTTE DAM,0.3,discharge,40185,1916-10-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:SANPAGCO,usgs:09342500,codwr,usgs,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO","SAN JUAN RIVER AT PAGOSA SPRINGS, CO",1.4,discharge,33196,1935-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:MANNMACO,usgs:09370000,codwr,usgs,"MANCOS RIVER NEAR MANCOS, CO.","MANCOS RIVER NEAR MANCOS, CO.",0.6,discharge,2556,1931-10-01,1938-09-29,1.0,1.0,1.0,same_record_identical
+codwr:ANICEDNM,usbr_hydrodata:768,codwr,usbr_hydrodata,"ANIMAS RIVER NEAR CEDAR HILL, NM","ANIMAS RIVER NEAR CEDAR HILL, N. MEX.",1.1,discharge,33690,1933-11-01,2026-10-10,0.959,0.9998,1.0,same_record_identical
+codwr:COSCOSNM,usgs:08255500,codwr,usgs,"COSTILLA CREEK NEAR COSTILLA, NM","COSTILLA CREEK NEAR COSTILLA, NM",0.0,discharge,32045,1936-03-07,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:RIOWAGCO,usbr_hydrodata:3906,codwr,usbr_hydrodata,RIO GRANDE AT WAGON WHEEL GAP,RIO GRANDE AT WAGON WHEEL GAP,0.0,discharge,27307,1951-05-01,2026-10-09,0.914,0.9996,1.0,same_record_day_boundary_or_rounding
+codwr:RIOOTANM,usbr_hydrodata:1095,codwr,usbr_hydrodata,"RIO GRANDE AT OTOWI BRIDGE NEAR SAN ILDEFONSO, NM.","RIO GRANDE AT OTOWI BRIDGE, NM",0.4,discharge,43657,1899-10-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:RIOOTANM,usgs:08313000,codwr,usgs,"RIO GRANDE AT OTOWI BRIDGE NEAR SAN ILDEFONSO, NM.","RIO GRANDE AT OTOWI BRIDGE, NM",0.0,discharge,45360,1895-02-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:ANICEDNM,usgs:09363500,codwr,usgs,"ANIMAS RIVER NEAR CEDAR HILL, NM","ANIMAS RIVER NEAR CEDAR HILL, NM",1.1,discharge,33690,1933-11-01,2026-10-10,0.956,0.9998,1.0,same_record_identical
+codwr:EASJASCO,usgs:09339900,codwr,usgs,"EF SAN JUAN R AB SAND CREEK, NR PAGOSA SPGS, CO.","EF SAN JUAN R AB SAND CREEK, NR PAGOSA SPGS, CO.",1.1,discharge,16435,1956-10-01,2003-09-29,0.968,1.0,1.0,same_record_identical
+codwr:SMFRIONM,usgs:08358400,codwr,usgs,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM","RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",0.0,discharge,28134,1949-10-01,2026-10-10,0.996,0.9999,1.0,same_record_identical
+codwr:COSGARCO,usgs:08261000,codwr,usgs,"COSTILLA CREEK NEAR GARCIA, CO","COSTILLA CREEK NEAR GARCIA, CO",0.0,discharge,11433,1965-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+codwr:FLOFARCO,usgs:09363050,codwr,usgs,FLORIDA RIVER BELOW FLORIDA FARMERS CANAL NEAR DURANGO,"FLORIDA R BL FLOR FARMERS DITCH, NR DURANGO, CO.",33.3,discharge,5478,1967-10-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:WOLFPACO,usgs:09341200,codwr,usgs,"WOLF CREEK NEAR PAGOSA SPRINGS, CO.","WOLF CREEK NEAR PAGOSA SPRINGS, CO.",1.3,discharge,2555,1968-10-01,1975-09-29,1.0,1.0,1.0,same_record_identical
+codwr:MCELMBCO,usgs:09371700,codwr,usgs,"MCELMO CREEK BELOW CORTEZ, CO.","MCELMO CREEK BELOW CORTEZ, CO.",1.2,discharge,4016,1972-10-01,1983-09-29,1.0,1.0,1.0,same_record_identical
+codwr:MCELMACO,usgs:09371420,codwr,usgs,"MCELMO CREEK ABOVE ALKALI CANYON, NR CORTEZ, CO.","MCELMO CREEK ABOVE ALKALI CANYON, NR CORTEZ, CO.",1.3,discharge,5112,1972-10-01,1986-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOBLACO,usgs:09343300,codwr,usgs,RIO BLANCO BELOW BLANCO DIVERSION DAM NEAR PAGOSA,"RIO BLANCO BEL BLANCO DIVN DAM, NR PAGOSA SPGS, CO",9.0,discharge,10075,1971-03-01,1998-09-29,1.0,1.0,1.0,same_record_identical
+codwr:LOSIGNCO,usgs:09353800,codwr,usgs,"LOS PINOS RIVER NEAR IGNACIO, CO","LOS PINOS RIVER NEAR IGNACIO, CO",1.1,discharge,9868,1999-10-01,2026-10-10,0.976,1.0,1.0,same_record_identical
+codwr:RCHAABNM,usbr_hydrodata:1516,codwr,usbr_hydrodata,RIO CHAMA ABOVE ABIQUIU DAM,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",153.5,discharge,23640,1961-08-01,2026-10-09,0.976,1.0,1.0,same_record_identical
+codwr:VALBAYCO,usgs:09352900,codwr,usgs,"VALLECITO CREEK NEAR BAYFIELD, CO.","VALLECITO CREEK NEAR BAYFIELD, CO.",55.2,discharge,23318,1962-10-01,2026-10-10,0.988,1.0,1.0,same_record_identical
+codwr:RIOALBNM,usgs:08330000,codwr,usgs,"RIO GRANDE AT ALBUQUERQUE, NM.","RIO GRANDE AT ALBUQUERQUE, NM",0.1,discharge,22288,1965-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:RIOTAONM,usace_cwms:Taos,codwr,usace_cwms,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",Rio Grande bl Taos Junction Brd,0.6,discharge,7887,2005-02-14,2026-10-10,0.175,0.998,0.998,same_record_day_boundary_or_rounding
+codwr:RCHAABNM,usgs:08286500,codwr,usgs,RIO CHAMA ABOVE ABIQUIU DAM,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",0.0,discharge,23811,1961-08-01,2026-10-10,0.968,1.0,1.0,same_record_identical
+codwr:SMCRIONM,usgs:08358300,codwr,usgs,"SAN MARCIAL CONVEYANCE CHANNEL ON RIO GRANDE, NM","RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.0,discharge,26406,1951-12-01,2026-10-10,0.979,1.0,1.0,same_record_identical
+codwr:RCHLAPNM,usbr_hydrodata:1514,codwr,usbr_hydrodata,"RIO CHAMA NEAR LA PUENTA, NM.","RIO CHAMA NEAR LA PUENTE, NM",63.3,discharge,25943,1955-10-01,2026-10-10,0.973,1.0,1.0,same_record_identical
+codwr:RCHBABNM,usgs:08287000,codwr,usgs,RIO CHAMA BELOW ABIQUIU DAM,"RIO CHAMA BELOW ABIQUIU DAM, NM",0.0,discharge,23719,1961-11-01,2026-10-10,0.994,1.0,1.0,same_record_identical
+codwr:RIOALBNM,usbr_hydrodata:1534,codwr,usbr_hydrodata,"RIO GRANDE AT ALBUQUERQUE, NM.",RIO GRANDE AT ALBUQUERQUE,19.1,discharge,22288,1965-10-01,2026-10-10,0.991,1.0,1.0,same_record_identical
+codwr:SANFARNM,usace_cwms:Farmington,codwr,usace_cwms,"SAN JUAN RIVER AT FARMINGTON, NM",San Juan River at Farmington,0.0,discharge,7011,2005-03-17,2026-10-10,0.062,0.9831,0.999,same_record_day_boundary_or_rounding
+codwr:CEMSILCO,usbr_hydrodata:834,codwr,usbr_hydrodata,"CEMENT CREEK AT SILVERTON, CO","CEMENT CREEK AT SILVERTON, CO",1.5,discharge,12391,1991-10-01,2026-10-09,0.886,0.9999,1.0,same_record_day_boundary_or_rounding
+codwr:CONLASCO,usace_cwms:La Sauses N,codwr,usace_cwms,"CONEJOS RIVER NEAR LASAUSES, CO",North Conejos R nr La Sauses,12.8,discharge,6434,2008-05-21,2025-12-31,0.17,0.9889,0.975,same_record_day_boundary_or_rounding
+nwps:SJFC2,usgs:09371010,nwps,usgs,San Juan River at Four Corners,"SAN JUAN RIVER AT FOUR CORNERS, CO",0.0,discharge,57,2026-08-14,2026-10-10,0.105,0.983,1.006,same_record_day_boundary_or_rounding
+nwps:ABQN5,usace_cwms:Central Ave,nwps,usace_cwms,Rio Grande at Albuquerque,Rio Grande at Albuquerque,12.6,discharge,59,2026-08-13,2026-10-11,0.034,0.9997,0.014,related_not_the_same_record
+nwps:PKCN5,usbr_hydrodata:1560,nwps,usbr_hydrodata,Pecos River 6 miles NE of Lakewood,PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD,41.6,discharge,57,2026-08-14,2026-10-09,0.035,0.9928,1.24,related_not_the_same_record
+nwps:PUEN5,usgs:08383500,nwps,usgs,Pecos River below Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",12.3,discharge,58,2026-08-14,2026-10-10,0.086,0.8131,1.108,different
+nwps:RCAN5,usbr_hydrodata:1516,nwps,usbr_hydrodata,Rio Chama above Abiquiu,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",148.7,discharge,57,2026-08-14,2026-10-09,0.193,0.8822,0.998,different
+nwps:CTDN5,usace_cwms:Cochiti Cn,nwps,usace_cwms,Rio Grande below Cochiti Dam,Cochiti East Side Canal,131.5,discharge,59,2026-08-14,2026-10-11,0.034,-0.5761,0.376,different
+nwps:RUHN5,usgs:08387000,nwps,usgs,Rio Ruidoso at Hollywood,"RIO RUIDOSO AT HOLLYWOOD, NM",5.9,discharge,58,2026-08-14,2026-10-10,0.034,0.9936,1.236,related_not_the_same_record
+codwr:SOULASCO,usbr_hydrodata:4065,codwr,usbr_hydrodata,SOUTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,SOUTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,11.3,discharge,3489,2016-12-31,2026-10-09,0.318,0.9948,1.011,same_record_day_boundary_or_rounding
+codwr:SANORTCO,usace_cwms:Ortiz S A,codwr,usace_cwms,SAN ANTONIO RIVER AT ORTIZ,San Antonio River at Ortiz,0.1,discharge,6642,2008-05-15,2026-10-10,0.125,0.9666,1.056,related_not_the_same_record
+nwps:PKCN5,usgs:08399500,nwps,usgs,Pecos River 6 miles NE of Lakewood,"PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.034,0.9928,1.226,related_not_the_same_record
+nwps:RUHN5,usace_cwms:Hollywood,nwps,usace_cwms,Rio Ruidoso at Hollywood,Rio Ruidoso at Hollywood,5.8,discharge,58,2026-08-14,2026-10-11,0.224,0.9951,1.026,same_record_day_boundary_or_rounding
+codwr:RGFSANNM,usace_cwms:San Acacia,codwr,usace_cwms,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",Rio Grande Fldwy at San Acacia,0.0,discharge,7849,2005-02-14,2026-10-10,0.055,0.945,1.008,related_not_the_same_record
+codwr:RIOCERNM,usace_cwms:Cerro,codwr,usace_cwms,"RIO GRANDE NEAR CERRO, NM.",Rio Grande nr Cerro,0.0,discharge,7883,2005-02-07,2026-10-10,0.114,0.9842,1.006,same_record_day_boundary_or_rounding
+codwr:SANPAGCO,usace_cwms:Pagosa Spgs,codwr,usace_cwms,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",San Juan River @ Pagosa Springs,1.4,discharge,7795,2005-03-17,2026-10-10,0.069,0.9334,1.015,related_not_the_same_record
+resopsus:601,usace_cwms:Navajo,resopsus,usace_cwms,Navajo,Navajo Reservoir,243.0,reservoir_storage,3661,2010-09-27,2021-01-27,0.96,0.9999,0.998,same_record_identical
+nwps:ABQN5,usgs:08330000,nwps,usgs,Rio Grande at Albuquerque,"RIO GRANDE AT ALBUQUERQUE, NM",12.6,discharge,59,2026-08-13,2026-10-10,0.034,0.9844,0.069,related_not_the_same_record
+nwps:CTDN5,usgs:08313500,nwps,usgs,Rio Grande below Cochiti Dam,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",120.0,discharge,58,2026-08-14,2026-10-10,0.034,-0.5596,0.415,different
+usace_cwms:Dunlap,usgs:08385630,usace_cwms,usgs,Pecos River nr Dunlap,"PECOS RIVER NEAR DUNLAP, NM",0.0,stage,59,2026-08-13,2026-10-11,0.949,0.1603,1.0,different
+usace_cwms:Anton Chico,usgs:08379500,usace_cwms,usgs,Pecos River nr Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",0.0,stage,59,2026-08-13,2026-10-11,0.712,0.9951,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Cerro,usgs:08263500,usace_cwms,usgs,Rio Grande nr Cerro,"RIO GRANDE NEAR CERRO, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,0.9992,1.0,same_record_identical
+usace_cwms:San Marcial CC,usgs:08358300,usace_cwms,usgs,Rio Grande Conveyance Channel,"RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.0,stage,59,2026-08-13,2026-10-11,0.983,0.9999,1.0,same_record_identical
+usace_cwms:Archuleta,usgs:09355500,usace_cwms,usgs,San Juan River nr Archuleta,"SAN JUAN RIVER NEAR ARCHULETA, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Dixon,usgs:08279000,usace_cwms,usgs,Embudo Creek at Dixon,"EMBUDO CREEK AT DIXON, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Central Ave,usgs:08330000,usace_cwms,usgs,Rio Grande at Albuquerque,"RIO GRANDE AT ALBUQUERQUE, NM",0.1,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:4662,usgs:09357700,usbr_hydrodata,usgs,SAN JUAN RVR @ BOLACK RANCH BRDG,SAN JUAN R AT BOLACK RANCH BRDG NR FARMINGTON NM,0.0,discharge,345,2019-12-20,2020-12-06,0.284,0.9959,1.002,same_record_day_boundary_or_rounding
+usbr_hydrodata:828,usgs:09352800,usbr_hydrodata,usgs,"LOS PINOS R ABV VALLECITO  NR BAYFIELD, CO.","LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO",1.3,discharge,3095,2018-04-20,2026-10-09,1.0,1.0,1.0,same_record_identical
+codwr:MANJOHCO,usgs:09370820,codwr,usgs,"MANCOS RIVER BELOW JOHNSON CANYON NR CORTEZ, CO.","MANCOS RIVER BELOW JOHNSON CANYON NR CORTEZ, CO.",1.2,discharge,1187,1979-07-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:TURCONCO,usgs:08238380,codwr,usgs,"TURKEY RESERVOIR INFLOW NEAR CONEJOS, CO.","TURKEY RESERVOIR INFLOW NEAR CONEJOS, CO.",1.3,discharge,1713,1979-07-01,1989-09-30,1.0,1.0,1.0,same_record_identical
+codwr:WINPAGCO,usgs:09341350,codwr,usgs,"WINDY PASS CR NR PAGOSA SPR, CO.","WINDY PASS CR NR PAGOSA SPR, CO.",1.4,discharge,1094,1984-10-01,1987-09-29,0.992,1.0,1.0,same_record_identical
+codwr:WOLFAWCO,usgs:09341300,codwr,usgs,"WOLF CR AT WOLF CR CAMPGR NR PAGOSA SPR, CO","WOLF CR AT WOLF CR CAMPGR NR PAGOSA SPR, CO",1.3,discharge,1735,1984-10-01,1999-09-30,0.98,1.0,1.0,same_record_identical
+codwr:CONPLACO,usgs:08245000,codwr,usgs,"CONEJOS RIVER BELOW PLATORO RESERVOIR, CO.","CONEJOS RIVER BELOW PLATORO RESERVOIR, CO",6.3,discharge,26512,1952-06-01,2024-12-31,0.998,1.0,1.0,same_record_identical
+codwr:ALAJASCO,usgs:08235350,codwr,usgs,"ALAMOSA RIVER ABOVE JASPER, CO","ALAMOSA RIVER ABOVE JASPER, CO",1.1,discharge,764,1995-08-01,1999-09-30,1.0,1.0,1.0,same_record_identical
+codwr:ALAWIGCO,usgs:08235290,codwr,usgs,"ALAMOSA RIVER ABOVE WIGHTMAN FORK NEAR JASPER, CO","WIGHTMAN FORK AT MOUTH NEAR JASPER, CO",22.2,discharge,761,1995-08-01,1999-10-27,0.0,0.8303,0.237,different
+codwr:WFKMOUCO,usgs:08235290,codwr,usgs,"WIGHTMAN FORK AT MOUTH NEAR JASPER, CO","WIGHTMAN FORK AT MOUTH NEAR JASPER, CO",22.2,discharge,761,1995-08-01,1999-10-27,0.965,0.9994,1.0,same_record_identical
+codwr:MANANICO,usgs:09370600,codwr,usgs,"MANCOS RIVER AT ANITAS FLAT BELOW MANCOS, CO","MANCOS RIVER AT ANITAS FLAT BELOW MANCOS, CO",0.5,discharge,4432,2003-09-30,2015-11-17,1.0,1.0,1.0,same_record_identical
+ose_meas:98,usgs:09367000,ose_meas,usgs,McDerrmott,"LA PLATA RIVER AT LA PLATA, NM",216.4,discharge,4201,2011-12-31,2026-10-09,0.007,0.2733,0.048,different
+resopsus:601,usace_cwms:Navajo,resopsus,usace_cwms,Navajo,Navajo Reservoir,243.0,reservoir_inflow,724,2019-02-02,2021-01-27,0.01,0.9391,0.678,related_not_the_same_record
+usace_cwms:Jemez,usgs:08328500,usace_cwms,usgs,Jemez Canyon Reservoir,JEMEZ CANYON RES NR BERNALILLO N M,30.9,reservoir_storage,2066,2010-01-02,2015-08-31,0.994,0.9166,0.753,same_record_identical
+nwps:PTRC2,usace_cwms:Trinidad Cty,nwps,usace_cwms,Purgatoire River at Trinidad,Purgatoire River at Trinidad,224.3,stage,58,2026-08-14,2026-10-11,0.948,0.996,1.0,same_record_day_boundary_or_rounding
+nwps:LCVN5,usgs:07215500,nwps,usgs,Mora River at La Cueva,"MORA RIVER AT LA CUEVA, NM",15.8,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:LGNN5,usgs:07227100,nwps,usgs,Revuelto Creek near Logan,"REVUELTO CREEK NEAR LOGAN, NM",12.4,stage,59,2026-08-14,2026-10-11,0.949,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:RGCN5,usace_cwms:Galisteo DS,nwps,usace_cwms,Galisteo Creek below Galisteo Dam,Galisteo Creek bl Galisteo Dam,9.2,stage,58,2026-08-14,2026-10-11,0.914,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:CERN5,usgs:08263500,nwps,usgs,Rio Grande near Cerro,"RIO GRANDE NEAR CERRO, NM",39.9,discharge,58,2026-08-14,2026-10-10,0.207,0.9758,0.993,same_record_day_boundary_or_rounding
+nwps:LPFN5,usgs:09367500,nwps,usgs,La Plata River at Farmington,"LA PLATA RIVER NEAR FARMINGTON, NM",9.8,discharge,58,2026-08-14,2026-10-10,0.0,0.9168,1.202,related_not_the_same_record
+nwps:MLAN5,usgs:08405500,nwps,usgs,Black River 5 miles W of Malaga,"BLACK RIVER ABOVE MALAGA, NM",0.0,discharge,53,2026-08-14,2026-10-10,0.0,0.9777,0.606,related_not_the_same_record
+nwps:CDRC2,usbr_hydrodata:768,nwps,usbr_hydrodata,Animas River above Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, N. MEX.",0.1,discharge,58,2026-08-14,2026-10-10,0.034,0.9725,1.022,same_record_day_boundary_or_rounding
+usace_cwms:Alameda,usgs:08329918,usace_cwms,usgs,Rio Grande at Alameda Bridge,"RIO GRANDE AT ALAMEDA BRIDGE AT ALAMEDA, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Artesia,usgs:08396500,usace_cwms,usgs,Pecos River nr Artesia,"PECOS RIVER NEAR ARTESIA, NM",72.7,stage,59,2026-08-13,2026-10-11,0.627,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:La Puente,usgs:08284100,usace_cwms,usgs,Rio Chama nr La Puente,"RIO CHAMA NEAR LA PUENTE, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Cochiti DS,usgs:08313500,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",124.7,stage,59,2026-08-13,2026-10-11,0.0,-0.6831,2.458,different
+codwr:RIOEMBNM,nwps:EMBN5,codwr,nwps,"RIO GRANDE AT EMBUDO, NM.",Rio Grande at Embudo,7.5,discharge,58,2026-08-14,2026-10-10,0.345,0.9186,1.002,related_not_the_same_record
+codwr:RCHBABNM,nwps:AICN5,codwr,nwps,RIO CHAMA BELOW ABIQUIU DAM,Rio Chama below Abiquiu,7.4,discharge,58,2026-08-14,2026-10-10,0.017,0.988,0.957,related_not_the_same_record
+usbr_albuq:HERONDAM,usbr_hydrodata:2686,usbr_albuq,usbr_hydrodata,Heron Reservoir,HERON,0.0,reservoir_elevation,32,2026-09-05,2026-10-09,1.0,0.975,1.0,same_record_identical
+nwps:SJFC2,usgs:09371010,nwps,usgs,San Juan River at Four Corners,"SAN JUAN RIVER AT FOUR CORNERS, CO",0.0,stage,59,2026-08-14,2026-10-11,0.966,0.999,1.0,same_record_identical
+nwps:PKCN5,usgs:08399500,nwps,usgs,Pecos River 6 miles NE of Lakewood,"PECOS RIVER (KAISER CHANNEL) NEAR LAKEWOOD, NM",0.0,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:LMDN5,usgs:08289000,nwps,usgs,Rio Ojo Caliente below La Madera,"RIO OJO CALIENTE AT LA MADERA, NM",2.8,discharge,58,2026-08-14,2026-10-10,0.034,0.9864,1.017,same_record_day_boundary_or_rounding
+nwps:GSFN5,usace_cwms:Glenwood,nwps,usace_cwms,San Francisco River below Glenwood,San Francisco River near Glenwood,30.9,discharge,57,2026-08-14,2026-10-10,0.316,0.9887,1.003,same_record_day_boundary_or_rounding
+nwps:LGNN5,usgs:07227100,nwps,usgs,Revuelto Creek near Logan,"REVUELTO CREEK NEAR LOGAN, NM",12.4,discharge,41,2026-08-16,2026-10-10,0.0,0.971,3.34,related_not_the_same_record
+nwps:LCRA3,usgs:09383400,nwps,usgs,Little Colorado River at Greer,"LITTLE COLORADO RIVER AT GREER, AZ",94.6,discharge,58,2026-08-14,2026-10-10,0.0,0.8566,0.928,different
+nwps:ORLT2,usgs:08412500,nwps,usgs,Pecos River 6 miles NE of Orla,"Pecos Rv nr Orla, TX",2.4,discharge,54,2026-08-14,2026-10-10,0.0,0.2448,0.156,different
+codwr:MCELMSCO,nwps:MCEC2,codwr,nwps,MCELMO CREEK NEAR COLORADO-UTAH STATE LINE,Mcelmo Creek near UT-CO Border,1.8,discharge,58,2026-08-14,2026-10-10,0.0,0.9877,1.264,related_not_the_same_record
+codwr:SANFARNM,nwps:FRMN5,codwr,nwps,"SAN JUAN RIVER AT FARMINGTON, NM",San Juan River at Farmington,5.2,discharge,58,2026-08-14,2026-10-10,0.155,0.9625,0.999,related_not_the_same_record
+nwps:ABQN5,usace_cwms:Central Ave,nwps,usace_cwms,Rio Grande at Albuquerque,Rio Grande at Albuquerque,12.6,stage,59,2026-08-13,2026-10-11,0.22,0.981,0.555,related_not_the_same_record
+nwps:CERN5,usgs:08263500,nwps,usgs,Rio Grande near Cerro,"RIO GRANDE NEAR CERRO, NM",39.9,stage,59,2026-08-14,2026-10-11,0.983,0.9999,1.0,same_record_identical
+nwps:SGAT2,usgs:08433000,nwps,usgs,Barrilla Draw 13 miles ESE of Saragosa,"Barrilla Draw nr Saragosa, TX",0.0,stage,58,2026-08-14,2026-10-10,0.897,0.9364,1.0,related_not_the_same_record
+nwps:ABQN5,usgs:08330000,nwps,usgs,Rio Grande at Albuquerque,"RIO GRANDE AT ALBUQUERQUE, NM",12.6,stage,60,2026-08-13,2026-10-11,0.233,0.9816,0.663,related_not_the_same_record
+usace_cwms:Pecos,usgs:08378500,usace_cwms,usgs,Pecos River nr Pecos,"PECOS RIVER NEAR PECOS, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:PCON5,usgs:08378500,nwps,usgs,Pecos River above Pecos,"PECOS RIVER NEAR PECOS, NM",7.0,discharge,53,2026-08-14,2026-10-10,0.038,0.9406,1.028,related_not_the_same_record
+nwps:SNAN5,usace_cwms:San Acacia,nwps,usace_cwms,Rio Grande near San Acacia,Rio Grande Fldwy at San Acacia,0.0,discharge,21,2026-09-21,2026-10-11,0.476,0.9998,1.005,too_little_overlap
+nwps:PCON5,usace_cwms:Pecos,nwps,usace_cwms,Pecos River above Pecos,Pecos River nr Pecos,7.0,discharge,58,2026-08-14,2026-10-11,0.069,0.9533,1.021,related_not_the_same_record
+usace_cwms:Taiban,usgs:08385522,usace_cwms,usgs,Pecos River bl Taiban Creek,"PECOS RIVER BELOW TAIBAN CREEK NEAR FORT SUMNER,NM",0.0,stage,59,2026-08-13,2026-10-11,0.983,0.2056,1.0,same_record_identical
+usace_cwms:Abiquiu DS,usgs:08287000,usace_cwms,usgs,Rio Chama bl Abiquiu Dam,"RIO CHAMA BELOW ABIQUIU DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:CTDN5,usace_cwms:Cochiti Cn,nwps,usace_cwms,Rio Grande below Cochiti Dam,Cochiti East Side Canal,131.5,stage,59,2026-08-14,2026-10-11,0.0,-0.6981,2.454,different
+nwps:MLAN5,usgs:08405500,nwps,usgs,Black River 5 miles W of Malaga,"BLACK RIVER ABOVE MALAGA, NM",0.0,stage,59,2026-08-14,2026-10-11,0.78,0.9696,1.0,related_not_the_same_record
+nwps:SNCN5,usgs:07221500,nwps,usgs,Canadian River near Sanchez,"CANADIAN RIVER NEAR SANCHEZ, NM",12.4,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:CTDN5,usgs:08313500,nwps,usgs,Rio Grande below Cochiti Dam,"COCHITI EAST SIDE MAIN CANAL AT COCHITI, NM",120.0,stage,59,2026-08-14,2026-10-11,0.0,-0.6981,2.454,different
+codwr:MANCORCO,usgs:09370800,codwr,usgs,"MANCOS RIVER NEAR CORTEZ, CO.","MANCOS RIVER NEAR CORTEZ, CO.",1.2,discharge,1065,1976-07-01,1979-05-31,1.0,1.0,1.0,same_record_identical
+nwps:LCVN5,usgs:07215500,nwps,usgs,Mora River at La Cueva,"MORA RIVER AT LA CUEVA, NM",15.8,discharge,58,2026-08-14,2026-10-10,0.0,0.9613,0.93,related_not_the_same_record
+nwps:RGCN5,usbr_hydrodata:1527,nwps,usbr_hydrodata,Galisteo Creek below Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",9.5,discharge,24,2026-09-01,2026-10-10,0.042,0.9514,0.61,too_little_overlap
+nwps:CMTN5,usbr_hydrodata:1519,nwps,usbr_hydrodata,Rio Chama near Chamita,"RIO CHAMA NEAR CHAMITA, NM",6.1,discharge,58,2026-08-14,2026-10-10,0.017,0.9064,1.056,related_not_the_same_record
+nwps:RGCN5,usace_cwms:Galisteo DS,nwps,usace_cwms,Galisteo Creek below Galisteo Dam,Galisteo Creek bl Galisteo Dam,9.2,discharge,24,2026-09-01,2026-10-11,0.125,0.9878,0.974,too_little_overlap
+nwps:CMTN5,usgs:08290000,nwps,usgs,Rio Chama near Chamita,"RIO CHAMA NEAR CHAMITA, NM",6.7,discharge,58,2026-08-14,2026-10-10,0.017,0.906,1.056,related_not_the_same_record
+nwps:GSFN5,usace_cwms:Glenwood,nwps,usace_cwms,San Francisco River below Glenwood,San Francisco River near Glenwood,30.9,stage,57,2026-08-14,2026-10-10,0.825,0.9947,1.0,same_record_day_boundary_or_rounding
+nwps:LPFN5,usgs:09367500,nwps,usgs,La Plata River at Farmington,"LA PLATA RIVER NEAR FARMINGTON, NM",9.8,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:PUEN5,usgs:08383500,nwps,usgs,Pecos River below Puerto De Luna,"PECOS RIVER NEAR PUERTO DE LUNA, NM",12.3,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:Acme,usgs:08386000,usace_cwms,usgs,Pecos River nr Acme,"PECOS RIVER NEAR ACME, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:LATN5,usbr_hydrodata:3498,nwps,usbr_hydrodata,Pecos River above Lake Arthur,PECOS RIVER NEAR LAKE ARTHUR,20.4,discharge,57,2026-08-14,2026-10-09,0.0,0.9552,0.874,related_not_the_same_record
+nwps:TBCN5,usbr_hydrodata:1509,nwps,usbr_hydrodata,Rio Pueblo De Taos below Taos,"RIO PUEBLO DE TAOS BELOW LOS CORDOVAS, NM",13.6,discharge,45,2026-08-15,2026-10-09,0.0,0.6377,0.029,different
+codwr:RCHAABNM,nwps:RCAN5,codwr,nwps,RIO CHAMA ABOVE ABIQUIU DAM,Rio Chama above Abiquiu,10.7,discharge,58,2026-08-14,2026-10-10,0.224,0.9107,1.001,related_not_the_same_record
+nwps:CMTN5,usgs:08290000,nwps,usgs,Rio Chama near Chamita,"RIO CHAMA NEAR CHAMITA, NM",6.7,stage,59,2026-08-14,2026-10-11,0.22,0.9978,1.005,same_record_day_boundary_or_rounding
+nwps:TJBN5,usgs:08276500,nwps,usgs,Rio Grande below Taos,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",3.7,discharge,58,2026-08-14,2026-10-10,0.0,0.9847,0.918,related_not_the_same_record
+nwps:TJBN5,usace_cwms:Taos,nwps,usace_cwms,Rio Grande below Taos,Rio Grande bl Taos Junction Brd,3.7,discharge,58,2026-08-14,2026-10-11,0.155,0.9913,0.914,related_not_the_same_record
+nwps:ORLT2,usgs:08412500,nwps,usgs,Pecos River 6 miles NE of Orla,"Pecos Rv nr Orla, TX",2.4,stage,55,2026-08-14,2026-10-10,0.673,0.9775,0.999,same_record_day_boundary_or_rounding
+nwps:RUHN5,usace_cwms:Hollywood,nwps,usace_cwms,Rio Ruidoso at Hollywood,Rio Ruidoso at Hollywood,5.8,stage,58,2026-08-14,2026-10-11,0.897,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:RUHN5,usgs:08387000,nwps,usgs,Rio Ruidoso at Hollywood,"RIO RUIDOSO AT HOLLYWOOD, NM",5.9,stage,59,2026-08-14,2026-10-11,0.949,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:EDBN5,usbr_hydrodata:1115,nwps,usbr_hydrodata,Rio Grande below Elephant Butte Dam,RIO GRANDE BL E.BUTTE DAM,15.1,discharge,16,2026-09-06,2026-10-10,0.0,0.7694,0.63,too_little_overlap
+nwps:SNCN5,usgs:07221500,nwps,usgs,Canadian River near Sanchez,"CANADIAN RIVER NEAR SANCHEZ, NM",12.4,discharge,26,2026-08-17,2026-10-10,0.038,0.9833,1.051,too_little_overlap
+usace_cwms:Cedar Hill,usgs:09363500,usace_cwms,usgs,Animas River nr Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, NM",0.1,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+codwr:RIOOTANM,nwps:OTWN5,codwr,nwps,"RIO GRANDE AT OTOWI BRIDGE NEAR SAN ILDEFONSO, NM.",Rio Grande at Otowi,8.0,discharge,58,2026-08-14,2026-10-10,0.017,0.9777,1.05,related_not_the_same_record
+nwps:LMDN5,usgs:08289000,nwps,usgs,Rio Ojo Caliente below La Madera,"RIO OJO CALIENTE AT LA MADERA, NM",2.8,stage,59,2026-08-14,2026-10-11,0.644,0.9983,1.0,same_record_day_boundary_or_rounding
+nwps:TJBN5,usgs:08276500,nwps,usgs,Rio Grande below Taos,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",3.7,stage,59,2026-08-14,2026-10-11,0.983,0.9994,1.0,same_record_identical
+nwps:TJBN5,usace_cwms:Taos,nwps,usace_cwms,Rio Grande below Taos,Rio Grande bl Taos Junction Brd,3.7,stage,58,2026-08-14,2026-10-11,0.948,0.9984,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Fish Hatchery,usgs:08266820,usace_cwms,usgs,Red River bl Fish Hatchery,"RED RIVER BELOW FISH HATCHERY, NEAR QUESTA, NM",0.0,stage,59,2026-08-13,2026-10-11,0.78,0.998,1.003,same_record_day_boundary_or_rounding
+nwps:PTRC2,usace_cwms:Trinidad Cty,nwps,usace_cwms,Purgatoire River at Trinidad,Purgatoire River at Trinidad,224.3,discharge,45,2026-08-14,2026-10-03,0.044,0.7745,0.763,different
+usace_cwms:Escondida,usgs:08355050,usace_cwms,usgs,Rio Grande at Brdg nr Escondida,"RIO GRANDE AT BRIDGE NEAR ESCONDIDA, NM",0.0,stage,59,2026-08-13,2026-10-11,0.983,0.9993,1.0,same_record_identical
+usace_cwms:Durango,usgs:09361500,usace_cwms,usgs,Animas River at Durango,"ANIMAS RIVER AT DURANGO, CO",55.1,stage,59,2026-08-13,2026-10-11,0.983,1.0,1.0,same_record_identical
+codwr:PINBVACO,nwps:LPVC2,codwr,nwps,PINE RIVER BELOW VALLECITO RESERVOIR NEAR BAYFIELD,Los Pinos River near Bayfield,0.0,discharge,58,2026-08-14,2026-10-10,0.345,0.9996,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Carlsbad,usgs:08405200,usace_cwms,usgs,Pecos River bl Dark Canyon Draw,"PECOS RIVER BELOW DARK CANYON AT CARLSBAD, NM",0.0,stage,59,2026-08-13,2026-10-11,0.983,1.0,1.0,same_record_identical
+usace_cwms:Sanchez,usgs:07221500,usace_cwms,usgs,Canadian River nr Sanchez,"CANADIAN RIVER NEAR SANCHEZ, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,0.9999,1.0,same_record_identical
+usace_cwms:Paseo del Norte,usgs:08329928,usace_cwms,usgs,Rio Grande nr Alameda,"RIO GRANDE NR ALAMEDA, NM",6.2,stage,59,2026-08-13,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:SGAT2,usgs:08433000,nwps,usgs,Barrilla Draw 13 miles ESE of Saragosa,"Barrilla Draw nr Saragosa, TX",0.0,discharge,4,2026-08-14,2026-10-02,0.0,0.9637,0.043,too_little_overlap
+usace_cwms:Gila,usgs:09430500,usace_cwms,usgs,Gila River nr Gila,"GILA RIVER NEAR GILA, NM",0.0,stage,59,2026-08-13,2026-10-11,0.966,0.9999,1.0,same_record_identical
+usace_cwms:Chamita,usgs:08290000,usace_cwms,usgs,Rio Chama nr Chamita,"RIO CHAMA NEAR CHAMITA, NM",0.1,stage,59,2026-08-13,2026-10-11,0.22,0.9968,0.987,same_record_day_boundary_or_rounding
+nwps:PCON5,usgs:08378500,nwps,usgs,Pecos River above Pecos,"PECOS RIVER NEAR PECOS, NM",7.0,stage,59,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:PCON5,usace_cwms:Pecos,nwps,usace_cwms,Pecos River above Pecos,Pecos River nr Pecos,7.0,stage,58,2026-08-14,2026-10-11,0.931,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:LCLA3,usgs:09384000,nwps,usgs,Little Colorado River above Lyman Lake,"LITTLE COLORADO R ABV LYMAN LAKE NR ST. JOHNS, AZ",59.6,discharge,58,2026-08-14,2026-10-10,0.0,0.8916,0.373,different
+nwps:SNAN5,usace_cwms:San Acacia,nwps,usace_cwms,Rio Grande near San Acacia,Rio Grande Fldwy at San Acacia,0.0,stage,20,2026-09-21,2026-10-11,0.9,0.9956,1.0,too_little_overlap
+nwps:PBAN5,usbr_hydrodata:1563,nwps,usbr_hydrodata,Pecos River below Avalon Reservoir,"PECOS RIVER BELOW AVALON DAM, NM",0.5,discharge,5,2026-09-24,2026-09-30,0.0,0.7867,0.545,too_little_overlap
+usace_cwms:Hwy 346,usgs:08331510,usace_cwms,usgs,Rio Grande at State Hwy 346,"RIO GRANDE AT STATE HWY 346 NEAR BOSQUE, NM",0.0,discharge,6370,2008-05-15,2026-10-10,0.066,0.9944,0.994,same_record_day_boundary_or_rounding
+usace_cwms:Jemez Pueblo,usgs:08324000,usace_cwms,usgs,Jemez River nr Jemez,"JEMEZ RIVER NEAR JEMEZ, NM",0.0,discharge,7182,2005-02-14,2026-10-10,0.05,0.9786,0.987,same_record_day_boundary_or_rounding
+usace_cwms:Lobatos,usgs:08251500,usace_cwms,usgs,Rio Grande nr Lobatos,"RIO GRANDE NEAR LOBATOS, CO",8.9,discharge,7267,2005-02-07,2024-12-31,0.053,0.9121,0.985,related_not_the_same_record
+usace_cwms:Acme,usbr_hydrodata:1555,usace_cwms,usbr_hydrodata,Pecos River nr Acme,"PECOS RIVER NEAR ACME, NM",0.6,discharge,7883,2005-02-14,2026-10-10,0.038,0.808,0.95,different
+usace_cwms:Canon del Uta,usgs:08382600,usace_cwms,usgs,Pecos River ab Canon Del Uta,"PECOS R ABV CANON DEL UTA NR COLONIAS, NM",0.0,discharge,3313,2005-02-08,2026-10-10,0.432,0.799,0.798,different
+usace_cwms:Taos,usbr_hydrodata:1510,usace_cwms,usbr_hydrodata,Rio Grande bl Taos Junction Brd,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.5,discharge,7887,2005-02-14,2026-10-10,0.164,0.998,1.002,same_record_day_boundary_or_rounding
+usace_cwms:Thirty Mile,usbr_hydrodata:3905,usace_cwms,usbr_hydrodata,Rio Grande @ Thirty Mile Bridge,RIO GRANDE AT THIRTY MILE BRIDGE NEAR CREEDE,0.1,discharge,6542,2008-05-20,2026-10-09,0.104,0.9978,1.017,same_record_day_boundary_or_rounding
+usace_cwms:Trinidad DS,usgs:07124410,usace_cwms,usgs,Purgatoire R bl Trinidad Dam,"PURGATOIRE RIVER BELOW TRINIDAD LAKE, CO.",0.1,discharge,10171,1998-10-01,2026-10-10,0.37,0.1798,0.998,different
+usace_cwms:Wagon Wheel Gap,usbr_hydrodata:3906,usace_cwms,usbr_hydrodata,Rio Grande nr Wagon Wheel Gap,RIO GRANDE AT WAGON WHEEL GAP,0.2,discharge,6588,2008-05-20,2026-10-09,0.074,0.9931,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Mogote,usbr_hydrodata:2741,usace_cwms,usbr_hydrodata,Conejos River nr Mogote,CONEJOS RIVER NEAR MOGOTE,19.4,discharge,6682,2008-05-15,2026-10-09,0.132,0.9982,0.995,same_record_day_boundary_or_rounding
+usace_cwms:Ortiz Los Pinos,usgs:08248000,usace_cwms,usgs,Los Pinos River nr Ortiz,"LOS PINOS RIVER NEAR ORTIZ, CO",51.3,discharge,6068,2008-05-22,2024-12-31,0.042,0.9808,0.965,related_not_the_same_record
+usace_cwms:Otowi,usgs:08313000,usace_cwms,usgs,Rio Grande at Otowi Bridge,"RIO GRANDE AT OTOWI BRIDGE, NM",0.0,discharge,8027,2004-10-06,2026-10-10,0.118,0.996,1.0,same_record_day_boundary_or_rounding
+usace_cwms:San Marcial,usgs:08358400,usace_cwms,usgs,Rio Grande Fldwy at San Marcial,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",0.0,discharge,3708,2005-02-14,2026-10-10,0.035,0.9175,1.022,related_not_the_same_record
+usace_cwms:Santa Rosa US,usbr_hydrodata:1548,usace_cwms,usbr_hydrodata,Pecos River ab Santa Rosa Lake,"PECOS RIVER ABOVE SANTA ROSA LAKE, NM",0.5,discharge,7781,2005-05-11,2026-10-09,0.054,0.9247,0.943,related_not_the_same_record
+usace_cwms:E Butte DS,usbr_hydrodata:1115,usace_cwms,usbr_hydrodata,Rio Grande bl Elebutte Butte,RIO GRANDE BL E.BUTTE DAM,0.3,discharge,7365,2005-02-23,2026-10-10,0.134,0.9932,0.992,same_record_day_boundary_or_rounding
+usace_cwms:Galisteo DS,usgs:08317950,usace_cwms,usgs,Galisteo Creek bl Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",0.0,discharge,8071,2004-02-27,2026-10-10,0.663,0.8826,0.0,different
+usace_cwms:Dixon,usbr_hydrodata:1512,usace_cwms,usbr_hydrodata,Embudo Creek at Dixon,"EMBUDO CREEK AT DIXON, NM",0.5,discharge,7873,2005-02-14,2026-10-10,0.043,0.9595,0.978,related_not_the_same_record
+usace_cwms:Thatcher,usgs:07126300,usace_cwms,usgs,Purgatoire River nr Thatcher,"PURGATOIRE RIVER NEAR THATCHER, CO.",45.6,discharge,1596,2022-03-27,2026-10-10,0.123,0.8571,0.935,different
+usace_cwms:Hollywood,usgs:08387000,usace_cwms,usgs,Rio Ruidoso at Hollywood,"RIO RUIDOSO AT HOLLYWOOD, NM",0.0,discharge,826,2024-06-28,2026-10-10,0.04,0.9405,0.981,related_not_the_same_record
+usbr_hydrodata:2722,usgs:08220000,usbr_hydrodata,usgs,RIO GRANDE NEAR DEL NORTE,"RIO GRANDE NEAR DEL NORTE, CO",12.2,discharge,43831,1904-01-01,2024-12-31,1.0,1.0,1.0,same_record_identical
+usace_cwms:Artesia,usbr_hydrodata:1559,usace_cwms,usbr_hydrodata,Pecos River nr Artesia,"PECOS RIVER NEAR ARTESIA, NM",72.4,discharge,8108,2004-05-08,2026-10-10,0.064,0.9746,0.986,same_record_day_boundary_or_rounding
+usace_cwms:Canon del Uta,usbr_hydrodata:2726,usace_cwms,usbr_hydrodata,Pecos River ab Canon Del Uta,PECOS RIVER ABOVE CANON DEL UTA NEAR COLONIAS,0.4,discharge,3312,2005-02-08,2026-10-09,0.432,0.799,0.798,different
+usace_cwms:Cedar Hill,usbr_hydrodata:768,usace_cwms,usbr_hydrodata,Animas River nr Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, N. MEX.",0.1,discharge,7804,2005-03-16,2026-10-10,0.051,0.9695,1.011,related_not_the_same_record
+usace_cwms:Taiban,usbr_hydrodata:1553,usace_cwms,usbr_hydrodata,Pecos River bl Taiban Creek,"PECOS RIVER BELOW TAIBAN CREEK NEAR FORT SUMNER,NM",0.3,discharge,8184,2004-05-08,2026-10-10,0.063,0.9735,1.004,same_record_day_boundary_or_rounding
+usace_cwms:Trinidad DS,usbr_hydrodata:100098,usace_cwms,usbr_hydrodata,Purgatoire R bl Trinidad Dam,PURBTRCO,0.1,discharge,7639,2005-07-28,2026-10-09,0.466,0.8838,0.999,different
+usace_cwms:Madrid,usbr_hydrodata:100087,usace_cwms,usbr_hydrodata,Purgatoire River at Madrid,PURMADCO,0.0,discharge,7586,2005-07-28,2026-10-09,0.1,0.0734,0.99,different
+usace_cwms:Rio Puerco,usgs:08353000,usace_cwms,usgs,"Rio Puerco Near Bernardo, Nm","RIO PUERCO NEAR BERNARDO, NM",0.0,discharge,7220,2005-02-14,2026-10-10,0.416,0.9273,0.585,related_not_the_same_record
+usace_cwms:Jemez,usbr_hydrodata:2744,usace_cwms,usbr_hydrodata,Jemez Canyon Reservoir,JEMEZ CANYON ,228.9,reservoir_storage,6119,2010-01-02,2026-10-07,0.994,0.2093,0.755,same_record_identical
+usace_cwms:Cochiti Cn,usgs:08317400,usace_cwms,usgs,Cochiti East Side Canal,"RIO GRANDE BELOW COCHITI DAM, NM",124.5,discharge,7829,2005-03-27,2026-10-10,0.0,0.235,10.085,different
+usace_cwms:Cochiti DS,usgs:08317400,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",11.8,discharge,8229,2004-02-27,2026-10-10,0.293,0.9975,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:773,usgs:09368000,usbr_hydrodata,usgs,"SAN JUAN RIVER AT SHIPROCK, NM","SAN JUAN RIVER AT SHIPROCK, NM",0.5,discharge,33611,1934-10-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1515,usgs:08285500,usbr_hydrodata,usgs,"RIO CHAMA BELOW EL VADO DAM, NM","RIO CHAMA BELOW EL VADO DAM, NM",44.3,discharge,33219,1935-10-30,2026-10-10,0.995,1.0,1.0,same_record_identical
+usbr_hydrodata:1550,usgs:08383500,usbr_hydrodata,usgs,"PECOS RIVER NEAR PUERTO DE LUNA, NM","PECOS RIVER NEAR PUERTO DE LUNA, NM",0.4,discharge,32304,1938-05-01,2026-10-09,0.988,1.0,1.0,same_record_identical
+usbr_hydrodata:1539,usgs:08353000,usbr_hydrodata,usgs,"RIO PUERCO NEAR BERNARDO, NM","RIO PUERCO NEAR BERNARDO, NM",0.5,discharge,31075,1939-11-01,2026-10-09,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:3909,usgs:08240000,usbr_hydrodata,usgs,RIO GRANDE ABOVE TRINCHERA CREEK NEAR LA SAUSES,"RIO GRANDE AB MOUTH TRINCHERA C NR LASAUSES, CO.",42.5,discharge,22798,1936-05-01,1998-09-30,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:1541,usgs:08358300,usbr_hydrodata,usgs,"RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM","RIO GRANDE CONVEYANCE CHANNEL AT SAN MARCIAL, NM",0.4,discharge,27342,1951-12-01,2026-10-10,0.969,1.0,1.0,same_record_identical
+usbr_hydrodata:1552,usgs:08385000,usbr_hydrodata,usgs,"FORT SUMNER MAIN CANAL NEAR FORT SUMNER, NM","FORT SUMNER MAIN CANAL NEAR FORT SUMNER, NM",0.3,discharge,27824,1939-03-29,2026-09-22,0.999,1.0,1.0,same_record_identical
+usbr_hydrodata:1509,usgs:08276300,usbr_hydrodata,usgs,"RIO PUEBLO DE TAOS BELOW LOS CORDOVAS, NM","RIO PUEBLO DE TAOS BELOW LOS CORDOVAS, NM",0.5,discharge,25393,1957-04-01,2026-10-09,0.948,1.0,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:1516,usgs:08286500,usbr_hydrodata,usgs,"RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM","RIO CHAMA ABOVE ABIQUIU RESERVOIR, NM",153.4,discharge,23640,1961-08-01,2026-10-09,0.969,1.0,1.0,same_record_identical
+usbr_hydrodata:1514,usgs:08284100,usbr_hydrodata,usgs,"RIO CHAMA NEAR LA PUENTE, NM","RIO CHAMA NEAR LA PUENTE, NM",63.4,discharge,25943,1955-10-01,2026-10-10,0.982,1.0,1.0,same_record_identical
+usbr_hydrodata:3504,usgs:08401200,usbr_hydrodata,usgs,SOUTH SEVEN RIVERS NEAR LAKEWOOD,"SOUTH SEVEN RIVERS NR LAKEWOOD, NM",0.2,discharge,22270,1963-10-01,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:3085,usgs:09362520,usbr_hydrodata,usgs,ANIMAS RIVER BELOW DPP,"ANIMAS RIVER BLW DURANGO PUMP PLANT NR DURANGO, CO",0.0,discharge,6774,2008-03-25,2026-10-10,1.0,1.0,1.0,same_record_identical
+usbr_hydrodata:2721,usgs:08355490,usbr_hydrodata,usgs,RIO GRANDE ABOVE HWY 380 NEAR SAN ANTONIO,"RIO GRANDE ABOVE US HWY 380 NR SAN ANTONIO, NM",5.2,discharge,6595,2005-09-30,2026-10-10,0.995,1.0,1.0,same_record_identical
+usbr_hydrodata:920,usgs:09355100,usbr_hydrodata,usgs,NAVAJO,"NAVAJO RESERVOIR NR ARCHULETA, NM",113.2,reservoir_storage,18992,1965-10-01,2017-09-29,0.942,1.0,1.0,same_record_day_boundary_or_rounding
+usbr_hydrodata:2744,usgs:08328500,usbr_hydrodata,usgs,JEMEZ CANYON ,JEMEZ CANYON RES NR BERNALILLO N M,226.8,reservoir_storage,15217,1974-01-02,2015-08-31,0.985,1.0,1.0,same_record_identical
+codwr:RIODELCO,usbr_hydrodata:2722,codwr,usbr_hydrodata,"RIO GRANDE NEAR DEL NORTE, CO",RIO GRANDE NEAR DEL NORTE,16.8,discharge,44478,1904-01-01,2026-10-09,0.991,1.0,1.0,same_record_identical
+codwr:NAVEDICO,usgs:09346000,codwr,usgs,"NAVAJO RIVER AT EDITH, CO.","NAVAJO RIVER AT EDITH, CO.",1.3,discharge,26140,1912-10-01,1996-04-30,1.0,1.0,1.0,same_record_identical
+codwr:ANIDURCO,usgs:09361500,codwr,usgs,"ANIMAS RIVER AT DURANGO, CO","ANIMAS RIVER AT DURANGO, CO",56.4,discharge,42163,1897-10-01,2026-10-10,0.997,1.0,1.0,same_record_identical
+codwr:SANMANCO,usgs:08248500,codwr,usgs,SAN ANTONIO RIVER NEAR MANASSA,"SAN ANTONIO RIVER AT MOUTH, NEAR MANASSA, CO.",26.8,discharge,21732,1923-04-01,1982-09-29,1.0,1.0,1.0,same_record_identical
+codwr:LITTRACO,usgs:09345500,codwr,usgs,"LITTLE NAVAJO RIVER AT CHROMO, CO.","LITTLE NAVAJO RIVER AT CHROMO, CO.",1.3,discharge,6331,1935-06-01,1952-09-29,1.0,1.0,1.0,same_record_identical
+codwr:SANORTCO,usgs:08247500,codwr,usgs,SAN ANTONIO RIVER AT ORTIZ,"SAN ANTONIO RIVER AT ORTIZ, CO",24.4,discharge,34532,1919-10-01,2024-12-31,0.998,1.0,1.0,same_record_identical
+codwr:COSABONM,usgs:08252500,codwr,usgs,"COSTILLA CREEK ABOVE COSTILLA DAM, NM.","COSTILLA CREEK ABOVE COSTILLA DAM, NM",0.0,discharge,14934,1937-05-01,2026-10-10,0.99,1.0,1.0,same_record_identical
+codwr:RCHELVNM,usgs:08285500,codwr,usgs,"RIO CHAMA BELOW EL VADO DAM, NM","RIO CHAMA BELOW EL VADO DAM, NM",0.0,discharge,33219,1935-10-30,2026-10-10,0.993,1.0,1.0,same_record_identical
+codwr:WESAPSCO,usgs:09341500,codwr,usgs,"WEST FORK SAN JUAN RIVER NEAR PAGOSA SPRINGS, CO","WEST FORK SAN JUAN RIVER NEAR PAGOSA SPRINGS, CO",1.2,discharge,10621,1935-10-01,1998-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CONCOUCO,usgs:08246000,codwr,usgs,"CONEJOS R AT COUNSELLORS CABIN, NEAR MOGOTE, CO.","CONEJOS R AT COUNSELLORS CABIN, NEAR MOGOTE, CO.",1.1,discharge,1460,1943-10-01,1947-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CONMOGCO,usgs:08246500,codwr,usgs,"CONEJOS RIVER NEAR MOGOTE, CO.","CONEJOS RIVER NEAR MOGOTE, CO.",34.4,discharge,42219,1903-04-01,2024-12-31,0.999,1.0,1.0,same_record_identical
+codwr:ALATERCO,usgs:08236000,codwr,usgs,"ALAMOSA RIVER ABOVE TERRACE RESERVOIR, CO.","ALAMOSA RIVER ABOVE TERRACE RESERVOIR, CO.",168.4,discharge,21096,1914-05-01,1982-09-29,0.997,1.0,1.0,same_record_identical
+codwr:TRITURCO,usgs:08240500,codwr,usgs,TRINCHERA CREEK ABOVE TURNER'S RANCH,"TRINCHERA C AB TURNERS RANCH, NR FT GARLAND, CO.",68.5,discharge,20036,1923-04-01,1981-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOLOBCO,usgs:08251500,codwr,usgs,RIO GRANDE NEAR LOBATOS,"RIO GRANDE NEAR LOBATOS, CO",8.9,discharge,45840,1899-07-01,2024-12-31,0.996,1.0,1.0,same_record_identical
+codwr:RIOTAONM,usgs:08276500,codwr,usgs,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM","RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",0.6,discharge,36900,1925-10-01,2026-10-10,0.987,1.0,1.0,same_record_identical
+codwr:CONMOGCO,usbr_hydrodata:2741,codwr,usbr_hydrodata,"CONEJOS RIVER NEAR MOGOTE, CO.",CONEJOS RIVER NEAR MOGOTE,19.5,discharge,28003,1950-01-01,2026-10-09,0.842,0.9976,1.0,same_record_day_boundary_or_rounding
+codwr:SANPAGCO,usbr_hydrodata:799,codwr,usbr_hydrodata,"SAN JUAN RIVER AT PAGOSA SPRINGS, CO",SAN JUAN  RIVER AT PAGOSA SPRINGS,1.4,discharge,33196,1935-10-01,2026-10-10,0.977,1.0,1.0,same_record_identical
+codwr:RGFSANNM,usbr_hydrodata:1116,codwr,usbr_hydrodata,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",RIO GRANDE FLOODWAY AT SAN ACACIA,0.3,discharge,24833,1958-10-01,2026-10-09,0.991,1.0,1.0,same_record_identical
+codwr:FALLDUCO,usgs:09361200,codwr,usgs,"FALLS CREEK NEAR DURANGO, CO.","FALLS CREEK NEAR DURANGO, CO.",0.5,discharge,2191,1959-10-01,1965-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CULCHACO,usgs:08249400,codwr,usgs,"CULEBRA CREEK NEAR CHAMA, CO.","CULEBRA CREEK NEAR CHAMA, CO.",1.1,discharge,1369,1967-01-01,1970-09-30,1.0,1.0,1.0,same_record_identical
+codwr:MCELMZCO,usgs:09371520,codwr,usgs,"MCELMO CREEK ABOVE TRAIL CANYON NEAR CORTEZ, CO","MCELMO CREEK ABOVE TRAIL CANYON NEAR CORTEZ, CO",0.3,discharge,12112,1993-08-01,2026-10-10,0.981,0.9999,1.0,same_record_identical
+codwr:MUDHIGCO,usgs:09371492,codwr,usgs,"MUD CREEK AT STATE HIGHWAY 32, NEAR CORTEZ, CO.","MUD CREEK AT STATE HIGHWAY 32, NEAR CORTEZ, CO.",17.6,discharge,13939,1981-10-01,2026-10-10,0.982,0.9995,1.0,same_record_identical
+codwr:RCHBABNM,usace_cwms:Abiquiu DS,codwr,usace_cwms,RIO CHAMA BELOW ABIQUIU DAM,Rio Chama bl Abiquiu Dam,0.0,discharge,8066,2004-02-27,2026-10-10,0.227,0.9953,1.0,same_record_day_boundary_or_rounding
+codwr:TRITURCO,usace_cwms:Turners Trin Cr,codwr,usace_cwms,TRINCHERA CREEK ABOVE TURNER'S RANCH,Trinchera Cr ab Turners Ranch,0.1,discharge,6633,2008-05-20,2026-10-10,0.084,0.9522,1.011,related_not_the_same_record
+codwr:NCLCONCO,usbr_hydrodata:3904,codwr,usbr_hydrodata,NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR,NORTH CLEAR CREEK BELOW CONTINENTAL RESERVOIR,0.0,discharge,28026,1950-01-01,2026-10-09,0.83,0.9993,1.0,same_record_day_boundary_or_rounding
+codwr:NAVOSOCO,usgs:09344400,codwr,usgs,NAVAJO RIVER BELOW OSO DIVERSION DAM NEAR CHROMO,"NAVAJO RIVER BL OSO DIVERSION DAM NR CHROMO, CO.",13.8,discharge,10075,1971-03-01,1998-09-29,1.0,1.0,1.0,same_record_identical
+codwr:RIOLOBCO,usace_cwms:Lobatos,codwr,usace_cwms,RIO GRANDE NEAR LOBATOS,Rio Grande nr Lobatos,0.1,discharge,7913,2005-02-07,2026-10-10,0.053,0.9124,1.014,related_not_the_same_record
+codwr:LOSORTCO,usace_cwms:Ortiz Los Pinos,codwr,usace_cwms,LOS PINOS RIVER NEAR ORTIZ,Los Pinos River nr Ortiz,45.0,discharge,6714,2008-05-22,2026-10-10,0.042,0.981,1.024,same_record_day_boundary_or_rounding
+codwr:RIOSFKCO,usace_cwms:South Fork,codwr,usace_cwms,SOUTH FORK RIO GRANDE AT SOUTH FORK,South Fork Rio Grande nr S Fork,0.1,discharge,6675,2008-05-18,2026-10-10,0.066,0.9898,0.989,same_record_day_boundary_or_rounding
+codwr:RIOEMBNM,usace_cwms:Embudo,codwr,usace_cwms,"RIO GRANDE AT EMBUDO, NM.",Rio Grande at Embudo,0.0,discharge,7904,2005-02-07,2026-10-10,0.157,0.9846,0.998,same_record_day_boundary_or_rounding
+codwr:SMFRIONM,usace_cwms:San Marcial,codwr,usace_cwms,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",Rio Grande Fldwy at San Marcial,0.0,discharge,3708,2005-02-14,2026-10-10,0.035,0.9175,0.976,related_not_the_same_record
+codwr:CONCONCO,usbr_hydrodata:3911,codwr,usbr_hydrodata,CONEJOS RIVER NEAR CONEJOS,NORTH BRANCH CONEJOS RIVER NEAR CONEJOS,200.7,discharge,2868,2016-03-15,2026-10-09,0.015,0.667,0.825,different
+codwr:NORCONCO,usbr_hydrodata:3911,codwr,usbr_hydrodata,NORTH BRANCH CONEJOS RIVER NEAR CONEJOS,NORTH BRANCH CONEJOS RIVER NEAR CONEJOS,0.0,discharge,3050,2016-03-13,2026-10-09,0.35,0.9952,1.0,same_record_day_boundary_or_rounding
+codwr:RIOMILCO,usace_cwms:Thirty Mile,codwr,usace_cwms,RIO GRANDE AT THIRTY MILE BRIDGE NEAR CREEDE,Rio Grande @ Thirty Mile Bridge,0.1,discharge,6661,2008-05-20,2026-10-10,0.093,0.9977,0.979,same_record_day_boundary_or_rounding
+nwps:DAWN5,usgs:07203000,nwps,usgs,Vermejo River above Dawson,"VERMEJO RIVER NEAR DAWSON, NM",9.3,discharge,58,2026-08-14,2026-10-10,0.0,0.9534,2.531,related_not_the_same_record
+nwps:GOLN5,usgs:07216500,nwps,usgs,Mora River near Golondrinas,"MORA RIVER NEAR GOLONDRINAS, NM",4.4,discharge,27,2026-08-15,2026-10-10,0.037,0.9691,0.974,too_little_overlap
+nwps:SHRN5,usbr_hydrodata:773,nwps,usbr_hydrodata,San Juan River at Shiprock,"SAN JUAN RIVER AT SHIPROCK, NM",0.5,discharge,57,2026-08-14,2026-10-09,0.088,0.976,1.018,same_record_day_boundary_or_rounding
+codwr:PINAVACO,usgs:09352800,codwr,usgs,"LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO","LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO",54.2,discharge,3091,2018-04-20,2026-10-10,0.919,1.0,1.0,same_record_day_boundary_or_rounding
+resopsus:601,usgs:09355100,resopsus,usgs,Navajo,"NAVAJO RESERVOIR NR ARCHULETA, NM",135.7,reservoir_storage,18992,1965-10-01,2017-09-29,0.942,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:FRMN5,usgs:09365000,nwps,usgs,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",5.2,discharge,54,2026-08-14,2026-10-10,0.148,0.9493,0.994,related_not_the_same_record
+nwps:LPAC2,usbr_hydrodata:828,nwps,usbr_hydrodata,Low Pinos River above Vallecito Reservoir,"LOS PINOS R ABV VALLECITO  NR BAYFIELD, CO.",0.0,discharge,57,2026-08-14,2026-10-09,0.14,0.9697,0.979,related_not_the_same_record
+nwps:PKCN5,usace_cwms:Kaiser Channel,nwps,usace_cwms,Pecos River 6 miles NE of Lakewood,Pecos River (Kaiser Channel),0.0,discharge,58,2026-08-14,2026-10-11,0.0,0.9998,1.179,related_not_the_same_record
+nwps:PUEN5,usace_cwms:Puerto de Luna,nwps,usace_cwms,Pecos River below Puerto De Luna,Pecos River nr Puerto De Luna,12.3,discharge,58,2026-08-14,2026-10-11,0.345,0.9595,1.015,related_not_the_same_record
+nwps:CTDN5,usbr_hydrodata:1526,nwps,usbr_hydrodata,Rio Grande below Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",7.7,discharge,58,2026-08-14,2026-10-10,0.155,0.9945,0.994,same_record_day_boundary_or_rounding
+usace_cwms:Otowi,usgs:08313000,usace_cwms,usgs,Rio Grande at Otowi Bridge,"RIO GRANDE AT OTOWI BRIDGE, NM",0.0,stage,756,2011-01-01,2026-10-11,0.988,0.9999,1.0,same_record_identical
+usace_cwms:Canon del Uta,usgs:08382600,usace_cwms,usgs,Pecos River ab Canon Del Uta,"PECOS R ABV CANON DEL UTA NR COLONIAS, NM",0.0,stage,58,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+usace_cwms:Galisteo DS,usgs:08317950,usace_cwms,usgs,Galisteo Creek bl Galisteo Dam,"GALISTEO CREEK BELOW GALISTEO DAM, NM",0.0,stage,59,2026-08-13,2026-10-11,0.915,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti Cn,usgs:08317400,usace_cwms,usgs,Cochiti East Side Canal,"RIO GRANDE BELOW COCHITI DAM, NM",124.5,stage,60,2026-08-13,2026-10-11,0.0,-0.6988,0.407,different
+codwr:EASMANCO,usgs:09369000,codwr,usgs,"EAST MANCOS RIVER NEAR MANCOS, CO.","EAST MANCOS RIVER NEAR MANCOS, CO.",1.4,discharge,5295,1937-04-01,1951-09-29,1.0,1.0,1.0,same_record_identical
+codwr:MCELMCCO,usgs:09371500,codwr,usgs,"MCELMO CREEK NEAR CORTEZ, CO.","MCELMO CREEK NEAR CORTEZ, CO.",1.5,discharge,7939,1926-10-01,1993-09-29,0.996,1.0,1.0,same_record_identical
+codwr:HARCORCO,usgs:09371400,codwr,usgs,"HARTMAN DRAW AT CORTEZ, CO.","HARTMAN DRAW AT CORTEZ, CO.",1.1,discharge,3104,1978-04-01,1986-09-29,1.0,1.0,1.0,same_record_identical
+codwr:WFKCROCO,usgs:08235270,codwr,usgs,WIGHTMAN FORK BELOW CROPSEY CREEK AT SUMMITVILLE,"WIGHTMAN FORK BEL CROPSY CREEK AT SUMMITVILLE, CO",34.2,discharge,638,1995-08-01,1999-10-27,0.958,0.9982,1.0,same_record_identical
+codwr:CONMANCO,usace_cwms:Manassa,codwr,usace_cwms,CONEJOS RIVER NEAR MANASSA,San Antonio River nr Manassa,1.4,discharge,2624,2018-10-01,2026-10-10,0.115,0.6174,0.182,different
+codwr:PINAVACO,nwps:LPAC2,codwr,nwps,"LOS PINOS R ABV VALLECITO RES NR BAYFIELD, CO",Low Pinos River above Vallecito Reservoir,52.8,discharge,58,2026-08-14,2026-10-10,0.241,0.9785,1.009,same_record_day_boundary_or_rounding
+ose_meas:4,usgs:08302500,ose_meas,usgs,Cajon Grande,"TESUQUE CREEK ABOVE DIVERSIONS NEAR SANTA FE, NM",228.7,discharge,3347,2012-01-30,2026-10-09,0.016,0.0661,109.702,different
+codwr:WFKMOUCO,usgs:08235250,codwr,usgs,"WIGHTMAN FORK AT MOUTH NEAR JASPER, CO","ALAMOSA RIVER ABOVE WIGHTMAN FORK NEAR JASPER, CO",173.0,discharge,761,1995-08-01,1999-10-27,0.0,0.8331,4.221,different
+codwr:SANARCNM,nwps:ARCN5,codwr,nwps,"SAN JUAN RIVER NEAR ARCHULETA, NM",San Juan River near Archuleta,6.6,discharge,58,2026-08-14,2026-10-10,0.724,0.9981,1.0,same_record_day_boundary_or_rounding
+codwr:LAPHESCO,nwps:LPHC2,codwr,nwps,"LA PLATA RIVER AT HESPERUS, CO",La Plata River at Hesperus,9.6,discharge,58,2026-08-14,2026-10-10,0.103,0.9713,1.013,same_record_day_boundary_or_rounding
+resopsus:601,usbr_hydrodata:920,resopsus,usbr_hydrodata,Navajo,NAVAJO,246.4,reservoir_elevation,21401,1962-06-26,2021-01-27,1.0,1.0,1.0,same_record_identical
+codwr:CONLASCO,usbr_hydrodata:4242,codwr,usbr_hydrodata,"CONEJOS RIVER NEAR LASAUSES, CO",NORTH CHANNEL CONEJOS RIVER NEAR LA SAUSES,51.5,discharge,2556,2019-01-01,2025-12-31,0.137,0.9915,0.973,same_record_day_boundary_or_rounding
+codwr:FLOHERCO,usgs:09362900,codwr,usgs,"FLORIDA RIVER BELOW LEMON RESERVOIR NR DURANGO, CO","FLORIDA RIVER BELOW LEMON RESERVOIR NR DURANGO, CO",1.1,discharge,2921,1955-10-01,1963-09-29,1.0,1.0,1.0,same_record_identical
+codwr:CONRESCO,usace_cwms:Continental,codwr,usace_cwms,CONTINENTAL RESERVOIR NEAR CREEDE,Continental Reservoir nr Creede,0.0,reservoir_storage,392,2025-09-12,2026-10-10,0.992,0.9999,1.0,same_record_identical
+codwr:PLARESCO,usace_cwms:Platoro,codwr,usace_cwms,PLATORO RESERVOIR,Platoro Reservoir,0.0,reservoir_storage,380,2025-09-12,2026-10-10,0.982,0.9994,1.0,same_record_identical
+nwps:AICN5,usace_cwms:Abiquiu DS,nwps,usace_cwms,Rio Chama below Abiquiu,Rio Chama bl Abiquiu Dam,7.4,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:MTZN5,usgs:08380500,nwps,usgs,Gallinas Creek above Montezuma,"GALLINAS CREEK NEAR MONTEZUMA, NM",7.7,stage,59,2026-08-14,2026-10-11,0.949,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:COLN5,usgs:08382500,nwps,usgs,Gallinas River above Colonias,"GALLINAS R NR COLONIAS, NM",2.1,stage,59,2026-08-14,2026-10-11,0.424,0.9893,1.0,same_record_day_boundary_or_rounding
+nwps:COSN5,usgs:08255500,nwps,usgs,Costilla Creek at Costilla,"COSTILLA CREEK NEAR COSTILLA, NM",13.5,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:DIXN5,usace_cwms:Dixon,nwps,usace_cwms,Embudo Creek below Dixon,Embudo Creek at Dixon,3.1,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:ZUIN5,usgs:09386950,nwps,usgs,Zuni River above Black Rock Reservoir,"ZUNI RIVER ABV BLACK ROCK RESERVOIR, NM",0.0,stage,59,2026-08-14,2026-10-11,0.949,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:MOGC2,usace_cwms:Mogote,nwps,usace_cwms,Conejos River near Mogote,Conejos River nr Mogote,12.5,stage,58,2026-08-14,2026-10-11,0.948,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:CDRC2,usgs:09363500,nwps,usgs,Animas River above Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, NM",0.1,stage,59,2026-08-14,2026-10-11,0.983,0.9997,1.0,same_record_identical
+nwps:DIXN5,usgs:08279000,nwps,usgs,Embudo Creek below Dixon,"EMBUDO CREEK AT DIXON, NM",3.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:FRMN5,usgs:09365000,nwps,usgs,San Juan River at Farmington,"SAN JUAN RIVER AT FARMINGTON, NM",5.2,stage,59,2026-08-14,2026-10-11,0.746,0.9952,1.0,same_record_day_boundary_or_rounding
+nwps:BSSN5,usgs:08405450,nwps,usgs,Blue Spring 5 miles E of Whites City,"BLUE SPRINGS ABOVE DIVERSIONS NR WHITES CITY, NM",0.0,discharge,54,2026-08-14,2026-10-10,0.0,0.9891,0.898,related_not_the_same_record
+nwps:JEZN5,usgs:08324000,nwps,usgs,Jemez River above Jemez Pueblo,"JEMEZ RIVER NEAR JEMEZ, NM",10.5,discharge,58,2026-08-14,2026-10-10,0.0,0.9704,1.065,related_not_the_same_record
+nwps:RBFN5,usgs:08407500,nwps,usgs,Pecos River 10 miles S of Malaga,"PECOS RIVER AT RED BLUFF, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.017,0.9879,1.106,related_not_the_same_record
+nwps:CDRC2,usgs:09363500,nwps,usgs,Animas River above Cedar Hill,"ANIMAS RIVER NEAR CEDAR HILL, NM",0.1,discharge,58,2026-08-14,2026-10-10,0.034,0.9725,1.022,same_record_day_boundary_or_rounding
+nwps:CERN5,usace_cwms:Cerro,nwps,usace_cwms,Rio Grande near Cerro,Rio Grande nr Cerro,39.9,discharge,58,2026-08-14,2026-10-11,0.379,0.9983,0.994,same_record_day_boundary_or_rounding
+nwps:ACMN5,usgs:08386000,nwps,usgs,Pecos River below Acme,"PECOS RIVER NEAR ACME, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.069,0.9499,1.188,related_not_the_same_record
+nwps:GVRN5,usace_cwms:Virden,nwps,usace_cwms,Gila River near Virden,Gila River bl Blue Creek,224.8,discharge,57,2026-08-14,2026-10-11,0.07,0.9976,1.041,related_not_the_same_record
+nwps:JEZN5,usace_cwms:Jemez Pueblo,nwps,usace_cwms,Jemez River above Jemez Pueblo,Jemez River nr Jemez,10.5,discharge,58,2026-08-14,2026-10-11,0.034,0.9995,1.077,related_not_the_same_record
+nwps:RBFN5,usbr_hydrodata:1568,nwps,usbr_hydrodata,Pecos River 10 miles S of Malaga,"PECOS RIVER AT RED BLUFF, NM",0.4,discharge,57,2026-08-14,2026-10-09,0.018,0.9879,1.103,related_not_the_same_record
+usace_cwms:Hwy 346,usgs:08331510,usace_cwms,usgs,Rio Grande at State Hwy 346,"RIO GRANDE AT STATE HWY 346 NEAR BOSQUE, NM",0.0,stage,59,2026-08-13,2026-10-11,0.169,0.9978,0.997,same_record_day_boundary_or_rounding
+usace_cwms:Hollywood,usgs:08387000,usace_cwms,usgs,Rio Ruidoso at Hollywood,"RIO RUIDOSO AT HOLLYWOOD, NM",0.0,stage,59,2026-08-13,2026-10-11,0.949,0.9999,1.0,same_record_day_boundary_or_rounding
+usace_cwms:Cochiti DS,usgs:08317400,usace_cwms,usgs,Rio Grande bl Cochiti Dam,"RIO GRANDE BELOW COCHITI DAM, NM",11.8,stage,59,2026-08-13,2026-10-11,0.983,0.9999,1.0,same_record_identical
+codwr:LAPMEXCO,nwps:LPSC2,codwr,nwps,LA PLATA RIVER AT THE COLORADO-NEW MEXICO STATELINE,La Plata River at State Line,55.3,discharge,27,2026-08-14,2026-10-10,0.074,0.9836,0.867,too_little_overlap
+codwr:SANCARCO,nwps:SJCC2,codwr,nwps,"SAN JUAN RIVER NEAR CARRACAS, CO.",San Juan River near Carracas,54.0,discharge,58,2026-08-14,2026-10-10,0.052,0.9869,1.026,same_record_day_boundary_or_rounding
+codwr:PIEARBCO,nwps:PIDC2,codwr,nwps,"PIEDRA RIVER NEAR ARBOLES, CO.",Piedra River near Arboles,54.3,discharge,57,2026-08-14,2026-10-09,0.07,0.9877,1.038,related_not_the_same_record
+usbr_albuq:BRANTLEYDAM,usbr_hydrodata:937,usbr_albuq,usbr_hydrodata,Brantley Lake,BRANTLEY,0.0,reservoir_release,33,2026-09-05,2026-10-10,0.545,0.9953,0.996,same_record_day_boundary_or_rounding
+usbr_albuq:SUMNERDAM(NAVD88),usbr_hydrodata:943,usbr_albuq,usbr_hydrodata,Sumner Lake,SUMNER,4.4,reservoir_storage,32,2026-09-05,2026-10-09,0.0,0.9935,1.013,same_record_day_boundary_or_rounding
+codwr:RIOSF2CO,usbr_hydrodata:3907,codwr,usbr_hydrodata,SOUTH FORK OF THE RIO GRANDE,SOUTH FORK RIO GRANDE AT SOUTH FORK,0.0,discharge,211,2018-07-06,2019-02-10,0.1,-0.1992,0.946,different
+nwps:PKCN5,usace_cwms:Kaiser Channel,nwps,usace_cwms,Pecos River 6 miles NE of Lakewood,Pecos River (Kaiser Channel),0.0,stage,58,2026-08-14,2026-10-11,0.966,0.9999,1.0,same_record_identical
+nwps:RBFN5,usgs:08407500,nwps,usgs,Pecos River 10 miles S of Malaga,"PECOS RIVER AT RED BLUFF, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:DAYN5,usgs:08398500,nwps,usgs,Rio Penasco 2 miles NW of Dayton,"RIO PENASCO AT DAYTON, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:GVRN5,usace_cwms:Virden,nwps,usace_cwms,Gila River near Virden,Gila River bl Blue Creek,224.8,stage,57,2026-08-14,2026-10-11,0.86,0.9977,1.0,same_record_day_boundary_or_rounding
+nwps:BNDN5,usgs:08353000,nwps,usgs,Rio Puerco near Bernardo,"RIO PUERCO NEAR BERNARDO, NM",0.0,stage,59,2026-08-14,2026-10-11,0.915,0.9987,1.0,same_record_day_boundary_or_rounding
+nwps:COSN5,usgs:08255500,nwps,usgs,Costilla Creek at Costilla,"COSTILLA CREEK NEAR COSTILLA, NM",13.5,discharge,58,2026-08-14,2026-10-10,0.0,0.949,0.496,related_not_the_same_record
+nwps:AICN5,usace_cwms:Abiquiu DS,nwps,usace_cwms,Rio Chama below Abiquiu,Rio Chama bl Abiquiu Dam,7.4,discharge,58,2026-08-14,2026-10-11,0.034,0.9995,1.052,related_not_the_same_record
+nwps:COLN5,usgs:08382500,nwps,usgs,Gallinas River above Colonias,"GALLINAS R NR COLONIAS, NM",2.1,discharge,48,2026-08-17,2026-10-10,0.0,0.6357,0.617,different
+nwps:GLHA3,usgs:09448500,nwps,usgs,Gila River near Solomon,"GILA RIVER AT HEAD OF SAFFORD VALLEY, NR SOLOMON,",0.0,discharge,58,2026-08-14,2026-10-10,0.052,0.9484,0.998,related_not_the_same_record
+nwps:ARCN5,usbr_hydrodata:741,nwps,usbr_hydrodata,San Juan River near Archuleta,"SAN JUAN RIVER NEAR ARCHULETA,NM",116.6,discharge,57,2026-08-14,2026-10-09,0.281,0.9929,0.947,related_not_the_same_record
+nwps:BNDN5,usgs:08353000,nwps,usgs,Rio Puerco near Bernardo,"RIO PUERCO NEAR BERNARDO, NM",0.0,discharge,40,2026-08-18,2026-10-10,0.0,0.6948,0.724,different
+nwps:PSPC2,usace_cwms:Pagosa Spgs,nwps,usace_cwms,San Juan River at Pagosa Springs,San Juan River @ Pagosa Springs,0.1,discharge,58,2026-08-14,2026-10-11,0.397,1.0,1.0,same_record_day_boundary_or_rounding
+codwr:RIOCERNM,nwps:CERN5,codwr,nwps,"RIO GRANDE NEAR CERRO, NM.",Rio Grande near Cerro,39.9,discharge,58,2026-08-14,2026-10-10,0.293,0.981,1.006,same_record_day_boundary_or_rounding
+codwr:NAVOSOCO,nwps:NAVC2,codwr,nwps,NAVAJO RIVER BELOW OSO DIVERSION DAM NEAR CHROMO,Navajo River near Chromo,13.8,discharge,58,2026-08-14,2026-10-10,0.121,0.995,0.994,same_record_day_boundary_or_rounding
+nwps:EMBN5,usace_cwms:Embudo,nwps,usace_cwms,Rio Grande at Embudo,Rio Grande at Embudo,7.5,stage,58,2026-08-14,2026-10-11,0.966,0.9998,1.0,same_record_identical
+nwps:JEZN5,usgs:08324000,nwps,usgs,Jemez River above Jemez Pueblo,"JEMEZ RIVER NEAR JEMEZ, NM",10.5,stage,59,2026-08-14,2026-10-11,0.966,0.9986,1.0,same_record_identical
+nwps:BSSN5,usgs:08405450,nwps,usgs,Blue Spring 5 miles E of Whites City,"BLUE SPRINGS ABOVE DIVERSIONS NR WHITES CITY, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:EDBN5,usgs:08361000,nwps,usgs,Rio Grande below Elephant Butte Dam,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",14.7,stage,58,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:TBCN5,usgs:08276300,nwps,usgs,Rio Pueblo De Taos below Taos,"RIO PUEBLO DE TAOS BELOW LOS CORDOVAS, NM",13.3,stage,59,2026-08-14,2026-10-11,0.983,0.9997,1.0,same_record_identical
+nwps:ACMN5,usgs:08386000,nwps,usgs,Pecos River below Acme,"PECOS RIVER NEAR ACME, NM",0.0,stage,59,2026-08-14,2026-10-11,0.983,1.0,1.0,same_record_identical
+nwps:PSPC2,usace_cwms:Pagosa Spgs,nwps,usace_cwms,San Juan River at Pagosa Springs,San Juan River @ Pagosa Springs,0.1,stage,58,2026-08-14,2026-10-11,0.966,1.0,1.0,same_record_identical
+nwps:JEZN5,usace_cwms:Jemez Pueblo,nwps,usace_cwms,Jemez River above Jemez Pueblo,Jemez River nr Jemez,10.5,stage,58,2026-08-14,2026-10-11,0.948,0.2293,1.0,different
+nwps:CERN5,usace_cwms:Cerro,nwps,usace_cwms,Rio Grande near Cerro,Rio Grande nr Cerro,39.9,stage,58,2026-08-14,2026-10-11,0.948,0.999,1.0,same_record_day_boundary_or_rounding
+nwps:DIXN5,usace_cwms:Dixon,nwps,usace_cwms,Embudo Creek below Dixon,Embudo Creek at Dixon,3.1,discharge,58,2026-08-14,2026-10-11,0.103,0.9999,0.464,related_not_the_same_record
+nwps:EFGN5,usgs:09430030,nwps,usgs,Gila River below East Fork and Gila Hot Springs,"GILA RIVER NR GILA HOT SPRINGS, NM",26.9,discharge,57,2026-08-14,2026-10-10,0.088,0.9822,0.996,same_record_day_boundary_or_rounding
+nwps:PCON5,usbr_hydrodata:1544,nwps,usbr_hydrodata,Pecos River above Pecos,"PECOS RIVER NEAR PECOS, NM",7.3,discharge,53,2026-08-14,2026-10-09,0.019,0.9419,1.021,related_not_the_same_record
+nwps:ATSN5,usgs:08396500,nwps,usgs,Pecos River 6 miles E of Artesia,"PECOS RIVER NEAR ARTESIA, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.017,0.9854,0.86,related_not_the_same_record
+nwps:DIXN5,usgs:08279000,nwps,usgs,Embudo Creek below Dixon,"EMBUDO CREEK AT DIXON, NM",3.0,discharge,58,2026-08-14,2026-10-10,0.017,0.9906,0.453,related_not_the_same_record
+codwr:RGFSANNM,nwps:SNAN5,codwr,nwps,"RIO GRANDE FLOODWAY AT SAN ACACIA, NM",Rio Grande near San Acacia,0.0,discharge,20,2026-09-21,2026-10-10,0.1,0.9678,0.999,too_little_overlap
+usbr_albuq:SUMNERDAM(NAVD88),usbr_hydrodata:943,usbr_albuq,usbr_hydrodata,Sumner Lake,SUMNER,4.4,reservoir_release,33,2026-09-05,2026-10-10,0.818,0.9953,1.0,same_record_day_boundary_or_rounding
+nwps:RGRN5,usace_cwms:Red Rock,nwps,usace_cwms,Gila River near Redrock,Gila River nr Redrock,84.0,discharge,57,2026-08-14,2026-10-11,0.14,0.9997,1.067,related_not_the_same_record
+nwps:CMTN5,usace_cwms:Chamita,nwps,usace_cwms,Rio Chama near Chamita,Rio Chama nr Chamita,6.6,discharge,58,2026-08-14,2026-10-11,0.0,0.9237,1.189,related_not_the_same_record
+codwr:ANIDURCO,nwps:DRGC2,codwr,nwps,"ANIMAS RIVER AT DURANGO, CO",Animas River at Durango,1.4,discharge,58,2026-08-14,2026-10-10,0.172,0.9881,1.007,same_record_day_boundary_or_rounding
+nwps:PUEN5,usace_cwms:Puerto de Luna,nwps,usace_cwms,Pecos River below Puerto De Luna,Pecos River nr Puerto De Luna,12.3,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+usace_cwms:San Marcial,usgs:08358400,usace_cwms,usgs,Rio Grande Fldwy at San Marcial,"RIO GRANDE FLOODWAY AT SAN MARCIAL, NM",0.0,stage,58,2026-08-14,2026-10-11,0.948,0.9991,1.0,same_record_day_boundary_or_rounding
+nwps:TBCN5,usgs:08276300,nwps,usgs,Rio Pueblo De Taos below Taos,"RIO PUEBLO DE TAOS BELOW LOS CORDOVAS, NM",13.3,discharge,45,2026-08-15,2026-10-10,0.0,0.6384,0.029,different
+usace_cwms:Rio Puerco,usgs:08353000,usace_cwms,usgs,"Rio Puerco Near Bernardo, Nm","RIO PUERCO NEAR BERNARDO, NM",0.0,stage,60,2026-08-13,2026-10-11,0.95,0.942,1.0,same_record_identical
+nwps:CMTN5,usace_cwms:Chamita,nwps,usace_cwms,Rio Chama near Chamita,Rio Chama nr Chamita,6.6,stage,58,2026-08-14,2026-10-11,0.017,0.9984,1.018,same_record_day_boundary_or_rounding
+nwps:DAWN5,usgs:07203000,nwps,usgs,Vermejo River above Dawson,"VERMEJO RIVER NEAR DAWSON, NM",9.3,stage,59,2026-08-14,2026-10-11,1.0,0.9998,1.0,same_record_identical
+nwps:ATCN5,usace_cwms:Anton Chico,nwps,usace_cwms,Pecos River below Anton Chico,Pecos River nr Anton Chico,10.1,stage,58,2026-08-14,2026-10-11,0.879,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:DUUA3,usgs:09439000,nwps,usgs,Gila River at Duncan,"GILA RIVER AT DUNCAN, AZ",0.0,discharge,29,2026-08-19,2026-10-07,0.0,0.9965,0.895,too_little_overlap
+nwps:TJBN5,usbr_hydrodata:1510,nwps,usbr_hydrodata,Rio Grande below Taos,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",3.4,discharge,58,2026-08-14,2026-10-10,0.0,0.9847,0.918,related_not_the_same_record
+usbr_albuq:BRANTLEYDAM,usbr_hydrodata:937,usbr_albuq,usbr_hydrodata,Brantley Lake,BRANTLEY,0.0,reservoir_storage,32,2026-09-05,2026-10-09,0.063,0.9968,1.003,same_record_day_boundary_or_rounding
+nwps:GOLN5,usgs:07216500,nwps,usgs,Mora River near Golondrinas,"MORA RIVER NEAR GOLONDRINAS, NM",4.4,stage,59,2026-08-14,2026-10-11,0.932,0.9999,1.0,same_record_day_boundary_or_rounding
+nwps:EDBN5,usgs:08361000,nwps,usgs,Rio Grande below Elephant Butte Dam,"RIO GRANDE BELOW ELEPHANT BUTTE DAM, NM",14.7,discharge,16,2026-09-06,2026-10-10,0.0,0.7694,0.63,too_little_overlap
+nwps:EFGN5,usgs:09430030,nwps,usgs,Gila River below East Fork and Gila Hot Springs,"GILA RIVER NR GILA HOT SPRINGS, NM",26.9,stage,58,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:LPRN5,usgs:09367000,nwps,usgs,La Plata River near La Plata,"LA PLATA RIVER AT LA PLATA, NM",11.9,stage,59,2026-08-14,2026-10-11,0.881,0.9979,1.0,same_record_day_boundary_or_rounding
+nwps:TYLN5,usace_cwms:Taylor Springs,nwps,usace_cwms,Canadian River near Taylor Springs,Canadian R nr Taylor Springs,10.8,discharge,41,2026-08-14,2026-10-11,0.024,0.9999,0.02,related_not_the_same_record
+nwps:ATCN5,usace_cwms:Anton Chico,nwps,usace_cwms,Pecos River below Anton Chico,Pecos River nr Anton Chico,10.1,discharge,37,2026-09-04,2026-10-11,0.189,0.9997,0.993,same_record_day_boundary_or_rounding
+nwps:PTRC2,usbr_hydrodata:100079,nwps,usbr_hydrodata,Purgatoire River at Trinidad,PURTRICO,0.0,discharge,45,2026-08-14,2026-10-03,0.0,0.7828,0.802,different
+nwps:ATCN5,usbr_hydrodata:1545,nwps,usbr_hydrodata,Pecos River below Anton Chico,"PECOS RIVER NEAR ANTON CHICO, NM",10.4,discharge,36,2026-09-04,2026-10-09,0.028,0.9578,0.925,related_not_the_same_record
+usace_cwms:Jemez Pueblo,usgs:08324000,usace_cwms,usgs,Jemez River nr Jemez,"JEMEZ RIVER NEAR JEMEZ, NM",0.0,stage,59,2026-08-13,2026-10-11,0.915,0.2294,1.0,different
+nwps:ZUIN5,usgs:09386950,nwps,usgs,Zuni River above Black Rock Reservoir,"ZUNI RIVER ABV BLACK ROCK RESERVOIR, NM",0.0,discharge,25,2026-09-14,2026-10-08,0.04,0.4321,1.002,too_little_overlap
+nwps:LKWN5,usgs:08400000,nwps,usgs,Fourmile Draw 4 miles NNW of Lakewood,"FOURMILE DRAW NR LAKEWOOD, NM",0.0,discharge,58,2026-08-14,2026-10-10,0.707,0.4945,1.157,different
+codwr:RIOTAONM,nwps:TJBN5,codwr,nwps,"RIO GRANDE BLW TAOS JUNCTION BRIDGE NEAR TAOS, NM",Rio Grande below Taos,3.1,discharge,58,2026-08-14,2026-10-10,0.0,0.9897,1.092,related_not_the_same_record
+nwps:LPRN5,usgs:09367000,nwps,usgs,La Plata River near La Plata,"LA PLATA RIVER AT LA PLATA, NM",11.9,discharge,23,2026-08-14,2026-10-10,0.043,0.8189,1.042,too_little_overlap
+nwps:LPRN5,ose_meas:98,nwps,ose_meas,La Plata River near La Plata,McDerrmott,204.7,discharge,22,2026-08-14,2026-10-09,0.0,0.6991,0.861,too_little_overlap
+nwps:RGRN5,usace_cwms:Red Rock,nwps,usace_cwms,Gila River near Redrock,Gila River nr Redrock,84.0,stage,57,2026-08-14,2026-10-11,0.912,0.9987,1.0,same_record_day_boundary_or_rounding
+nwps:TYLN5,usace_cwms:Taylor Springs,nwps,usace_cwms,Canadian River near Taylor Springs,Canadian R nr Taylor Springs,10.8,stage,58,2026-08-14,2026-10-11,0.862,0.9998,1.0,same_record_day_boundary_or_rounding
+codwr:ALATERCO,nwps:TERC2,codwr,nwps,"ALAMOSA RIVER ABOVE TERRACE RESERVOIR, CO.",Alamosa River above Terrace Reservoir,168.4,discharge,58,2026-08-14,2026-10-10,0.069,0.9952,0.989,same_record_day_boundary_or_rounding
+nwps:LKWN5,usgs:08400000,nwps,usgs,Fourmile Draw 4 miles NNW of Lakewood,"FOURMILE DRAW NR LAKEWOOD, NM",0.0,stage,59,2026-08-14,2026-10-11,1.0,1.0,1.0,same_record_identical
+nwps:EMBN5,usace_cwms:Embudo,nwps,usace_cwms,Rio Grande at Embudo,Rio Grande at Embudo,7.5,discharge,58,2026-08-14,2026-10-11,0.862,0.921,0.999,related_not_the_same_record
+nwps:EMBN5,usbr_hydrodata:1513,nwps,usbr_hydrodata,Rio Grande at Embudo,"RIO GRANDE AT EMBUDO, NM",7.3,discharge,58,2026-08-14,2026-10-10,0.328,0.9164,0.998,related_not_the_same_record
+nwps:ATSN5,usgs:08396500,nwps,usgs,Pecos River 6 miles E of Artesia,"PECOS RIVER NEAR ARTESIA, NM",0.0,stage,59,2026-08-14,2026-10-11,0.627,1.0,1.0,same_record_day_boundary_or_rounding
+nwps:MTZN5,usgs:08380500,nwps,usgs,Gallinas Creek above Montezuma,"GALLINAS CREEK NEAR MONTEZUMA, NM",7.7,discharge,58,2026-08-14,2026-10-10,0.017,0.9769,0.995,same_record_day_boundary_or_rounding
+codwr:DV7ADHOC,usbr_hydrodata:791,codwr,usbr_hydrodata,DIVISION 7 ADHOC MEASURING STATION,"FLORIDA RIVER ABOVE LEMON RESERVOIR, NR BAYFIELD, CO",0.9,discharge,9,2014-10-01,2014-10-14,0.0,0.7833,43.075,too_little_overlap
+nwps:DAYN5,usbr_hydrodata:3502,nwps,usbr_hydrodata,Rio Penasco 2 miles NW of Dayton,RIO PENASCO AT DAYTON,0.3,discharge,6,2026-09-25,2026-09-30,0.333,0.9209,0.521,too_little_overlap
+nwps:DAYN5,usgs:08398500,nwps,usgs,Rio Penasco 2 miles NW of Dayton,"RIO PENASCO AT DAYTON, NM",0.0,discharge,6,2026-09-25,2026-09-30,0.333,0.9209,0.521,too_little_overlap
+nwps:CRBN5,usbr_hydrodata:3505,nwps,usbr_hydrodata,Rocky Arroyo 7 miles S of Lakewood,ROCKY ARROYO AT HIGHWAY BRIDGE,0.1,discharge,2,2026-09-25,2026-09-30,0.0,-1.0,0.222,too_little_overlap
