@@ -56,6 +56,9 @@ _SAFE = re.compile(r"[^A-Za-z0-9_.\-]+")
 # Oldest plausible hydrologic observation. New Mexico's longest records begin in 1888 (OSE
 # streamflow compilation) and 1889 (USGS at Embudo); anything earlier is a data-entry error.
 MIN_YEAR = 1850
+# Newest plausible observation: a day or two ahead of now covers a station's own clock and the date it files a reading under,
+# and nothing else. Forecasts are not observations (they have their own table); a reading dated weeks ahead is a typo.
+FUTURE_SLACK = pd.Timedelta(days=2)
 
 
 def _safe(s: str) -> str:
@@ -108,11 +111,10 @@ class Store:
         # Guard against impossible timestamps (data-entry typos such as year 990 or 2316).
         if len(df):
             yr = df["datetime_utc"].dt.year
-            hi = pd.Timestamp.utcnow().year + 1
-            bad = (yr < MIN_YEAR) | (yr > hi)
+            bad = (yr < MIN_YEAR) | (df["datetime_utc"] > pd.Timestamp.now(tz="UTC") + FUTURE_SLACK)
             if bad.any():
                 log.warning("%s: dropped %d observations with implausible dates (%s..%s)",
-                            source, int(bad.sum()), yr[bad].min(), yr[bad].max())
+                            source, int(bad.sum()), df.loc[bad, "datetime_utc"].min().date(), df.loc[bad, "datetime_utc"].max().date())
                 df = df[~bad]
         df = df[df["value"].notna()] if "value" in df.columns else df
         if len(df):
