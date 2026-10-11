@@ -156,6 +156,18 @@ value in 99.5% of 8,720 shared hours (mean difference 0.006 °C, the largest 4.4
 the same value in 99.9% of 8,613, so for one station they are one record. To carry a series past ISD's end in 2025, use
 `noaa_ghcnh`. Pool them only after choosing one of each linked group.
 
+**Other republished ids.** WQP lists every USGS site that has water-quality samples as `USGS-<site number>`; that is the
+usgs site itself, so the two are linked `same_sensor` (46,538 pairs) and a different usgs site beside it is never linked to
+it by proximity (it is a neighbour, typically in a well field). A CoCoRaHS station `NM-BR-35` is GHCN-Daily's `US1NMBR0035`
+and is linked the same way. After these, the table has 49,915 exact links and 36,802 proximity (`colocated`) pairs, down
+from 122,512 (most of the old pairs were the same site found a second way, or two neighbouring wells).
+
+**A `colocated` pair is a candidate, not a duplicate.** Within 250 m is not the same place: well fields put dozens of wells
+inside it (one site has 71 neighbours), and 29,000 of the remaining pairs are wells from state sources (NMED, TWDB, NMWDI,
+NMBGMR) against USGS or WQP wells at a median 46 to 143 m. Do not drop or merge sites on a `colocated` link; deduplicate
+on `same_sensor` and `same_location_different_sensor` only, and review `colocated` pairs into `catalog/sites_manual.csv`
+before relying on them.
+
 **Points of diversion are not proximity-linked.** The 279,990 OSE points of diversion in `sites`
 (`ose_arcgis:pod:*`) are well and diversion permit locations, not monitoring sites. Matching them by
 distance added 182,070 low-confidence `colocated` pairs, mostly to water-quality and USGS wells

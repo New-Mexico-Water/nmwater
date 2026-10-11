@@ -118,6 +118,35 @@ def weather_links(sites: pd.DataFrame) -> list[dict]:
     return list(out.values())
 
 
+_COCORAHS_RE = re.compile(r"^([A-Z]{2})-([A-Z]{2})-(\d+)$")
+
+
+def gauge_id_links(sites: pd.DataFrame) -> list[dict]:
+    """Exact links between sources that republish one site under a different id (issue #24).
+
+    - WQP carries every USGS site that has water-quality samples as "USGS-<site number>": that is the usgs site itself.
+    - A CoCoRaHS station "NM-BR-35" is GHCN-Daily's "US1NMBR0035" (US1 + state + county code + number padded to four digits).
+    """
+    out: list[dict] = []
+    by_source = {src: g.set_index("native_id") for src, g in sites.groupby("source") if src in ("usgs", "noaa_ghcnd")}
+    usgs, ghcnd = by_source.get("usgs"), by_source.get("noaa_ghcnd")
+    for r in sites[sites["source"] == "wqp"].itertuples(index=False):
+        nid = str(r.native_id)
+        if nid.startswith("USGS-") and usgs is not None and nid[5:] in usgs.index:
+            out.append({"site_uid_a": r.site_uid, "site_uid_b": f"usgs:{nid[5:]}", "link_type": "same_sensor",
+                        "evidence": "WQP id USGS-<number> is the USGS site number", "distance_m": None, "confidence": 0.99})
+    if ghcnd is not None:
+        for r in sites[sites["source"] == "cocorahs"].itertuples(index=False):
+            m = _COCORAHS_RE.match(str(r.native_id))
+            if m:
+                gid = f"US1{m.group(1)}{m.group(2)}{int(m.group(3)):04d}"
+                if gid in ghcnd.index:
+                    lo, hi = sorted((r.site_uid, f"noaa_ghcnd:{gid}"))
+                    out.append({"site_uid_a": lo, "site_uid_b": hi, "link_type": "same_sensor",
+                                "evidence": f"CoCoRaHS {r.native_id} is GHCN-Daily {gid}", "distance_m": None, "confidence": 0.98})
+    return out
+
+
 def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     r = 6371000.0
     p1, p2 = math.radians(lat1), math.radians(lat2)
@@ -158,9 +187,12 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                 )
 
     # 1b. the same weather instrument published by several feeds
-    wl = weather_links(sites)
+    wl = weather_links(sites) + gauge_id_links(sites)
     rows.extend(wl)
     exact_weather = {(w["site_uid_a"], w["site_uid_b"]) for w in wl}
+    exact_weather |= {(b, a) for a, b in exact_weather}
+    # A WQP site whose id is USGS-<number> IS a USGS site; a different USGS site next to it is a neighbour (a well field), never the same place.
+    wqp_is_usgs = set(sites.loc[(sites["source"] == "wqp") & sites["native_id"].astype(str).str.startswith("USGS-"), "site_uid"])
 
     # 2. proximity within the same kind group, different sources
     pts = sites[sites["lat"].notna() & sites["lon"].notna()].copy()
@@ -188,7 +220,9 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                 if a.site_uid >= b.site_uid or a.source == b.source:
                     continue
                 key = (a.site_uid, b.site_uid)
-                if key in seen or key in exact_weather or (b.site_uid, a.site_uid) in exact_weather:
+                if (a.source == "wqp" and a.site_uid in wqp_is_usgs and b.source == "usgs") or (b.source == "wqp" and b.site_uid in wqp_is_usgs and a.source == "usgs"):
+                    continue
+                if key in seen or key in exact_weather:
                     continue                                     # already linked by id: the proximity guess would only repeat it
                 d = _haversine_m(a.lat, a.lon, b.lat, b.lon)
                 if d <= radius_m:
