@@ -143,6 +143,19 @@ record the USGS site number when they mirror one), proximity matching within 250
 of the same kind from different sources, and hand-curated rows in `catalog/sites_manual.csv`,
 which always win.
 
+**Weather feeds are not independent.** NOAA's GHCN-Hourly (`noaa_ghcnh`), ISD-Lite (`noaa_isd`, ended 2025), GHCN-Daily
+(`noaa_ghcnd`) and the Climate Reference Network (`uscrn`) republish the same instruments under different ids, so a query
+that pools them counts one thermometer or rain gauge two or three times. They are linked as `same_sensor` by exact id, not
+by distance: GHCNh and GHCN-Daily share the GHCN station id; a first-order station's id (`USW000NNNNN`) carries its WBAN
+number, which is also the second half of an ISD id (`USAF-WBAN`; WBAN `99999` means none) and a USCRN site's `WBAN`; an
+ICAO code in both metadata also matches. The matching id goes in `evidence` ("same GHCN station id", "same WBAN", "same
+ICAO"). At present that is 150 GHCNh–ISD, 139 GHCNh–GHCN-Daily, 90 GHCN-Daily–ISD and 25 pairs each between USCRN and
+GHCNh and GHCN-Daily, and 21 with ISD. Where an exact link exists the proximity guess for the same pair is dropped.
+Checked on Albuquerque Sunport (ISD `723650-23050`, GHCNh `USW00023050`), 2019: the hourly air temperature is the same
+value in 99.5% of 8,720 shared hours (mean difference 0.006 °C, the largest 4.4 °C in a few hours) and hourly precipitation
+the same value in 99.9% of 8,613, so for one station they are one record. To carry a series past ISD's end in 2025, use
+`noaa_ghcnh`. Pool them only after choosing one of each linked group.
+
 **Points of diversion are not proximity-linked.** The 279,990 OSE points of diversion in `sites`
 (`ose_arcgis:pod:*`) are well and diversion permit locations, not monitoring sites. Matching them by
 distance added 182,070 low-confidence `colocated` pairs, mostly to water-quality and USGS wells

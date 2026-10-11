@@ -60,6 +60,64 @@ def _usgs_ids_from_metadata(meta: str | None) -> set[str]:
     return out
 
 
+# Hourly and daily weather feeds that republish one instrument under different ids (issue #62):
+#   GHCNh and GHCN-Daily use the same GHCN station id; the id of a first-order station (USW000NNNNN) carries its WBAN number;
+#   ISD-Lite ids are USAF-WBAN; a USCRN site's WBAN is in its metadata. Sites sharing an id, a WBAN or an ICAO code are one instrument.
+WEATHER_SOURCES = ("noaa_ghcnh", "noaa_ghcnd", "noaa_isd", "uscrn")
+_GHCN_WBAN_RE = re.compile(r"^USW000(\d{5})$")
+
+
+def _weather_keys(r) -> dict[str, str]:
+    """The identifiers a weather site can be matched on: 'ghcn' (the GHCN station id), 'wban', 'icao'."""
+    keys: dict[str, str] = {}
+    nid = str(r.native_id)
+    meta: dict = {}
+    try:
+        meta = json.loads(r.raw_metadata) if getattr(r, "raw_metadata", None) else {}
+    except Exception:
+        meta = {}
+    if r.source in ("noaa_ghcnh", "noaa_ghcnd"):
+        keys["ghcn"] = nid
+        m = _GHCN_WBAN_RE.match(nid)
+        if m:
+            keys["wban"] = m.group(1)
+    elif r.source == "noaa_isd":
+        usaf, _, wban = nid.partition("-")
+        if wban and wban != "99999":
+            keys["wban"] = wban
+    elif r.source == "uscrn":
+        wban = str(meta.get("WBAN") or nid)
+        if wban.isdigit():
+            keys["wban"] = wban.zfill(5)
+    icao = str(meta.get("icao") or "").strip().upper()
+    if len(icao) == 4:
+        keys["icao"] = icao
+    return keys
+
+
+def weather_links(sites: pd.DataFrame) -> list[dict]:
+    """Exact same_sensor links between GHCNh, GHCN-Daily, ISD-Lite and USCRN sites that share an id, a WBAN number or an ICAO code."""
+    groups: dict[tuple[str, str], list] = {}
+    for r in sites[sites["source"].isin(WEATHER_SOURCES)].itertuples(index=False):
+        for kind, value in _weather_keys(r).items():
+            groups.setdefault((kind, value), []).append(r)
+    out: dict[tuple[str, str], dict] = {}
+    for (kind, value), members in groups.items():
+        for i, a in enumerate(members):
+            for b in members[i + 1:]:
+                if a.source == b.source:
+                    continue
+                lo, hi = sorted((a.site_uid, b.site_uid))
+                what = {"ghcn": f"same GHCN station id {value}", "wban": f"same WBAN {value}", "icao": f"same ICAO {value}"}[kind]
+                prev = out.get((lo, hi))
+                if prev is None:
+                    out[(lo, hi)] = {"site_uid_a": lo, "site_uid_b": hi, "link_type": "same_sensor", "evidence": what,
+                                     "distance_m": None, "confidence": 0.98 if kind == "ghcn" else 0.95}
+                elif what not in prev["evidence"]:
+                    prev["evidence"] += f"; {what}"
+    return list(out.values())
+
+
 def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     r = 6371000.0
     p1, p2 = math.radians(lat1), math.radians(lat2)
@@ -99,6 +157,11 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                     }
                 )
 
+    # 1b. the same weather instrument published by several feeds
+    wl = weather_links(sites)
+    rows.extend(wl)
+    exact_weather = {(w["site_uid_a"], w["site_uid_b"]) for w in wl}
+
     # 2. proximity within the same kind group, different sources
     pts = sites[sites["lat"].notna() & sites["lon"].notna()].copy()
     # Points of diversion are well and diversion PERMIT locations, not monitoring sites. There are
@@ -125,8 +188,8 @@ def build_links(sites: pd.DataFrame, radius_m: float = 250.0, manual: Path | Non
                 if a.site_uid >= b.site_uid or a.source == b.source:
                     continue
                 key = (a.site_uid, b.site_uid)
-                if key in seen:
-                    continue
+                if key in seen or key in exact_weather or (b.site_uid, a.site_uid) in exact_weather:
+                    continue                                     # already linked by id: the proximity guess would only repeat it
                 d = _haversine_m(a.lat, a.lon, b.lat, b.lon)
                 if d <= radius_m:
                     seen.add(key)
