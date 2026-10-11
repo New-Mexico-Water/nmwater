@@ -71,3 +71,14 @@ def test_copy_agreement_ignores_near_zero_flow_in_percentages():
     a = rg.copy_agreement(daily, chosen).iloc[0]
     assert a["overlap_days"] == 3 and a["days_off"] == 1                 # only the 200 vs 150 day is off
     assert a["median_abs_pct_diff"] == 12.5                              # 0% and 25% on the two days over 10 cfs
+
+
+def test_copies_from_sources_with_unconfirmed_licences_come_last():
+    """Where two sources publish one gauge, the one with a known public licence wins; Colorado DWR and the State Engineer are used only when nothing else has the day."""
+    from nmwater.derived.river_flow import PRIORITY
+    federal = ["usgs", "usbr_hydrodata", "usace_cwms", "nwps", "usbr_albuq"]
+    unconfirmed = ["codwr", "ose_meas"]
+    assert PRIORITY[:5] == federal and PRIORITY[5:] == unconfirmed
+    daily = pd.DataFrame({"gauge": ["g"] * 3, "date": pd.to_datetime(["2026-09-01"] * 3), "source": ["codwr", "nwps", "ose_meas"], "cfs": [10.0, 11.0, 12.0]})
+    assert rg.pick_copy(daily)["source"].tolist() == ["nwps"]
+    assert rg.pick_copy(daily[daily.source == "codwr"])["source"].tolist() == ["codwr"]     # the only copy is still used
