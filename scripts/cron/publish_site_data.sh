@@ -57,7 +57,7 @@ run "${S3[@]}" sync "$BUNDLE" "s3://$R2_BUCKET/bundles/$ID/" --only-show-errors
 # 1b. the home page's summary line, beside the pointer: written here, on the machine that makes the data, from the new bundle, by the website repository's
 #     scripts/summarize.ts (needs bun and ANTHROPIC_API_KEY in .env). The site checks it against the data and falls back to its own wording when it is
 #     missing, so nothing in this step can stop the publish.
-WEB_DIR="${WEB_DIR:-$HOME/projects/nmwater-web}"
+WEB_DIR="${WEB_DIR:-$HOME/projects/newmexicowater/nmwater-web}"
 LINE="$WEB_DIR/.generated/state-now.json"
 if [ "$DRY" = 1 ]; then
   echo "[dry run] would write the summary line with $WEB_DIR/scripts/summarize.ts and upload it as state-now.json"
