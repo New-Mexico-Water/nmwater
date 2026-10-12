@@ -1,6 +1,6 @@
 """Cut a small fixture bundle (a few rivers and all the precipitation watersheds, no CSVs) out of a full site data bundle.
 
-    uv run python scripts/make_site_fixture.py dist/site-data ../nmwater-web/fixtures/site-data rio-grande rio-tesuque pecos-river
+    uv run python scripts/make_site_fixture.py dist/site-data ../newmexicowater/nmwater-web/fixtures/site-data rio-grande rio-tesuque pecos-river
 
 The site repository commits the result so it builds and tests without the archive. CSV downloads are dropped
 (they are the bulk of the size) and the summaries and manifest are rewritten to match, so the fixture still

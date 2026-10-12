@@ -1,7 +1,7 @@
 """Copy the data contract into the website repository: the JSON Schemas, a VERSION file, and (optionally) a fresh fixture bundle.
 
-    uv run python scripts/sync_contract.py ../nmwater-web                 # schemas + VERSION only
-    uv run python scripts/sync_contract.py ../nmwater-web --fixtures      # also rebuild fixtures/site-data from dist/site-data
+    uv run python scripts/sync_contract.py ../newmexicowater/nmwater-web                 # schemas + VERSION only
+    uv run python scripts/sync_contract.py ../newmexicowater/nmwater-web --fixtures      # also rebuild fixtures/site-data from dist/site-data
 
 The website validates every bundle it builds from against contract/schemas and CI fails if they drift from what nmwater's
 docs/site-data/v2 says, so run this (and commit the result in the website repo) whenever a schema changes. nmwater owns the contract.

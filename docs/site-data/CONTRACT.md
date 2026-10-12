@@ -39,7 +39,7 @@ website records which nmwater commit its schemas came from.
 ## Changing the contract
 
 1. Edit the schema (and the exporter, and `README.md`) in nmwater; add or update the test.
-2. `just sync-contract ../nmwater-web --fixtures` copies the schemas and a fresh three-river fixture into the website repo.
+2. `just sync-contract ../newmexicowater/nmwater-web --fixtures` copies the schemas and a fresh three-river fixture into the website repo.
 3. Commit that in the website repo (CI fails if `contract/schemas` differs from the schemas the fixtures were made with only when the
    fixtures do not validate against them, so a forgotten sync is caught by the fixture check).
 4. Merge the side that only adds fields first; the website tolerates absent fields, so either order is safe for additions.
