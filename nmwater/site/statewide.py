@@ -265,11 +265,12 @@ def flooding_file(con, generated: str) -> tuple[dict, dict] | None:
         return None
     # The state is the one of the county the gauge sits in, not the Service's own tag: some of its gauges near the line carry the neighbouring state's code.
     fips = " ".join(f"WHEN '{k}' THEN '{v}'" for k, v in rf.STATE_FIPS.items())
-    names = {r[0]: {"name": r[1], "state": r[2], "river": r[3], "usgs": r[4]} for r in con.execute(f"""
+    names = {r[0]: {"name": r[1], "state": r[2], "river": r[3], "usgs": r[4], "lat": r[5], "lon": r[6], "gnis_id": r[7]} for r in con.execute(f"""
         WITH fips AS (SELECT site_uid, CASE left(region_id, 2) {fips} END AS st FROM site_regions WHERE region_type = 'county')
-        SELECT s.site_uid, s.name, coalesce(any_value(fips.st), s.state), any_value(sr.river_name), json_extract_string(any_value(s.raw_metadata), '$.usgsId')
-        FROM sites s LEFT JOIN site_reaches sr USING (site_uid) LEFT JOIN fips USING (site_uid)
-        WHERE s.site_uid IN (SELECT site_uid FROM flood_thresholds) GROUP BY s.site_uid, s.name, s.state""").fetchall()}
+        SELECT s.site_uid, s.name, coalesce(any_value(fips.st), s.state), any_value(sr.river_name), json_extract_string(any_value(s.raw_metadata), '$.usgsId'),
+               s.lat, s.lon, any_value(fl.gnis_id)
+        FROM sites s LEFT JOIN site_reaches sr USING (site_uid) LEFT JOIN flowlines fl ON fl.comid = sr.comid LEFT JOIN fips USING (site_uid)
+        WHERE s.site_uid IN (SELECT site_uid FROM flood_thresholds) GROUP BY s.site_uid, s.name, s.state, s.lat, s.lon""").fetchall()}
     s = fl.summarise(th, obs, names, now)
     if s is None:
         return None

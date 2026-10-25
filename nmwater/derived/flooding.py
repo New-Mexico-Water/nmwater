@@ -93,7 +93,7 @@ FRESH = pd.Timedelta(hours=6)       # a gauge whose last reading is older than t
 
 def summarise(th: pd.DataFrame, obs: pd.DataFrame, names: dict[str, dict], now: pd.Timestamp) -> dict | None:
     """The gauges that reached minor flooding or more in the window, worst first, and how many gauges were checked. None when no gauge has readings.
-    `names`: site_uid -> {"name", "river", "usgs", "state"}. `current` is the category still held, and only when the gauge reported within FRESH of `now`."""
+    `names`: site_uid -> {"name", "river", "usgs", "state", "gnis_id", "lat", "lon"}. `current` is the category still held, and only when the gauge reported within FRESH of `now`."""
     rows, checked, last = [], 0, None
     for r in th.to_dict("records"):
         d = obs[obs["site_uid"] == r["site_uid"]]
@@ -106,7 +106,8 @@ def summarise(th: pd.DataFrame, obs: pd.DataFrame, names: dict[str, dict], now: 
             continue
         n = names.get(r["site_uid"], {})
         last_row = d.sort_values("time").iloc[-1]
-        rows.append({"key": r["site_uid"], "lid": r["lid"], "name": n.get("name"), "state": n.get("state"), "river": n.get("river"), "usgs_site": n.get("usgs"),
+        rows.append({"key": r["site_uid"], "lid": r["lid"], "name": n.get("name"), "state": n.get("state"), "river": n.get("river"), "gnis_id": None if n.get("gnis_id") is None else str(n["gnis_id"]).strip() or None,
+                     "usgs_site": n.get("usgs"), "lat": _num(n.get("lat")), "lon": _num(n.get("lon")),
                      "category": a["reached"], "current": a["current"] if a["current"] in FLOODING and now - a["last_time"] <= FRESH else None,
                      "peak_time": a["peak_time"].strftime("%Y-%m-%dT%H:%M:%SZ"), "peak_stage_ft": a["peak_stage"], "peak_flow_cfs": a["peak_flow"],
                      "last_time": a["last_time"].strftime("%Y-%m-%dT%H:%M:%SZ"), "last_stage_ft": _num(last_row["stage"]),

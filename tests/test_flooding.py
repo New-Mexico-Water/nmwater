@@ -54,7 +54,7 @@ def _frames(stages_by_gauge):
 
 def test_summary_lists_only_flooding_worst_first_and_counts_every_gauge_checked():
     th, obs = _frames({"nwps:A": [6.0, 6.1, 6.0, 6.0], "nwps:B": [6.0, 9.0, 9.1, 9.2], "nwps:C": [6.0, 13.0, 13.2, 6.0], "nwps:D": [7.6, 7.7, 7.6, 7.6]})
-    names = {"nwps:B": {"name": "B river", "state": "NM", "river": "B", "usgs": "1"}}
+    names = {"nwps:B": {"name": "B river", "state": "NM", "river": "B", "usgs": "1", "gnis_id": "00123", "lat": 36.5, "lon": -108.1}}
     now = obs["time"].max() + pd.Timedelta(minutes=30)
     s = fl.summarise(th, obs, names, now)
     assert s["checked"] == 4
@@ -62,6 +62,8 @@ def test_summary_lists_only_flooding_worst_first_and_counts_every_gauge_checked(
     c, b = s["gauges"]
     assert (c["category"], c["current"]) == ("major", None)
     assert (b["category"], b["current"], b["river"], b["state"], b["last_stage_ft"]) == ("minor", "minor", "B", "NM", 9.2)
+    assert (b["gnis_id"], b["lat"], b["lon"]) == ("00123", 36.5, -108.1)
+    assert (c["gnis_id"], c["lat"], c["lon"]) == (None, None, None)          # a gauge with no entry in `names` still gets the keys
 
 
 def test_a_gauge_that_stopped_reporting_is_not_said_to_be_in_flood_now():

@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FIXTURE_RIVERS = ["rio-grande", "rio-tesuque", "pecos-river"]
+FIXTURE_RIVERS = ["rio-grande", "rio-tesuque", "pecos-river", "rio-chama"]          # rio-chama: a river with flood gauges in the October 2026 flood, so the flood section and map pins are tested
 
 
 def main(web: Path, fixtures: bool) -> int:

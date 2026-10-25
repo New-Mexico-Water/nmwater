@@ -86,8 +86,9 @@ def catalog(stage_rows):
     con.execute("CREATE TABLE observations_clean (site_uid VARCHAR, source VARCHAR, datetime_utc TIMESTAMPTZ, variable VARCHAR, value DOUBLE)")
     for t, v in stage_rows:
         con.execute("INSERT INTO observations_clean VALUES ('nwps:A', 'nwps', ?, 'stage', ?)", [t.to_pydatetime(), v])
-    con.execute("CREATE TABLE sites AS SELECT 'nwps:A' AS site_uid, 'Test River at A' AS name, 'NM' AS state, '{\"usgsId\": \"01\"}' AS raw_metadata")
-    con.execute("CREATE TABLE site_reaches AS SELECT 'nwps:A' AS site_uid, 'Test River' AS river_name")
+    con.execute("CREATE TABLE sites AS SELECT 'nwps:A' AS site_uid, 'Test River at A' AS name, 'NM' AS state, '{\"usgsId\": \"01\"}' AS raw_metadata, 36.5 AS lat, -108.1 AS lon")
+    con.execute("CREATE TABLE site_reaches AS SELECT 'nwps:A' AS site_uid, 'Test River' AS river_name, 777 AS comid")
+    con.execute("CREATE TABLE flowlines AS SELECT 777 AS comid, '00999' AS gnis_id")
     con.execute("CREATE TABLE site_regions AS SELECT 'nwps:A' AS site_uid, '35001' AS region_id, 'county' AS region_type")
     return con
 
@@ -104,7 +105,9 @@ def test_hourly_writes_uploads_and_starts_one_build_for_a_new_flood_then_not_aga
     assert r["gauges"] == 1 and r["render"] and r["published"] and r["started"]
     assert [c[0] for c in calls] == ["aws", "gh"] and calls[1][:3] == ["gh", "workflow", "run"]       # the upload first, so the build finds the file
     d = json.loads(out.read_text())
-    assert d["gauges"][0]["category"] == "moderate" and d["gauges"][0]["current"] == "moderate" and d["gauges"][0]["state"] == "NM"
+    g0 = d["gauges"][0]
+    assert g0["category"] == "moderate" and g0["current"] == "moderate" and g0["state"] == "NM"
+    assert (g0["gnis_id"], g0["lat"], g0["lon"]) == ("00999", 36.5, -108.1)
     calls.clear()                                                                                 # an hour later the same status: published again (fresh readings), no build
     r = fn.hourly(con, tmp_path / "no-bundle.json", out, state, True, True, (now + pd.Timedelta(hours=1)).to_pydatetime(), run, env)
     assert r["published"] and not r["render"] and [c[0] for c in calls] == ["aws"]
