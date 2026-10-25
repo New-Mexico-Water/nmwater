@@ -417,6 +417,36 @@ def purge_missing_codes(
     console.print(f"{'would remove' if dry_run else 'removed'} {sum(res.values()):,} rows")
 
 
+@app.command("flood-hourly")
+def flood_hourly(
+    publish: bool = typer.Option(False, "--publish", help="upload flooding-now.json to the bucket (R2 settings from the environment, as publish_site_data.sh)"),
+    redeploy: bool = typer.Option(False, "--redeploy", help="start the site's build when what the home page's flood band says has changed (needs --publish)"),
+    out: Optional[Path] = typer.Option(None, "--out", help="default: <repo>/dist/flooding-now.json"),
+    state: Optional[Path] = typer.Option(None, "--state", help="default: <data dir>/flood_hourly_state.json"),
+    bundle: Optional[Path] = typer.Option(None, "--bundle", help="the nightly bundle, default: <repo>/dist/site-data"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+):
+    """The flood status from the latest NWS readings (after `nmwater fetch nwps`): write it, upload it, and say whether the site must be rendered again. See scripts/cron/flood_hourly.sh."""
+    import duckdb
+
+    from .core.config import PROJECT_ROOT
+    from .site import flooding_now as fn
+
+    s = Settings.load(data_dir)
+    con = duckdb.connect(str(s.duckdb_path), read_only=True)
+    con.execute("SET TimeZone = 'UTC'")
+    try:
+        res = fn.hourly(con, (bundle or PROJECT_ROOT / "dist" / "site-data") / "statewide" / "flooding.json", out or PROJECT_ROOT / "dist" / "flooding-now.json",
+                        state or s.data_dir / "flood_hourly_state.json", publish, redeploy)
+    except Exception as e:
+        console.print(f"[red]flood-hourly: {e}[/red]")
+        raise typer.Exit(1)
+    finally:
+        con.close()
+    console.print(f"[green]flood-hourly[/green]: {res['gauges']} gauges in flood of {res['checked']} checked, readings to {res['latest_reading']}; "
+                  f"published={res['published']} render={'yes' if res['render'] else 'no'} ({res['why']}) started={res['started']}")
+
+
 @app.command()
 def status(
     source: Optional[str] = typer.Argument(None),

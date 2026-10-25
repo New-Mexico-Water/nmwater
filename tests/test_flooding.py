@@ -82,9 +82,9 @@ def test_only_the_last_three_days_of_readings_are_read():
     assert fl.WINDOW_DAYS == 3
     con = duckdb.connect()
     con.execute("CREATE TABLE flood_thresholds AS SELECT 'nwps:A' AS site_uid, 'A' AS lid")
-    con.execute("CREATE TABLE observations_clean (site_uid VARCHAR, datetime_utc TIMESTAMPTZ, variable VARCHAR, value DOUBLE)")
+    con.execute("CREATE TABLE observations_clean (site_uid VARCHAR, source VARCHAR, datetime_utc TIMESTAMPTZ, variable VARCHAR, value DOUBLE)")
     now = pd.Timestamp("2026-10-25 12:00", tz="UTC")
     for hours in (80, 71, 70, 2):               # 80 h ago is outside the window, 71 h ago is inside
-        con.execute("INSERT INTO observations_clean VALUES ('nwps:A', ?, 'stage', 9.0)", [(now - pd.Timedelta(hours=hours)).to_pydatetime()])
+        con.execute("INSERT INTO observations_clean VALUES ('nwps:A', 'nwps', ?, 'stage', 9.0)", [(now - pd.Timedelta(hours=hours)).to_pydatetime()])
     th, obs = fl.read(con, now)
     assert len(th) == 1 and len(obs) == 3

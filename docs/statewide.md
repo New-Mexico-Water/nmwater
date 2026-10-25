@@ -101,7 +101,7 @@ pipelines move water too; none are counted.
 ## Recent flooding (`statewide/flooding.json`)
 
 A **status, not a history, and not a warning.** It lists the New Mexico National Weather Service (NWS) river gauges, and the ones upstream in other states, that reached minor, moderate or major flood in the
-last three days (`window_days`), worst first, so the band on the home page goes about three days after the last gauge's peak. The NWS's warnings are the official word and are current to the minute; this file is made when the bundle is.
+last three days (`window_days`), worst first, so the band on the home page goes about three days after the last gauge's peak. The NWS's warnings are the official word and are current to the minute; this file is made when the bundle is, and again every hour by `scripts/cron/flood_hourly.sh` (uploaded as `flooding-now.json`; the website uses the newer of the two).
 
 - **Categories are the NWS's own.** `nmwater fetch nwps` reads each gauge's page (`/gauges/{lid}`) and stores the stage and flow at which action, minor, moderate and major flooding start
   (`reference/source=nwps/flood_thresholds.parquet`, the catalog table `flood_thresholds`; 91 gauges now, the rest define none). They are set on stage, so stage decides; a gauge that publishes only

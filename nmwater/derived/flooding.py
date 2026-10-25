@@ -82,7 +82,7 @@ def read(con, now: pd.Timestamp, days: int = WINDOW_DAYS) -> tuple[pd.DataFrame,
                max(CASE WHEN variable = 'stage' THEN value END) AS stage,
                max(CASE WHEN variable = 'discharge' THEN value END) AS flow
         FROM observations_clean
-        WHERE site_uid IN (SELECT site_uid FROM flood_thresholds) AND variable IN ('stage', 'discharge') AND datetime_utc >= ?
+        WHERE source = 'nwps' AND site_uid IN (SELECT site_uid FROM flood_thresholds) AND variable IN ('stage', 'discharge') AND datetime_utc >= ?
         GROUP BY 1, 2""", [since]).df()
     obs["time"] = pd.to_datetime(obs["time"], utc=True)
     return th, obs
