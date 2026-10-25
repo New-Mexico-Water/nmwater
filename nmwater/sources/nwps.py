@@ -3,6 +3,7 @@
 
   https://api.water.noaa.gov/nwps/v1/gauges            (all ~12,900 gauges; filtered client-side)
   https://api.water.noaa.gov/nwps/v1/gauges/{lid}/stageflow
+  https://api.water.noaa.gov/nwps/v1/gauges/{lid}      (the gauge's own page: USGS id and the NWS flood categories)
 """
 
 from __future__ import annotations
@@ -18,6 +19,23 @@ from .base import FetchSummary, Source, register
 log = logging.getLogger("nmwater.nwps")
 
 BASE = "https://api.water.noaa.gov/nwps/v1"
+FLOOD_CATEGORIES = ("action", "minor", "moderate", "major")          # in rising order; "action" is the NWS's name for the level at which it starts to watch the river
+
+
+def flood_row(lid: str, uid: str, detail: dict) -> dict | None:
+    """The NWS flood categories of one gauge as a row: the stage and flow at which each starts. None when the gauge defines none.
+    NWS encodes an undefined level as -999 (or leaves it out), and gives the flow in cfs or kcfs, so the units travel with the row."""
+    f = detail.get("flood") or {}
+    cats = f.get("categories") or {}
+    row = {"site_uid": uid, "lid": lid, "stage_units": f.get("stageUnits"), "flow_units": f.get("flowUnits")}
+    for c in FLOOD_CATEGORIES:
+        for k in ("stage", "flow"):
+            try:
+                v = float((cats.get(c) or {}).get(k))
+            except (TypeError, ValueError):
+                v = None
+            row[f"{c}_{k}"] = v if v is not None and v > -998 else None
+    return row if any(row[f"{c}_{k}"] is not None for c in FLOOD_CATEGORIES for k in ("stage", "flow")) else None
 
 
 @register
@@ -40,16 +58,16 @@ class NWPS(Source):
                 log.warning("nwps gauges request failed (%s): %s", params, ex)
         return []
 
-    def _usgs_id(self, lid: str | None) -> str | None:
-        """The USGS site number of a gauge. The list of gauges leaves usgsId empty; the gauge's own page has it (issue #68)."""
+    def _detail(self, lid: str | None) -> dict:
+        """The gauge's own page. The list of gauges leaves usgsId and the flood categories empty; this page has both (issue #68)."""
         if not lid:
-            return None
+            return {}
         try:
             art = self.get(f"{BASE}/gauges/{lid}", kind="meta", refresh=True)
-            return (art.read_json() or {}).get("usgsId") or None
+            return art.read_json() or {}
         except Exception as ex:
             log.warning("nwps gauge %s: no detail (%s)", lid, ex)
-            return None
+            return {}
 
     def discover(self) -> pd.DataFrame:
         rows = []
@@ -58,8 +76,9 @@ class NWPS(Source):
             st = (g.get("state") or {}).get("abbreviation")
             if st != self.scope.state_abbr and not self.scope.in_bbox(lat, lon):
                 continue
-            if not g.get("usgsId"):
-                g = {**g, "usgsId": self._usgs_id(g.get("lid"))}
+            if not g.get("usgsId") or not g.get("flood"):
+                d = self._detail(g.get("lid"))
+                g = {**g, "usgsId": g.get("usgsId") or d.get("usgsId") or None, "flood": g.get("flood") or d.get("flood")}
             rows.append(
                 {
                     "native_id": g.get("lid"),
@@ -97,6 +116,7 @@ class NWPS(Source):
         if limit:
             sites = sites.head(limit)
         today = date.today().isoformat()
+        floods: list[dict] = []
 
         def one(lid: str) -> int:
             # observations roll daily: always refresh, key by day so each day's snapshot is archived
@@ -110,10 +130,19 @@ class NWPS(Source):
             if fc is not None and len(fc):
                 self.store.append_table(fc, "forecasts", self.name, "stageflow_forecast", self.run_id)
             self.ledger.set_rows(art.request_key, n)
+            fl = flood_row(lid, self.uid(lid), self._detail(lid))
+            if fl:
+                floods.append(fl)
             return n
 
         ids = list(sites["native_id"])
         res = self.parallel(one, ids, desc="gauges")
+        if floods:
+            # A gauge whose page failed tonight keeps its last row; a changed level replaces it.
+            path = self.store.root / "reference" / f"source={self.name}" / "flood_thresholds.parquet"
+            new = pd.DataFrame(floods)
+            both = pd.concat([pd.read_parquet(path), new], ignore_index=True) if path.exists() else new
+            self.store.write_table(both.drop_duplicates("site_uid", keep="last").sort_values("site_uid"), "reference", self.name, "flood_thresholds")
         summ.n_rows = int(sum(res))
         summ.n_errors = len(ids) - len(res)
         return summ

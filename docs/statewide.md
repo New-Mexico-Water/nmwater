@@ -98,6 +98,22 @@ pipelines move water too; none are counted.
 - **Managed rivers.** Every one of these is regulated (Navajo, Heron, El Vado, Elephant Butte, Caballo, Avalon and Brantley, Conchas and Ute dams), so "below normal" reflects storage, releases and diversions as much as weather.
 - **Licence.** USGS and Reclamation data are public; the Colorado Division of Water Resources data is listed in the licence audit (terms read by hand still pending, issue #5-style item for Colorado).
 
+## Recent flooding (`statewide/flooding.json`)
+
+A **status, not a history, and not a warning.** It lists the New Mexico National Weather Service (NWS) river gauges, and the ones upstream in other states, that reached minor, moderate or major flood in the
+last three days (`window_days`), worst first, so the band on the home page goes about three days after the last gauge's peak. The NWS's warnings are the official word and are current to the minute; this file is made when the bundle is.
+
+- **Categories are the NWS's own.** `nmwater fetch nwps` reads each gauge's page (`/gauges/{lid}`) and stores the stage and flow at which action, minor, moderate and major flooding start
+  (`reference/source=nwps/flood_thresholds.parquet`, the catalog table `flood_thresholds`; 91 gauges now, the rest define none). They are set on stage, so stage decides; a gauge that publishes only
+  flow levels is judged on flow (kcfs converted). We set no threshold of our own. "Action" stage, where the NWS starts to watch a river, is below flooding and is never listed.
+- **A category counts as reached when two readings in a row are at or above it** (about half an hour apart), so a single bad reading, ice or a transmission error is not a flood.
+- **`current`** is the flood category still held by the last two readings, and only when the gauge reported within six hours of the file's `generated` time; otherwise it is empty and the gauge's last reading
+  is shown, never called "over". A gauge can stop reporting in a flood (the NWS Farmington gauge's last reading in the October 2026 flood is a day older than the file).
+- **Which state.** From the county the gauge sits in, as for the river pages, not the NWS's own tag (the USGS gauge "Animas River near Cedar Hill, NM" is about 2.5 miles inside Colorado).
+- **Readings are provisional**, and the stage and flow at a peak can differ from the USGS gauge at the same place, which has its own rating.
+- **Not included:** rivers without an NWS gauge that has flood categories, flash floods on small streams, and anything the NWS has not yet put on a gauge.
+- **No CSV**: it is a status.
+
 ## What cannot be totalled from what we hold
 
 | Metric | Why not |

@@ -215,6 +215,14 @@ def build(settings: Settings) -> Path:
     if wb_attr_pq.exists():
         con.execute(f"CREATE TABLE waterbodies AS SELECT * FROM read_parquet('{wb_attr_pq.as_posix()}')")
 
+    # The NWS flood categories of each gauge (nmwater fetch nwps): the stage and flow at which action, minor, moderate and major flooding start.
+    fl_pq = settings.parquet_dir / "reference" / "source=nwps" / "flood_thresholds.parquet"
+    if fl_pq.exists():
+        con.execute(f"CREATE TABLE flood_thresholds AS SELECT * FROM read_parquet('{fl_pq.as_posix()}')")
+    else:
+        con.execute("CREATE TABLE flood_thresholds (site_uid VARCHAR, lid VARCHAR, stage_units VARCHAR, flow_units VARCHAR"
+                    + "".join(f", {c}_{k} DOUBLE" for c in ("action", "minor", "moderate", "major") for k in ("stage", "flow")) + ")")
+
     # Dam capacity (National Inventory of Dams), matched to a waterbody comid where possible so
     # it joins to reservoir_storage observations via site_waterbodies without name matching.
     cap_pq = settings.parquet_dir / "reference" / "source=nid" / "reservoir_capacity.parquet"

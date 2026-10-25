@@ -635,3 +635,24 @@ def test_a_few_snowy_peaks_leave_the_statewide_mean_at_zero_but_not_the_snow_are
     big = np.full((10, 10), 1.0e9)                                   # the same snowy cell in a state 1000 times larger: the mean is nothing, the snow is still there
     m2, _, _, _, d2, s2 = sns.day_stats(swe, mask, big)
     assert m2 == pytest.approx(0.03 * sns.M_TO_IN / 100) and d2 == deepest and s2 == pytest.approx(1e9 / sns.SQ_M_PER_SQ_MI)
+
+
+def test_the_all_reservoirs_total_is_checked_against_the_groups_only_when_they_are_stated_on_the_same_day(tmp_path):
+    from nmwater.site import statewide as swx
+
+    frames = {}
+    for k, cap in (("heron", 400.0), ("caballo", 300.0)):
+        f = frame("2026-01-01", "2026-09-28", 100.0, cap)
+        f["measure"], f["slug"] = "percent_full", k + "-r"
+        frames[k] = f
+    swx.export_statewide(tmp_path, frames, {k: {"name": k.title()} for k in frames}, "2026-10-01T00:00:00+00:00", True, drought_con(weeks=120))
+    d = json.loads((tmp_path / "statewide" / "reservoirs.json").read_text())
+    idx = json.loads((tmp_path / "statewide" / "index.json").read_text())
+    entry = next(m for m in idx["metrics"] if m["id"] == "reservoirs")
+    bad = lambda: [p for p in sch._reservoir_statewide(tmp_path, d, entry) if "not the sum of the groups" in p]       # noqa: E731
+
+    assert not bad()
+    d["groups"]["all"]["storage_af"] += 5000                          # a real error: every group is stated on the same day as 'all'
+    assert bad()
+    d["groups"]["supply"]["as_of"] = "2099-01-01"                      # the supply group is a day or two ahead of 'all': its storage has moved on, so the sums cannot be compared
+    assert not bad()
