@@ -239,6 +239,14 @@ scripts/cron/nightly.sh                                     # run it now (hours)
 NIGHTLY_COMMAND=/bin/true scripts/cron/nightly.sh           # test the plumbing only
 ```
 
+**Hourly flood status (cron).** `scripts/cron/flood_hourly.sh` runs at seven minutes past every hour (`7 * * * *`). It takes the nightly's lock, so it skips the hours the nightly refresh is
+running, fetches the latest National Weather Service readings (`nmwater fetch nwps`, about 2.5 minutes), merges the new files (`nmwater compact nwps`, 3 seconds) and runs `nmwater flood-hourly --publish --redeploy`:
+that makes the flood status (the same `statewide/flooding.json` the bundle holds, checked against its schema), uploads it as `flooding-now.json` beside `latest.json`, and starts the
+website's build (`gh workflow run ci.yml`) **only when what the home page's flood band says has changed**: a gauge reaches or leaves a category, a river falls out of flood, the band appears or clears,
+or a flood is on and the page is more than 6 hours old; and never more than 6 times a day (`nmwater/site/flooding_now.py`; state in `data/flood_hourly_state.json`). The site downloads `flooding-now.json`
+when it builds (`scripts/fetch-data.ts`) and uses it in place of the bundle's own file when it is newer, so the band is in the page's HTML and nothing loads after the page. `--dry-run` makes the file and uploads
+nothing. Log: `data/logs/flood_hourly.log`.
+
 `scripts/cron/systemd/` keeps an equivalent systemd user timer and service (linked but the timer disabled) for a machine without cron: `systemctl --user enable --now nmwater-nightly.timer`. Use one scheduler, not both.
 
 ### What the river data contains
