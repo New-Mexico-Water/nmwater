@@ -210,9 +210,32 @@ def statewide_problems(root: Path, man: dict) -> list[str]:
             out += _snowpack_statewide(d, m)
         elif m["id"] == "flow":
             out += _flow_statewide(d, m)
+        elif m["id"] == "flooding":
+            out += _flooding_statewide(d, m)
     for pth in block["files"]["csv"]:
         if not (base / pth).exists():
             out.append(f"statewide: lists {pth}, which is missing")
+    return out
+
+
+def _flooding_statewide(d: dict, entry: dict) -> list[str]:
+    out = _validate(d, "statewide_flooding", "statewide/flooding.json")
+    if out:
+        return out
+    w, rank = "statewide/flooding.json", {None: 0, "minor": 1, "moderate": 2, "major": 3}
+    g, h = d["gauges"], entry["headline"]
+    if h["flooding"] != len(g) or h["checked"] != d["checked"] or h["now"] != sum(1 for x in g if x["current"]) or h["worst"] != (g[0]["category"] if g else None):
+        out.append(f"{w}: the index headline does not match the gauges")
+    if [rank[x["category"]] for x in g] != sorted((rank[x["category"]] for x in g), reverse=True):
+        out.append(f"{w}: gauges are not listed worst first")
+    for x in g:
+        if rank[x["current"]] > rank[x["category"]]:
+            out.append(f"{w}: {x['key']} is in a higher category now than its peak")
+        lv, ps = x["levels_ft"][x["category"]], x["peak_stage_ft"]
+        if lv is not None and ps is not None and ps < lv:
+            out.append(f"{w}: {x['key']} peaked below the level of the category it reached")
+        if x["last_time"] < x["peak_time"]:
+            out.append(f"{w}: {x['key']} has a last reading before its peak")
     return out
 
 
@@ -410,8 +433,10 @@ def _reservoir_statewide(root: Path, d: dict, entry: dict) -> list[str]:
             out.append(f"{w}: group {name} percent is not storage / capacity")
         if abs(sum(x["storage_af"] for x in e["shares"]) - e["storage_af"]) > max(1.0, 1e-6 * e["storage_af"]) and not e["stale"]:
             out.append(f"{w}: group {name} shares do not add up to its storage")
-    if abs(g["all"]["storage_af"] - sum(g[k]["storage_af"] for k in g if k != "all")) > max(50.0, 1e-4 * g["all"]["storage_af"]) and not g["all"]["stale"]:
-        out.append(f"{w}: 'all' storage is not the sum of the groups (they may differ only by reservoirs carried at different dates)")
+    # The sums can only be compared when every group is stated on the same day as 'all'; a group that is one or two days ahead (a reservoir that reported later) has moved on, and a flood moves storage by hundreds of acre-feet in a day.
+    same_day = all(e["as_of"] == g["all"]["as_of"] for e in g.values())
+    if same_day and abs(g["all"]["storage_af"] - sum(g[k]["storage_af"] for k in g if k != "all")) > max(50.0, 1e-4 * g["all"]["storage_af"]) and not g["all"]["stale"]:
+        out.append(f"{w}: 'all' storage is not the sum of the groups, although every group is stated on the same day")
     for name, h in d["history"].items():
         n = len(h["dates"])
         if any(len(v) != n for v in h.values()):

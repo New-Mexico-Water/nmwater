@@ -7,6 +7,7 @@ statewide/
   temperature.json   PRISM statewide mean air temperature: windows against 1991-2020, the last 365 days, monthly since 1895, annual, and a cross-check against nClimGrid
   snowpack.json      SNODAS statewide snow water equivalent: now (or out of season), the same dates in earlier weeks, the last season's peak, the season so far against other years,
                      the peak of every season since 2004, and a cross-check against the SNOTEL stations
+  flooding.json      the NWS gauges that reached minor, moderate or major flood in the last three days, with their peaks (no CSV: it is a status, not a history)
   flow.json          acre-feet leaving New Mexico at five exit gauges (and entering at Lobatos) over windows and water years, against 1991-2020
   *.csv              the histories as tables
 
@@ -23,6 +24,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from ..derived import flooding as fl
+from ..derived import river_flow as rf
 from ..derived import statewide as sw
 from ..derived import statewide_flow as swf
 from ..derived import statewide_snow as sns
@@ -242,6 +245,44 @@ def flow_file(con, generated: str, csv_dir: Path | None) -> tuple[dict, dict] | 
     return out, entry
 
 
+FLOODING_DEFINITIONS = {
+    "category": "The National Weather Service's own flood categories for each gauge, set on the river's stage: minor, moderate and major flooding. Action stage, where the Service starts to watch a river, is below flooding and is not listed.",
+    "reached": "A category counts as reached when two readings in a row, about half an hour apart, are at or above it, so a single bad reading is not a flood.",
+    "current": "The category still held by the last two readings, given only when the gauge reported within six hours of the time this file was made. Otherwise it is empty and the gauge's last reading is shown instead.",
+}
+FLOODING_NOT_INCLUDED = ("Rivers without an NWS gauge that has flood categories, and flash floods on small streams. The National Weather Service's warnings are the official word on flooding "
+                         "and are current to the minute; this file is made once a night.")
+
+
+def flooding_file(con, generated: str) -> tuple[dict, dict] | None:
+    """(statewide/flooding.json content, the index entry), or None when the catalog has no NWS flood categories or readings."""
+    if con is None:
+        return None
+    now = pd.Timestamp(generated)
+    now = now.tz_localize("UTC") if now.tzinfo is None else now.tz_convert("UTC")
+    th, obs = fl.read(con, now)
+    if th.empty:
+        return None
+    # The state is the one of the county the gauge sits in, not the Service's own tag: some of its gauges near the line carry the neighbouring state's code.
+    fips = " ".join(f"WHEN '{k}' THEN '{v}'" for k, v in rf.STATE_FIPS.items())
+    names = {r[0]: {"name": r[1], "state": r[2], "river": r[3], "usgs": r[4]} for r in con.execute(f"""
+        WITH fips AS (SELECT site_uid, CASE left(region_id, 2) {fips} END AS st FROM site_regions WHERE region_type = 'county')
+        SELECT s.site_uid, s.name, coalesce(any_value(fips.st), s.state), any_value(sr.river_name), json_extract_string(any_value(s.raw_metadata), '$.usgsId')
+        FROM sites s LEFT JOIN site_reaches sr USING (site_uid) LEFT JOIN fips USING (site_uid)
+        WHERE s.site_uid IN (SELECT site_uid FROM flood_thresholds) GROUP BY s.site_uid, s.name, s.state""").fetchall()}
+    s = fl.summarise(th, obs, names, now)
+    if s is None:
+        return None
+    out = {"schema_version": SCHEMA_VERSION, "id": "flooding", "generated": generated, "as_of": s["latest_reading"][:10], "window_days": fl.WINDOW_DAYS,
+           "source": "NOAA National Weather Service, National Water Prediction Service", **s,
+           "definitions": FLOODING_DEFINITIONS, "not_included": FLOODING_NOT_INCLUDED,
+           "method": f"Observed stage at each New Mexico NWS gauge that has flood categories, over the last {fl.WINDOW_DAYS} days, compared with those categories. Nothing is modelled; the readings are provisional."}
+    worst = out["gauges"][0]["category"] if out["gauges"] else None
+    head = {"as_of": out["as_of"], "checked": s["checked"], "flooding": len(s["gauges"]), "now": sum(1 for g in s["gauges"] if g["current"]), "worst": worst}
+    entry = {"id": "flooding", "title": "Recent flooding", "file": "flooding.json", "as_of": out["as_of"], "unit": "gauges", "headline": head, "sources": ["nwps"]}
+    return out, entry
+
+
 def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, generated: str, csv: bool = True, con=None, grids: Path | None = None, cache: Path | None = None,
                      keep_reservoirs_from: Path | None = None) -> dict | None:
     """Write <out>/statewide/ and return the manifest block, or None when there is nothing to say.
@@ -296,6 +337,11 @@ def export_statewide(out: Path, frames: dict[str, pd.DataFrame], reg: dict, gene
         metrics.append(entry)
         if csv:
             files["csv"].append("flow_water_years.csv")
+    fd = flooding_file(con, generated) if con is not None else None
+    if fd:
+        content, entry = fd
+        (base / "flooding.json").write_text(json.dumps(clean(content), separators=(",", ":"), allow_nan=False), encoding="utf-8")
+        metrics.append(entry)
     if not metrics:
         return None
     as_of = max(pd.Timestamp(m["as_of"]).date().isoformat() for m in metrics)

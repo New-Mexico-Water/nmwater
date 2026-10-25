@@ -1,0 +1,195 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Statewide flooding",
+ "description": "statewide/flooding.json: the National Weather Service gauges in New Mexico that reached minor, moderate or major flooding in the last window_days days, worst first, with the date and stage of the peak and whether the river is still in flood.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "id": {
+   "const": "flooding"
+  },
+  "generated": {
+   "type": "string"
+  },
+  "as_of": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}"
+  },
+  "window_days": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "source": {
+   "type": "string"
+  },
+  "checked": {
+   "type": "integer",
+   "minimum": 1
+  },
+  "latest_reading": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+  },
+  "gauges": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "key": {
+      "type": "string"
+     },
+     "lid": {
+      "type": "string"
+     },
+     "name": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "river": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "usgs_site": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "category": {
+      "enum": [
+       "minor",
+       "moderate",
+       "major"
+      ]
+     },
+     "current": {
+      "enum": [
+       "minor",
+       "moderate",
+       "major",
+       null
+      ]
+     },
+     "peak_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+     },
+     "peak_stage_ft": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "peak_flow_cfs": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "last_time": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$"
+     },
+     "last_stage_ft": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "levels_ft": {
+      "type": "object",
+      "properties": {
+       "action": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "minor": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "moderate": {
+        "type": [
+         "number",
+         "null"
+        ]
+       },
+       "major": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "required": [
+       "action",
+       "minor",
+       "moderate",
+       "major"
+      ],
+      "additionalProperties": false
+     },
+     "state": {
+      "type": [
+       "string",
+       "null"
+      ]
+     }
+    },
+    "required": [
+     "key",
+     "lid",
+     "name",
+     "state",
+     "river",
+     "usgs_site",
+     "category",
+     "current",
+     "peak_time",
+     "peak_stage_ft",
+     "peak_flow_cfs",
+     "last_time",
+     "last_stage_ft",
+     "levels_ft"
+    ],
+    "additionalProperties": false
+   }
+  },
+  "definitions": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "not_included": {
+   "type": "string"
+  },
+  "method": {
+   "type": "string"
+  }
+ },
+ "required": [
+  "schema_version",
+  "id",
+  "generated",
+  "as_of",
+  "window_days",
+  "source",
+  "checked",
+  "latest_reading",
+  "gauges",
+  "definitions",
+  "not_included",
+  "method"
+ ],
+ "additionalProperties": false
+}
