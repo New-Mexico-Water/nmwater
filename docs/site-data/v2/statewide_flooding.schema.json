@@ -143,6 +143,27 @@
        "string",
        "null"
       ]
+     },
+     "gnis_id": {
+      "type": [
+       "string",
+       "null"
+      ],
+      "description": "The GNIS id of the river the gauge sits on, as in the river pages' summary.river.gnis_id (optional: files made before 2026-10-25 do not have it)"
+     },
+     "lat": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "description": "Latitude of the gauge (optional, as gnis_id)"
+     },
+     "lon": {
+      "type": [
+       "number",
+       "null"
+      ],
+      "description": "Longitude of the gauge (optional, as gnis_id)"
      }
     },
     "required": [
