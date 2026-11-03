@@ -47,6 +47,7 @@ LAYERS: dict[str, tuple[str, str | None]] = {
     "Water_Use_2015_and_2020": ("water_use_2015_2020", None),
     "All_OSE_WaterRight_Records": ("water_right_records", None),
 }
+POD_LAYER = "OSE_Points_of_Diversion"
 LAYER_REFRESH_DAYS = 7           # an update re-pulls the layers (and so the points of diversion) when the stored copy is older than this: the biggest is hundreds of thousands of features
 
 
@@ -260,6 +261,44 @@ class OSEArcGIS(Source):
             })
         return pd.DataFrame(rows)
 
+    # -- observations: drilling-time water levels from PODs ---------------------------
+    def _pod_observations(self, df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
+        """(observations, PODs with a depth to water, PODs among them without a date) from a frame of points-of-diversion features.
+        One place builds them, for `fetch` (from the stored layer) and for `normalize` (from the raw layer pages), so the two cannot differ."""
+        dtw = pd.to_numeric(df.get("depth_wate"), errors="coerce")
+        keep = df[dtw.notna() & (dtw > 0)]
+        col = lambda c: keep[c] if c in keep else pd.Series(None, index=keep.index, dtype=object)  # noqa: E731  (a page may lack a date column)
+        when = col("log_file_d").map(_ms_to_date)
+        when = when.where(when.notna(), col("finish_dat").map(_ms_to_date))
+        obs = pd.DataFrame({
+            "site_uid": ["ose_arcgis:pod:" + self._pod_id(r) for r in keep.to_dict("records")],
+            "datetime_utc": pd.to_datetime(when, utc=True, errors="coerce").dt.floor("D"),
+            "value": pd.to_numeric(keep["depth_wate"], errors="coerce"),
+            "source_param": "depth_wate", "source_unit": "ft", "qualifier": "at_drilling",
+            "utc_offset_min": None, "statistic": "instantaneous", "interval": "irregular",
+        })
+        obs = obs[obs["datetime_utc"].notna()]
+        return self.xw.apply(obs, self.name), len(keep), int(when.isna().sum())
+
+    def normalize(self, artifact) -> pd.DataFrame | None:
+        """The drilling-time water levels in one archived page of the points-of-diversion layer (the only layer that carries observations); None for any other page.
+        Lets `nmwater reprocess ose_arcgis` rebuild the rows offline from the raw archive (#21)."""
+        if f"/{POD_LAYER}/FeatureServer/" not in artifact.url:
+            return None
+        raw = artifact.read_bytes()
+        try:
+            doc = json.loads(raw.decode("utf-8"))
+        except UnicodeDecodeError:
+            doc = json.loads(raw.decode("latin-1"))
+        if "error" in doc:
+            return None
+        obs, _, _ = self._pod_observations(self._layer_frame(POD_LAYER, doc.get("features", [])))
+        return obs
+
+    def reprocess(self, kind: str | None = "layer") -> int:
+        """The rows come from the archived layer pages, not from a "data" download: the default kind is `layer`."""
+        return super().reprocess(kind=kind)
+
     # -- fetch: drilling-time water levels from PODs --------------------------------
     def fetch(self, since: date | None = None, limit: int | None = None,
               site_ids: list[str] | None = None, refresh: bool = False, **opts) -> FetchSummary:
@@ -280,21 +319,9 @@ class OSEArcGIS(Source):
         df = pd.read_parquet(p)
         if limit:
             df = df.head(limit)
-        dtw = pd.to_numeric(df.get("depth_wate"), errors="coerce")
-        keep = df[dtw.notna() & (dtw > 0)]
-        when = keep.get("log_file_d").map(_ms_to_date)
-        when = when.where(when.notna(), keep.get("finish_dat").map(_ms_to_date))
-        obs = pd.DataFrame({
-            "site_uid": ["ose_arcgis:pod:" + self._pod_id(r) for r in keep.to_dict("records")],
-            "datetime_utc": pd.to_datetime(when, utc=True, errors="coerce").dt.floor("D"),
-            "value": pd.to_numeric(keep["depth_wate"], errors="coerce"),
-            "source_param": "depth_wate", "source_unit": "ft", "qualifier": "at_drilling",
-            "utc_offset_min": None, "statistic": "instantaneous", "interval": "irregular",
-        })
-        obs = obs[obs["datetime_utc"].notna()]
+        obs, n_keep, n_undated = self._pod_observations(df)
         if since is not None:
             obs = obs[obs["datetime_utc"] >= pd.Timestamp(since, tz="UTC")]
-        obs = self.xw.apply(obs, self.name)
         summ.n_rows = self.write_obs(obs, tag="pod-dtw")
-        summ.notes.append(f"{len(keep)} PODs with depth-to-water at drilling; {int(when.isna().sum())} without a date were skipped")
+        summ.notes.append(f"{n_keep} PODs with depth-to-water at drilling; {n_undated} without a date were skipped")
         return summ

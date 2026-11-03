@@ -117,3 +117,56 @@ def test_a_failed_re_pull_falls_back_to_the_stored_layers(tmp_path):
     s.discover = boom
     summ = s.fetch(since=date(2026, 9, 1))
     assert any("PODs with depth-to-water" in n for n in summ.notes)
+
+
+# ---- normalize(): rebuild the drilling-time water levels from the raw layer pages (#21)
+import gzip
+import json
+from types import SimpleNamespace as _NS
+
+
+def _page(tmp_path, layer, feats, name="page.json.gz"):
+    path = tmp_path / name
+    with gzip.open(path, "wb") as f:
+        f.write(json.dumps({"features": [{"properties": p, "geometry": None} for p in feats]}).encode())
+    return _NS(url=f"https://x/{layer}/FeatureServer/0/query", path=path, read_bytes=lambda: gzip.open(path, "rb").read())
+
+
+def _src_with_xw():
+    s = OSEArcGIS.__new__(OSEArcGIS)
+    s.xw = _NS(apply=lambda obs, name: obs)
+    return s
+
+
+def _pod(nbr, dtw, day_ms):
+    return {"pod_basin": "RG", "pod_nbr": nbr, "depth_wate": dtw, "log_file_d": day_ms}
+
+
+def test_normalize_reads_water_levels_from_a_pod_layer_page(tmp_path):
+    day = 1_700_000_000_000                                    # 2023-11-14
+    art = _page(tmp_path, "OSE_Points_of_Diversion", [_pod("1", 55.0, day), _pod("2", 0, day), _pod("3", None, day), _pod("4", 80.0, None)])
+    out = _src_with_xw().normalize(art)
+    assert out.site_uid.tolist() == ["ose_arcgis:pod:RG-1"] and out.value.tolist() == [55.0]
+    assert out.qualifier.tolist() == ["at_drilling"] and str(out.datetime_utc.iloc[0].date()) == "2023-11-14"
+
+
+def test_normalize_matches_what_fetch_builds_from_the_same_features(tmp_path):
+    day = 1_700_000_000_000
+    feats = [_pod("1", 55.0, day), _pod("2", 12.5, day + 86_400_000)]
+    s = _src_with_xw()
+    from_page = s.normalize(_page(tmp_path, "OSE_Points_of_Diversion", feats))
+    from_layer, n, undated = s._pod_observations(pd.DataFrame(feats))
+    pd.testing.assert_frame_equal(from_page.reset_index(drop=True), from_layer.reset_index(drop=True))
+    assert (n, undated) == (2, 0)
+
+
+def test_normalize_ignores_the_other_layers_and_error_pages(tmp_path):
+    s = _src_with_xw()
+    assert s.normalize(_page(tmp_path, "OSE_RTMs", [_pod("1", 55.0, 1_700_000_000_000)])) is None
+    err = _NS(url="https://x/OSE_Points_of_Diversion/FeatureServer/0/query", read_bytes=lambda: b'{"error": {"code": 500}}')
+    assert s.normalize(err) is None
+
+
+def test_reprocess_defaults_to_the_layer_pages():
+    import inspect
+    assert inspect.signature(OSEArcGIS.reprocess).parameters["kind"].default == "layer"

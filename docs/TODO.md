@@ -203,17 +203,19 @@ concurrently; only same-source parallelism would violate rate limits, since the 
 per-process.
 **Do:** add a worker pool across sources with a `--jobs` flag, defaulting to something modest.
 
-### D2. `ose_arcgis` has no `normalize()` — MEDIUM
+### D2. `ose_arcgis` has no `normalize()` — DONE (2026-11-03)
 **Issue:** [#21](https://github.com/New-Mexico-Water/nmwater/issues/21)
 It cannot be reprocessed offline; `reprocess --replace` deleted its rows before a guard was
 added. The guard now refuses, but the underlying gap remains.
-**Do:** implement `normalize()` so its observations can be rebuilt from the archive like every
+**Done:** `normalize()` rebuilds the drilling-time water levels from the archived points-of-diversion pages (`nmwater reprocess ose_arcgis`, default kind `layer`); it reproduces the 158,042 rows `fetch` writes, with none missing or extra.
+**Was:** implement `normalize()` so its observations can be rebuilt from the archive like every
 other source.
 
-### D3. Publish the QA report and data dictionary — MEDIUM
+### D3. Publish the QA report and data dictionary — DONE (2026-11-03)
 **Issue:** [#22](https://github.com/New-Mexico-Water/nmwater/issues/22)
 `docs/qa/` is gitignored, so coverage evidence is not visible to anyone reading the repository.
-**Do:** decide whether to commit a generated QA report, or add a workflow that regenerates and
+**Done:** `docs/qa/report.md` is committed (regenerate with `nmwater report`, see docs/usage.md); the data dictionary was already tracked.
+**Was:** decide whether to commit a generated QA report, or add a workflow that regenerates and
 publishes it.
 
 ### D4. NHDPlus reach linking — DONE (2026-09-13)
