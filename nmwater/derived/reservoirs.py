@@ -284,7 +284,14 @@ def pava(v: np.ndarray, w: np.ndarray) -> np.ndarray:
 
 
 # ---------------------------------------------------------------------------- one reservoir
-def build(con, key: str, cfg: dict) -> dict:
+def water_year(dates: pd.Series) -> pd.Series:
+    """The water year of each date: October to September, named for the year it ends in (1 Oct 2023 is water year 2024)."""
+    return dates.dt.year + (dates.dt.month >= 10).astype(int)
+
+
+def build(con, key: str, cfg: dict, water_years: bool = False) -> dict:
+    """One reservoir's annual table. `water_years` groups by water year (October to September, the convention for flow volumes) instead of calendar year;
+    the `year` column then holds the water year and `year_basis` says so. Capacity eras are still found on calendar years: they follow the operator's tables, not the hydrologic year."""
     sites = list(cfg.get("sites") or [])
     gauges = list(cfg.get("release_gauges") or [])
     flows = list(dict.fromkeys((cfg.get("inflow_sites") or []) + (cfg.get("release_sites") or [])))
@@ -299,7 +306,7 @@ def build(con, key: str, cfg: dict) -> dict:
     stor["date"] = pd.to_datetime(stor.date)
     if cfg.get("start_year"):
         stor = stor[stor.date.dt.year >= int(cfg["start_year"])]
-    stor["y"] = stor.date.dt.year
+    stor["y"] = water_year(stor.date) if water_years else stor.date.dt.year
 
     t, rmeta = rating_table(con, cfg["rating"]) if cfg.get("rating") else (pd.DataFrame(), {})
     override = cfg.get("capacity_basis_override")
@@ -465,7 +472,7 @@ def build(con, key: str, cfg: dict) -> dict:
             # a gauge below the dam may predate it (San Juan near Archuleta runs from 1954, Navajo
             # Dam closed in 1962): flow before storage began is river flow, not release
             f = f[f.date >= st.date.min()]
-            f["y"] = f.date.dt.year
+            f["y"] = water_year(f.date) if water_years else f.date.dt.year
         fl[key2] = f
 
     # ---- annual table
@@ -500,6 +507,8 @@ def build(con, key: str, cfg: dict) -> dict:
     a = a.reset_index().rename(columns={"y": "year"})
     a.insert(0, "reservoir", key)
     a.insert(1, "role", role)
+    if water_years:
+        a["year_basis"] = "water_year"
     for c in a.columns:
         if c.endswith("_af") or c.endswith("_cfs"):
             a[c] = a[c].round(0)

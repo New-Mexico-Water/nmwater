@@ -8,12 +8,16 @@ has since replaced its table.
     uv run python scripts/reservoir_fill.py            (or: just reports)
     uv run python scripts/reservoir_fill.py --only cochiti abiquiu
     uv run python scripts/reservoir_fill.py --no-notes
+    uv run python scripts/reservoir_fill.py --water-year       (October to September; CSVs only)
 
 Writes
     reports/reservoir_annual_fill.csv        every reservoir-year
     reports/reservoir_capacity_eras.csv      every capacity-table era, with capacity per pool
     reports/reservoir_pools.csv              pool definitions and where they came from
     reports/reservoirs/<key>_annual_fill.csv one per reservoir
+  With --water-year the years are water years (October to September, named for the year they end in, the
+  convention for flow volumes) and only the annual tables are written, as reports/reservoir_annual_fill_water_year.csv
+  and reports/reservoirs/<key>_annual_fill_water_year.csv; the calendar-year files and the notes are left alone.
     docs/reports/reservoirs/<key>.md         one notes file per reservoir (generated; edit the
                                              registry text, not the file)
 
@@ -418,7 +422,12 @@ def main() -> None:
     ap.add_argument("--notes", default=str(ROOT / "docs" / "reports" / "reservoirs"))
     ap.add_argument("--only", nargs="*")
     ap.add_argument("--no-notes", action="store_true")
+    ap.add_argument("--water-year", action="store_true", help="group by water year (Oct-Sep) and write only the annual tables, with a _water_year suffix")
     args = ap.parse_args()
+    wy = args.water_year
+    suffix = "_water_year" if wy else ""
+    if wy:
+        args.no_notes = True
     reg = yaml.safe_load(REGISTRY.read_text())["reservoirs"]
     con = connect(args.db)
     nid = load_nid()
@@ -429,13 +438,14 @@ def main() -> None:
     for key, cfg in reg.items():
         if args.only and key not in args.only:
             continue
-        r = build(con, key, cfg)
+        r = build(con, key, cfg, water_years=wy)
         a = r["annual"]
-        a.to_csv(out / "reservoirs" / f"{key}_annual_fill.csv", index=False)
+        a.to_csv(out / "reservoirs" / f"{key}_annual_fill{suffix}.csv", index=False)
         ann.append(a)
-        if len(r["eras"]):
+        if len(r["eras"]) and not wy:
             eras.append(r["eras"])
-        pools += r["pools"]
+        if not wy:
+            pools += r["pools"]
         if not args.no_notes:
             (notes / f"{key}.md").write_text(render_notes(con, r, nid))
         index.append(_index_row(r, nid))
@@ -446,7 +456,10 @@ def main() -> None:
               f"validation {vtxt:>16}  latest peak {peak:>6.1f}%")
     if args.only:
         return
-    pd.concat(ann, ignore_index=True).to_csv(out / "reservoir_annual_fill.csv", index=False)
+    pd.concat(ann, ignore_index=True).to_csv(out / f"reservoir_annual_fill{suffix}.csv", index=False)
+    if wy:
+        print(f"wrote {len(ann)} reservoirs (water years) to {out}")
+        return
     pd.concat(eras, ignore_index=True).to_csv(out / "reservoir_capacity_eras.csv", index=False)
     pd.DataFrame(pools).to_csv(out / "reservoir_pools.csv", index=False)
     if not args.no_notes:

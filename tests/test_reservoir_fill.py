@@ -79,3 +79,8 @@ def test_daily_keeps_a_genuine_rising_limb():
 def test_dry_threshold():
     assert rf.dry_threshold(0.0) == 5.0
     assert abs(rf.dry_threshold(89468.0) - 44.734) < 1e-3
+
+
+def test_water_year_runs_october_to_september_and_is_named_for_the_year_it_ends_in():
+    d = pd.Series(pd.to_datetime(["2023-09-30", "2023-10-01", "2023-12-31", "2024-01-01", "2024-09-30", "2024-10-01"]))
+    assert list(rf.water_year(d)) == [2023, 2024, 2024, 2024, 2024, 2025]
