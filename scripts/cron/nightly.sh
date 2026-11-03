@@ -6,7 +6,7 @@
 #
 # cron gives a job no memory cap, and this machine is also a desktop where systemd-oomd kills a user session under memory pressure, so the job runs as a transient user unit
 # (low priority, 8 GB soft and 14 GB hard memory limit) when the user's systemd manager is reachable, and under nice/ionice alone when it is not (the owner logged out).
-# NIGHTLY_COMMAND overrides the job (for testing the plumbing). Exit: the job's.
+# UPDATE_JOBS=3 (crontab) updates three sources at a time; unset = one at a time. NIGHTLY_COMMAND overrides the job (for testing the plumbing). Exit: the job's.
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
@@ -18,7 +18,8 @@ JOB=("${NIGHTLY_COMMAND:-$ROOT/scripts/cron/site_data.sh}")
 
 if [ -S "$XDG_RUNTIME_DIR/bus" ]; then
   USER_MANAGER=1
-  systemd-run --user --wait --collect --quiet -p Nice=10 -p IOSchedulingClass=idle -p CPUWeight=50 -p MemoryHigh=8G -p MemoryMax=14G \
+  # --setenv passes UPDATE_JOBS (set in the crontab) on: a transient user unit does not inherit cron's environment
+  systemd-run --user --wait --collect --quiet ${UPDATE_JOBS:+--setenv=UPDATE_JOBS} -p Nice=10 -p IOSchedulingClass=idle -p CPUWeight=50 -p MemoryHigh=8G -p MemoryMax=14G \
     --working-directory="$ROOT" "${JOB[@]}"
   rc=$?
 else
