@@ -58,3 +58,27 @@ def test_two_gauge_feeds_with_no_series_evidence_must_be_very_close():
 def test_neighbours_and_unrelated_names_stay_candidates():
     assert decide(site("nwps:BWLN5", "Bluewater Creek at Bluewater Reservoir"), site("wqp:USGS-1", "RSJ Spillway from Bluewater Lake"), 47.7, []) is None
     assert decide(site("usgs:1", "A"), site("usgs:2", "A"), 0.0, []) is None          # one source never links to itself
+
+
+from nmwater.catalog.link_review import decide_well
+
+
+def test_equal_depth_at_the_same_spot_is_one_well_in_two_programmes():
+    d = decide_well(site("nmwdi_st2:9767", "Columbine Thompson 07"), site("wqp:USGS-350726106223101", "10N.05E.02.141A"), 6.0, 48.768, 48.768)
+    assert d and d[0] == "same_location_different_sensor" and "Same well" in d[1]
+
+
+def test_nested_piezometers_at_different_depths_are_different_wells():
+    assert decide_well(site("nmwdi_st2:9094", "WBLUFFN1P3"), site("wqp:USGS-350638106413704", "WEST BLUFF NO. 2"), 0.2, 133.2, 99.97) is None
+
+
+def test_a_wqp_id_that_carries_the_usgs_station_number_names_the_same_well():
+    a, b = site("usgs:341525102435405", "AR-10-43-705"), site("wqp:TX001-341525102435405", "AR-10-43-705")
+    d = decide_well(a, b, 0.0, 27.432, 27.432)
+    assert d and "341525102435405" in d[1]
+    assert decide_well(a, b, 0.0, 27.4, 40.0) is None                 # the depths disagree: not that well
+
+
+def test_wells_far_apart_or_with_no_depth_stay_candidates():
+    assert decide_well(site("usgs:1", "A"), site("wqp:X", "A"), 40.0, 30.0, 30.0) is None
+    assert decide_well(site("usgs:1", "A"), site("wqp:X", "A"), 2.0, None, 30.0) is None

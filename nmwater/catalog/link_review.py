@@ -13,6 +13,9 @@ candidates. The rules, strictest first:
                          cannot be compared: a sampling point at a gauge, or two feeds of one place. It claims the place is the same, not the instrument.
   (no row)               anything else: a neighbour, a computed series, or too little evidence. The pair stays a candidate.
 
+Wells have their own rule (`decide_well`): the same depth within WELL_DEPTH_TOL_M at NEAR_WELL_M or closer is one well measured by two programmes, and a station number
+shared with a USGS well (WQP ids such as TX001-341525102435405) names the same well; nested piezometers at different depths are different wells and stay candidates.
+
 Pure functions here; `scripts/review_site_links.py` reads the catalog, applies them and writes the rows.
 """
 
@@ -114,4 +117,28 @@ def decide(a: dict, b: dict, metres: float, agreements: list[Agreement]) -> tupl
         what = "a gauge and a sampling point" if not both_gauges else "two feeds"
         compared = "series do not agree" if any(not agrees(g) and g.days >= MIN_DAYS for g in agreements) else "no series in common to compare"
         return ("same_location_different_sensor", f"Names agree on the place ({m:.0%} of place words), {metres:.0f} m apart: {what} at one place; {compared}")
+    return None
+
+
+WELL_DEPTH_TOL_M = 0.3   # one foot
+NEAR_WELL_M = 10.0
+
+
+def decide_well(a: dict, b: dict, metres: float, depth_a: float | None, depth_b: float | None) -> tuple[str, str] | None:
+    """(link_type, evidence) for two wells from different sources, or None. A well is the same well when the depths agree and the sites are close, or when one carries the
+    other's USGS station number in its id and the depths do not disagree. It is `same_location_different_sensor` (the same well, two programmes), never `same_sensor`: no
+    water-level series were compared."""
+    if a["source"] == b["source"]:
+        return None
+    known = depth_a is not None and depth_b is not None and not (math.isnan(depth_a) or math.isnan(depth_b))
+    gap = abs(depth_a - depth_b) if known else None
+    if known and gap > WELL_DEPTH_TOL_M:
+        return None
+    for usgs, other in ((a, b), (b, a)):
+        n = usgs["site_uid"].split(":", 1)[1]
+        if usgs["source"] == "usgs" and n.isdigit() and len(n) >= 8 and other["site_uid"].split(":", 1)[1].endswith("-" + n) and metres <= 25:
+            d = f"depth {depth_a:.1f} m in both" if known else "depth not recorded in one"
+            return ("same_location_different_sensor", f"The id of {other['site_uid']} carries USGS station number {n}: the same well, {metres:.0f} m apart, {d}")
+    if known and metres <= NEAR_WELL_M:
+        return ("same_location_different_sensor", f"Same well in two programmes: depth {depth_a:.1f} m and {depth_b:.1f} m (within {WELL_DEPTH_TOL_M} m), {metres:.1f} m apart")
     return None

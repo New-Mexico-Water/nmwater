@@ -1,9 +1,9 @@
-"""Review the automatic `colocated` surface-water site links and promote the pairs the evidence settles (issues #24, #68, #69).
+"""Review the automatic `colocated` surface-water and well site links and promote the pairs the evidence settles (issues #24, #65-#69).
 
     uv run python scripts/review_site_links.py              # show what would be added
     uv run python scripts/review_site_links.py --write      # append the new rows to catalog/sites_manual.csv
 
-Covers stream, canal, diversion, reservoir and lake pairs between different sources, USGS against water-quality points included. For each pair it compares the daily series the two
+Covers stream, canal, diversion, reservoir and lake pairs between different sources (USGS against water-quality points included) and well pairs (same depth at the same spot, or a shared USGS station number). Springs and weather sites are not reviewed here. For each pair it compares the daily series the two
 sites share (stage, reservoir elevation and storage, discharge), reads the names, and applies the rules in nmwater/catalog/link_review.py. A pair the evidence settles becomes a row
 in catalog/sites_manual.csv (`same_sensor` or `same_location_different_sensor`, with what settled it); every other pair stays a `colocated` candidate. Pairs already in the file are
 left as they are. Reads the DuckDB catalog (read-only); rebuild the catalog afterwards to see the links.
@@ -19,7 +19,7 @@ import duckdb
 import numpy as np
 import pandas as pd
 
-from nmwater.catalog.link_review import MEASURED, Agreement, decide
+from nmwater.catalog.link_review import MEASURED, Agreement, decide, decide_well
 
 ROOT = Path(__file__).resolve().parents[1]
 KINDS = ("stream", "reservoir", "lake", "canal", "diversion")
@@ -31,6 +31,14 @@ def candidates(con) -> pd.DataFrame:
         SELECT l.site_uid_a AS a, a.name AS na, a.source AS sa, l.site_uid_b AS b, b.name AS nb, b.source AS sb, l.distance_m AS m
         FROM site_links l JOIN sites a ON a.site_uid = l.site_uid_a JOIN sites b ON b.site_uid = l.site_uid_b
         WHERE l.link_type = 'colocated' AND a.site_type IN {KINDS} AND b.site_type IN {KINDS} AND a.source <> b.source
+        ORDER BY l.distance_m""").df()
+
+
+def well_candidates(con) -> pd.DataFrame:
+    return con.sql("""
+        SELECT l.site_uid_a AS a, a.name AS na, a.source AS sa, a.well_depth_m AS da, l.site_uid_b AS b, b.name AS nb, b.source AS sb, b.well_depth_m AS db, l.distance_m AS m
+        FROM site_links l JOIN sites a ON a.site_uid = l.site_uid_a JOIN sites b ON b.site_uid = l.site_uid_b
+        WHERE l.link_type = 'colocated' AND a.site_type = 'well' AND b.site_type = 'well' AND a.source <> b.source
         ORDER BY l.distance_m""").df()
 
 
@@ -94,6 +102,19 @@ def main() -> None:
         d = decide({"site_uid": r.a, "name": r.na, "source": r.sa}, {"site_uid": r.b, "name": r.nb, "source": r.sb}, r.m, agree.get((r.a, r.b), []))
         if d:
             rows.append({"site_uid_a": r.a, "site_uid_b": r.b, "link_type": d[0], "evidence": d[1]})
+    wells = well_candidates(con)
+    print(f"{len(wells):,} colocated well pairs between different sources")
+    n_wells = 0
+    for r in wells.itertuples():
+        if frozenset((r.a, r.b)) in have:
+            skipped += 1
+            continue
+        d = decide_well({"site_uid": r.a, "name": r.na, "source": r.sa}, {"site_uid": r.b, "name": r.nb, "source": r.sb}, r.m,
+                        None if pd.isna(r.da) else float(r.da), None if pd.isna(r.db) else float(r.db))
+        if d:
+            rows.append({"site_uid_a": r.a, "site_uid_b": r.b, "link_type": d[0], "evidence": d[1]})
+            n_wells += 1
+    pairs = pd.concat([pairs, wells[["a", "b"]]], ignore_index=True)
     out = pd.DataFrame(rows)
     print(f"{skipped} already in the manual file; {len(out):,} settled by the evidence, {len(pairs) - skipped - len(out):,} left as candidates")
     if len(out):
