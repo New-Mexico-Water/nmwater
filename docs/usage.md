@@ -172,7 +172,7 @@ Writes and prints `docs/qa/report.md`: coverage per source, site-count checks ag
 inventories, landmark record checks (Embudo streamflow from 1889, Elephant Butte storage from
 1915, Frisco Divide snowpack from 1971, and others), and hygiene warnings for duplicate keys,
 missing coordinates, sites without a HUC, unknown variables, and negative values in quantities
-that cannot be negative. Requires `catalog build` first.
+that cannot be negative. Requires `catalog build` first. The report is committed (the rest of `docs/qa/` is local run logs): regenerate it and commit it after a catalog rebuild or a source change, so the coverage evidence in the repository matches the archive. It is not part of the nightly, which would leave the working tree dirty every morning.
 
 ### watershed-precip
 

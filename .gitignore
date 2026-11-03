@@ -22,7 +22,8 @@ build/
 dist/
 
 # Run artifacts
-docs/qa/
+docs/qa/*
+!docs/qa/report.md
 *.log
 *.duckdb
 *.sqlite

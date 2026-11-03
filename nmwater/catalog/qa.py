@@ -40,10 +40,17 @@ SITE_COUNT_MIN = {
 }
 
 
+def _built(path: Path) -> str:
+    """The catalog file's modification date, so the committed report says how fresh it is without naming a path on one machine."""
+    from datetime import datetime, timezone
+
+    return datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d")
+
+
 def run(settings: Settings, out: Path | None = None) -> Path:
     con = duckdb.connect(str(settings.duckdb_path), read_only=True)
     con.execute("SET TimeZone='UTC'")
-    lines = ["# QA report", "", f"Catalog: `{settings.duckdb_path}`", ""]
+    lines = ["# QA report", "", f"Catalog: `{settings.duckdb_path.name}`, built {_built(settings.duckdb_path)}. Regenerate with `nmwater report`.", ""]
 
     # Coverage by source
     lines += ["## Coverage by source", "", "| source | sites | variables | observations | first | last |", "|---|---|---|---|---|---|"]
