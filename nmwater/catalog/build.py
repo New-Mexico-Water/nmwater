@@ -236,12 +236,15 @@ def build(settings: Settings) -> Path:
     # Sediment-corrected area-capacity tables from Reclamation resurveys. Unlike
     # reservoir_capacity (NID design storage, never revised for sediment), each row here is a
     # measured storage-elevation pair from a bathymetric survey in a stated year, so a percent-
-    # full figure computed against it is honest. Join on reservoir name / location_id.
+    # full figure computed against it is honest. Join on site_uid (usbr_rise:<location_id>), never the name.
     acap_pq = settings.parquet_dir / "reference" / "source=usbr_rise" / "reservoir_acap.parquet"
     if acap_pq.exists():
-        con.execute(f"CREATE TABLE reservoir_acap AS SELECT * FROM read_parquet('{acap_pq.as_posix()}')")
+        # `site_uid` is the key to join on; files written before the source added it get it from the location id
+        has_key = "site_uid" in {r[0] for r in con.execute(f"DESCRIBE SELECT * FROM read_parquet('{acap_pq.as_posix()}')").fetchall()}
+        extra = "" if has_key else ", 'usbr_rise:' || location_id AS site_uid"
+        con.execute(f"CREATE TABLE reservoir_acap AS SELECT *{extra} FROM read_parquet('{acap_pq.as_posix()}')")
     else:
-        con.execute("CREATE TABLE reservoir_acap (item_id BIGINT, location_id VARCHAR, reservoir VARCHAR, "
+        con.execute("CREATE TABLE reservoir_acap (item_id BIGINT, location_id VARCHAR, site_uid VARCHAR, reservoir VARCHAR, "
                     "survey_year BIGINT, survey_label VARCHAR, elevation_ft DOUBLE, capacity_af DOUBLE, "
                     "area_acres DOUBLE, interp_c DOUBLE, interp_m DOUBLE, vertical_datum_note VARCHAR)")
 

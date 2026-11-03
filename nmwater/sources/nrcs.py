@@ -35,6 +35,15 @@ def request_elements(codes) -> str:
     return ",".join(f"{c}:*" if c in DEPTH_ELEMENTS else c for c in codes)
 
 
+FORECAST_KEY = ["station_triplet", "element", "period_start", "period_end", "issue_date", "publication_date"]
+
+
+def merge_forecasts(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
+    """The stored forecasts plus the newly pulled ones; a forecast published again (same station, element, period, issue and publication date) takes the new values."""
+    both = pd.concat([old, new], ignore_index=True)
+    return both.drop_duplicates(subset=[c for c in FORECAST_KEY if c in both.columns], keep="last").reset_index(drop=True)
+
+
 @register
 class NRCS(Source):
     name = "nrcs"
@@ -157,17 +166,19 @@ class NRCS(Source):
         summ.n_rows = int(sum(res))
         summ.n_errors = len(jobs) - len(res)
         if "forecasts" in kinds:
-            summ.add(self.fetch_forecasts(st, refresh or bool(since)))
+            summ.add(self.fetch_forecasts(st, refresh or bool(since), since))
         return summ
 
-    def fetch_forecasts(self, st: list[dict], refresh: bool) -> FetchSummary:
+    def fetch_forecasts(self, st: list[dict], refresh: bool, since: date | None = None) -> FetchSummary:
+        """Water-supply forecasts published on or after `since` (all of them without it), merged into the stored table: the table is rewritten whole, so a partial pull must not replace it."""
         summ = FetchSummary(self.name)
+        begin = since.isoformat() if since else "1900-01-01"
         fps = [s["stationTriplet"] for s in st if s.get("forecastPoint")]
         rows = []
         for i in range(0, len(fps), 10):
             batch = fps[i:i + 10]
             art = self.get(f"{self.base}/forecasts", params={"stationTriplets": ",".join(batch),
-                           "beginPublicationDate": "1900-01-01"}, kind="forecasts", refresh=refresh)
+                           "beginPublicationDate": begin}, kind="forecasts", refresh=refresh)
             summ.n_requests += 1
             for fp in art.read_json() or []:
                 for d in fp.get("data", []):
@@ -181,7 +192,12 @@ class NRCS(Source):
                         **{f"p{k}": v for k, v in fv.items()},
                     })
         if rows:
-            self.store.write_table(pd.DataFrame(rows), "forecasts", self.name, "water_supply_forecasts")
+            new = pd.DataFrame(rows)
+            if since:
+                old_path = self.store.root / "forecasts" / f"source={self.name}" / "water_supply_forecasts.parquet"
+                if old_path.exists():
+                    new = merge_forecasts(pd.read_parquet(old_path), new)
+            self.store.write_table(new, "forecasts", self.name, "water_supply_forecasts")
             summ.n_rows = len(rows)
         return summ
 

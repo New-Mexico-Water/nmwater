@@ -283,6 +283,18 @@ def pava(v: np.ndarray, w: np.ndarray) -> np.ndarray:
     return fit
 
 
+def acap_for(con, sites: list[str]) -> pd.DataFrame:
+    """The sedimentation-survey table rows (reservoir_acap) for the reservoir whose registry `sites` are linked to a RISE site that carries the table.
+    Joined by site, not by name: a name such as "El" or "Lake" also matches other reservoirs."""
+    if not sites:
+        return pd.DataFrame()
+    return con.execute("""
+        SELECT * FROM reservoir_acap WHERE site_uid IN (
+            SELECT site_uid_b FROM site_links WHERE site_uid_a IN (SELECT unnest(?))
+            UNION SELECT site_uid_a FROM site_links WHERE site_uid_b IN (SELECT unnest(?))
+            UNION SELECT unnest(?))""", [sites, sites, sites]).df()
+
+
 # ---------------------------------------------------------------------------- one reservoir
 def water_year(dates: pd.Series) -> pd.Series:
     """The water year of each date: October to September, named for the year it ends in (1 Oct 2023 is water year 2024)."""

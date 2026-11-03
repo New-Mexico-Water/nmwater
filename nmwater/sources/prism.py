@@ -18,7 +18,7 @@ import logging
 import re
 import tempfile
 import zipfile
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 import pandas as pd
@@ -45,6 +45,16 @@ UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) nmwater/0.1"}
 CITATION = "PRISM Climate Group, Oregon State University, https://prism.oregonstate.edu, accessed 2026."
 LICENSE = "Free for reproduction and redistribution with attribution (OSU copyright)."
 UNITS = {"ppt": "mm", "tmin": "degC", "tmax": "degC", "tmean": "degC", "tdmean": "degC", "vpdmin": "hPa", "vpdmax": "hPa"}
+
+
+def fetched_within(ledger, key: str, hours: float = 24.0, now: datetime | None = None) -> bool:
+    """True when this file was downloaded in the last `hours`. PRISM allows two downloads of a file per 24 h; a revision re-pull skips what a run earlier in the day already fetched."""
+    rec = ledger.get(key)
+    if not rec or rec.status != "ok" or not rec.fetched_at:
+        return False
+    when = pd.Timestamp(rec.fetched_at)
+    when = when.tz_localize("UTC") if when.tzinfo is None else when
+    return (pd.Timestamp(now or datetime.now(timezone.utc)) - when) < pd.Timedelta(hours=hours)
 
 
 @register
@@ -122,7 +132,8 @@ class PRISM(Source):
                 url = f"{BASE}/{var}/{freq}/{year}/{f}"
                 key = request_key("GET", url, None)
                 clip_nc = self.settings.grids_dir / "prism" / "_parts" / f"{var}_{freq}_{stamp}.nc"
-                needs = refresh or grid_done(self.ledger, key) is None or (since is not None and d >= revise_after)
+                needs = refresh or grid_done(self.ledger, key) is None or (
+                    since is not None and d >= revise_after and not fetched_within(self.ledger, key))
                 if needs or not clip_nc.exists():
                     zp = Path(td) / f
                     status, sha, nb = stream_download(self.http, self.name, url, zp, headers=UA)

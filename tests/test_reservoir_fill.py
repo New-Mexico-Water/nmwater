@@ -84,3 +84,15 @@ def test_dry_threshold():
 def test_water_year_runs_october_to_september_and_is_named_for_the_year_it_ends_in():
     d = pd.Series(pd.to_datetime(["2023-09-30", "2023-10-01", "2023-12-31", "2024-01-01", "2024-09-30", "2024-10-01"]))
     assert list(rf.water_year(d)) == [2023, 2024, 2024, 2024, 2024, 2025]
+
+
+def test_acap_is_found_by_site_link_not_by_name():
+    con = duckdb.connect()
+    con.execute("create table reservoir_acap (item_id bigint, site_uid varchar, reservoir varchar, capacity_af double)")
+    con.execute("insert into reservoir_acap values (1,'usbr_rise:324','El Vado Reservoir',10), (2,'usbr_rise:323','Elephant Butte Reservoir',20)")
+    con.execute("create table site_links (site_uid_a varchar, site_uid_b varchar)")
+    con.execute("insert into site_links values ('usbr_hydrodata:2685','usbr_rise:324'), ('usbr_rise:323','usbr_hydrodata:1119')")
+    got = rf.acap_for(con, ["usbr_hydrodata:2685", "usace_cwms:El Vado"])
+    assert got.reservoir.tolist() == ["El Vado Reservoir"]                    # a name match on "El" would also have found Elephant Butte
+    assert rf.acap_for(con, ["usbr_hydrodata:1119"]).item_id.tolist() == [2]   # the link may be written either way round
+    assert rf.acap_for(con, ["usgs:07199450"]).empty and rf.acap_for(con, []).empty

@@ -18,6 +18,13 @@ from .base import FetchSummary, Source, register
 CATEGORIES = ("reservoir_data", "gage_data")
 
 
+def drop_retired(meta: pd.DataFrame, retired: list[str]) -> tuple[pd.DataFrame, int]:
+    """`meta` without the series named in `retired` ("category/site_id/datatype_id"), and how many were dropped."""
+    key = meta["category"].astype(str) + "/" + meta["site_id"].astype(str) + "/" + meta["datatype_id"].astype(str)
+    gone = key.isin(set(map(str, retired or [])))
+    return meta[~gone], int(gone.sum())
+
+
 @register
 class USBRHydroData(Source):
     name = "usbr_hydrodata"
@@ -107,6 +114,9 @@ class USBRHydroData(Source):
             meta = meta[meta["site_id"].isin(keep)]
         # Only series with a crosswalk mapping
         meta = meta[[self.xw.lookup(self.name, str(d)) is not None for d in meta["datatype_id"].astype(str)]]
+        meta, n_retired = drop_retired(meta, self.opt("retired", []))
+        if n_retired:
+            summ.notes.append(f"{n_retired} series the provider lists but no longer serves were skipped (config: retired)")
         # Whole-POR files are small; re-download when incremental or refresh requested.
         do_refresh = refresh or since is not None
 

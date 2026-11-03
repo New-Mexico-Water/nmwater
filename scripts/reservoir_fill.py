@@ -51,7 +51,7 @@ import duckdb
 import pandas as pd
 import yaml
 
-from nmwater.derived.reservoirs import (REGISTRY, SOURCE_CITES, build, dry_threshold, load_nid)
+from nmwater.derived.reservoirs import (REGISTRY, SOURCE_CITES, acap_for, build, dry_threshold, load_nid)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -191,10 +191,9 @@ def render_notes(con, r: dict, nid: dict) -> str:
                   f"{v['n']:,} days.", ""]
         if float(cfg.get("elev_shift_ft", 0)):
             L += [f"Observed elevations are shifted {cfg['elev_shift_ft']:+.2f} ft before lookup.", ""]
-        acap = con.execute("select any_value(item_id) i, any_value(survey_label) s, max(capacity_af) c "
-                           "from reservoir_acap where reservoir ilike ?", [f"%{cfg['name'].split()[0]}%"]).fetchone()
-        if acap and acap[0]:
-            L += [f"Reclamation's sedimentation-survey table (RISE catalog item {acap[0]}, survey {acap[1]}) is also in "
+        acap = acap_for(con, list(cfg.get("sites") or []))
+        if len(acap):
+            L += [f"Reclamation's sedimentation-survey table (RISE catalog item {acap.item_id.iloc[0]}, survey {acap.survey_label.iloc[0]}) is also in "
                   "the archive as `reservoir_acap` and serves as corroboration; the CWMS table is used because it is "
                   "what the operator computes storage with today.", ""]
     if r["pools"]:

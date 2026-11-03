@@ -308,7 +308,8 @@ tagged with the year the survey was flown, for seven New Mexico reservoirs.
 
 | Column | Meaning |
 |---|---|
-| `reservoir`, `location_id` | reservoir name and RISE location id |
+| `site_uid`, `location_id` | the RISE site (`usbr_rise:<location_id>`) the table belongs to: **join on `site_uid`**, as `reservoir_capacity` joins on its comid. To reach a reservoir from other sources follow `site_links` (a manual link ties each registry reservoir's Reclamation sites to its RISE site) |
+| `reservoir` | reservoir name, a label only: a name match also finds other reservoirs ("El" matches El Vado and Elephant Butte) |
 | `survey_year`, `survey_label` | vintage of the survey; the label keeps multi-year surveys ("2017 and 2019") intact |
 | `elevation_ft` | water surface elevation, in the datum named by `vertical_datum_note` |
 | `capacity_af` | storage capacity at that elevation, acre-feet |
@@ -329,7 +330,7 @@ See [interpretation.md](interpretation.md).
 -- Linear interpolation between the two bracketing ACAP rows at the chosen full-pool elevation.
 WITH t AS (
   SELECT elevation_ft, capacity_af FROM reservoir_acap
-  WHERE reservoir = 'Elephant Butte Reservoir'
+  WHERE site_uid = 'usbr_rise:323'           -- Elephant Butte
 ),
 full_pool AS (              -- 4407 ft = spillway crest / top of conservation pool
   SELECT (SELECT max(capacity_af) FROM t WHERE elevation_ft <= 4407)

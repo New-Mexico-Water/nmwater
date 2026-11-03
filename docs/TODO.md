@@ -267,7 +267,7 @@ these survey tables kept as corroboration.
 - Parsing the pre-2007 survey PDFs (1957, 1969, 1980, 1988, 1999, 2007) would replace derived
   capacities with published ones. Ute 1992 and the pre-2007 Elephant Butte surveys exist only as
   PDF reports.
-- `reservoir_acap` joins to observations by reservoir name, not by comid.
+- `reservoir_acap` joins by `site_uid` (FIXED 2026-11-04; it joined by reservoir name, which gave El Vado Elephant Butte's table). Elephant Butte and Nambe Falls got manual links to their RISE sites.
 
 ### D6c. Reservoir reports for 24 reservoirs — DONE, with open items
 **Issues:** [#29](https://github.com/New-Mexico-Water/nmwater/issues/29), [#30](https://github.com/New-Mexico-Water/nmwater/issues/30), [#31](https://github.com/New-Mexico-Water/nmwater/issues/31), [#32](https://github.com/New-Mexico-Water/nmwater/issues/32), [#33](https://github.com/New-Mexico-Water/nmwater/issues/33), [#34](https://github.com/New-Mexico-Water/nmwater/issues/34), [#35](https://github.com/New-Mexico-Water/nmwater/issues/35), [#36](https://github.com/New-Mexico-Water/nmwater/issues/36), [#37](https://github.com/New-Mexico-Water/nmwater/issues/37), [#38](https://github.com/New-Mexico-Water/nmwater/issues/38)
@@ -329,7 +329,7 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
   25,385 discharge peaks at 710 sites and 23,941 stage peaks, water years 1884-2025.
 - **Colorado counted empty answers as errors (FIXED).** CDSS returns HTTP 404 "zero records" for a
   station with nothing new; 1,716 of 1,734 errors were that. The module now treats them as empty.
-- **Reclamation HydroData removed 32 series (LOW).** Those site-datatype files now return 404.
+- **Reclamation HydroData removed 32 series (FIXED 2026-11-04: listed under `retired` in config/sources.yaml and skipped).** Those site-datatype files now return 404.
   **Do:** confirm with the metadata file and retire them from discovery.
 
 ### D9. Incremental-update defects found auditing every source (2026-09-23) — HIGH to LOW
@@ -361,14 +361,14 @@ Delivery mechanics for every source are in [sources.md](sources.md#how-each-sour
 - **GHCN-D stations will drop out in January (MEDIUM).** Stations are filtered on the inventory's
   last year from discovery (`noaa_ghcnd.py:100-107`); when since's year becomes 2027, stations
   recorded as ending 2026 are silently skipped. **Do:** refresh the inventory in update.
-- **NRCS forecasts re-pull full history every run (LOW).** `nrcs.py:163`.
+- **NRCS forecasts re-pull full history every run (FIXED 2026-11-04).** A run asks for forecasts published since its start date and merges them into the stored table.
 - **Rolling-window sources lose data if updates lapse (LOW).** usbr_albuq keeps about 7 days, nwps
   about 30. **Do:** schedule updates at least weekly, or at least note the gap.
 - **SensorThings and WQP miss late-loaded history (LOW).** Filtering on observation time skips
   records loaded late with old timestamps.
 - **USGS field-measurements can truncate silently (LOW).** Full pages split only three levels deep
   and are then returned without warning (`usgs.py:367`).
-- **PRISM can exceed its two-downloads-a-day limit (LOW)** if update runs twice in a day.
+- **PRISM can exceed its two-downloads-a-day limit (FIXED 2026-11-04)** if update runs twice in a day: a revision re-pull skips files fetched in the last 24 hours.
 
 ### D7. Plausible-range metadata for variables — LOW
 **Issue:** [#26](https://github.com/New-Mexico-Water/nmwater/issues/26)

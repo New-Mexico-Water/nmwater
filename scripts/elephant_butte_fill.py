@@ -67,8 +67,7 @@ ADOPTIONS = [
 
 def load(con) -> tuple[pd.DataFrame, callable, float]:
     acap = con.execute(
-        "select elevation_ft, capacity_af from reservoir_acap where reservoir = ? order by 1",
-        [RESERVOIR]).df()
+        "select elevation_ft, capacity_af from reservoir_acap where site_uid = 'usbr_rise:323' order by 1").df()      # RISE location 323: Elephant Butte
     if acap.empty:
         raise SystemExit("reservoir_acap is empty -- run `nmwater fetch usbr_rise --kind acap` "
                          "then `nmwater catalog build`")

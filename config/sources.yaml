@@ -39,6 +39,41 @@ sources:
     concurrency: 3
     min_interval_s: 0.3
     base_url: https://www.usbr.gov/uc/water/hydrodata
+    # Series (category/site_id/datatype_id) that the provider's meta.csv still lists but whose CSV file returns HTTP 404. All 32 failed on every update from 2026-09-23 and
+    # were re-checked on 2026-11-04 (three of them requested again by hand: still 404). They are skipped, not requested; remove one from this list to try it again.
+    retired:
+      - gage_data/1536/20
+      - gage_data/1537/20
+      - gage_data/1548/20
+      - gage_data/2690/19
+      - gage_data/2692/19
+      - gage_data/2692/20
+      - gage_data/2717/20
+      - gage_data/2718/20
+      - gage_data/2720/20
+      - gage_data/2721/20
+      - gage_data/2741/20
+      - gage_data/2742/20
+      - gage_data/2743/20
+      - gage_data/3764/20
+      - gage_data/3905/20
+      - gage_data/3907/20
+      - gage_data/4243/20
+      - gage_data/773/20
+      - gage_data/801/20
+      - gage_data/827/20
+      - gage_data/828/20
+      - gage_data/833/20
+      - gage_data/834/20
+      - gage_data/837/20
+      - gage_data/838/20
+      - gage_data/840/20
+      - gage_data/843/20
+      - gage_data/846/20
+      - gage_data/907/20
+      - reservoir_data/2685/43
+      - reservoir_data/2686/43
+      - reservoir_data/2688/29
 
   usbr_rise:
     update: {kinds: [data]}                    # survey tables (acap) are static

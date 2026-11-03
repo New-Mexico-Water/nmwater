@@ -255,6 +255,7 @@ class USBRRise(Source):
         return pd.DataFrame({
             "item_id": int(item["item_id"]),
             "location_id": item.get("location_id"),
+            "site_uid": self.uid(str(item.get("location_id"))),      # the key to join on (the reservoir name is only a label)
             "reservoir": re.sub(r"\s*\(.*", "", str(item.get("record_title") or "")
                                 ).replace(" Sedimentation Survey Data", "").strip(),
             "survey_year": int(yrs[-1]) if yrs else None,
