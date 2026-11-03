@@ -195,13 +195,14 @@ diversion records are held by the Bureau of Indian Affairs with no public source
 
 ## D. Code and tooling
 
-### D1. `fetch` runs its named sources sequentially — MEDIUM
+### D1. `fetch` runs its named sources sequentially — DONE (2026-11-03)
 **Issue:** [#20](https://github.com/New-Mexico-Water/nmwater/issues/20)
 `nmwater fetch a b c` processes one source at a time inside a single process, which made the
 phase recipes much slower than necessary. Sources are independent providers, so they can run
 concurrently; only same-source parallelism would violate rate limits, since the limiter is
 per-process.
-**Do:** add a worker pool across sources with a `--jobs` flag, defaulting to something modest.
+**Done:** `nmwater fetch` and `nmwater update` take `--jobs N` (default 1); the nightly reads `UPDATE_JOBS`. From last night's per-source timings, 3 jobs would take the update from 3.9 h to about 1.3 h (ziamet alone is 80 min). Not yet switched on in the cron: one observed run first, for memory.
+**Was:** add a worker pool across sources with a `--jobs` flag, defaulting to something modest.
 
 ### D2. `ose_arcgis` has no `normalize()` — DONE (2026-11-03)
 **Issue:** [#21](https://github.com/New-Mexico-Water/nmwater/issues/21)

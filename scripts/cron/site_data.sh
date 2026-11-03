@@ -47,7 +47,8 @@ fi
 echo "$(date -Is) start (update=$UPDATE publish=$PUBLISH)"
 status=0
 if [ "$UPDATE" = 1 ]; then
-  if ! "$UV" run nmwater update; then
+  # UPDATE_JOBS=3 updates three sources at a time (the update is ~3.9 h one by one, ~1.3 h with three; the longest source, ziamet, sets the floor); unset = one at a time
+  if ! "$UV" run nmwater update ${UPDATE_JOBS:+--jobs "$UPDATE_JOBS"}; then
     echo "$(date -Is) update failed; exporting from the existing catalog"
     status=1
   fi

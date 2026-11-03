@@ -3,6 +3,9 @@
 from __future__ import annotations
 
 import logging
+import threading
+from concurrent.futures import ThreadPoolExecutor
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
 from typing import Optional
@@ -116,6 +119,7 @@ def fetch(
     site: Optional[list[str]] = typer.Option(None, "--site", help="native site id(s) to restrict to"),
     refresh: bool = typer.Option(False, "--refresh", help="ignore archived responses"),
     kind: Optional[list[str]] = typer.Option(None, "--kind", help="restrict to data kind(s) the source supports"),
+    jobs: int = typer.Option(1, "--jobs", "-j", min=1, help="sources fetched at the same time (each source still obeys its own rate limit; more jobs need more memory)"),
     data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
     verbose: bool = typer.Option(False, "-v"),
 ):
@@ -128,8 +132,15 @@ def fetch(
     if since_d and until_d and until_d < since_d:
         raise typer.BadParameter("--until is before --since")
     total = FetchSummary("all")
-    for name in names:
-        _fetch_one(ctx, name, since_d, until_d, limit, site, refresh, list(kind) if kind else None, verbose, total)
+    kinds = list(kind) if kind else None
+    if jobs > 1 and len(names) > 1:
+        with ThreadPoolExecutor(max_workers=jobs, thread_name_prefix="fetch") as pool:
+            for _, summ, _, _ in pool.map(lambda n: _fetch_one(ctx, n, since_d, until_d, limit, site, refresh, kinds, verbose), names):
+                if summ is not None:
+                    total.add(summ)        # added here, in one thread
+    else:
+        for name in names:
+            _fetch_one(ctx, name, since_d, until_d, limit, site, refresh, kinds, verbose, total)
     ctx.http.close()
     ctx.ledger.close()
 
@@ -145,8 +156,7 @@ def _fetch_one(ctx: Context, name: str, since_d, until_d, limit, site, refresh: 
     run_id = ctx.ledger.start_run(name, "fetch", {"since": since_d.isoformat() if since_d else None,
                                                  "until": until_d.isoformat() if until_d else None,
                                                  "limit": limit, "site": site, "kinds": kinds})
-    ctx.run_id = run_id
-    src = cls(ctx)
+    src = cls(replace(ctx, run_id=run_id))      # its own copy: the run id is per fetch, and fetches may run side by side (--jobs)
     try:
         src.check_tokens()
         opts = {"kinds": list(kinds)} if kinds else {}
@@ -239,6 +249,7 @@ def update(
     catalog: bool = typer.Option(True, "--catalog/--no-catalog", help="rebuild the DuckDB catalog afterwards"),
     dry_run: bool = typer.Option(False, "--dry-run", help="show the plan and exit"),
     log: Path = typer.Option(Path("reports/update_log.csv"), "--log", help="append one row per source here"),
+    jobs: int = typer.Option(1, "--jobs", "-j", min=1, help="sources updated at the same time (each source still obeys its own rate limit; more jobs need more memory)"),
     data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
     verbose: bool = typer.Option(False, "-v"),
 ):
@@ -307,13 +318,17 @@ def update(
         return
 
     rows: list[UpdateRow] = []
-    for name, pol, sd, kinds, note in plan:
+    log_lock = threading.Lock()
+    tag = (lambda n: f"{n}: ") if jobs > 1 else (lambda n: "")      # output of sources running together is interleaved: say whose line it is
+
+    def one(item) -> UpdateRow:
+        name, pol, sd, kinds, note = item
         r = UpdateRow(update_id=uid, source=name, policy=pol, since=sd.isoformat() if sd else "", notes=note)
         if pol == "skip":
             r.status = "skipped"
-            rows.append(r)
-            append_log(log, [r])
-            continue
+            with log_lock:
+                append_log(log, [r])
+            return r
         raw_dir, grid_dir = st.raw_dir / name, st.grids_dir / name
         r.raw_bytes_before, r.grid_bytes_before = dir_bytes(raw_dir), dir_bytes(grid_dir)
         r.rows_before, r.parquet_bytes_before = parquet_stats(st.parquet_dir, name)
@@ -342,11 +357,21 @@ def update(
         r.net_new_rows = r.rows_after - r.rows_before
         r.disk_bytes_delta = ((r.raw_bytes_after - r.raw_bytes_before) + (r.grid_bytes_after - r.grid_bytes_before)
                               + (r.parquet_bytes_after - r.parquet_bytes_before))
-        console.print(f"  {r.fetch_seconds:,.0f} s fetch, {r.compact_seconds:,.0f} s compact, "
+        console.print(f"  {tag(name)}{r.fetch_seconds:,.0f} s fetch, {r.compact_seconds:,.0f} s compact, "
                       f"{_human(r.bytes_downloaded)} downloaded, {r.net_new_rows:+,} net rows, "
                       f"{_human(r.disk_bytes_delta)} on disk")
-        rows.append(r)
-        append_log(log, [r])        # append as we go, so an interrupted run still leaves a record
+        with log_lock:
+            append_log(log, [r])        # append as we go, so an interrupted run still leaves a record
+        return r
+
+    if jobs > 1:
+        # the slowest sources first, by what the log says they took last time, so the run does not end on one long source started late
+        took = _last_seconds(log)
+        order = sorted(plan, key=lambda it: -took.get(it[0], 0.0))
+        with ThreadPoolExecutor(max_workers=jobs, thread_name_prefix="update") as pool:
+            rows = list(pool.map(one, order))
+    else:
+        rows = [one(item) for item in plan]
 
     extra = []
     if catalog:
@@ -395,6 +420,18 @@ def update(
     console.print(f"logged to {log}")
     ctx.http.close()
     ctx.ledger.close()
+
+
+def _last_seconds(log: Path) -> dict[str, float]:
+    """Seconds each source took (fetch plus compact) in its latest row of the update log; empty when there is no log yet."""
+    try:
+        import pandas as pd
+
+        d = pd.read_csv(log, usecols=["source", "fetch_seconds", "compact_seconds"])
+        d["s"] = d.fetch_seconds.fillna(0) + d.compact_seconds.fillna(0)
+        return d.drop_duplicates("source", keep="last").set_index("source")["s"].to_dict()
+    except Exception:
+        return {}
 
 
 @app.command("purge-missing-codes")

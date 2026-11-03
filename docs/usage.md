@@ -44,6 +44,7 @@ USGS series catalogs that record period of record per site and parameter.
 
 ```bash
 nmwater fetch nrcs                          # full backfill
+nmwater fetch usgs nrcs codwr --jobs 3     # three sources at a time (each still obeys its own rate limit)
 nmwater fetch nrcs --since 2026-09-01       # only new data
 nmwater fetch usgs --kind continuous        # one data kind
 nmwater fetch codwr --site LAJCAPCO         # specific native site ids
@@ -226,7 +227,7 @@ MAILTO=""
 
 `nightly.sh` runs `scripts/cron/site_data.sh --update --publish` (the bundle goes to R2, bucket `nmwater-site-data`, served at `https://data.newmexicowater.org`; if `WEB_REPO` and `GH_TOKEN` are set in `.env` the website repository is told to rebuild, otherwise its daily 12:30 UTC run picks the new bundle up; a failed publish fails the job and raises the notification) as a transient user systemd unit with the limits below, because cron itself gives a
 job no memory cap, and the machine is also a desktop where systemd-oomd kills a user session under memory pressure: low priority, 8 GB soft and 14 GB hard memory. If the user's systemd manager is
-not reachable (logged out) it runs under `nice`/`ionice` alone. The wrapper runs `nmwater update` (fetch, compact, watershed precipitation, catalog build), checks the catalog (an `update` records a
+not reachable (logged out) it runs under `nice`/`ionice` alone. The wrapper runs `nmwater update` (set `UPDATE_JOBS=3` in the cron environment to update three sources at a time; unset, one at a time) (fetch, compact, watershed precipitation, catalog build), checks the catalog (an `update` records a
 failed catalog build instead of failing, which leaves a stub database; the wrapper rebuilds it once), then `export-site-data`; a failed export leaves the previous bundle. On success `nightly.sh` restarts
 the dev server unit `nmwater-web-dev` so the site shows the new data; on failure a desktop notification appears. A catch-up run after a long gap takes hours (the last was 3.5 h for the update); a normal
 night takes under an hour plus about 27 minutes for the export. Plain cron has no catch-up: a night the machine is off is skipped (the next run catches up the data, since `update` fetches from each
@@ -395,6 +396,7 @@ uses SQLite in WAL mode and tolerates concurrent writers.
 nmwater update --dry-run          # show each source's start date and policy
 nmwater update                    # fetch the delta everywhere, compact, rebuild the catalog
 nmwater update usgs nrcs          # only these sources
+nmwater update --jobs 3           # three sources at a time: about 1.3 h instead of 3.9 h (ziamet alone takes 80 min); more jobs need more memory
 nmwater update --since 2026-09-01 # one fixed start date for everything
 just update                       # update, then regenerate the reservoir reports
 ```
