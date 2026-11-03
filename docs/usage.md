@@ -396,6 +396,7 @@ uses SQLite in WAL mode and tolerates concurrent writers.
 nmwater update --dry-run          # show each source's start date and policy
 nmwater update                    # fetch the delta everywhere, compact, rebuild the catalog
 nmwater update usgs nrcs          # only these sources
+nmwater update --revise            # force the long look-back now (--routine forces new-data-only)
 nmwater update --jobs 3           # three sources at a time: about 1.3 h instead of 3.9 h (ziamet alone takes 80 min); more jobs need more memory
 nmwater update --since 2026-09-01 # one fixed start date for everything
 just update                       # update, then regenerate the reservoir reports
@@ -500,3 +501,13 @@ data/ledger.sqlite                          every request and its outcome
 
 `data/` is gitignored in full. It is rebuildable from the code and the ledger, and it gets
 large.
+
+
+### Routine nights and the weekly revision
+
+Providers revise recent values for weeks or months, so every source has to be re-read over a long look-back now and then, but not every night: a month of data re-downloaded to find a few changes costs us hours and the providers bandwidth. `nmwater update` therefore alternates:
+
+- a **routine run** asks for new data only: it starts `--routine-margin-days` (2) before each source's last fetch, sources that track their own progress (usgs continuous, usace_cwms, nrcs, iem_dcp) continue from where the ledger says they stopped, PRISM re-pulls only the last `routine_revision_days` (7) of grids, and sources with a `revise_kinds` policy (Seven Rivers chemistry, which returns a series' whole history on every request) leave those kinds out;
+- a **revision run**, once every `--revise-every-days` (7), starts `--margin-days` (30) back, PRISM re-pulls its full `revision_days` (190) window, and `revise_kinds` are included.
+
+The day of the last revision run is kept in `data/update_state.json` (no file means one is due). `--revise` and `--routine` force either kind; `--since` is a revision run that does not count towards the schedule; `--dry-run` shows which kind it would be. A source's policy in `config/sources.yaml` can read `update: {kinds: [levels], revise_kinds: [levels, chemistry]}`. Measured on 2026-11-03: Seven Rivers took 36 s and 73 requests on a routine night against 1,387 s and 2,774 requests on a revision night.

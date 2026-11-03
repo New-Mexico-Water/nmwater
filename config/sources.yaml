@@ -123,6 +123,8 @@ sources:
     base_url: https://meas.ose.state.nm.us
 
   isc_sevenrivers:
+    # the chemistry API has no date filter: every request returns a series' whole history (2,774 requests, ~23 min, nothing new most nights). Water levels take a start date.
+    update: {kinds: [levels], revise_kinds: [levels, chemistry]}
     concurrency: 2
     base_url: https://nmisc-wf.gladata.com/api
 

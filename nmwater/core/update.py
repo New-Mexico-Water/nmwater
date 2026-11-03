@@ -8,7 +8,9 @@ how fast the archive grows (net new rows, bytes on disk) and what keeping it cur
 from __future__ import annotations
 
 import csv
+import json
 import subprocess
+from datetime import date, timedelta
 from dataclasses import asdict, dataclass, field, fields
 from pathlib import Path
 
@@ -112,3 +114,24 @@ def append_log(path: Path, rows: list[UpdateRow]) -> None:
             w.writeheader()
         for r in rows:
             w.writerow(asdict(r))
+
+
+# ---- routine nights and the weekly revision --------------------------------------------------
+# Providers revise recent values for weeks or months, so a source has to be re-read over a long look-back now and then. Doing it every night re-downloads a month of data to find a
+# few changes. A routine night asks for new data only (a short overlap); one night in REVISE_EVERY_DAYS does the long look-back, and the day it last ran is kept here.
+REVISE_EVERY_DAYS = 7
+ROUTINE_MARGIN_DAYS = 2        # overlap on a routine night: the day the last run was still filling in
+
+
+def revision_due(state_path: Path, today: date, every_days: int = REVISE_EVERY_DAYS) -> bool:
+    """True when no revision run has been recorded, or the last one was `every_days` or more days ago."""
+    try:
+        last = date.fromisoformat(json.loads(state_path.read_text())["last_revision"])
+    except (OSError, ValueError, KeyError, TypeError):
+        return True
+    return today - last >= timedelta(days=every_days)
+
+
+def record_revision(state_path: Path, today: date) -> None:
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps({"last_revision": today.isoformat()}) + "\n")

@@ -317,12 +317,12 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
   spent 2 h 11 min mostly retrying and was stopped by hand. weather.nmsu.edu is now the primary
   host and updates cover daily data only. **Do:** confirm the next update completes, and cap
   per-request retries for this source.
-- **Seven Rivers has no date filter (LOW).** Its API returns full history per point and analyte, so
-  every update re-requests all 2,701 chemistry series. **Do:** skip chemistry in routine updates, or
-  update it monthly.
-- **PRISM's revision window is the largest download (LOW).** About 190 days of daily grids are
-  re-pulled each update, roughly 2.5 GB, by design. **Do:** consider a shorter `revision_days` for
-  routine updates and a full window monthly.
+- **Seven Rivers has no date filter (FIXED 2026-11-03).** Its API returns full history per point and analyte, so
+  every update re-requested all 2,701 chemistry series. **Done:** chemistry is read only on the weekly
+  revision run (`revise_kinds`); a routine night is 73 requests and 36 s instead of 2,774 and 23 min.
+- **PRISM's revision window is the largest download (FIXED 2026-11-03).** About 190 days of daily grids are
+  re-pulled each update, roughly 2.5 GB, by design. **Done:** a routine night re-pulls only the last 7
+  days (`routine_revision_days`) plus new files; the full 190-day window is the weekly revision run.
 - **USGS annual peaks were never in the archive (FIXED).** The peaks collection rejects any
   datetime filter ("datetime query not supported"), and all 175 peaks requests in the original
   backfill had failed unnoticed. Peaks are now pulled whole, one request of about 37,000 rows:

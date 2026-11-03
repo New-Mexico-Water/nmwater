@@ -18,6 +18,7 @@ from rich.table import Table
 from .catalog.crosswalk import Crosswalk
 from .core.config import Settings
 from .core.http import Http
+from .core.update import REVISE_EVERY_DAYS, ROUTINE_MARGIN_DAYS
 from .core.ledger import Ledger
 from .core.store import Store
 from .sources import SOURCES, Context, FetchSummary, Source, SourceUnavailable, load_all
@@ -243,8 +244,13 @@ def compact(
 def update(
     sources: list[str] = typer.Argument(None, help="sources to update (default: all with an update policy)"),
     margin_days: int = typer.Option(30, "--margin-days",
-                                    help="start this many days before each source's last successful fetch, "
+                                    help="on a revision run, start this many days before each source's last successful fetch, "
                                          "to pick up revisions of provisional data"),
+    routine_margin_days: int = typer.Option(ROUTINE_MARGIN_DAYS, "--routine-margin-days",
+                                            help="on every other run, start this many days before the last fetch: new data only"),
+    revise: Optional[bool] = typer.Option(None, "--revise/--routine",
+                                          help="force a revision run (long look-back) or a routine one (new data only); default: a revision run when none has been made in --revise-every-days"),
+    revise_every_days: int = typer.Option(REVISE_EVERY_DAYS, "--revise-every-days", help="days between revision runs"),
     since: Optional[str] = typer.Option(None, "--since", help="YYYY-MM-DD for every source, overriding the ledger"),
     catalog: bool = typer.Option(True, "--catalog/--no-catalog", help="rebuild the DuckDB catalog afterwards"),
     dry_run: bool = typer.Option(False, "--dry-run", help="show the plan and exit"),
@@ -263,7 +269,7 @@ def update(
     from datetime import UTC, datetime, timedelta
 
     from .catalog.build import build as build_catalog
-    from .core.update import UpdateRow, append_log, dir_bytes, parquet_stats
+    from .core.update import UpdateRow, append_log, dir_bytes, parquet_stats, record_revision, revision_due
 
     _setup_logging(verbose)
     names = _resolve(sources or ["all"])
@@ -271,6 +277,14 @@ def update(
     st = ctx.settings
     uid = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
     fixed = date.fromisoformat(since) if since else None
+    state_path = st.data_dir / "update_state.json"
+    # --since names its own start, so it is a revision run that does not count towards the schedule
+    revising = True if fixed else (revise if revise is not None else revision_due(state_path, date.today(), revise_every_days))
+    margin = margin_days if revising else routine_margin_days
+    console.print(f"[bold]{'revision run' if revising else 'routine run'}[/bold]: "
+                  + (f"looking back {margin} days to pick up revised values" if revising and not fixed else f"since {fixed}" if fixed
+                     else f"new data only ({margin}-day overlap); the next revision run is due "
+                          f"{'now' if revision_due(state_path, date.today(), revise_every_days) else 'within ' + str(revise_every_days) + ' days'}"))
     last = ctx.ledger.last_successful_fetch()
     # What each source actually holds. A fetch limited to some kinds (e.g. usace_cwms ratings) is a
     # successful run that says nothing about the time series, so the delta starts from the earlier
@@ -297,8 +311,10 @@ def update(
         if pol.get("skip"):
             plan.append((name, "skip", None, None, pol.get("reason", "skipped by policy")))
             continue
+        # a source can read more on a revision run than on a routine one (`revise_kinds`), e.g. an API that cannot be asked for new rows only
+        kinds_now = (pol.get("revise_kinds") or pol.get("kinds")) if revising else pol.get("kinds")
         if fixed:
-            plan.append((name, "delta", fixed, pol.get("kinds"), ""))
+            plan.append((name, "delta", fixed, kinds_now, ""))
             continue
         if name not in last:
             plan.append((name, "skip", None, None, "never completed a fetch; run `nmwater fetch` once by hand"))
@@ -308,7 +324,7 @@ def update(
         basis = f"last fetch {ran}"
         if cov and cov < ran and (ran - cov).days <= 90:
             ran, basis = cov, f"newest data {cov}"
-        plan.append((name, "delta", ran - timedelta(days=margin_days), pol.get("kinds"), basis))
+        plan.append((name, "delta", ran - timedelta(days=margin), kinds_now, basis))
 
     t = Table("source", "policy", "since", "kinds", "note")
     for name, pol, sd, kinds, note in plan:
@@ -334,11 +350,12 @@ def update(
         r.rows_before, r.parquet_bytes_before = parquet_stats(st.parquet_dir, name)
         console.rule(f"{name} since {r.since}")
         t0 = time.monotonic()
-        # revise=True: sources that would otherwise skip ahead to what the ledger says is already
-        # fetched (usgs continuous, usace_cwms, nrcs, iem_dcp) honour `since` exactly, so the
-        # margin actually re-pulls recent provisional values.
+        # revise=True (a revision run): sources that would otherwise skip ahead to what the ledger says is already
+        # fetched (usgs continuous, usace_cwms, nrcs, iem_dcp) honour `since` exactly, so the margin actually
+        # re-pulls recent provisional values. On a routine night they skip ahead: new data only. `routine` lets
+        # a source shorten its own revision window (PRISM).
         status, summ, run_id, fnote = _fetch_one(ctx, name, sd, None, None, None, False, kinds, verbose,
-                                                 extra={"revise": True})
+                                                 extra={"revise": revising, "routine": not revising})
         r.fetch_seconds = round(time.monotonic() - t0, 1)
         r.status, r.notes = status, fnote or note
         if summ:
@@ -400,8 +417,10 @@ def update(
                                fetch_seconds=round(time.monotonic() - t0, 1),
                                parquet_bytes_after=dir_bytes(st.duckdb_path.parent)))
     done = [r for r in rows if r.policy == "delta"]
+    if revising and not fixed:
+        record_revision(state_path, date.today())
     tot = UpdateRow(update_id=uid, source="_total", policy="summary",
-                    status=f"{sum(r.status == 'ok' for r in done)} ok, {sum(r.status == 'partial' for r in done)} "
+                    status=f"{'revision' if revising else 'routine'}: {sum(r.status == 'ok' for r in done)} ok, {sum(r.status == 'partial' for r in done)} "
                            f"partial, {sum(r.status == 'error' for r in done)} error, "
                            f"{sum(r.policy == 'skip' for r in rows)} skipped")
     for f in ("fetch_seconds", "compact_seconds", "n_requests", "n_cached", "n_errors", "rows_fetched",

@@ -6,7 +6,8 @@ vpdmax) and daily 1981-now (ppt, tmin, tmax, tmean). Files are CONUS COGs in zip
 
 Each zip is streamed to a temp file, the COG is clipped to the NM bbox, and the CONUS zip is discarded.
 Clipped rasters are stacked into one NetCDF per variable-year (monthly: 12 steps; daily: ~365).
-PRISM revises grids for ~6 months after release; `--since` re-pulls anything inside that window.
+PRISM revises grids for ~6 months after release; `--since` re-pulls anything inside that window (`revision_days`, 190). A routine `nmwater update` night re-pulls only the
+last `routine_revision_days` (7) plus files not yet downloaded; the weekly revision run re-pulls the whole window.
 Rate rule: the same file may be downloaded at most twice per 24 h; the ledger prevents repeats.
 """
 
@@ -53,6 +54,11 @@ class PRISM(Source):
     description = "PRISM 4 km monthly (1895-) and daily (1981-) precip/temp/VPD clipped to NM"
     kinds = ("grid",)
 
+    def revise_after(self, routine: bool = False) -> date:
+        """Grids dated on or after this are downloaded again when `since` is given: the whole revision window (190 days), or only the last week on a routine update night."""
+        days = int(self.opt("routine_revision_days", 7)) if routine else int(self.opt("revision_days", 190))
+        return date.today() - timedelta(days=days)
+
     def _list(self, var: str, freq: str, year: int) -> list[str]:
         url = f"{BASE}/{var}/{freq}/{year}/"
         art = self.get(url, kind="listing", headers=UA, refresh=True)
@@ -71,7 +77,7 @@ class PRISM(Source):
         summ = FetchSummary(self.name)
         kinds = opts.get("kinds") or ["monthly", "daily"]
         this_year = date.today().year
-        revise_after = date.today() - timedelta(days=int(self.opt("revision_days", 190)))
+        revise_after = self.revise_after(routine=bool(opts.get("routine")))
         jobs: list[tuple[str, str, int]] = []
         if "monthly" in kinds:
             y0 = since.year if since else int(self.opt("monthly_start", 1895))
