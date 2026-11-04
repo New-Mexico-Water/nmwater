@@ -143,7 +143,7 @@ def page_data(b: Bundle) -> dict:
         sal["n"].append([int(d["n_days"].get(sg)) if sg in d.index else 0 for sg in segs])
     # watershed
     ws = {"segments": []}
-    pv = rw.monthly_vs_normal(b.clim, "precip_in")
+    pv = rw.monthly_vs_normal(b.clim, "precip_in", center="mean")
     tv = rw.monthly_vs_normal(b.clim, "air_temp_c")
     swe = b.clim[b.clim["variable"] == "swe_in"].copy()
     swe["date"] = pd.to_datetime(swe["date"])

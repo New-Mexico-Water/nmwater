@@ -38,7 +38,8 @@ NOTE = "A PRISM day is the 24 hours ending at 12:00 UTC on its date (about 5 to 
 
 
 def window_stats(s: pd.Series, window: int, years: tuple[int, int] = NORMAL_YEARS) -> dict | None:
-    """The last `window` days of s (a daily series, PRISM days) against the same calendar window in each year of the normal period."""
+    """The last `window` days of s (a daily series, PRISM days) against the same calendar window in each year of the normal period.
+    `normal_in` is the mean of those years' totals, and percent of normal is the total over it; the percentile and class rank the total among those years."""
     if len(s) < window:
         return None
     last = s.index.max()
@@ -54,7 +55,7 @@ def window_stats(s: pd.Series, window: int, years: tuple[int, int] = NORMAL_YEAR
         return {"window_start": last - pd.Timedelta(days=window - 1), "window_end": last, "total_in": total, "normal_in": None,
                 "percent_of_normal": None, "percentile": None, "class": None, "wettest_date": now.idxmax(), "wettest_in": float(now.max())}
     ref_a = np.array(ref)
-    normal = float(np.median(ref_a))
+    normal = float(ref_a.mean())             # the 30-year average for these dates, the climate normal; a median of short-window rain totals is near zero in a dry season (most years have none)
     pct = rn.percentile_rank(ref_a, total)
     wet = now.idxmax()
     return {"window_start": last - pd.Timedelta(days=window - 1), "window_end": last, "total_in": total, "normal_in": normal,

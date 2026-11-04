@@ -251,3 +251,16 @@ def test_geo_files_are_validated(tmp_path):
     fc["features"][0]["geometry"]["coordinates"][0][1] = [-106.0, 35.0]
     (base / "watersheds.geojson").write_text(json.dumps(fc))
     assert any("has no shape for 13020101" in p for p in sch.validate_bundle(tmp_path))
+
+
+def test_normal_rain_is_the_average_of_the_years_not_their_median():
+    # a dry-season week: 25 of 30 baseline years had none, five had 1.0 in; this year 0.5 in
+    idx = pd.date_range("1990-01-01", "2026-11-01")
+    s = pd.Series(0.0, index=idx)
+    for y in (1995, 2000, 2005, 2010, 2015):
+        s[pd.Timestamp(f"{y}-10-30")] = 1.0
+    s[pd.Timestamp("2026-10-30")] = 0.5
+    st = sp.window_stats(s, 7)
+    assert st["normal_in"] == pytest.approx(5.0 / 30)                         # the mean; the median would be 0 and the percent undefined
+    assert st["percent_of_normal"] == pytest.approx(0.5 / (5.0 / 30) * 100)
+    assert st["percentile"] > 80                                              # the rank among the years is what rates it

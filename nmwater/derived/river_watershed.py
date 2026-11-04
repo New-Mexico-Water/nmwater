@@ -145,13 +145,13 @@ def drought(con, codes: list[str]) -> pd.DataFrame:
     return m.merge(d, on="huc4")
 
 
-def monthly_vs_normal(clim: pd.DataFrame, variable: str, baseline: tuple[int, int] = (1991, 2020)) -> pd.DataFrame:
-    """Each month's value with that calendar month's baseline median: huc8, date, value, normal, anomaly."""
+def monthly_vs_normal(clim: pd.DataFrame, variable: str, baseline: tuple[int, int] = (1991, 2020), center: str = "median") -> pd.DataFrame:
+    """Each month's value with that calendar month's baseline median (`center="mean"` for the average, which is the normal for rain): huc8, date, value, normal, anomaly."""
     c = clim[clim["variable"] == variable].copy()
     c["date"] = pd.to_datetime(c["date"])
     c["m"] = c["date"].dt.month
     base = c[(c["date"].dt.year >= baseline[0]) & (c["date"].dt.year <= baseline[1])]
-    norm = base.groupby(["huc8", "m"])["value"].median().rename("normal").reset_index()
+    norm = base.groupby(["huc8", "m"])["value"].agg(center).rename("normal").reset_index()
     c = c.merge(norm, on=["huc8", "m"], how="left")
     c["anomaly"] = c["value"] - c["normal"]
     return c.drop(columns="m").sort_values(["huc8", "date"]).reset_index(drop=True)
@@ -172,7 +172,7 @@ def precip_summary(con, codes: list[str]) -> tuple[dict, dict] | None:
       daily_dates, daily       the last RECENT_DAYS PRISM days (a PRISM day ends 12:00 UTC on its date)
       months, month_total, month_normal, month_days, month_complete
                                the last MONTHS_SHOWN months; a month in progress is compared with the
-                               1991-2020 median of the same days of that month
+                               1991-2020 mean of the same days of that month; the normal for rain is the 30-year average
       recent                   the last WINDOW_DAYS days against the same dates in 1991-2020: total,
                                normal, percent of normal, percentile among the 30 years, wettest day
       year_dates, year_daily   the last 365 days (for the CSV)
@@ -200,7 +200,7 @@ def precip_summary(con, codes: list[str]) -> tuple[dict, dict] | None:
         mm["days_in_month"] = [p.days_in_month for p in mm.index]
         mm["complete"] = mm["size"] == mm["days_in_month"]
         base = mm[(mm.index.year >= NORMAL_YEARS[0]) & (mm.index.year <= NORMAL_YEARS[1]) & mm["complete"]]
-        normal_by_month = base.groupby(base.index.month)["sum"].median()
+        normal_by_month = base.groupby(base.index.month)["sum"].mean()
         shown = mm.iloc[-MONTHS_SHOWN:]
         normals = []
         for p, row in shown.iterrows():
@@ -210,7 +210,7 @@ def precip_summary(con, codes: list[str]) -> tuple[dict, dict] | None:
                 n = int(row["size"])
                 vals = [s[(s.index.year == y) & (s.index.month == p.month) & (s.index.day <= n)].sum()
                         for y in range(NORMAL_YEARS[0], NORMAL_YEARS[1] + 1)]
-                normals.append(float(np.median(vals)))
+                normals.append(float(np.mean(vals)))
         # the last WINDOW_DAYS days against the same calendar window in each baseline year
         win = float(s.iloc[-WINDOW_DAYS:].sum())
         ref = []
@@ -218,7 +218,7 @@ def precip_summary(con, codes: list[str]) -> tuple[dict, dict] | None:
             end = pd.Timestamp(year=y, month=last.month, day=min(last.day, pd.Timestamp(year=y, month=last.month, day=1).days_in_month))
             ref.append(float(s[end - pd.Timedelta(days=WINDOW_DAYS - 1):end].sum()))
         ref_a = np.array(ref)
-        normal30 = float(np.median(ref_a))
+        normal30 = float(np.mean(ref_a))
         last30 = s.iloc[-WINDOW_DAYS:]
         wet = last30.idxmax()
         out[code] = {
