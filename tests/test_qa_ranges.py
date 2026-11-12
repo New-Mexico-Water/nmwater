@@ -62,3 +62,30 @@ def test_the_registry_bounds_set_for_26_are_valid_and_physically_exact():
     # a variable left open below on purpose says why, and signed ones need no reason
     assert reg["discharge"].valid_min is None and "#61" in reg["discharge"].extra["unbounded_below_reason"]
     assert reg["reservoir_inflow"].signed
+
+
+# ---- duplicate keys: the store's key (depth included), one source and variable at a time
+from nmwater.catalog.qa import duplicate_keys
+
+
+def _obs_con():
+    con = duckdb.connect()
+    con.execute("CREATE TABLE site_variables (source VARCHAR, variable VARCHAR)")
+    con.execute("INSERT INTO site_variables VALUES ('nrcs','soil_temp'), ('usgs','discharge')")
+    con.execute("""CREATE TABLE observations (source VARCHAR, site_uid VARCHAR, variable VARCHAR, datetime_utc TIMESTAMP, interval VARCHAR, statistic VARCHAR, depth_cm DOUBLE, value DOUBLE)""")
+    t = "2026-11-01 00:00:00"
+    con.executemany("INSERT INTO observations VALUES (?,?,?,?,?,?,?,?)", [
+        ("nrcs", "nrcs:1", "soil_temp", t, "hourly", "instant", 5.0, 10.0), ("nrcs", "nrcs:1", "soil_temp", t, "hourly", "instant", 20.0, 9.0),     # two depths, one time: not duplicates
+        ("usgs", "usgs:1", "discharge", t, "daily", "mean", None, 5.0), ("usgs", "usgs:1", "discharge", t, "daily", "mean", None, 5.0),            # a real duplicate
+        ("usgs", "usgs:2", "discharge", t, "daily", "mean", None, 7.0)])
+    return con
+
+
+def test_sensors_at_different_depths_are_not_duplicates_but_a_repeated_key_is():
+    total, unchecked = duplicate_keys(_obs_con())
+    assert total == 1 and unchecked == []
+
+
+def test_the_qa_duplicate_key_is_the_stores_key():
+    from nmwater.core.models import OBS_KEY
+    assert "depth_cm" in OBS_KEY

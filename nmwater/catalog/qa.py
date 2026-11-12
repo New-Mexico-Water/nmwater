@@ -8,6 +8,7 @@ from pathlib import Path
 import duckdb
 
 from ..core.config import DOCS_DIR, Settings
+from ..core.models import OBS_KEY
 
 log = logging.getLogger("nmwater.qa")
 
@@ -45,6 +46,21 @@ def _built(path: Path) -> str:
     from datetime import datetime, timezone
 
     return datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d")
+
+
+def duplicate_keys(con, key=OBS_KEY) -> tuple[int, list[str]]:
+    """Observation rows that share the store's key (core.models.OBS_KEY, depth included), and the source:variable pairs that could not be checked. Counted one source and variable
+    at a time: a duplicate can only sit within one of them, and one GROUP BY over every observation (about 700 million rows) ran out of memory on 2026-11-12. Before 2026-11-12 the key
+    here left out depth_cm, so every soil sensor read at more than one depth counted as a duplicate (12.5 million false ones)."""
+    cols = ", ".join(c for c in key if c not in ("variable",))
+    total, unchecked = 0, []
+    for source, variable in con.execute("SELECT DISTINCT source, variable FROM site_variables ORDER BY 1, 2").fetchall():
+        try:
+            total += con.execute(f"SELECT COUNT(*) FROM (SELECT {cols}, COUNT(*) c FROM observations WHERE source = ? AND variable = ? GROUP BY ALL HAVING c > 1)",
+                                 [source, variable]).fetchone()[0]
+        except duckdb.OutOfMemoryException:
+            unchecked.append(f"{source}:{variable}")
+    return total, unchecked
 
 
 def range_stats(con):
@@ -92,6 +108,7 @@ def range_lines(df, registry=None) -> list[str]:
 def run(settings: Settings, out: Path | None = None) -> Path:
     con = duckdb.connect(str(settings.duckdb_path), read_only=True)
     con.execute("SET TimeZone='UTC'")
+    con.execute("SET preserve_insertion_order=false")        # lets large aggregates spill instead of holding every row in order
     lines = ["# QA report", "", f"Catalog: `{settings.duckdb_path.name}`, built {_built(settings.duckdb_path)}. Regenerate with `nmwater report`.", ""]
 
     # Coverage by source
@@ -155,11 +172,17 @@ def run(settings: Settings, out: Path | None = None) -> Path:
             "SELECT COUNT(DISTINCT sv.site_uid) FROM site_variables sv LEFT JOIN sites s USING (site_uid) WHERE s.site_uid IS NULL"
         ).fetchone()[0]
         lines.append(f"- observation sites missing from sites table: {orphans:,}")
-        dup = con.execute(
-            """SELECT COUNT(*) FROM (SELECT site_uid, variable, datetime_utc, interval, statistic, COUNT(*) c
-                    FROM observations GROUP BY ALL HAVING c > 1)"""
-        ).fetchone()[0]
-        lines.append(f"- duplicate observation keys (run `nmwater compact`): {dup:,}")
+    except Exception as e:
+        lines.append(f"- hygiene checks failed: {e}")
+
+    # Each heavy check has its own try: one that fails (memory, a missing view) must not silently drop the checks after it, as the duplicate-key query did on 2026-11-12.
+    try:
+        dups, unchecked = duplicate_keys(con)
+        lines.append(f"- duplicate observation keys, by the store's key {', '.join(OBS_KEY)} (run `nmwater compact` if not zero): {dups:,}"
+                     + (f"; not checked, out of memory: {', '.join(unchecked)}" if unchecked else ""))
+    except Exception as e:
+        lines.append(f"- duplicate observation keys: check failed ({str(e)[:160]})")
+    try:
         rs = range_stats(con)
         imp = [(r.variable, int(r.below + r.above)) for r in rs.itertuples(index=False) if r.below + r.above > 0]
         nz = [(r.variable, int(r.near_zero)) for r in rs.itertuples(index=False) if r.near_zero > 0]
@@ -175,7 +198,7 @@ def run(settings: Settings, out: Path | None = None) -> Path:
             reg = None
         lines += range_lines(rs, reg)
     except Exception as e:
-        lines.append(f"- hygiene checks failed: {e}")
+        lines.append(f"- plausible ranges: check failed ({str(e)[:160]})")
 
     # Crosswalk equivalence summary
     try:
