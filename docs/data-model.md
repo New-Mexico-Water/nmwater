@@ -161,7 +161,7 @@ usgs site itself, so the two are linked `same_sensor` (46,538 pairs) and a diffe
 it by proximity (it is a neighbour, typically in a well field). A CoCoRaHS station `NM-BR-35` is GHCN-Daily's `US1NMBR0035`
 and is linked the same way (1,601 pairs). A proximity pair is then settled by the USGS site each end is linked to: the same USGS
 site at both ends makes it an exact link, two different USGS sites drop it (they are different places). Pairs whose daily values
-agree on every shared variable (393 surface-water pairs, checked 2026-10-11, `docs/reports/site-links-surface-water-series.csv`) are
+agree on every shared variable (393 surface-water pairs, checked 2026-10-11, `reports/site-links-surface-water-series.csv`, a generated report that is not committed) are
 `same_sensor` rows in `catalog/sites_manual.csv`, and a pair with an exact or manual link is never also listed as a candidate.
 NWS gauges carry their USGS site number (read from each gauge's own page; the list of gauges leaves it empty), and a WQP site whose name cites a USGS number
 ("... USGS 08276500 ...") is linked to that gauge as `same_location_different_sensor`. The table now has 51,346 exact links and 33,658 proximity (`colocated`) pairs, down from 122,512 (most of the old pairs were the

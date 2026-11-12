@@ -9,7 +9,7 @@ river flow and reservoir fill somewhere else.
 - Output: `data/parquet/derived/watershed_precip/year=YYYY/precip.parquet` and
   `data/parquet/derived/watersheds.parquet`; in the catalog, the views `watershed_precip` and
   `watersheds`. The watersheds are also listed in
-  [`watershed-precipitation-watersheds.csv`](watershed-precipitation-watersheds.csv).
+  `reports/watershed-precipitation-watersheds.csv` (a generated report, not committed).
 - Size: 1,348,012 rows (1,269,580 daily, 78,432 monthly), 3.3 MB. A full rebuild takes about 12 seconds.
 
 ## What is in it

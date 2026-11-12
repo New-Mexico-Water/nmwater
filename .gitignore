@@ -21,6 +21,10 @@ __pycache__/
 build/
 dist/
 
+# Generated reports: every CSV table the code writes for reading (update log, reservoir tables, data dictionary tables) goes in reports/ and none is committed.
+# Hand-written inputs live in catalog/ and are committed.
+reports/*
+
 # Run artifacts
 docs/qa/*
 !docs/qa/report.md

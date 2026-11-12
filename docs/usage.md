@@ -150,7 +150,7 @@ units are undeclared and crosswalk rows pointing at variables that do not exist.
 `observations` view over the Parquet partitions, `site_variables` with period of record and row
 counts, `coverage` by source and year, `site_links` connecting the same physical station across
 agencies, and the `variables`, `crosswalk`, and `sources` tables. It also exports
-`docs/data_dictionary.md` and the two CSV dictionaries.
+`docs/data_dictionary.md` and the two CSV dictionaries in `reports/` (generated reports: never committed).
 
 ### status
 

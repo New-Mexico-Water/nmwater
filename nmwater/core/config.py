@@ -14,6 +14,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 CONFIG_DIR = PROJECT_ROOT / "config"
 CATALOG_DIR = PROJECT_ROOT / "catalog"
 DOCS_DIR = PROJECT_ROOT / "docs"
+REPORTS_DIR = PROJECT_ROOT / "reports"      # every generated report (CSV tables, the update log) is written here, and nothing in it is committed (see .gitignore)
 
 
 def _load_yaml(path: Path) -> dict[str, Any]:

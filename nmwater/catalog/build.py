@@ -11,7 +11,7 @@ import duckdb
 import pandas as pd
 import yaml
 
-from ..core.config import CATALOG_DIR, DOCS_DIR, Settings
+from ..core.config import CATALOG_DIR, DOCS_DIR, REPORTS_DIR, Settings
 from ..core.geo import assign_hucs, assign_regions, clean_site_coordinates
 from ..core.store import Store
 from .crosswalk import Crosswalk
@@ -281,8 +281,9 @@ def build(settings: Settings) -> Path:
 
     # Data dictionary export -------------------------------------------------------------
     DOCS_DIR.mkdir(exist_ok=True)
-    reg.to_frame().to_csv(DOCS_DIR / "data_dictionary_variables.csv", index=False)
-    xw.to_frame().to_csv(DOCS_DIR / "data_dictionary_crosswalk.csv", index=False)
+    REPORTS_DIR.mkdir(exist_ok=True)         # the CSV tables are generated reports; the readable data_dictionary.md stays in docs/
+    reg.to_frame().to_csv(REPORTS_DIR / "data_dictionary_variables.csv", index=False)
+    xw.to_frame().to_csv(REPORTS_DIR / "data_dictionary_crosswalk.csv", index=False)
     _write_dictionary_md(reg, xw, con, has_ts)
     warn_orphan_sites(con)
     con.close()
