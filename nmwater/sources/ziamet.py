@@ -19,7 +19,7 @@ import io
 import json
 import logging
 import re
-from datetime import UTC, date, datetime
+from datetime import UTC, date, datetime, timedelta
 
 import httpx
 import pandas as pd
@@ -31,6 +31,7 @@ log = logging.getLogger("nmwater.ziamet")
 HOSTS = ["https://duststorm.nmsu.edu", "https://nmcc.nmsu.edu", "https://weather2.nmsu.edu",
          "https://weather.nmsu.edu"]
 LOCAL_TZ = "America/Denver"
+QUARANTINE_DAYS = 7          # a series whose last request failed with a server error is left alone on routine runs for this long; a revision run tries it again
 
 # feed column header -> source_param (units row is checked at parse time)
 FEED_COLS = {
@@ -147,7 +148,7 @@ class ZiaMet(Source):
         if "feed" in kinds:
             summ.add(self._fetch_feed(sids))
         if "daily" in kinds:
-            summ.add(self._fetch_daily(sids, since, refresh))
+            summ.add(self._fetch_daily(sids, since, refresh, routine=bool(opts.get("routine"))))
         return summ
 
     # ---- 5-minute feed (rolling window) ------------------------------------------------
@@ -198,26 +199,43 @@ class ZiaMet(Source):
         return self.xw.apply(out, self.name)
 
     # ---- daily products via POST forms ---------------------------------------------------
-    def _csrf(self, path: str) -> str | None:
-        art = self._get(path, kind="form", refresh=True, key_extra=datetime.now(UTC).strftime("%Y%m%d"))
+    def _csrf(self, path: str, sid: str | None = None, prod: str | None = None) -> str | None:
+        """The form page's CSRF token. `sid` and `prod` tag the request in the ledger, so a station whose form page itself fails (HTTP 500) is seen by `_quarantined`."""
+        tag = {"site_uid": self.uid(sid), "variable": prod} if sid and prod else {}
+        art = self._get(path, kind="form", refresh=True, key_extra=datetime.now(UTC).strftime("%Y%m%d"), **tag)
         m = re.search(r'name="csrfmiddlewaretoken"\s+value="([^"]+)"', art.read_text())
         if m:
             return m.group(1)
         jar = self.http.client(self.name).cookies
         return jar.get("csrftoken")
 
-    def _fetch_daily(self, sids: list[str], since: date | None, refresh: bool) -> FetchSummary:
+    def _quarantined(self, sid: str, prod: str, now: datetime | None = None) -> bool:
+        """True when the last request (the form page or the data request) for this station and product failed with HTTP 500 less than QUARANTINE_DAYS ago. The server answers some station/product pairs with a
+        500 every time (197 of 642 in November 2026, within 0.3 s); retrying each five times with growing waits took about an hour a night for no data."""
+        last = self.ledger.last_attempt(self.name, self.uid(sid), prod)           # of any kind: the form page, then the data request
+        if not last or last["status"] == "ok" or last["http_status"] != 500:
+            return False
+        when = pd.Timestamp(last["fetched_at"])
+        when = when.tz_localize("UTC") if when.tzinfo is None else when
+        return (pd.Timestamp(now or datetime.now(UTC)) - when) < timedelta(days=QUARANTINE_DAYS)
+
+    def _fetch_daily(self, sids: list[str], since: date | None, refresh: bool, routine: bool = False) -> FetchSummary:
         summ = FetchSummary(self.name)
         products = self.opt("daily_products", ["sfwx", "dret", "tmps"])
         start_year = int(self.opt("start_year", 1995))
         today = date.today()
         y0 = max(start_year, since.year) if since else start_year
         jobs = [(sid, prod, y) for sid in sids for prod in products for y in range(y0, today.year + 1)]
+        if routine and not refresh:
+            held = {(sid, prod) for sid in sids for prod in products if self._quarantined(sid, prod)}
+            if held:
+                jobs = [j for j in jobs if (j[0], j[1]) not in held]
+                summ.notes.append(f"{len(held)} station/product pairs the server answered with HTTP 500 in the last {QUARANTINE_DAYS} days were not requested; the weekly revision run tries them again")
 
         def one(job) -> int:
             sid, prod, y = job
             path = f"/ziamet/station/{prod}/dly/{sid}/"
-            token = self._csrf(path)
+            token = self._csrf(path, sid, prod)
             s = date(y, 1, 1) if not (since and y == since.year) else since
             e = min(date(y, 12, 31), today)
             data = {"sid": sid, "sdate": s.isoformat(), "edate": e.isoformat(), "dtype": "dly",

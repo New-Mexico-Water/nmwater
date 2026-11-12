@@ -197,6 +197,7 @@ sources:
     update: {kinds: [daily]}   # rolling 1-5 min feeds failed 94/214 in the first update; capture by hand with --kind feed
     concurrency: 2
     min_interval_s: 0.5
+    max_retries: 3             # was 5: the server's failures are either an answer it repeats (HTTP 500, left alone for a week on routine runs) or a host that is down (the module rotates hosts)
     base_url: https://weather.nmsu.edu
     # tmps (soil temperature, 10 cm: max, min and mean) is on now that depth is part of the observation key and its statistic-first
     # column names are parsed (issue #63). A source's first fetch of a product is a backfill: run `nmwater fetch ziamet --kind daily` once.

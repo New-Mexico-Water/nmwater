@@ -315,8 +315,14 @@ The first incremental update surfaced these; costs are in `reports/update_log.cs
 - **ZiaMet hosts are unreliable (MEDIUM).** duststorm.nmsu.edu and ziamet.org refused connections;
   weather.nmsu.edu answered slowly and returned HTTP 500 for most one-minute feeds, so the update
   spent 2 h 11 min mostly retrying and was stopped by hand. weather.nmsu.edu is now the primary
-  host and updates cover daily data only. **Do:** confirm the next update completes, and cap
-  per-request retries for this source.
+  host and updates cover daily data only. **FIXED 2026-11-12:** updates complete (about an hour a
+  night); the hour was the server answering 197 of 642 station/product requests with an instant,
+  permanent HTTP 500, retried five times each with growing waits. Routine runs now leave a pair alone
+  for 7 days after a 500 and the weekly revision run tries it again; retries are capped at 3. Of the
+  197, 15 stations are silent on all three products (last data March to 7 September) and 31 pairs
+  returned data before they failed; the rest never had any. Daily data begins 2020-01-14 (earlier
+  years answer with no rows); the 5-minute feed starts 2026-09-08, when it was first captured, and
+  is not part of updates.
 - **Seven Rivers has no date filter (FIXED 2026-11-03).** Its API returns full history per point and analyte, so
   every update re-requested all 2,701 chemistry series. **Done:** chemistry is read only on the weekly
   revision run (`revise_kinds`); a routine night is 73 requests and 36 s instead of 2,774 and 23 min.

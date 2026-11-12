@@ -199,6 +199,17 @@ class Ledger:
             row = self._conn.execute(q, args).fetchone()
         return row["m"] if row else None
 
+    def last_attempt(self, source: str, site_uid: str, variable: str, kind: str | None = None) -> dict | None:
+        """The most recent request for this series (of this kind, or of any kind), whatever window it asked for: {"status", "http_status", "fetched_at"}, or None."""
+        q = "SELECT status, http_status, fetched_at FROM fetches WHERE source=? AND site_uid=? AND variable=?"
+        args: list[Any] = [source, site_uid, variable]
+        if kind:
+            q += " AND kind=?"
+            args.append(kind)
+        with self._lock:
+            row = self._conn.execute(q + " ORDER BY fetched_at DESC LIMIT 1", args).fetchone()
+        return dict(row) if row else None
+
     def last_successful_fetch(self) -> dict[str, str]:
         """Start time of each source's most recent fetch run that finished ok or partial."""
         cur = self._conn.execute("SELECT source, max(started_at) FROM runs WHERE command='fetch' "
