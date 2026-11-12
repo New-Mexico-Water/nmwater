@@ -224,12 +224,12 @@ variables:
     valid_max: 150          # in; any interval incl. annual totals (mountain sites ~60 in/yr). 2,100, 2,300 and 128,737 seen
   precip_accumulated_wy:
     label: Water-year accumulated precipitation
-    definition: Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip.
+    definition: Cumulative precipitation since 1 October, as reported by NRCS storage gauges (element PREC). Differencing gives incremental precip. The iem_dcp (PC) and USGS (72192) accumulators are mapped here too (78% of the values) but reset at arbitrary times, not on 1 October, so for them the level is not a water-year total; only the differences mean anything.
     unit: in
     quantity: length
     kind: stock
     medium: atmosphere
-    unbounded_below_reason: "NRCS accumulated precipitation drifts below zero (to -84.8 in, 98,661 values); the drift band has not been set (#26)"
+    unbounded_below_reason: "an accumulator: iem_dcp and USGS totals reset at arbitrary times, run to thousands of inches, and two iem_dcp gauges sit at a constant offset near -3 in, so the level has no meaningful bound; difference consecutive values"
     comparability: related_not_comparable to precip; convert by differencing consecutive days within a water year.
     missing_codes: [-99.9]
   snowfall:
