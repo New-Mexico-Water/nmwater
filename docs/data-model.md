@@ -73,7 +73,7 @@ Two views expose this. `observations_qc` is every observation with its `qc_flag`
 `observations_clean` unless it needs the raw values; the underlying `observations` view and the
 Parquet files are never altered.
 
-Bounds set today, and why:
+Bounds set today, and why (`nmwater report` lists every variable's allowed range against the lowest and highest value in the archive, the variables with no bounds, and the reason where a variable is left open below on purpose: `unbounded_below_reason` in `variables.yaml`):
 
 | Variable | `valid_min` | `noise_floor` | Reason |
 |---|---|---|---|
@@ -82,6 +82,16 @@ Bounds set today, and why:
 | `precip` | 0 in | none | any negative value is impossible |
 | `reservoir_storage` | 0 af | -5 af | rounding at an empty reservoir |
 | `reservoir_elevation` | 1,500 ft (max 12,000) | none | zeros, negatives and 0-86 ft gauge heights; a 7.79 million ft value |
+| `et_reference` | 0 mm (max 60) | none | reference ET is at most about 20 mm a day; one value of 2.3e34 |
+| `soil_temp` | -50 degC (max 80) | none | NRCS sensors send -273.3 to 1,401: 69,682 values of 23.4 million |
+| `soil_moisture` | 0 percent (max 100) | none | volumetric percent; NRCS sends 100.2 to 405,800: 21,816 values of 22.7 million |
+| `solar_radiation` | -20 W/m2 (max 1,500) | none | clear-sky peaks are about 1,400; one value of 7,782 |
+| `snowfall` | 0 in (max 100) | none | 999.9 is a missing-data code from NOAA GHCN-D (29 values) |
+| `suspended_sediment_conc`, `suspended_sediment_discharge` | 0 | none | USGS sends -99 as a missing-data code (12 values); concentration cannot exceed 1,000,000 mg/L |
+| `drought_d0_pct` to `drought_d4_pct`, `snow_density` | 0 percent (max 100) | none | a percentage; no value outside it today |
+| `dsci` | 0 (max 500) | none | the index is 0 to 500 by definition |
+| `diversion`, `diversion_volume`, `reservoir_release`, `reservoir_release_volume`, `reservoir_area` | 0 | none | cannot be negative; none are today |
+| `tds`, `chloride`, `sulfate`, `nitrate`, `fluoride` (max 1,000,000 mg/L), `arsenic`, `uranium` (max 1,000,000,000 ug/L) | 0 | none | a concentration is not negative and a solution is not more than all solute; none outside this today |
 | `stage` | -100 ft (max 20,000) | none | -997 to -1,310 and ±10 million values from DCP feeds; stage can carry an elevation datum, so the cap is high |
 | `water_temp` | -5 °C (max 60) | none | -2,327, -27, 123, 2,760 and 22,100 seen |
 | `relative_humidity` | 0 % (max 105) | -5 % | -3,451 to 96,548 seen |

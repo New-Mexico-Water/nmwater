@@ -376,11 +376,12 @@ Delivery mechanics for every source are in [sources.md](sources.md#how-each-sour
   and are then returned without warning (`usgs.py:367`).
 - **PRISM can exceed its two-downloads-a-day limit (FIXED 2026-11-04)** if update runs twice in a day: a revision re-pull skips files fetched in the last 24 hours.
 
-### D7. Plausible-range metadata for variables — LOW
+### D7. Plausible-range metadata for variables — DONE (2026-11-12)
 **Issue:** [#26](https://github.com/New-Mexico-Water/nmwater/issues/26)
 Related to A2 and A6. A minimum and maximum per canonical variable would let the QA report catch
 impossible values generically rather than through hand-written checks.
-**Do:** add optional range fields to `variables.yaml` and a check to `qa.py`.
+**Done:** the range fields (`valid_min`, `noise_floor`, `valid_max`) and the generic QC views already existed; 26 more variables now carry bounds (44 of 64 have at least one), chosen only where the limit is physical and the data show junk or nothing (soil moisture and temperature, snowfall, sediment, reference ET, solar radiation, percentages, concentrations). `nmwater report` has a "Plausible ranges" table (allowed range against lowest and highest value seen, values impossible below and above, noise band), a list of variables with no bounds, and the negatives among them with their reason. The discharge-only line is gone. Open: `precip_accumulated_wy` (NRCS drift below zero, 98,661 values) and `discharge` (#61) are left open below on purpose.
+**Was:** add optional range fields to `variables.yaml` and a check to `qa.py`.
 
 ---
 

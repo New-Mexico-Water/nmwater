@@ -55,6 +55,7 @@ variables:
     quantity: volumetric_flow_rate
     kind: flux
     medium: surface_water
+    unbounded_below_reason: "negative values are kept until the state engineer confirms whether reverse flow in canals is real (#61)"
     intervals: [instant, 15min, hourly, daily, monthly]
     comparability: USGS 00060 daily mean, USBR HydroData flow, USACE Flow, CO DWR DISCHRG, and OSE daily average flow are the same quantity. Provisional vs approved values can differ; check qualifier.
     valid_max: 1000000   # cfs; a 4.87 million cfs Corps reading is a transmission error. No lower bound, see above.
@@ -65,6 +66,7 @@ variables:
     quantity: volume
     kind: flux
     medium: surface_water
+    unbounded_below_reason: "volumes computed from the same flows: negative values are kept for the same reason as discharge (#61)"
     intervals: [daily, monthly, water_year]
   stage:
     label: Gage height / stage
@@ -92,6 +94,7 @@ variables:
     quantity: volumetric_flow_rate
     kind: flux
     medium: surface_water
+    valid_min: 0
     sign: positive = removed from the river
     comparability: Same quantity as discharge measured on a conveyance; kept separate so river vs canal terms are explicit in a water balance.
   diversion_volume:
@@ -101,6 +104,7 @@ variables:
     quantity: volume
     kind: flux
     medium: surface_water
+    valid_min: 0
   return_flow:
     label: Return / drain flow
     definition: Flow returning to a river from drains, wasteways, or wastewater outfalls.
@@ -115,6 +119,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: surface_water
+    valid_min: 0           # USGS sends -99 as a missing-data code
+    valid_max: 1000000     # mg/L: a mixture cannot be more than all solids
   suspended_sediment_discharge:
     label: Suspended sediment discharge
     definition: Mass of suspended sediment passing the gauge per day.
@@ -122,6 +128,7 @@ variables:
     quantity: mass_flow_rate
     kind: flux
     medium: surface_water
+    valid_min: 0           # USGS sends -99 as a missing-data code
 
   # ---- Reservoirs -----------------------------------------------------------------
   reservoir_storage:
@@ -151,6 +158,7 @@ variables:
     quantity: volumetric_flow_rate
     kind: flux
     medium: reservoir
+    valid_min: 0
   reservoir_release_volume:
     label: Reservoir release volume
     definition: Volume released during the interval.
@@ -158,6 +166,7 @@ variables:
     quantity: volume
     kind: flux
     medium: reservoir
+    valid_min: 0
   reservoir_inflow:
     label: Reservoir inflow
     definition: Computed or gauged inflow to a reservoir.
@@ -182,6 +191,7 @@ variables:
     quantity: volume
     kind: flux
     medium: reservoir
+    unbounded_below_reason: "may be net of rain on the lake; three negative values; unconfirmed"
   reservoir_area:
     label: Reservoir surface area
     definition: Water surface area at the observed elevation.
@@ -189,6 +199,7 @@ variables:
     quantity: area
     kind: state
     medium: reservoir
+    valid_min: 0
   reservoir_delta_storage:
     label: Change in storage
     definition: Storage at end of interval minus storage at start.
@@ -218,6 +229,7 @@ variables:
     quantity: length
     kind: stock
     medium: atmosphere
+    unbounded_below_reason: "NRCS accumulated precipitation drifts below zero (to -84.8 in, 98,661 values); the drift band has not been set (#26)"
     comparability: related_not_comparable to precip; convert by differencing consecutive days within a water year.
     missing_codes: [-99.9]
   snowfall:
@@ -227,6 +239,8 @@ variables:
     quantity: length
     kind: flux
     medium: snow
+    valid_min: 0
+    valid_max: 100      # inches in a day; NOAA GHCN-D sends 999.9 (a missing-data code) and one -0.5
   swe:
     label: Snow water equivalent
     definition: Depth of water contained in the snowpack at the observation time.
@@ -256,6 +270,8 @@ variables:
     quantity: ratio
     kind: state
     medium: snow
+    valid_min: 0
+    valid_max: 100      # percent; no value outside this today
 
   # ---- Meteorology ----------------------------------------------------------------
   air_temp:
@@ -303,6 +319,8 @@ variables:
     quantity: irradiance
     kind: flux
     medium: atmosphere
+    valid_min: -20      # pyranometer offset at night reaches about -4
+    valid_max: 1500     # W/m2; instantaneous clear-sky peaks are about 1,400; one 7,782 from uscrn
   vapor_pressure_deficit:
     label: Vapor pressure deficit
     definition: Saturation minus actual vapor pressure.
@@ -317,6 +335,8 @@ variables:
     quantity: length
     kind: flux
     medium: atmosphere
+    valid_min: 0
+    valid_max: 60       # mm per day: reference ET does not exceed ~20; ziamet once sent 2.3e34
   et_actual:
     label: Actual evapotranspiration
     definition: Estimated actual evapotranspiration from the land surface over the interval (remote sensing or model based).
@@ -333,6 +353,8 @@ variables:
     quantity: ratio
     kind: state
     medium: soil
+    valid_min: 0
+    valid_max: 100      # percent by volume; NRCS sends 100.2 to 405,800 (21,816 values of 22.7 million, 2026-11)
   soil_temp:
     label: Soil temperature
     definition: Soil temperature at the sensor depth.
@@ -340,6 +362,8 @@ variables:
     quantity: temperature
     kind: state
     medium: soil
+    valid_min: -50
+    valid_max: 80       # degC; NRCS sensors send -273.3 to 1,401 (69,682 values of 23.4 million, 2026-11)
 
   # ---- Groundwater ----------------------------------------------------------------
   gw_depth_to_water:
@@ -381,6 +405,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000   # mg/L: a solution cannot be more than all solute
   ph:
     label: pH
     definition: Hydrogen ion activity.
@@ -417,6 +443,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000
   chloride:
     label: Chloride
     definition: Chloride concentration.
@@ -424,6 +452,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000
   sulfate:
     label: Sulfate
     definition: Sulfate concentration.
@@ -431,6 +461,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000
   arsenic:
     label: Arsenic
     definition: Total or dissolved arsenic concentration (see caveat).
@@ -438,6 +470,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000000   # ug/L (1e6 mg/L expressed in ug/L)
   fluoride:
     label: Fluoride
     definition: Fluoride concentration.
@@ -445,6 +479,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000
   uranium:
     label: Uranium
     definition: Uranium concentration.
@@ -452,6 +488,8 @@ variables:
     quantity: concentration
     kind: concentration
     medium: quality
+    valid_min: 0
+    valid_max: 1000000000
 
   # ---- Water use (aggregate) ------------------------------------------------------
   withdrawal:
@@ -484,6 +522,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means dry, and that is real"
   phdi:
     label: Palmer Hydrological Drought Index
     definition: Palmer hydrological index.
@@ -491,6 +530,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means dry, and that is real"
   palmer_z:
     label: Palmer Z index
     definition: Palmer moisture anomaly (Z) index; monthly departure without the PDSI memory term.
@@ -498,6 +538,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means dry, and that is real"
   pmdi:
     label: Modified Palmer Drought Index
     definition: Palmer Modified Drought Index (operational PDSI variant used by NOAA CPC).
@@ -505,6 +546,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means dry, and that is real"
   spi:
     label: Standardized Precipitation Index
     definition: SPI; timescale in months is given in the source_param (e.g. sp03 = 3-month).
@@ -512,6 +554,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means drier than normal, and that is real"
   spei:
     label: Standardized Precipitation-Evapotranspiration Index
     definition: SPEI; timescale in source_param.
@@ -519,6 +562,7 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    unbounded_below_reason: "an index: negative means drier than normal, and that is real"
   drought_area_pct:
     label: Percent area in drought category (retired)
     definition: Retired 2026-10-02. It carried D0..D4 under one name and only D4 survived deduplication, so every stored value was D4. Replaced by drought_d0_pct..drought_d4_pct.
@@ -533,6 +577,8 @@ variables:
     quantity: ratio
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 100
   drought_d1_pct:
     label: Percent of area in drought category D1 or worse
     definition: US Drought Monitor percent of the area at or above category D1 (moderate drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
@@ -540,6 +586,8 @@ variables:
     quantity: ratio
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 100
   drought_d2_pct:
     label: Percent of area in drought category D2 or worse
     definition: US Drought Monitor percent of the area at or above category D2 (severe drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
@@ -547,6 +595,8 @@ variables:
     quantity: ratio
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 100
   drought_d3_pct:
     label: Percent of area in drought category D3 or worse
     definition: US Drought Monitor percent of the area at or above category D3 (extreme drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
@@ -554,6 +604,8 @@ variables:
     quantity: ratio
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 100
   drought_d4_pct:
     label: Percent of area in drought category D4 or worse
     definition: US Drought Monitor percent of the area at or above category D4 (exceptional drought); cumulative, so D0 >= D1 >= D2 >= D3 >= D4.
@@ -561,6 +613,8 @@ variables:
     quantity: ratio
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 100
   dsci:
     label: Drought Severity and Coverage Index
     definition: USDM DSCI (0-500).
@@ -568,6 +622,8 @@ variables:
     quantity: index
     kind: index
     medium: atmosphere
+    valid_min: 0
+    valid_max: 500      # the Drought Severity and Coverage Index is 0 to 500 by definition
 
   # ---- Forecasts -------------------------------------------------------------------
   streamflow_forecast_volume:

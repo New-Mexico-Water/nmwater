@@ -47,6 +47,48 @@ def _built(path: Path) -> str:
     return datetime.fromtimestamp(path.stat().st_mtime, timezone.utc).strftime("%Y-%m-%d")
 
 
+def range_stats(con):
+    """One row per variable in the archive: the bounds from variables.yaml, the lowest and highest raw value, and how many values fall below the lower bound (impossible),
+    sit in the noise band (kept, flagged near_zero), exceed the upper bound, or are negative at all. Mirrors QC_FLAG_SQL in build.py."""
+    return con.execute(
+        """SELECT o.variable, v.unit, v.valid_min, v.noise_floor, v.valid_max, COUNT(*) AS n, MIN(o.value) AS lo, MAX(o.value) AS hi,
+                  COUNT(*) FILTER (WHERE v.valid_min IS NOT NULL AND o.value < v.valid_min AND NOT (v.noise_floor IS NOT NULL AND o.value >= v.noise_floor)) AS below,
+                  COUNT(*) FILTER (WHERE v.valid_min IS NOT NULL AND o.value < v.valid_min AND v.noise_floor IS NOT NULL AND o.value >= v.noise_floor) AS near_zero,
+                  COUNT(*) FILTER (WHERE v.valid_max IS NOT NULL AND o.value > v.valid_max) AS above,
+                  COUNT(*) FILTER (WHERE o.value < 0) AS negative
+           FROM observations o LEFT JOIN variables v ON v.variable = o.variable
+           WHERE o.value IS NOT NULL GROUP BY ALL ORDER BY o.variable"""
+    ).fetchdf()
+
+
+def _g(x) -> str:
+    return "-" if x is None or x != x else f"{x:,.4g}"
+
+
+def range_lines(df, registry=None) -> list[str]:
+    """The "Plausible ranges" section as markdown lines: a table of every variable's allowed range against what the archive holds, then the variables with data and no bounds
+    and, among them, those with negative values (with the reason recorded in variables.yaml as `unbounded_below_reason`, or `signed` for quantities that can be negative)."""
+    out = ["", "## Plausible ranges", "",
+           "Bounds are `valid_min` / `noise_floor` / `valid_max` in catalog/variables.yaml. A value below `valid_min` is impossible unless it is in the noise band; a value above `valid_max` is impossible. "
+           "Impossible values are excluded from `observations_clean`; nothing is deleted. \"Seen\" is the raw lowest and highest value.", "",
+           "| variable | unit | allowed | seen | impossible below | impossible above | noise band |", "|---|---|---|---|---|---|---|"]
+    for r in df.itertuples(index=False):
+        lo_set, hi_set = r.valid_min == r.valid_min and r.valid_min is not None, r.valid_max == r.valid_max and r.valid_max is not None
+        allowed = f"{_g(r.valid_min)} to {_g(r.valid_max)}" if lo_set and hi_set else f"at least {_g(r.valid_min)}" if lo_set else f"at most {_g(r.valid_max)}" if hi_set else "no bounds"
+        out.append(f"| {r.variable} | {r.unit if isinstance(r.unit, str) else '-'} | {allowed} | {_g(r.lo)} to {_g(r.hi)} | {int(r.below):,} | {int(r.above):,} | {int(r.near_zero):,} |")
+    nob = df[df.apply(lambda r: (r.valid_min != r.valid_min or r.valid_min is None) and (r.valid_max != r.valid_max or r.valid_max is None), axis=1)]
+    out += ["", f"- variables with data and no bounds at all, so no check: {len(nob)} of {len(df)}" + (f" ({', '.join(nob.variable)})" if len(nob) else "")]
+    open_low = df[(df.valid_min.isna()) & (df.negative > 0)]
+    if len(open_low):
+        parts = []
+        for r in open_low.itertuples(index=False):
+            v = registry.vars.get(r.variable) if registry is not None else None
+            why = "negative values expected (signed)" if v is not None and v.signed else (v.extra.get("unbounded_below_reason") if v is not None else None) or "no reason recorded"
+            parts.append(f"{r.variable} ({int(r.negative):,}: {why})")
+        out.append("- no lower bound although negative values occur: " + "; ".join(parts))
+    return out
+
+
 def run(settings: Settings, out: Path | None = None) -> Path:
     con = duckdb.connect(str(settings.duckdb_path), read_only=True)
     con.execute("SET TimeZone='UTC'")
@@ -118,18 +160,20 @@ def run(settings: Settings, out: Path | None = None) -> Path:
                     FROM observations GROUP BY ALL HAVING c > 1)"""
         ).fetchone()[0]
         lines.append(f"- duplicate observation keys (run `nmwater compact`): {dup:,}")
-        flags = con.execute(
-            "SELECT variable, qc_flag, COUNT(*) FROM observations_qc WHERE qc_flag <> 'ok' GROUP BY ALL ORDER BY 3 DESC"
-        ).fetchall()
-        imp = [(v, n) for v, f, n in flags if f == "implausible"]
-        nz = [(v, n) for v, f, n in flags if f == "near_zero"]
-        lines.append("- implausible values, excluded from observations_clean (bounds in variables.yaml): "
+        rs = range_stats(con)
+        imp = [(r.variable, int(r.below + r.above)) for r in rs.itertuples(index=False) if r.below + r.above > 0]
+        nz = [(r.variable, int(r.near_zero)) for r in rs.itertuples(index=False) if r.near_zero > 0]
+        imp.sort(key=lambda t: -t[1]); nz.sort(key=lambda t: -t[1])
+        lines.append("- implausible values, excluded from observations_clean (bounds in variables.yaml; table below): "
                      + (", ".join(f"{v}={n:,}" for v, n in imp) if imp else "none"))
         lines.append("- near-zero values within instrument noise, kept and flagged near_zero: "
                      + (", ".join(f"{v}={n:,}" for v, n in nz) if nz else "none"))
-        unb = con.execute(
-            "SELECT COUNT(*) FROM observations WHERE value < 0 AND variable = 'discharge'").fetchone()[0]
-        lines.append(f"- negative discharge, deliberately unbounded pending confirmation that canal reverse flow is real: {unb:,}")
+        try:
+            from .variables import VariableRegistry
+            reg = VariableRegistry()
+        except Exception:
+            reg = None
+        lines += range_lines(rs, reg)
     except Exception as e:
         lines.append(f"- hygiene checks failed: {e}")
 
