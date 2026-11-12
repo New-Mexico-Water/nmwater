@@ -84,3 +84,47 @@ def test_the_flags_force_either_kind_of_run(monkeypatch, tmp_path):
 def test_a_dry_run_does_not_count_as_a_revision(monkeypatch, tmp_path):
     _plan(monkeypatch, tmp_path)
     assert not (tmp_path / "update_state.json").exists()
+
+
+# ---- a failed catalog build is a failed update (it was logged and the exit code stayed 0 for eight nights, #catalog)
+import duckdb
+
+
+def _update_with_build(monkeypatch, tmp_path, build):
+    ctx = _update_ctx(tmp_path)
+    ctx.http = SimpleNamespace(close=lambda: None)
+    ctx.ledger = SimpleNamespace(last_successful_fetch=lambda: {}, close=lambda: None)
+    monkeypatch.setattr(cli, "_ctx", lambda data_dir=None, run_id="adhoc": ctx)
+    monkeypatch.setattr(cli, "_resolve", lambda names: [])                    # no sources: only the derived series and the catalog build run
+    import nmwater.catalog.build as cb
+    import nmwater.derived.watershed_precip as wp
+    monkeypatch.setattr(wp, "update", lambda st: {"years": 0, "rows": 0})
+    monkeypatch.setattr(cb, "build", build)
+    return CliRunner().invoke(cli.app, ["update", "--log", str(tmp_path / "log.csv")])
+
+
+def test_a_catalog_build_that_fails_makes_the_update_exit_non_zero(monkeypatch, tmp_path):
+    def boom(st):
+        raise RuntimeError("could not read sites_manual.csv")
+    res = _update_with_build(monkeypatch, tmp_path, boom)
+    assert res.exit_code == 1 and "catalog build failed" in res.output
+
+
+def test_a_catalog_build_that_works_leaves_the_exit_code_alone(monkeypatch, tmp_path):
+    res = _update_with_build(monkeypatch, tmp_path, lambda st: tmp_path / "x.duckdb")
+    assert res.exit_code == 0, res.output
+
+
+# ---- the hand-written link file must stay readable by the catalog build
+from pathlib import Path
+
+
+def test_sites_manual_csv_has_one_line_ending_and_loads_the_way_the_catalog_build_loads_it():
+    path = Path(__file__).resolve().parents[1] / "catalog" / "sites_manual.csv"
+    assert b"\r" not in path.read_bytes()                                       # CRLF rows appended to an LF file broke DuckDB's reader on 2026-11-04
+    con = duckdb.connect()
+    con.execute(f"""CREATE TABLE t AS SELECT * FROM read_csv('{path.as_posix()}', header = true, delim = ',', quote = '"', escape = '"',
+                   columns = {{'site_uid_a': 'VARCHAR', 'site_uid_b': 'VARCHAR', 'link_type': 'VARCHAR', 'evidence': 'VARCHAR'}})""")
+    n, types = con.execute("SELECT count(*), count(DISTINCT link_type) FROM t").fetchone()
+    assert n > 4000 and types == 2
+    assert con.execute("SELECT count(*) FROM t WHERE site_uid_a IS NULL OR site_uid_b IS NULL").fetchone()[0] == 0

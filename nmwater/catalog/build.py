@@ -277,7 +277,9 @@ def build(settings: Settings) -> Path:
         con.execute("CREATE TABLE sources AS SELECT * FROM _src")
     links = CATALOG_DIR / "sites_manual.csv"
     if links.exists():
-        con.execute(f"CREATE TABLE site_links_manual AS SELECT * FROM read_csv_auto('{links.as_posix()}')")
+        # the dialect is stated, not sniffed: a file that mixes line endings (generated rows appended with CRLF to a hand-written LF file) made the sniffer fail and the nightly build with it
+        con.execute(f"""CREATE TABLE site_links_manual AS SELECT * FROM read_csv('{links.as_posix()}', header = true, delim = ',', quote = '"', escape = '"',
+                       columns = {{'site_uid_a': 'VARCHAR', 'site_uid_b': 'VARCHAR', 'link_type': 'VARCHAR', 'evidence': 'VARCHAR'}})""")
 
     # Data dictionary export -------------------------------------------------------------
     DOCS_DIR.mkdir(exist_ok=True)

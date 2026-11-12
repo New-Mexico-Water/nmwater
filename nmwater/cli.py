@@ -391,12 +391,12 @@ def update(
         rows = [one(item) for item in plan]
 
     extra = []
+    wstat = cstat = "ok"
     if catalog:
         # derived series first, so the catalog rebuild below includes them (PRISM years whose grid file
         # changed are recomputed, which picks up PRISM's revisions of the latest months)
         console.rule("watershed precipitation")
         t0 = time.monotonic()
-        wstat = "ok"
         try:
             from .derived import watershed_precip as wp
 
@@ -408,7 +408,6 @@ def update(
                                fetch_seconds=round(time.monotonic() - t0, 1)))
         console.rule("catalog build")
         t0 = time.monotonic()
-        cstat = "ok"
         try:
             build_catalog(st)
         except Exception as e:
@@ -439,6 +438,12 @@ def update(
     console.print(f"logged to {log}")
     ctx.http.close()
     ctx.ledger.close()
+    # a failed derived-series or catalog step leaves the archive fetched but the catalog (and so the website data) behind: say so in the exit code, which the nightly turns into a notification
+    failed = {name: stat for name, stat in (("watershed precipitation", wstat), ("catalog build", cstat)) if stat != "ok"}
+    if failed:
+        for name, stat in failed.items():
+            console.print(f"[red]{name} failed: {stat}[/red]")
+        raise typer.Exit(1)
 
 
 def _last_seconds(log: Path) -> dict[str, float]:

@@ -122,7 +122,7 @@ def main() -> None:
     if args.write and len(out):
         p = Path(args.manual)
         with p.open("a", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=["site_uid_a", "site_uid_b", "link_type", "evidence"])
+            w = csv.DictWriter(fh, fieldnames=["site_uid_a", "site_uid_b", "link_type", "evidence"], lineterminator="\n")     # the file is LF: csv's default CRLF made DuckDB's CSV reader fail the nightly catalog build
             for row in rows:
                 w.writerow(row)
         print(f"appended {len(rows):,} rows to {p}")
