@@ -405,9 +405,12 @@ excluded on volume grounds for the first pass.
 
 Larger directions implied by the original goal of publishing this for scientists and the public.
 
-- **Water balance queries.** The pieces are present for a basin-scale balance: inflow at Otowi,
-  diversions, returns, reservoir storage change, evapotranspiration, outflow at El Paso. Writing
-  those as tested, documented queries would prove the archive does what it was built for.
+- **Water balance queries. Done for three reaches** (Elephant Butte Reservoir, Otowi to San Marcial,
+  Elephant Butte Dam to Caballo Dam): `nmwater/derived/water_balance.py`, `scripts/water_balance.py`,
+  [docs/reports/water-balance.md](reports/water-balance.md). The reservoir balance closes against
+  Reclamation's own inflow within 4.2% in every year. What cannot be balanced yet is named in the
+  report: diversions and returns (#12), evapotranspiration (#18), and anything below Caballo (the
+  archive has no El Paso record between 1982 and April 2026).
 - **PostgreSQL/TimescaleDB migration.** The schema was designed for it; nothing in the pipeline
   needs to change. Worth doing when a website needs a live backend.
 - **Scheduled refresh.** Incremental pulls work; a timer would keep the archive current.

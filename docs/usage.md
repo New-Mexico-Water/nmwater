@@ -349,6 +349,17 @@ Use `normal_storage_af`, not `nid_storage_af`, for an ordinary fill percentage -
 [data-model.md](data-model.md#reservoir_capacity) for why they differ by a factor of eight at
 Abiquiu.
 
+### Water balance of a reach
+
+```
+uv run python scripts/water_balance.py                     # Elephant Butte, Middle Rio Grande, Elephant Butte Dam to Caballo Dam
+uv run python scripts/water_balance.py --only elephant_butte
+```
+
+Writes `reports/water_balance_<reach>_water_year.csv` and `..._month.csv` (acre-feet; ignored by git) and regenerates `docs/reports/water-balance.md`. The equation is
+`unaccounted = inflow - outflow - change in storage - evaporation`; positive means measured water went missing, negative means more left than was measured arriving. A period needs
+95% of its days in every series, otherwise it has no balance. See [reports/water-balance.md](reports/water-balance.md) for the method, the series and the results; the code is `nmwater/derived/water_balance.py`.
+
 ### Querying by municipality or tract
 
 `nmwater fetch tiger` downloads Census boundaries and `catalog build` joins every located site
