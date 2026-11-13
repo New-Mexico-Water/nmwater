@@ -170,3 +170,55 @@ def test_normalize_ignores_the_other_layers_and_error_pages(tmp_path):
 def test_reprocess_defaults_to_the_layer_pages():
     import inspect
     assert inspect.signature(OSEArcGIS.reprocess).parameters["kind"].default == "layer"
+
+
+# ---- the layer republished with spelled-out field names (November 2026) and no blank suffix
+def _new_pod(nbr, dtw, day_ms, suffix=""):
+    return {"pod_basin": "RG", "pod_nbr": nbr, "pod_suffix": suffix, "depth_water": dtw, "log_file_date": day_ms, "finish_date": None}
+
+
+def test_pod_observations_read_both_generations_of_field_names():
+    day = 1_700_000_000_000
+    s = _src_with_xw()
+    old, n_old, _ = s._pod_observations(pd.DataFrame([_pod("1", 55.0, day)]))
+    new, n_new, _ = s._pod_observations(pd.DataFrame([_new_pod("1", 55.0, day)]))
+    pd.testing.assert_frame_equal(old.reset_index(drop=True), new.reset_index(drop=True))
+    assert n_old == n_new == 1 and new.source_param.tolist() == ["depth_wate"]       # the crosswalk's series name does not change with the field
+
+
+def test_pod_observations_fall_back_to_the_finish_date():
+    day = 1_700_000_000_000
+    rec = {**_new_pod("9", 20.0, None), "finish_date": day}
+    out, n, undated = _src_with_xw()._pod_observations(pd.DataFrame([rec]))
+    assert n == 1 and undated == 0 and str(out.datetime_utc.iloc[0].date()) == "2023-11-14"
+
+
+def test_a_layer_without_the_depth_field_gives_no_rows_instead_of_crashing():
+    out, n, _ = _src_with_xw()._pod_observations(pd.DataFrame([{"pod_basin": "RG", "pod_nbr": "1"}]))
+    assert n == 0 and out.empty                                  # the nightly fetch died here when the field was renamed
+
+
+def test_a_blank_suffix_is_no_suffix():
+    # the layer stored a single space until November 2026 and stores nothing now; both are the same point of diversion
+    ids = {OSEArcGIS._pod_id({"pod_basin": "RG", "pod_nbr": "27764", "pod_suffix": v}) for v in (" ", "", None, np.nan, "  ")}
+    assert ids == {"RG-27764"}
+    assert OSEArcGIS._pod_id({"pod_basin": "RG", "pod_nbr": "27764", "pod_suffix": "POD1"}) == "RG-27764-POD1"
+
+
+def test_pod_sites_use_the_new_field_names_too():
+    df = pd.DataFrame({"pod_basin": ["RG"], "pod_nbr": ["5"], "pod_suffix": [""], "depth_well": [np.nan], "grnd_wtr_src": ["G"], "use_of_well": ["DOM"], "geometry_wkt": ["POINT (-106.0 35.0)"]})
+    out = _src()._pod_sites(df)
+    assert out.native_id.tolist() == ["pod:RG-5"] and out.site_type.tolist() == ["well"]
+
+
+def test_relabel_drops_the_blank_suffix_from_stored_ids():
+    import pyarrow as pa
+
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("relabel_ose_pod_ids", "scripts/relabel_ose_pod_ids.py")
+    m = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(m)
+    t = pa.table({"site_uid": ["ose_arcgis:pod:RG-1- ", "ose_arcgis:pod:RG-2", "ose_arcgis:pod:RG-3-POD1", "ose_arcgis:pod:L-4-  "], "value": [1.0, 2.0, 3.0, 4.0]})
+    out, n = m.fix(t)
+    assert n == 2 and out["site_uid"].to_pylist() == ["ose_arcgis:pod:RG-1", "ose_arcgis:pod:RG-2", "ose_arcgis:pod:RG-3-POD1", "ose_arcgis:pod:L-4"]
+    assert m.fix(out)[1] == 0                                    # a second run changes nothing

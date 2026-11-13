@@ -93,6 +93,37 @@ def _missing(v) -> bool:
     return v is None or bool(pd.isna(v))
 
 
+# The points-of-diversion layer was republished in November 2026 with the shapefile's ten-character field names spelled out; a stored layer or an archived page may carry either.
+FIELD_NAMES = {
+    "depth_water": ("depth_water", "depth_wate"),
+    "log_file_date": ("log_file_date", "log_file_d"),
+    "finish_date": ("finish_date", "finish_dat"),
+    "grnd_wtr_src": ("grnd_wtr_src", "grnd_wtr_s"),
+    "use_of_well": ("use_of_well", "use_of_wel"),
+}
+
+
+def _field(record: dict, name: str):
+    """A record's value for a field, under whichever of its names the record has."""
+    for k in FIELD_NAMES.get(name, (name,)):
+        if k in record:
+            return record[k]
+    return None
+
+
+def _column(df: pd.DataFrame, name: str) -> pd.Series:
+    """A frame's column for a field, under whichever of its names the frame has; all missing when it has neither."""
+    for k in FIELD_NAMES.get(name, (name,)):
+        if k in df:
+            return df[k]
+    return pd.Series(None, index=df.index, dtype=object)
+
+
+def _text(v) -> str:
+    """A field as text: blank for missing values and for whitespace (the layer once stored a single space where it now stores nothing)."""
+    return "" if _missing(v) else str(v).strip()
+
+
 @register
 class OSEArcGIS(Source):
     name = "ose_arcgis"
@@ -169,7 +200,8 @@ class OSEArcGIS(Source):
     # -- site builders --------------------------------------------------------
     @staticmethod
     def _pod_id(r) -> str:
-        return f"{r.get('pod_basin') or ''}-{r.get('pod_nbr') or ''}{('-' + str(r.get('pod_suffix'))) if r.get('pod_suffix') else ''}"
+        suffix = _text(r.get("pod_suffix"))
+        return f"{_text(r.get('pod_basin'))}-{_text(r.get('pod_nbr'))}{'-' + suffix if suffix else ''}"
 
     def _pod_sites(self, df: pd.DataFrame) -> pd.DataFrame:
         from shapely import wkt as _swkt
@@ -184,8 +216,8 @@ class OSEArcGIS(Source):
                     lon, lat = pt.x, pt.y
                 except Exception:
                     pass
-            use = str(r.get("use_of_wel") or r.get("use_") or "").upper()
-            src = str(r.get("grnd_wtr_s") or "")
+            use = (_text(_field(r, "use_of_well")) or _text(r.get("use_"))).upper()
+            src = _text(_field(r, "grnd_wtr_src"))
             stype = "well" if (r.get("depth_well") or 0) > 0 or src == "G" else USE_SITE_TYPE.get(use, "diversion")
             depth = r.get("depth_well")
             rows.append({
@@ -265,16 +297,15 @@ class OSEArcGIS(Source):
     def _pod_observations(self, df: pd.DataFrame) -> tuple[pd.DataFrame, int, int]:
         """(observations, PODs with a depth to water, PODs among them without a date) from a frame of points-of-diversion features.
         One place builds them, for `fetch` (from the stored layer) and for `normalize` (from the raw layer pages), so the two cannot differ."""
-        dtw = pd.to_numeric(df.get("depth_wate"), errors="coerce")
+        dtw = pd.to_numeric(_column(df, "depth_water"), errors="coerce")
         keep = df[dtw.notna() & (dtw > 0)]
-        col = lambda c: keep[c] if c in keep else pd.Series(None, index=keep.index, dtype=object)  # noqa: E731  (a page may lack a date column)
-        when = col("log_file_d").map(_ms_to_date)
-        when = when.where(when.notna(), col("finish_dat").map(_ms_to_date))
+        when = _column(keep, "log_file_date").map(_ms_to_date)       # a page may lack a date column: then every date is missing
+        when = when.where(when.notna(), _column(keep, "finish_date").map(_ms_to_date))
         obs = pd.DataFrame({
             "site_uid": ["ose_arcgis:pod:" + self._pod_id(r) for r in keep.to_dict("records")],
             "datetime_utc": pd.to_datetime(when, utc=True, errors="coerce").dt.floor("D"),
-            "value": pd.to_numeric(keep["depth_wate"], errors="coerce"),
-            "source_param": "depth_wate", "source_unit": "ft", "qualifier": "at_drilling",
+            "value": pd.to_numeric(_column(keep, "depth_water"), errors="coerce"),
+            "source_param": "depth_wate", "source_unit": "ft", "qualifier": "at_drilling",     # source_param is the series' name in the crosswalk, kept from the layer's old field name
             "utc_offset_min": None, "statistic": "instantaneous", "interval": "irregular",
         })
         obs = obs[obs["datetime_utc"].notna()]
