@@ -290,7 +290,9 @@ def read_gauges(con, river: River, states: list[str] | None = None) -> pd.DataFr
                -- a gauge on an unnamed reach (NHD leaves some main-stem reaches unnamed) whose first named
                -- reach downstream is this river, in a watershed the river runs through; its name is checked below
                OR (r.river_method = 'downstream' AND sr.river_name = ?
-                   AND sr.huc8 IN (SELECT DISTINCT huc8 FROM flowlines WHERE gnis_id = ?)))""",
+                   AND sr.huc8 IN (SELECT DISTINCT huc8 FROM flowlines WHERE gnis_id = ?)))
+        -- upstream to downstream within a watershed, then by name: without an order the gauges come back in the table's row order, which moves whenever any source's sites change
+        ORDER BY r.huc8_name, r.totdasqkm NULLS LAST, s.name, r.site_uid""",
                     [river.gnis_id, river.name, river.gnis_id]).df()
     keep = pd.Series([(is_river_gauge(n, river.name) if meth == "snap" else names_the_river(n, river.name))
                       and not (src == "ose_meas" and _ose_ditch(m))

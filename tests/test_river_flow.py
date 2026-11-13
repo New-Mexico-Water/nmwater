@@ -94,3 +94,35 @@ def test_names_the_river_for_gauges_on_unnamed_reaches():
     assert not n("PECOS RIVER TRIB NR PUERTO DE LUNA, NM", "Pecos River")
     assert not n("SAN ANTONIO ARROYO AT RIO GRANDE CONFLUENCE IN ABQ", "Rio Grande")
     assert not n("Rio Grande Nature Center High-Flow Channel at Albq", "Rio Grande")
+
+
+def test_read_gauges_come_back_upstream_to_downstream_whatever_the_row_order():
+    import duckdb
+
+    from nmwater.derived import river_flow as rf
+
+    def catalog(order):
+        c = duckdb.connect()
+        c.execute("CREATE TABLE site_regions (site_uid VARCHAR, region_type VARCHAR, region_id VARCHAR)")
+        c.execute("CREATE TABLE sites (site_uid VARCHAR, source VARCHAR, name VARCHAR, state VARCHAR, raw_metadata VARCHAR)")
+        c.execute("CREATE TABLE river_segments (site_uid VARCHAR, site_type VARCHAR, huc8_name VARCHAR, totdasqkm DOUBLE, river_method VARCHAR)")
+        c.execute("CREATE TABLE site_reaches (site_uid VARCHAR, comid BIGINT, river_name VARCHAR, huc8 VARCHAR)")
+        c.execute("CREATE TABLE flowlines (comid BIGINT, gnis_id VARCHAR, huc8 VARCHAR)")
+        c.execute("CREATE TABLE site_variables (site_uid VARCHAR, variable VARCHAR)")
+        c.execute("INSERT INTO flowlines VALUES (1, 'G1', '14080101')")
+        gauges = [("usgs:3", "ANIMAS RIVER AT FARMINGTON, NM", 3500.0), ("usgs:1", "ANIMAS RIVER AT SILVERTON, CO", 90.0),
+                  ("usgs:2", "ANIMAS RIVER AT DURANGO, CO", 1800.0), ("usgs:4", "ANIMAS RIVER NEAR ALPHA, NM", 3500.0)]
+        for i in order:
+            uid, name, area = gauges[i]
+            c.execute("INSERT INTO sites VALUES (?, 'usgs', ?, 'NM', NULL)", [uid, name])
+            c.execute("INSERT INTO river_segments VALUES (?, 'stream', 'Animas', ?, 'snap')", [uid, area])
+            c.execute("INSERT INTO site_reaches VALUES (?, 1, 'Animas River', '14080101')", [uid])
+            c.execute("INSERT INTO site_variables VALUES (?, 'discharge')", [uid])
+        return c
+
+    from types import SimpleNamespace
+
+    river = SimpleNamespace(name="Animas River", gnis_id="G1")
+    expect = ["usgs:1", "usgs:2", "usgs:3", "usgs:4"]                 # by drainage area, equal areas by name (Farmington before Near Alpha)
+    for order in ([0, 1, 2, 3], [3, 2, 1, 0], [1, 3, 0, 2]):
+        assert list(rf.read_gauges(catalog(order), river).site_uid) == expect
