@@ -37,7 +37,7 @@ Per-source licence, citation, refresh cadence, and caveats live in `catalog/sour
 | `nmwdi_st2` | New Mexico Water Data Initiative: groundwater levels federated from nine agencies | 1946– | 1.36M rows, 905 wells |
 | `nmed_st2` | Environment Department drinking-water chemistry, 862 analytes across 54,616 sampling points | 2002– | 3.19M results |
 | `ose_meas` | The State Engineer's own telemetry: 296 stream, ditch, acequia and well stations. The only source of acequia diversion flows | 2011– | 1.49M rows, 294 sites |
-| `ose_arcgis` | Water rights and infrastructure: 279,991 points of diversion, real-time meters, conveyances, springs, dams, acequias, irrigation districts | registry | 158,042 sites |
+| `ose_arcgis` | Water rights and infrastructure: about 281,000 points of diversion (the hosted layer's 238,000 plus the rest of OSE's own [GIS_WATERS_PODs](https://gis.ose.nm.gov/server_s/rest/services/PODS/GIS_WATERS_PODs/MapServer/1) layer), real-time meters, conveyances, springs, dams, acequias, irrigation districts | registry | 284,395 sites |
 | `ose_reports` | Water Use by Categories 1975–2020, Rio Grande Compact annual reports, the 1888–1954 streamflow compilation | 1888– | PDF and spreadsheet mirror |
 | `isc_sevenrivers` | Interstate Stream Commission's Pecos monitoring network, 37 analytes | 2004– | 84K rows |
 | `nmbgmr` | Bureau of Geology aquifer mapping and the Healy collaborative well network | 1946– | 36K rows (host unreachable; see below) |

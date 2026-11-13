@@ -48,6 +48,12 @@ LAYERS: dict[str, tuple[str, str | None]] = {
     "All_OSE_WaterRight_Records": ("water_right_records", None),
 }
 POD_LAYER = "OSE_Points_of_Diversion"
+# The hosted layer above holds about 238,000 points of diversion; OSE's own server holds about 281,000 with the same fields. The extra points include ones whose drilling-time water levels
+# we already hold from earlier pulls of the hosted layer (22,127 had no site row in November 2026). The hosted layer wins where both have a point.
+SERVER_POD_LAYER = "GIS_WATERS_PODs"
+SERVER_POD_URL = "https://gis.ose.nm.gov/server_s/rest/services/PODS/GIS_WATERS_PODs/MapServer/1/query"
+SERVER_POD_TABLE = "points_of_diversion_ose_server"
+SERVER_PAGE_SIZE = 5000          # the server's maxRecordCount
 LAYER_REFRESH_DAYS = 7           # an update re-pulls the layers (and so the points of diversion) when the stored copy is older than this: the biggest is hundreds of thousands of features
 
 
@@ -60,7 +66,7 @@ def layers_stale(path, days: int = LAYER_REFRESH_DAYS, now: float | None = None)
     return (not p.exists()) or ((now if now is not None else time.time()) - p.stat().st_mtime) > days * 86400
 
 
-BIG_LAYERS = {"OSE_Points_of_Diversion", "All_OSE_WaterRight_Records", "EBID_Parcels", "OSE_Conveyances"}
+BIG_LAYERS = {"OSE_Points_of_Diversion", "GIS_WATERS_PODs", "All_OSE_WaterRight_Records", "EBID_Parcels", "OSE_Conveyances"}
 
 USE_SITE_TYPE = {
     "IRR": "diversion", "IRRIGATION": "diversion", "DOM": "well", "DOMESTIC": "well", "MUN": "well",
@@ -124,6 +130,16 @@ def _text(v) -> str:
     return "" if _missing(v) else str(v).strip()
 
 
+def union_pods(*frames: pd.DataFrame) -> pd.DataFrame:
+    """Points of diversion from several layers as one frame, one row per point (the id `_pod_id` gives), the earlier frame's row winning."""
+    frames = [f for f in frames if f is not None and len(f)]
+    if not frames:
+        return pd.DataFrame()
+    df = pd.concat(frames, ignore_index=True)
+    ids = [OSEArcGIS._pod_id(r) for r in df.to_dict("records")]
+    return df[~pd.Series(ids, index=df.index).duplicated(keep="first")]
+
+
 @register
 class OSEArcGIS(Source):
     name = "ose_arcgis"
@@ -136,8 +152,8 @@ class OSEArcGIS(Source):
         return (self.cfg.base_url or "https://services2.arcgis.com/qXZbWTdPDbTjl7Dy/arcgis/rest/services").rstrip("/")
 
     def _layer_features(self, layer: str, refresh: bool = False, page_size: int = 2000,
-                        max_pages: int = 100000, want_geom: bool = True) -> list[dict]:
-        url = f"{self.base}/{layer}/FeatureServer/0/query"
+                        max_pages: int = 100000, want_geom: bool = True, url: str | None = None) -> list[dict]:
+        url = url or f"{self.base}/{layer}/FeatureServer/0/query"
         feats: list[dict] = []
         offset = 0
         pages = 0
@@ -193,9 +209,39 @@ class OSEArcGIS(Source):
                 sites_frames.append(self._spring_sites(df))
             elif builder == "dam":
                 sites_frames.append(self._dam_sites(df))
+        if not only or SERVER_POD_LAYER in only:
+            server = self._server_pods(refresh=bool(self.opt("refresh_big", False) if refresh_big is None else refresh_big))
+            if server is not None and len(server):
+                sites_frames.append(self._pod_sites(server))
         if not sites_frames:
             return pd.DataFrame(columns=["native_id"])
-        return pd.concat(sites_frames, ignore_index=True)
+        sites = pd.concat(sites_frames, ignore_index=True)
+        return sites.drop_duplicates(subset=["native_id"], keep="first")          # the hosted layer's row wins over OSE's server for a point both hold
+
+    def _server_pods(self, refresh: bool) -> pd.DataFrame | None:
+        """The points of diversion on OSE's own server. If it cannot be reached the copy stored by the last good pull is used, so a night's outage does not remove its sites."""
+        p = self.store.root / "reference" / f"source={self.name}" / f"{SERVER_POD_TABLE}.parquet"
+        try:
+            feats = self._layer_features(SERVER_POD_LAYER, refresh=refresh, page_size=SERVER_PAGE_SIZE, url=SERVER_POD_URL)
+            df = self._layer_frame(SERVER_POD_LAYER, feats)
+            self.store.write_table(df, "reference", self.name, SERVER_POD_TABLE)
+            log.info("ose_arcgis: %s (OSE server) -> %d features", SERVER_POD_LAYER, len(df))
+            return df
+        except Exception as e:
+            if p.exists():
+                log.warning("ose_arcgis: OSE server layer failed (%s); using the stored copy", e)
+                return pd.read_parquet(p)
+            log.warning("ose_arcgis: OSE server layer failed (%s); no stored copy", e)
+            return None
+
+    def _stored_pods(self) -> pd.DataFrame | None:
+        """Both stored points-of-diversion tables as one frame (the hosted layer first), or None before the first discover."""
+        ref = self.store.root / "reference" / f"source={self.name}"
+        hosted = ref / "points_of_diversion.parquet"
+        if not hosted.exists():
+            return None
+        server = ref / f"{SERVER_POD_TABLE}.parquet"
+        return union_pods(pd.read_parquet(hosted), pd.read_parquet(server) if server.exists() else None)
 
     # -- site builders --------------------------------------------------------
     @staticmethod
@@ -216,7 +262,7 @@ class OSEArcGIS(Source):
                     lon, lat = pt.x, pt.y
                 except Exception:
                     pass
-            use = (_text(_field(r, "use_of_well")) or _text(r.get("use_"))).upper()
+            use = (_text(_field(r, "use_of_well")) or _text(r.get("use_")) or _text(r.get("use"))).upper()
             src = _text(_field(r, "grnd_wtr_src"))
             stype = "well" if (r.get("depth_well") or 0) > 0 or src == "G" else USE_SITE_TYPE.get(use, "diversion")
             depth = r.get("depth_well")
@@ -314,7 +360,7 @@ class OSEArcGIS(Source):
     def normalize(self, artifact) -> pd.DataFrame | None:
         """The drilling-time water levels in one archived page of the points-of-diversion layer (the only layer that carries observations); None for any other page.
         Lets `nmwater reprocess ose_arcgis` rebuild the rows offline from the raw archive (#21)."""
-        if f"/{POD_LAYER}/FeatureServer/" not in artifact.url:
+        if f"/{POD_LAYER}/FeatureServer/" not in artifact.url and f"/{SERVER_POD_LAYER}/MapServer/" not in artifact.url:
             return None
         raw = artifact.read_bytes()
         try:
@@ -347,7 +393,7 @@ class OSEArcGIS(Source):
         if not p.exists():
             summ.notes.append("run `nmwater discover ose_arcgis` first")
             return summ
-        df = pd.read_parquet(p)
+        df = self._stored_pods()
         if limit:
             df = df.head(limit)
         obs, n_keep, n_undated = self._pod_observations(df)

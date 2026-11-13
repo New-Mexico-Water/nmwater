@@ -222,3 +222,43 @@ def test_relabel_drops_the_blank_suffix_from_stored_ids():
     out, n = m.fix(t)
     assert n == 2 and out["site_uid"].to_pylist() == ["ose_arcgis:pod:RG-1", "ose_arcgis:pod:RG-2", "ose_arcgis:pod:RG-3-POD1", "ose_arcgis:pod:L-4"]
     assert m.fix(out)[1] == 0                                    # a second run changes nothing
+
+
+# ---- OSE's own server as a second source of points of diversion
+def test_union_pods_keeps_one_row_per_point_and_the_first_frames_row():
+    from nmwater.sources.ose_arcgis import union_pods
+
+    hosted = pd.DataFrame({"pod_basin": ["RG", "RG"], "pod_nbr": ["1", "2"], "pod_suffix": ["", " "], "src": ["hosted", "hosted"]})
+    server = pd.DataFrame({"pod_basin": ["RG", "RG", "L"], "pod_nbr": ["2", "3", "4"], "pod_suffix": ["", "", ""], "src": ["server", "server", "server"]})
+    out = union_pods(hosted, server)
+    assert out.src.tolist() == ["hosted", "hosted", "server", "server"] and out.pod_nbr.tolist() == ["1", "2", "3", "4"]      # RG-2 is one point though its suffix is " " in one and "" in the other
+    assert union_pods(None, pd.DataFrame()).empty and union_pods(hosted, None).equals(hosted)
+
+
+def test_normalize_reads_pages_of_the_ose_server_layer_too(tmp_path):
+    day = 1_700_000_000_000
+    art = _page(tmp_path, "GIS_WATERS_PODs", [_new_pod("7", 40.0, day)])
+    art.url = "https://gis.ose.nm.gov/server_s/rest/services/PODS/GIS_WATERS_PODs/MapServer/1/query"
+    out = _src_with_xw().normalize(art)
+    assert out.site_uid.tolist() == ["ose_arcgis:pod:RG-7"] and out.value.tolist() == [40.0]
+
+
+def test_pod_sites_read_the_servers_use_field():
+    df = pd.DataFrame({"pod_basin": ["RG"], "pod_nbr": ["6"], "pod_suffix": [""], "depth_well": [np.nan], "use": ["DOM"], "geometry_wkt": ["POINT (-106.0 35.0)"]})
+    assert _src()._pod_sites(df).site_type.tolist() == ["well"]
+
+
+def test_server_pods_fall_back_to_the_stored_copy_when_the_server_is_down(tmp_path):
+    s = OSEArcGIS.__new__(OSEArcGIS)
+    d = tmp_path / "reference" / "source=ose_arcgis"
+    d.mkdir(parents=True)
+    pd.DataFrame({"pod_basin": ["RG"], "pod_nbr": ["9"], "pod_suffix": [""]}).to_parquet(d / "points_of_diversion_ose_server.parquet")
+    s.store = _NS(root=tmp_path)
+
+    def down(*a, **k):
+        raise RuntimeError("503")
+
+    s._layer_features = down
+    assert s._server_pods(refresh=True).pod_nbr.tolist() == ["9"]                 # a night's outage does not remove the sites
+    (d / "points_of_diversion_ose_server.parquet").unlink()
+    assert s._server_pods(refresh=True) is None                                   # nothing stored: carry on with the hosted layer alone
