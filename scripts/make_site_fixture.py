@@ -18,6 +18,17 @@ from nmwater.site.bundle import write_files_index
 from nmwater.site.schema import validate_bundle
 
 
+def cut_snow_rivers(base: Path, have: set[str]) -> None:
+    """Keep only the river links of rivers in the fixture, in the snow index and in every unit's file, and drop the CSV listing."""
+    for f in sorted(base.rglob("*.json")):
+        o = json.loads(f.read_text())
+        for w in o.get("watersheds", []) or ([o] if "rivers" in o else []):
+            w["rivers"] = [r for r in w.get("rivers", []) if r["slug"] in have]
+        if f.name == "index.json":
+            o["files"]["csv"] = []
+        f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
+
+
 def main(src: Path, dst: Path, slugs: list[str]) -> int:
     man = json.loads((src / "manifest.json").read_text())
     keep = [e for e in man["rivers"] if e["slug"] in slugs]
@@ -65,6 +76,12 @@ def main(src: Path, dst: Path, slugs: list[str]) -> int:
                 o["files"]["csv"] = []
             f.write_text(json.dumps(o, separators=(",", ":"), ensure_ascii=False))
         rs["files"]["csv"] = []
+    if man.get("snow"):                                # the snow section, no CSVs; river links cut down to the rivers kept
+        sn = man["snow"]
+        shutil.copytree(src / sn["path"], dst / sn["path"], ignore=shutil.ignore_patterns("*.csv"))
+        have = {e["slug"] for e in keep}
+        cut_snow_rivers(dst / sn["path"], have)
+        sn["files"]["csv"] = []
     if man.get("statewide"):                           # the statewide figures, no CSVs
         sw = man["statewide"]
         shutil.copytree(src / sw["path"], dst / sw["path"], ignore=shutil.ignore_patterns("*.csv"))

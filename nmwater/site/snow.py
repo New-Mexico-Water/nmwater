@@ -18,6 +18,7 @@ import json
 import logging
 from pathlib import Path
 
+import duckdb
 import numpy as np
 import pandas as pd
 
@@ -95,6 +96,16 @@ def _pct(r: dict) -> int | None:
     return None if r["pct"] is None else round(r["pct"])
 
 
+def _rain_watersheds(con, units: set[str]) -> set[str]:
+    """The watersheds that also have a place on the Rain page (precipitation in the archive and some area in the state): the snow map is drawn on the same shapes. A catalog without
+    the watersheds table (a test archive) keeps every unit."""
+    try:
+        have = {r[0] for r in con.sql("SELECT huc8 FROM watersheds WHERE has_precip AND nm_fraction > 0").fetchall()}
+    except duckdb.CatalogException:
+        return units
+    return units & have
+
+
 def station_state(con, unit_ids: list[str], range_shapes: dict, fallback_day):
     """The stations with their daily series and new-snow estimates, the newest station day, and which stations belong to which watershed and range.
     Returns (stations, depth_by, swe_by, new_by, station_day, by_watershed, by_range); a unit id appears in both maps, with the stations that fit it."""
@@ -116,6 +127,8 @@ def export_snow(con, out: Path, rivers_dir: Path, parquet_dir: Path, generated: 
         log.warning("no watershed snow series; no snow pages (run nmwater watershed-snow)")
         return None
     units, daily = got
+    units = units[units["unit"].isin(_rain_watersheds(con, set(units.loc[units["kind"] == "watershed", "unit"]))) | (units["kind"] == "range")]   # the watersheds the Rain page draws
+    daily = daily[daily["unit"].isin(units["unit"])]
     daily["date"] = pd.to_datetime(daily["date"])
     model_day = daily["date"].max()
     wy, i_now = sn.day_index(model_day) or sn.day_index(model_day - pd.Timedelta(days=1))

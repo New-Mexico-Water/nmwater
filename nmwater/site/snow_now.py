@@ -74,6 +74,7 @@ def make(con, parquet_dir: Path, generated: str, now: datetime) -> dict | None:
     if got is None:
         return None
     units, daily = got
+    units = units[units["unit"].isin(sx._rain_watersheds(con, set(units.loc[units["kind"] == "watershed", "unit"]))) | (units["kind"] == "range")]
     from shapely.geometry import shape
 
     model_day = pd.to_datetime(daily["date"]).max()
