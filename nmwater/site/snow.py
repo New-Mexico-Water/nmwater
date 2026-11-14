@@ -9,7 +9,7 @@ snow/
 
 Sources: NOAA SNODAS (water in the snow and depth, a model; averaged over each unit by nmwater/derived/watershed_snow.py) and USDA NRCS SNOTEL stations (readings, and a new-snow
 estimate from depth and water rises: nmwater/derived/snotel_snow.py). Ratings compare a value with the same date in water years 2004-2025 (nmwater/derived/snow_normal.py).
-A station's day is NRCS's daily value, the reading at 00:00 that day (until it arrives, the hourly reading at 00:00), so new snow is a midnight-to-midnight rise. Days run 1 October to 30 September with Feb 29 left out: day 0 is 1 October.
+A station's day D is NRCS's daily value dated D, which the archive shows is the reading at local midnight that ENDS day D (07:00 UTC on D+1, all year); until it arrives, the hourly reading at 07:00 UTC on D+1. New snow dated D is the rise over the local day D. Days run 1 October to 30 September with Feb 29 left out: day 0 is 1 October.
 """
 
 from __future__ import annotations
@@ -61,11 +61,12 @@ def _stations(con) -> pd.DataFrame:
 
 
 def _daily(con, ids: list[str], variable: str) -> dict[str, pd.Series]:
-    """One value per station and day: NRCS's own daily value (the reading at 00:00 that day), or until it arrives the hourly reading at 00:00, so the newest day is a whole
-    midnight-to-midnight span and every day means the same thing as the long daily history."""
+    """One value per station and day D: NRCS's own daily value dated D, or until it arrives the hourly reading at 07:00 UTC on D+1. Both are the reading at the local midnight that ends
+    day D (checked against the hourly series: the daily rows equal the 07:00 UTC readings of the next UTC day exactly, in every month), so a rise dated D is the snow of the local day D."""
     q = ",".join("'" + i + "'" for i in ids)
-    d = con.sql(f"SELECT site_uid, datetime_utc::DATE AS d, coalesce(max(value) FILTER (WHERE interval = 'daily'), "
-                f"max(value) FILTER (WHERE interval = 'hourly' AND hour(datetime_utc) = 0)) AS v FROM observations_clean WHERE variable = '{variable}' AND site_uid IN ({q}) "
+    d = con.sql(f"SELECT site_uid, CASE WHEN interval = 'hourly' THEN (datetime_utc - INTERVAL 1 DAY)::DATE ELSE datetime_utc::DATE END AS d, "
+                f"coalesce(max(value) FILTER (WHERE interval = 'daily'), max(value) FILTER (WHERE interval = 'hourly' AND hour(datetime_utc) = 7)) AS v "
+                f"FROM observations_clean WHERE variable = '{variable}' AND site_uid IN ({q}) "
                 f"AND datetime_utc >= TIMESTAMPTZ '{SERIES_FROM} 00:00:00+00' GROUP BY 1, 2").df().dropna(subset=["v"])
     d["d"] = pd.to_datetime(d["d"])
     return {k: g.set_index("d")["v"].sort_index() for k, g in d.groupby("site_uid")}

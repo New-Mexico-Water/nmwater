@@ -61,14 +61,15 @@ def archive(tmp_path):
                 swe += 0.5 if snow_day else 0.0
                 obs.append((sid, "snow_depth", day, depth * bump, "daily"))
                 obs.append((sid, "swe", day, swe, "daily"))
-    # the newest day has no daily value yet: only hourly readings, of which the 00:00 one counts
+    # the newest day has no daily value yet: only hourly readings, of which the 07:00 UTC one on the next UTC day (local midnight, the end of the day) counts
     nxt = LAST + pd.Timedelta(days=1)
     for sid in ("nrcs:1:NM:SNTL", "nrcs:2:NM:SNTL"):
         last_depth = [o for o in obs if o[0] == sid and o[1] == "snow_depth"][-1][3]
         last_swe = [o for o in obs if o[0] == sid and o[1] == "swe"][-1][3]
-        for h in range(0, 6):
-            obs.append((sid, "snow_depth", nxt + pd.Timedelta(hours=h), last_depth + 4.0 + h * 50, "hourly"))     # only hour 0 may count: later hours are wild on purpose
-            obs.append((sid, "swe", nxt + pd.Timedelta(hours=h), last_swe + 0.5 + h * 50, "hourly"))
+        for h in range(4, 12):
+            at = nxt + pd.Timedelta(days=1, hours=h)
+            obs.append((sid, "snow_depth", at, last_depth + 4.0 + (h - 7) * 50, "hourly"))     # only 07:00 may count: the other hours are wild on purpose
+            obs.append((sid, "swe", at, last_swe + 0.5 + (h - 7) * 50, "hourly"))
     df_o = pd.DataFrame(obs, columns=["site_uid", "variable", "datetime_utc", "value", "interval"])
     df_o["datetime_utc"] = pd.to_datetime(df_o["datetime_utc"], utc=True)
     con.register("o", df_o)
@@ -124,7 +125,7 @@ def test_a_stations_day_is_its_daily_value_or_the_midnight_hourly_reading_not_a_
     _out, _b, idx = archive
     assert idx["stations_day"] == "2026-02-01" and idx["model_day"] == "2026-01-31"
     s = {x["id"]: x for x in idx["stations"]}["nrcs:1:NM:SNTL"]
-    # depth on 31 Jan is the last daily value; 1 Feb adds the hourly 00:00 reading (+4 in): new24 is that rise confirmed by the +0.5 in of water, not the wild later hours
+    # depth on 31 Jan is the last daily value; 1 Feb adds the hourly reading at local midnight (07:00 UTC on 2 Feb, +4 in): new24 is that rise confirmed by the +0.5 in of water, not the wild neighbouring hours
     assert s["new24"] == pytest.approx(4.0) and s["depth"] < 1000
     assert s["new7"] >= 4.0
 
