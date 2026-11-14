@@ -99,6 +99,8 @@ def _update_with_build(monkeypatch, tmp_path, build):
     import nmwater.catalog.build as cb
     import nmwater.derived.watershed_precip as wp
     monkeypatch.setattr(wp, "update", lambda st: {"years": 0, "rows": 0})
+    import nmwater.derived.watershed_snow as ws
+    monkeypatch.setattr(ws, "update", lambda st, rebuild=False: {"units": 0, "days_added": 0})
     monkeypatch.setattr(cb, "build", build)
     return CliRunner().invoke(cli.app, ["update", "--log", str(tmp_path / "log.csv")])
 

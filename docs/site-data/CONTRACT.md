@@ -31,7 +31,7 @@ modules free of HTML.)
 
 ## Versioning
 
-`schema_version` is 2. Changes inside a version are **additive** (new optional fields, new files, new sections such as `precipitation/`);
+`schema_version` is 2. Changes inside a version are **additive** (new optional fields, new files, new sections such as `precipitation/` and `snow/`);
 the website must ignore what it does not know and tolerate what is absent. A change that removes or renames something is version 2:
 the website accepts both during the overlap, nmwater writes both until the website stops reading the old one. `contract/VERSION` in the
 website records which nmwater commit its schemas came from.

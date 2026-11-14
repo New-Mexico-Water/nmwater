@@ -1,0 +1,456 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Snow index",
+ "$defs": {
+  "rating": {
+   "type": "object",
+   "properties": {
+    "now": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "usual": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "cls": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "little": {
+     "type": "boolean"
+    },
+    "n": {
+     "type": "integer"
+    },
+    "stations": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "now",
+    "usual",
+    "pct",
+    "cls",
+    "little",
+    "n"
+   ],
+   "additionalProperties": false
+  },
+  "ratings": {
+   "type": "object",
+   "properties": {
+    "swe": {
+     "$ref": "#/$defs/rating"
+    },
+    "depth": {
+     "$ref": "#/$defs/rating"
+    },
+    "new24": {
+     "$ref": "#/$defs/rating"
+    },
+    "new7": {
+     "$ref": "#/$defs/rating"
+    },
+    "newseason": {
+     "$ref": "#/$defs/rating"
+    }
+   },
+   "required": [
+    "swe",
+    "depth",
+    "new24",
+    "new7",
+    "newseason"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "description": "snow/index.json: water in the snow, snow depth and new snow for every watershed and mountain range against the same date in water years 2004-2025, and the SNOTEL stations' latest readings. Water in the snow and depth are NOAA SNODAS model averages; new snow is estimated from SNOTEL depth and water rises. Thresholds say when a place is too snowless to rate, and when a percent of usual is meaningful; a page applies them.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "generated": {
+   "type": "string"
+  },
+  "model_day": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "stations_day": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "baseline": {
+   "type": "string"
+  },
+  "measures": {
+   "type": "array",
+   "items": {
+    "enum": [
+     "swe",
+     "depth",
+     "new24",
+     "new7",
+     "newseason"
+    ]
+   }
+  },
+  "definitions": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "units": {
+   "type": "object",
+   "additionalProperties": {
+    "type": "string"
+   }
+  },
+  "classes": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  },
+  "thresholds": {
+   "type": "object",
+   "properties": {
+    "little_in": {
+     "type": "object",
+     "properties": {
+      "swe": {
+       "type": "number"
+      },
+      "depth": {
+       "type": "number"
+      },
+      "new24": {
+       "type": "number"
+      },
+      "new7": {
+       "type": "number"
+      },
+      "newseason": {
+       "type": "number"
+      }
+     },
+     "required": [
+      "swe",
+      "depth",
+      "new24",
+      "new7",
+      "newseason"
+     ],
+     "additionalProperties": false
+    },
+    "min_usual_in": {
+     "type": "object",
+     "properties": {
+      "swe": {
+       "type": "number"
+      },
+      "depth": {
+       "type": "number"
+      },
+      "new24": {
+       "type": "number"
+      },
+      "new7": {
+       "type": "number"
+      },
+      "newseason": {
+       "type": "number"
+      }
+     },
+     "required": [
+      "swe",
+      "depth",
+      "new24",
+      "new7",
+      "newseason"
+     ],
+     "additionalProperties": false
+    },
+    "percent_from_in": {
+     "type": "object",
+     "properties": {
+      "swe": {
+       "type": "number"
+      },
+      "depth": {
+       "type": "number"
+      },
+      "new24": {
+       "type": "number"
+      },
+      "new7": {
+       "type": "number"
+      },
+      "newseason": {
+       "type": "number"
+      }
+     },
+     "required": [
+      "swe",
+      "depth",
+      "new24",
+      "new7",
+      "newseason"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "little_in",
+    "min_usual_in",
+    "percent_from_in"
+   ]
+  },
+  "notes": {
+   "type": "object",
+   "properties": {
+    "model": {
+     "type": "string"
+    },
+    "new_snow": {
+     "type": "string"
+    }
+   },
+   "required": [
+    "model",
+    "new_snow"
+   ]
+  },
+  "watersheds": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "unit": {
+      "type": "string",
+      "pattern": "^\\d{8}$"
+     },
+     "kind": {
+      "const": "watershed"
+     },
+     "name": {
+      "type": "string"
+     },
+     "ratings": {
+      "$ref": "#/$defs/ratings"
+     },
+     "stations": {
+      "type": "integer"
+     },
+     "nm_fraction": {
+      "type": "number"
+     },
+     "partial": {
+      "type": "boolean"
+     },
+     "rivers": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "slug": {
+         "type": "string"
+        },
+        "name": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "slug",
+        "name"
+       ]
+      }
+     }
+    },
+    "required": [
+     "unit",
+     "kind",
+     "name",
+     "ratings",
+     "stations",
+     "nm_fraction",
+     "partial",
+     "rivers"
+    ]
+   }
+  },
+  "ranges": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "unit": {
+      "type": "string"
+     },
+     "kind": {
+      "const": "range"
+     },
+     "name": {
+      "type": "string"
+     },
+     "note": {
+      "type": "string"
+     },
+     "ratings": {
+      "$ref": "#/$defs/ratings"
+     },
+     "stations": {
+      "type": "integer"
+     },
+     "model_smooths": {
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "unit",
+     "kind",
+     "name",
+     "note",
+     "ratings",
+     "stations",
+     "model_smooths"
+    ]
+   }
+  },
+  "stations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     },
+     "lat": {
+      "type": "number"
+     },
+     "lon": {
+      "type": "number"
+     },
+     "elev_ft": {
+      "type": "integer"
+     },
+     "watershed": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "range": {
+      "type": [
+       "string",
+       "null"
+      ]
+     },
+     "swe": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "depth": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "new24": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "new7": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "newseason": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "required": [
+     "id",
+     "name",
+     "lat",
+     "lon",
+     "elev_ft",
+     "watershed",
+     "range",
+     "swe",
+     "depth",
+     "new24",
+     "new7",
+     "newseason"
+    ]
+   }
+  },
+  "files": {
+   "type": "object",
+   "properties": {
+    "index": {
+     "type": "string"
+    },
+    "ranges": {
+     "type": "string"
+    },
+    "csv": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    }
+   },
+   "required": [
+    "index",
+    "ranges",
+    "csv"
+   ],
+   "additionalProperties": true
+  }
+ },
+ "required": [
+  "schema_version",
+  "generated",
+  "model_day",
+  "stations_day",
+  "baseline",
+  "measures",
+  "definitions",
+  "units",
+  "classes",
+  "thresholds",
+  "notes",
+  "watersheds",
+  "ranges",
+  "stations",
+  "files"
+ ]
+}

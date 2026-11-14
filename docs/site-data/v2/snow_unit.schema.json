@@ -1,0 +1,448 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "Snow, one watershed or mountain range",
+ "$defs": {
+  "rating": {
+   "type": "object",
+   "properties": {
+    "now": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "usual": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "pct": {
+     "type": [
+      "number",
+      "null"
+     ]
+    },
+    "cls": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "little": {
+     "type": "boolean"
+    },
+    "n": {
+     "type": "integer"
+    },
+    "stations": {
+     "type": "integer"
+    }
+   },
+   "required": [
+    "now",
+    "usual",
+    "pct",
+    "cls",
+    "little",
+    "n"
+   ],
+   "additionalProperties": false
+  },
+  "ratings": {
+   "type": "object",
+   "properties": {
+    "swe": {
+     "$ref": "#/$defs/rating"
+    },
+    "depth": {
+     "$ref": "#/$defs/rating"
+    },
+    "new24": {
+     "$ref": "#/$defs/rating"
+    },
+    "new7": {
+     "$ref": "#/$defs/rating"
+    },
+    "newseason": {
+     "$ref": "#/$defs/rating"
+    }
+   },
+   "required": [
+    "swe",
+    "depth",
+    "new24",
+    "new7",
+    "newseason"
+   ],
+   "additionalProperties": false
+  }
+ },
+ "description": "snow/<unit>/snow.json: one place's water in the snow and snow depth this water year and last, day by day (day 0 is 1 October, 29 February left out), the usual range for each day (percentiles of water years 2004-2025 within 3 days), the ratings, and the snow stations in it.",
+ "type": "object",
+ "properties": {
+  "schema_version": {
+   "const": 2
+  },
+  "unit": {
+   "type": "string"
+  },
+  "kind": {
+   "enum": [
+    "watershed",
+    "range"
+   ]
+  },
+  "name": {
+   "type": "string"
+  },
+  "water_year": {
+   "type": "integer"
+  },
+  "model_day": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "day_index": {
+   "type": "integer",
+   "minimum": 0,
+   "maximum": 364
+  },
+  "stations_day": {
+   "type": "string",
+   "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+  },
+  "baseline": {
+   "type": "string"
+  },
+  "series": {
+   "type": "object",
+   "properties": {
+    "swe": {
+     "type": "object",
+     "properties": {
+      "this": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "last": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     },
+     "required": [
+      "this",
+      "last"
+     ],
+     "additionalProperties": false
+    },
+    "depth": {
+     "type": "object",
+     "properties": {
+      "this": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "last": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     },
+     "required": [
+      "this",
+      "last"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "swe",
+    "depth"
+   ]
+  },
+  "band": {
+   "type": "object",
+   "properties": {
+    "swe": {
+     "type": "object",
+     "properties": {
+      "p10": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p25": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p50": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p75": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p90": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     },
+     "required": [
+      "p10",
+      "p25",
+      "p50",
+      "p75",
+      "p90"
+     ],
+     "additionalProperties": false
+    },
+    "depth": {
+     "type": "object",
+     "properties": {
+      "p10": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p25": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p50": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p75": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      },
+      "p90": {
+       "type": "array",
+       "minItems": 365,
+       "maxItems": 365,
+       "items": {
+        "type": [
+         "number",
+         "null"
+        ]
+       }
+      }
+     },
+     "required": [
+      "p10",
+      "p25",
+      "p50",
+      "p75",
+      "p90"
+     ],
+     "additionalProperties": false
+    }
+   },
+   "required": [
+    "swe",
+    "depth"
+   ]
+  },
+  "ratings": {
+   "$ref": "#/$defs/ratings"
+  },
+  "stations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "id": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     },
+     "elev_ft": {
+      "type": "integer"
+     },
+     "swe": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "depth": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "new24": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "new7": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "newseason": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    },
+    "required": [
+     "id",
+     "name",
+     "elev_ft",
+     "swe",
+     "depth",
+     "new24",
+     "new7",
+     "newseason"
+    ]
+   }
+  },
+  "grid_fraction": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "nm_fraction": {
+   "type": "number"
+  },
+  "rivers": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "properties": {
+     "slug": {
+      "type": "string"
+     },
+     "name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug",
+     "name"
+    ]
+   }
+  },
+  "note": {
+   "type": "string"
+  },
+  "cells": {
+   "type": "integer"
+  },
+  "model_smooths": {
+   "type": "boolean"
+  }
+ },
+ "required": [
+  "schema_version",
+  "unit",
+  "kind",
+  "name",
+  "water_year",
+  "model_day",
+  "day_index",
+  "stations_day",
+  "baseline",
+  "series",
+  "band",
+  "ratings",
+  "stations"
+ ]
+}

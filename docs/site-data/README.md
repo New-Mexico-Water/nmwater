@@ -10,7 +10,7 @@ write for the site: the river and precipitation `map.svg` files, `summary.map`, 
 per-river `description`; their data is now `geo/` (GeoJSON) and `summary.facts`.
 
 ```
-manifest.json                     producer, generated, data_through, rivers[], headlines, geo, precipitation
+manifest.json                     producer, generated, data_through, rivers[], headlines, geo, precipitation, snow
 files.json                        every file with its size and SHA-256 (written last)
 geo/*.geojson                     shared geometry: state, county lines, main rivers, cities
 rivers/<slug>/summary.json        the Overview: status, cited background, facts, acequias, reservoirs, users, sources
@@ -22,6 +22,10 @@ rivers/<slug>/quality.json        water temperature and salinity                
 rivers/<slug>/watershed.json      daily and monthly precipitation, temperature, snow, drought   (only where there is data)
 rivers/<slug>/notes.json          data gaps and disparities
 rivers/<slug>/*.csv, notes.md     downloads;  social.png  the 1200x630 share image
+snow/index.json                   every watershed and mountain range: water in the snow, depth and new snow against the usual; the SNOTEL stations
+snow/ranges.geojson               the mountain-range snow zones (as drawn)
+snow/<unit>/snow.json             one watershed or range: season so far, daily series, stations, linked rivers
+snow/recent.csv                   the last days for every unit
 ```
 
 Conventions: dates are ISO 8601 (`YYYY-MM-DD`); flow is cfs, precipitation inches, temperature degrees C, storage

@@ -192,6 +192,24 @@ What the columns mean, how the days line up (a PRISM day ends at 12:00 UTC on it
 watersheds are covered and how it was checked are in
 [reports/watershed-precipitation.md](reports/watershed-precipitation.md).
 
+### watershed-snow
+
+Snow water equivalent and snow depth from SNODAS, averaged over every watershed (HUC8) and every mountain
+range (the snow zones in `catalog/snow_ranges.yaml`, drawn where snow is usual in mid-winter), one value per
+day from 30 September 2003. Written to `data/parquet/derived/watershed_snow/`; `nmwater update` runs it after
+the precipitation step, and a year is recomputed when its grid file changes. The first run reads every day
+(about five minutes); after that only new or changed days.
+
+```
+nmwater watershed-snow             # incremental
+nmwater watershed-snow --rebuild   # everything, and the range polygons
+```
+
+The site bundle (`export-site-data`) adds `snow/` from these series and from the SNOTEL stations: water in the snow,
+snow depth and an estimate of new snow (a day counts when depth rises 1 to 30 inches and the snow water rises at
+least 0.1 inch the same day), each against the usual for the date in water years 2004 to 2025. Method and
+thresholds are in `nmwater/derived/snow_normal.py` and `nmwater/derived/snotel_snow.py`.
+
 ### export-site-data
 
 Writes the data bundle the website renders: JSON, GeoJSON and CSV files (and the share images) with a versioned contract; no drawings or sentences (the website writes those). Output goes to

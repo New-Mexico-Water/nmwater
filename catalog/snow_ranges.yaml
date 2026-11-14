@@ -1,0 +1,24 @@
+# Mountain ranges for the snow pages (nmwater/derived/snow_ranges.py).
+#
+# A range is drawn where snow is usual, not where its name is: the parts of New Mexico whose SNODAS water in the snow averages at least `threshold_in` inches on the sampled
+# mid-winter days of the sampled water years, within `radius_km` of one of the range's seeds, and nearest to this range's seed rather than another's. The result is a shape per
+# range (a few separate mountain masses may share one), clipped to the state. Seeds are the high points the range is named for; add a seed to pull a distant mass into a range.
+# Narrow ranges the 1 km model smooths (the Sandia, Manzano, San Mateo and Magdalena mountains) get a lower threshold and a short radius; their figures read low, and the site says so.
+zone:
+  years: [2004, 2025]                  # water years whose mid-winter snow decides where a range is
+  dates: [[2, 10], [2, 15], [2, 20], [3, 10], [3, 15], [3, 20]]      # month, day sampled in each of those winters
+  threshold_in: 0.8
+  radius_km: 80
+  min_cells: 30                        # a separate patch smaller than this many 1 km cells is dropped
+  model_smooths: [sandia, sanmateo]    # ranges whose model figures the site flags as likely to read low
+ranges:
+  - {id: sdc_north,   name: "Sangre de Cristo, north",              note: "Taos, Red River, Angel Fire, Costilla", seeds: [[36.55, -105.40], [36.62, -105.12]]}
+  - {id: sdc_south,   name: "Sangre de Cristo, south",              note: "Santa Fe, Pecos, Mora",                 seeds: [[35.82, -105.76], [35.55, -105.60]]}
+  - {id: jemez,       name: "Jemez Mountains",                      note: "Jemez and Valles Caldera",              seeds: [[35.85, -106.55]]}
+  - {id: chama,       name: "Chama and the Tusas Mountains",        note: "Chama, Brazos, Cumbres Pass",           seeds: [[36.80, -106.40], [36.55, -106.45]]}
+  - {id: sandia,      name: "Sandia and Manzano Mountains",         note: "Albuquerque, Tijeras, Edgewood",        seeds: [[35.21, -106.45], [34.65, -106.40]], threshold_in: 0.3, radius_km: 15, min_cells: 12}
+  - {id: taylor_zuni, name: "Mount Taylor and the Zuni Mountains",  note: "Grants, Zuni",                          seeds: [[35.24, -107.61], [35.10, -108.45]]}
+  - {id: chuska,      name: "Chuska Mountains",                     note: "Navajo Nation, Tsaile",                 seeds: [[36.05, -109.00]]}
+  - {id: sacramento,  name: "Sacramento Mountains",                 note: "Ruidoso, Cloudcroft",                   seeds: [[33.40, -105.80], [32.95, -105.72], [33.60, -105.55]]}
+  - {id: gila,        name: "Gila and Mogollon Mountains",          note: "Silver City, Mogollon",                 seeds: [[33.35, -108.50], [33.20, -107.80], [32.90, -108.15]]}
+  - {id: sanmateo,    name: "San Mateo and Magdalena Mountains",    note: "Magdalena, Datil",                      seeds: [[33.85, -107.45], [34.10, -107.20]], threshold_in: 0.3, radius_km: 15, min_cells: 12}

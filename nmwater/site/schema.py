@@ -117,6 +117,71 @@ def precip_problems(root: Path, man: dict) -> list[str]:
     return out
 
 
+def snow_problems(root: Path, man: dict) -> list[str]:
+    """The snow section: files against their schemas, the counts, the ranges' map, and rules a schema cannot state (a rating needs a usual, `little` has no class)."""
+    block = man.get("snow")
+    if not block:
+        return []
+    base = root / block["path"]
+    ip = base / block["files"]["index"]
+    if not ip.exists():
+        return [f"snow: {ip} is missing"]
+    idx = json.loads(ip.read_text())
+    out = _validate(idx, "snow_index", "snow/index.json")
+    if out:
+        return out
+    if (len(idx["watersheds"]), len(idx["ranges"]), len(idx["stations"])) != (block["watersheds"], block["ranges"], block["stations"]):
+        out.append("snow: the manifest counts and the index lists differ")
+    rivers = {e["slug"] for e in man.get("rivers", [])}
+    classes = set(idx["classes"])
+    units = idx["watersheds"] + idx["ranges"]
+    names = [u["unit"] for u in units]
+    if len(set(names)) != len(names):
+        out.append("snow: a unit id repeats")
+
+    def rating_rules(r: dict, where: str) -> list[str]:
+        bad = []
+        for k, x in r.items():
+            if x["cls"] is not None and x["cls"] not in classes:
+                bad.append(f"{where}: {k} class {x['cls']!r} is not one of the classes")
+            if x["cls"] is not None and x["usual"] is None:
+                bad.append(f"{where}: {k} is rated without a usual")
+            if x["little"] and x["cls"] is not None:
+                bad.append(f"{where}: {k} is marked little but has a class")
+            if x["pct"] is not None and x["usual"] is None:
+                bad.append(f"{where}: {k} has a percentile without a usual")
+        return bad
+
+    for u in units:
+        w = f"snow/{u['unit']}"
+        out += [f"{w}: river {r['slug']} is not in the bundle" for r in u.get("rivers", []) if r["slug"] not in rivers]
+        out += rating_rules(u["ratings"], f"snow/index.json {u['unit']}")
+        f = base / u["unit"] / "snow.json"
+        if not f.exists():
+            out.append(f"{w}: snow.json is missing")
+            continue
+        d = json.loads(f.read_text())
+        bad = _validate(d, "snow_unit", f"{w}/snow.json")
+        out += bad
+        if bad:
+            continue
+        if d["ratings"] != u["ratings"] or d["kind"] != u["kind"] or d["name"] != u["name"]:
+            out.append(f"{w}: index.json and snow.json disagree")
+        out += rating_rules(d["ratings"], f"{w}/snow.json")
+        if d["day_index"] > 0 and d["series"]["swe"]["this"][d["day_index"]] is None and u["ratings"]["swe"]["now"] is not None:
+            out.append(f"{w}: the rating has a value for the model day but the series does not")
+    gp = base / block["files"]["ranges"]
+    if not gp.exists():
+        out.append(f"snow: {gp} is missing")
+    else:
+        g = json.loads(gp.read_text())
+        out += _validate(g, "geojson", "snow/ranges.geojson")
+        if sorted(f["properties"]["id"] for f in g.get("features", [])) != sorted(r["unit"] for r in idx["ranges"]):
+            out.append("snow: ranges.geojson and the index list different ranges")
+    out += [f"snow: directory {p.name} is not listed in the index" for p in sorted(base.iterdir()) if p.is_dir() and p.name not in set(names)]
+    return out
+
+
 def _coords(c):
     if c and isinstance(c[0], (int, float)):
         yield c
@@ -538,6 +603,7 @@ def validate_bundle(root: Path) -> list[str]:
     man = json.loads(man_path.read_text())
     problems += _validate(man, "manifest", "manifest.json")
     problems += precip_problems(root, man)
+    problems += snow_problems(root, man)
     problems += geo_problems(root, man)
     problems += reservoir_problems(root, man)
     problems += statewide_problems(root, man)

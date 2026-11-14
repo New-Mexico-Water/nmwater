@@ -391,7 +391,7 @@ def update(
         rows = [one(item) for item in plan]
 
     extra = []
-    wstat = cstat = "ok"
+    wstat = sstat = cstat = "ok"
     if catalog:
         # derived series first, so the catalog rebuild below includes them (PRISM years whose grid file
         # changed are recomputed, which picks up PRISM's revisions of the latest months)
@@ -405,6 +405,17 @@ def update(
         except Exception as e:
             wstat = f"error: {e}"[:200]
         extra.append(UpdateRow(update_id=uid, source="_watershed_precip", policy="summary", status=wstat,
+                               fetch_seconds=round(time.monotonic() - t0, 1)))
+        console.rule("watershed snow")
+        t0 = time.monotonic()
+        try:
+            from .derived import watershed_snow as wsn
+
+            r_ = wsn.update(st)
+            console.print(f"  {r_['days_added']} day(s) added for {r_['units']} watersheds and ranges")
+        except Exception as e:
+            sstat = f"error: {e}"[:200]
+        extra.append(UpdateRow(update_id=uid, source="_watershed_snow", policy="summary", status=sstat,
                                fetch_seconds=round(time.monotonic() - t0, 1)))
         console.rule("catalog build")
         t0 = time.monotonic()
@@ -439,7 +450,7 @@ def update(
     ctx.http.close()
     ctx.ledger.close()
     # a failed derived-series or catalog step leaves the archive fetched but the catalog (and so the website data) behind: say so in the exit code, which the nightly turns into a notification
-    failed = {name: stat for name, stat in (("watershed precipitation", wstat), ("catalog build", cstat)) if stat != "ok"}
+    failed = {name: stat for name, stat in (("watershed precipitation", wstat), ("watershed snow", sstat), ("catalog build", cstat)) if stat != "ok"}
     if failed:
         for name, stat in failed.items():
             console.print(f"[red]{name} failed: {stat}[/red]")
@@ -590,6 +601,25 @@ def watershed_precip(
     r = wp.update(st, rebuild=rebuild)
     console.print(f"{r['watersheds']} watersheds ({r['with_precip']} with enough of the grid), "
                   f"{r['years']} years computed, {r['rows']:,} rows")
+
+
+@app.command("watershed-snow")
+def watershed_snow(
+    rebuild: bool = typer.Option(False, "--rebuild", help="recompute every day, not only the days not yet computed"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+    verbose: bool = typer.Option(False, "-v"),
+):
+    """Snow averaged over each watershed (HUC8) and each mountain range in New Mexico, daily, from the SNODAS grids.
+
+    Computed from the SNODAS grids already in data/grids/snodas (run `nmwater fetch snodas` first) and written to data/parquet/derived/. The ranges (drawn where snow is usual)
+    come from catalog/snow_ranges.yaml and are rebuilt when it or the SNODAS files they use change. A full pass over 22 years of days takes about five minutes: run it as a
+    capped systemd unit. Method and caveats: nmwater/derived/watershed_snow.py and nmwater/derived/snow_ranges.py."""
+    from .derived import watershed_snow as wsn
+
+    _setup_logging(verbose)
+    st = Settings.load(data_dir)
+    r = wsn.update(st, rebuild=rebuild)
+    console.print(f"{r['units']} watersheds and ranges, {r['days_added']} days added, {r['rows']:,} rows")
 
 
 @app.command("export-site-data")
