@@ -519,6 +519,41 @@ def flood_hourly(
                   f"published={res['published']} render={'yes' if res['render'] else 'no'} ({res['why']}) started={res['started']}")
 
 
+@app.command("snow-now")
+def snow_now(
+    list_sites: bool = typer.Option(False, "--list-sites", help="print the New Mexico SNOTEL station ids (for `fetch nrcs --site`) and stop"),
+    publish: bool = typer.Option(False, "--publish", help="upload snow-now.json to the bucket (R2 settings from the environment, as publish_site_data.sh)"),
+    redeploy: bool = typer.Option(False, "--redeploy", help="start the site's build when the stations' figures changed enough to see (needs --publish)"),
+    out: Optional[Path] = typer.Option(None, "--out", help="default: <repo>/dist/snow-now.json"),
+    state: Optional[Path] = typer.Option(None, "--state", help="default: <data dir>/snow_sixhourly_state.json"),
+    bundle: Optional[Path] = typer.Option(None, "--bundle", help="the nightly bundle, default: <repo>/dist/site-data"),
+    data_dir: Optional[Path] = typer.Option(None, "--data-dir"),
+):
+    """The snow-station status from the latest SNOTEL readings (after `nmwater fetch nrcs --kind hourly`): write it, upload it, and say whether the site must be rendered again. See scripts/cron/snow_sixhourly.sh."""
+    import duckdb
+
+    from .core.config import PROJECT_ROOT
+    from .site import snow_now as sn_now
+
+    s = Settings.load(data_dir)
+    con = duckdb.connect(str(s.duckdb_path), read_only=True)
+    con.execute("SET TimeZone = 'UTC'")
+    try:
+        if list_sites:
+            for n in sn_now.snotel_sites(con):
+                print(n)
+            return
+        res = sn_now.sixhourly(con, s.parquet_dir, (bundle or PROJECT_ROOT / "dist" / "site-data") / "snow" / "index.json", out or PROJECT_ROOT / "dist" / "snow-now.json",
+                               state or s.data_dir / "snow_sixhourly_state.json", publish, redeploy)
+    except Exception as e:
+        console.print(f"[red]snow-now: {e}[/red]")
+        raise typer.Exit(1)
+    finally:
+        con.close()
+    console.print(f"[green]snow-now[/green]: {res['stations']} stations, day {res['stations_day']}, latest reading {res['latest_reading']}; "
+                  f"published={res['published']} render={'yes' if res['render'] else 'no'} ({res['why']}) started={res['started']}")
+
+
 @app.command()
 def status(
     source: Optional[str] = typer.Argument(None),

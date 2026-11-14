@@ -13,6 +13,7 @@ import json
 import logging
 from datetime import date, timedelta
 
+import numpy as np
 import pandas as pd
 
 from ..core.geo import basin_from_huc
@@ -147,8 +148,10 @@ class NRCS(Source):
             cur = b
             while cur <= e:
                 stop = min(date(cur.year + yrs, 1, 1) - timedelta(days=1), e)
+                # the service's endDate is midnight at the start of that day: the hours of today come only when the end is tomorrow
+                end_param = stop + timedelta(days=1) if dur == "HOURLY" and stop >= today else stop
                 params = {"stationTriplets": trip, "elements": request_elements(codes), "duration": dur,
-                          "beginDate": cur.isoformat(), "endDate": stop.isoformat(), "returnFlags": "true"}
+                          "beginDate": cur.isoformat(), "endDate": end_param.isoformat(), "returnFlags": "true"}
                 art = self.get(f"{self.base}/data", params=params, kind=dur.lower(), site_uid=self.uid(trip),
                                variable=dur, window=(cur.isoformat(), stop.isoformat()), refresh=refresh or bool(since))
                 summ.n_requests += 1
@@ -243,7 +246,7 @@ class NRCS(Source):
                     offset = None
                 frames.append(pd.DataFrame({
                     "site_uid": self.uid(trip), "datetime_utc": ts,
-                    "value": pd.to_numeric(v["value"], errors="coerce"),
+                    "value": pd.to_numeric(v["value"] if "value" in v.columns else pd.Series(np.nan, index=v.index), errors="coerce"),   # a block whose every hour is missing has no value column
                     "qualifier": (v.get("qcFlag", pd.Series("", index=v.index)).fillna("").astype(str) + "|"
                                   + v.get("qaFlag", pd.Series("", index=v.index)).fillna("").astype(str)).str.strip("|"),
                     "source_param": param, "source_unit": se.get("storedUnitCode"),

@@ -40,7 +40,7 @@ NEW_NOTE = ("New snow is estimated from SNOTEL snow depth and snow-water reading
 DEFINITIONS = {
     "swe": "Water in the snow: the depth of water the snow would make if melted, averaged over the place (inches, SNODAS).",
     "depth": "Snow depth: how deep the snow lies, averaged over the place (inches, SNODAS).",
-    "new24": "New snow in the last 24 hours at the place's snow stations (inches of snow, estimated).",
+    "new24": "New snow yesterday, the last complete day, at the place's snow stations (inches of snow, estimated).",
     "new7": "New snow in the last 7 days at the place's snow stations (inches of snow, estimated).",
     "newseason": "New snow since 1 October at the place's snow stations (inches of snow, estimated).",
 }
@@ -95,6 +95,20 @@ def _pct(r: dict) -> int | None:
     return None if r["pct"] is None else round(r["pct"])
 
 
+def station_state(con, unit_ids: list[str], range_shapes: dict, fallback_day):
+    """The stations with their daily series and new-snow estimates, the newest station day, and which stations belong to which watershed and range.
+    Returns (stations, depth_by, swe_by, new_by, station_day, by_watershed, by_range); a unit id appears in both maps, with the stations that fit it."""
+    st = _stations(con)
+    depth_by = _daily(con, list(st["id"]), "snow_depth")
+    swe_by = _daily(con, list(st["id"]), "swe")
+    new_by = {i: ss.new_snow_daily(depth_by[i], swe_by.get(i)) for i in st["id"] if i in depth_by}
+    st["range"] = [_station_range(r.lon, r.lat, range_shapes) for r in st.itertuples()]
+    stn_day = pd.Timestamp(max((s.index.max() for s in depth_by.values()), default=fallback_day))
+    by_ws = {u: [i for i, h in zip(st["id"], st["huc8"]) if h == u and i in new_by] for u in unit_ids}
+    by_rg = {u: [i for i, r in zip(st["id"], st["range"]) if r == u and i in new_by] for u in unit_ids}
+    return st, depth_by, swe_by, new_by, stn_day, by_ws, by_rg
+
+
 def export_snow(con, out: Path, rivers_dir: Path, parquet_dir: Path, generated: str, csv: bool = True) -> dict | None:
     """Write <out>/snow/ and return the manifest block, or None when the derived SNODAS series do not exist yet (nmwater watershed-snow)."""
     got = _read_units(parquet_dir)
@@ -122,14 +136,7 @@ def export_snow(con, out: Path, rivers_dir: Path, parquet_dir: Path, generated: 
     col = {u: i for i, u in enumerate(ids)}
 
     # ---- stations
-    st = _stations(con)
-    depth_by = _daily(con, list(st["id"]), "snow_depth")
-    swe_by = _daily(con, list(st["id"]), "swe")
-    new_by = {i: ss.new_snow_daily(depth_by[i], swe_by.get(i)) for i in st["id"] if i in depth_by}
-    st["range"] = [_station_range(r.lon, r.lat, range_shapes) for r in st.itertuples()]
-    stn_day = pd.Timestamp(max((s.index.max() for s in depth_by.values()), default=model_day))
-    by_ws = {u: [i for i, h in zip(st["id"], st["huc8"]) if h == u and i in new_by] for u in ids}
-    by_rg = {u: [i for i, r in zip(st["id"], st["range"]) if r == u and i in new_by] for u in ids}
+    st, depth_by, swe_by, new_by, stn_day, by_ws, by_rg = station_state(con, ids, range_shapes, model_day)
 
     def new_ratings(u: str, kind: str) -> dict:
         members = (by_rg if units.loc[units["unit"] == u, "kind"].iloc[0] == "range" else by_ws)[u]

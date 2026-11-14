@@ -210,6 +210,22 @@ snow depth and an estimate of new snow (a day counts when depth rises 1 to 30 in
 least 0.1 inch the same day), each against the usual for the date in water years 2004 to 2025. Method and
 thresholds are in `nmwater/derived/snow_normal.py` and `nmwater/derived/snotel_snow.py`, explained in [reports/snow-method.md](reports/snow-method.md) and checked against observers in [reports/new-snow-estimate.md](reports/new-snow-estimate.md).
 
+### snow-now
+
+The snow stations' status every six hours, between the nightly builds: `scripts/cron/snow_sixhourly.sh` fetches the last four days of SNOTEL hourly readings
+(`nmwater fetch nrcs --kind hourly --site ...`), compacts them, and runs `nmwater snow-now`, which writes `dist/snow-now.json` (each station's latest depth and water in the snow, its
+new snow through the last complete day, and the new-snow ratings of the watersheds and ranges with stations), uploads it next to `latest.json`, and starts the site's build only
+when a station's figures moved enough to see (a depth step of 3 inches, a water step of half an inch, or any change in the inch of new snow) and fewer than four builds have
+started that day. SNODAS (the maps and the ratings of water and depth) stays in the nightly bundle: it is one file a day.
+
+```
+scripts/cron/snow_sixhourly.sh --dry-run   # fetch and make the file; upload nothing, start nothing
+nmwater snow-now --list-sites              # the station ids the fetch is limited to
+```
+
+Crontab line (not installed by the repository): `17 */6 * * *  /home/vance/projects/water_newmexico/scripts/cron/snow_sixhourly.sh`. It shares `data/locks/nmwater-cron.lock`
+with the nightly and the hourly flood job and skips a run when either holds it. Builds count against Cloudflare Pages' 500 deploys a month together with the flood job's.
+
 ### export-site-data
 
 Writes the data bundle the website renders: JSON, GeoJSON and CSV files (and the share images) with a versioned contract; no drawings or sentences (the website writes those). Output goes to
