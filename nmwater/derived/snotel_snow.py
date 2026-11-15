@@ -21,7 +21,7 @@ FLOOR_IN = 1.0
 CAP_IN = 30.0
 SWE_STEP_IN = 0.1
 MIN_COVERAGE = 0.85
-MIN_WINTERS = 17
+MIN_WINTERS = 15        # as many winters as the pool of a place needs (snow_normal.MIN_POOL_NEW): a station of 15 winters, like Taos Powderhorn, the snowiest in the northern Sangre de Cristo, must count
 KINDS = ("new24", "new7", "newseason")
 
 

@@ -85,3 +85,15 @@ def test_a_year_counts_only_when_every_station_reported_and_no_stations_gives_no
     r = ss.rate_new_snow({"a": a, "b": b}, "2026-01-31", "newseason", years=(2004, 2025))
     assert r["stations"] == 2 and r["n"] == 21
     assert ss.rate_new_snow({}, "2026-01-31", "newseason")["now"] is None
+
+
+def test_a_station_of_fifteen_winters_counts_and_one_of_fourteen_does_not():
+    """The snowiest station of a range can have a short record (Taos Powderhorn has 15 winters): it must be in the place's figure, not silently left out of it."""
+    quiet = winters(lambda w: 12.0)
+    quiet["2026-01-01":"2026-01-31"] = 0.0                                    # a station that saw no new snow this January
+    snowy, brief = winters(lambda w: 12.0, start=2011), winters(lambda w: 12.0, start=2012)
+    snowy["2026-01-01":"2026-01-31"] = 40 / 31
+    brief["2026-01-01":"2026-01-31"] = 90 / 31
+    r = ss.rate_new_snow({"quiet": quiet, "snowy": snowy, "brief": brief}, "2026-01-31", "newseason", years=(2004, 2025))
+    assert r["stations"] == 2 and r["now"] == pytest.approx(20.0, abs=0.01)       # the mean of 0 and 40: the 14-winter station is out of the rating and out of the mean
+    assert r["n"] == 15 and r["usual"] is not None

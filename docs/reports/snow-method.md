@@ -53,7 +53,7 @@ SNOTEL stations (30 in New Mexico) report snow depth and snow water, but not sno
 The water condition is what separates a storm from sensor jitter: counting depth rises alone gave 220 to 440 inches of phantom snow a winter at some stations before the floor was added. A day with no reading, or none the day before, is unknown, never zero.
 
 - **Windows:** the day, the last seven days, and the winter so far (since 1 October). A total needs 85% of its days.
-- **Rating:** the mean total over a place's stations, against the same stations' totals on the same dates in each winter. A station counts only with at least 17 winters of record; a year counts only if every counted station reported.
+- **Rating:** the mean total over a place's stations, against the same stations' totals on the same dates in each winter. A station counts only with at least 15 winters of record (the number of winters a place's pool needs), and a year counts only if every counted station reported, so a place whose snowiest station has a short record is rated on the years that station has. A station with fewer winters shows its own figures in the station table but is left out of the place's figure and rating.
 - **Which places have it:** only a watershed or range that contains a station. Others show no new-snow figure.
 - **What it is not:** a measurement of snowfall. Snow settles, melts and blows, so a total undercounts what a board would have caught; the check against observers found it at about two-thirds of what they measured, seeing half of their snow days, while the stations sit higher where more falls ([the full comparison](new-snow-estimate.md)).
 

@@ -59,13 +59,20 @@ def latest_readings(con, ids: list[str], now: datetime) -> dict[str, dict]:
     return out
 
 
-def fingerprint(stations: list[dict]) -> list[list]:
-    """What a visitor can see move: per station the day, depth and water in coarse steps, and the new-snow figures to the inch. Small drifts of a sensor change nothing."""
+def fingerprint(stations: list[dict], new_snow: dict | None = None) -> list[list]:
+    """What a visitor can see move: per station the day, depth and water in coarse steps, and the new-snow figures to the inch; per place (when given) its new-snow figures and rating
+    class. Small drifts of a sensor change nothing."""
     def step(v, size):
         return None if v is None or pd.isna(v) else int(v // size)
 
-    return sorted([s["id"], step(s.get("depth"), DEPTH_STEP_IN), step(s.get("swe"), SWE_STEP_IN),
+    rows = sorted([s["id"], step(s.get("depth"), DEPTH_STEP_IN), step(s.get("swe"), SWE_STEP_IN),
                    None if s.get("new24") is None else round(s["new24"]), None if s.get("new7") is None else round(s["new7"])] for s in stations)
+    places = sorted([u, k, None if r["now"] is None else round(r["now"]), r["cls"], bool(r["little"])] for u, per in (new_snow or {}).items() for k, r in per.items())
+    return rows + places
+
+
+def _bundle_new_snow(bundle: dict) -> dict:
+    return {h["unit"]: {k: h["ratings"][k] for k in ("new24", "new7", "newseason")} for h in bundle.get("watersheds", []) + bundle.get("ranges", [])}
 
 
 def make(con, parquet_dir: Path, generated: str, now: datetime) -> dict | None:
@@ -103,13 +110,13 @@ def make(con, parquet_dir: Path, generated: str, now: datetime) -> dict | None:
 def decide(state: dict | None, bundle: dict | None, content: dict, now: datetime, max_per_day: int = MAX_DEPLOYS_PER_DAY) -> tuple[bool, str]:
     """Whether to render the site again, and why. `state`: what the last run recorded ({"fingerprint", "rendered", "deploys": {date: n}}); `bundle`: the nightly bundle's snow/index.json,
     which is what a scheduled build shows. A recorded render older than the bundle is ignored: the nightly build has replaced it."""
-    shown_fp, shown_at = (fingerprint(bundle["stations"]), _utc(bundle["generated"])) if bundle else ([], None)
+    shown_fp, shown_at = (fingerprint(bundle["stations"], _bundle_new_snow(bundle)), _utc(bundle["generated"])) if bundle else ([], None)
     if state and state.get("rendered") and (shown_at is None or _utc(state["rendered"]) > shown_at):
         shown_fp = state["fingerprint"]
     today = now.astimezone(UTC).date().isoformat()
     if (state or {}).get("deploys", {}).get(today, 0) >= max_per_day:
         return False, f"already rendered {max_per_day} times today"
-    fp = fingerprint(content["stations"])
+    fp = fingerprint(content["stations"], content.get("new_snow"))
     if fp != shown_fp:
         return True, "a station's snow figures changed"
     return False, "nothing a visitor would see has changed"
@@ -132,7 +139,7 @@ def record(state: dict | None, content: dict, now: datetime, rendered: bool) -> 
     today = now.astimezone(UTC).date().isoformat()
     s["deploys"] = {d: n for d, n in s["deploys"].items() if d >= today}
     if rendered:
-        s["fingerprint"], s["rendered"] = fingerprint(content["stations"]), now.astimezone(UTC).isoformat(timespec="seconds")
+        s["fingerprint"], s["rendered"] = fingerprint(content["stations"], content.get("new_snow")), now.astimezone(UTC).isoformat(timespec="seconds")
         s["deploys"][today] = s["deploys"].get(today, 0) + 1
     return s
 

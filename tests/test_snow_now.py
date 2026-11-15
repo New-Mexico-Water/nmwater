@@ -64,3 +64,15 @@ def test_uploading_puts_the_file_next_to_latest_json_with_a_short_cache():
     seen = {}
     sw.upload(Path("x.json"), run=lambda cmd, **kw: seen.update(cmd=cmd), env={"R2_ENDPOINT": "https://r2", "R2_BUCKET": "b"})
     assert "s3://b/snow-now.json" in seen["cmd"] and "max-age=60" in seen["cmd"]
+
+
+def test_a_place_whose_new_snow_rating_changes_renders_the_site_even_when_no_station_figure_did():
+    """A range's figure can change with no station's changing (a station joins the mean): that is visible too."""
+    quiet = [stn("a", depth=0.0, swe=0.0)]
+    rating = {"now": 0.0, "cls": None, "little": True}
+    base = {"mtn": {"new24": rating, "new7": rating, "newseason": rating}}
+    bundle = {"generated": (NOW - timedelta(hours=10)).isoformat(), "stations": quiet, "watersheds": [], "ranges": [{"unit": "mtn", "ratings": base["mtn"]}]}
+    same = {"stations": quiet, "new_snow": base}
+    assert sw.decide(None, bundle, same, NOW) == (False, "nothing a visitor would see has changed")
+    changed = {"stations": quiet, "new_snow": {"mtn": {**base["mtn"], "new24": {"now": 2.1, "cls": "normal", "little": False}}}}
+    assert sw.decide(None, bundle, changed, NOW)[0] is True
